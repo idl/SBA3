@@ -8,21 +8,77 @@
 
   <script>
   $('document').ready(function(){
-    $('#doesDrink').on('change', function(){
-      if($('#doesDrink').val() == 'yes'){
-          $('#ifDrink').show();
-      } else {
-          $('#ifDrink').hide();
-      }
-    })
     $('#classification').on('change', function(){
       if($('#classification').val() == 'master' ||
         $('#classification').val() == 'doctorate'){
-        $('#ifGrad').show();
-        $('#ifNotGrad').hide();
+        $('.ifNotGrad').hide();
       } else {
-        $('#ifGrad').hide();
-        $('#ifNotGrad').show();
+        $('.ifNotGrad').show();
+      }
+    })
+    $('#doesDrink').on('change', function(){
+      if($('#doesDrink').val() == 'yes'){
+          $('.ifDrink').show();
+      } else {
+          $('.ifDrink').hide();
+      }
+    })
+    $('#isDistance').on('change', function(){
+      if($('#isDistance').val() == 'yes'){
+        $('.ifDistance').show();
+      } else {
+        $('.ifDistance').hide();
+      }
+    })
+    $('#isTutoring').on('change', function(){
+      if($('#isTutoring').val() == 'yes'){
+        $('.ifTutoring').show();
+        $('.ifNotTutoring').hide();
+      } else {
+        $('.ifTutoring').hide();
+        $('.ifNotTutoring').show();
+      }
+    })
+    $('#isOnCampusClass').on('change', function(){
+      if($('#isOnCampusClass').val() == 'yes'){
+        $('.ifOnCampusClass').show();
+      } else {
+        $('.ifOnCampusClass').hide();
+      }
+    })
+    $('#didOrientation').on('change', function(){
+      if($('#isOrientation').val() == 'yes'){
+        $('.ifOrientation').show();
+      } else {
+        $('.ifOrientation').hide();
+      }
+    })
+    $('#isOrg').on('change', function(){
+      if($('#isOrg').val() == 'yes'){
+        $('.ifOrg').show();
+      } else {
+        $('.ifOrg').hide();
+      }
+    })
+    $('#isOnCampus').on('change', function(){
+      if($('#isOnCampus').val() == 'yes'){
+        $('.ifOnCampus').show();
+      } else {
+        $('.ifOnCampus').hide();
+      }
+    })
+    $('#isAway').on('change', function(){
+      if($('#isAway').val() == 'yes'){
+        $('.ifAway').show();
+      } else {
+        $('.ifAway').hide();
+      }
+    })
+    $('#doesWork').on('change', function(){
+      if($('#doesWork').val() == 'yes'){
+        $('.ifWork').show();
+      } else {
+        $('.ifWork').hide();
       }
     })
   });
@@ -135,7 +191,7 @@
       </td>
     </tr>
 
-    <tr id="ifNotGrad">
+    <tr class="ifNotGrad">
       <td>
         Did you transfer from a community/junior college?
       </td>
@@ -154,7 +210,7 @@
         Are you enrolled in a "Distance or Online" degree program at MSU?
       </td>
       <td>
-        <select>
+        <select id='isDistance'>
           <option value='yes'>Yes</option>
           <option value='no'>No</option>
           <option value='notsure'>Not Sure</option>
@@ -163,12 +219,12 @@
       </td>
     </tr>
 
-    <tr>
+    <tr class='ifDistance'>
       <td>
         Have you ever taken a course that meets on campus?
       </td>
       <td>
-        <select>
+        <select id='isOnCampusClass'>
           <option value='yes'>Yes</option>
           <option value='no'>No</option>
           <option value='notsure'>Not Sure</option>
@@ -191,7 +247,7 @@
       </td>
     </tr>
 
-    <tr id='ifNotGrad'>
+    <tr class='ifNotGrad'>
       <td>
         Did you complete any advanced placement courses in high school?
       </td>
@@ -303,7 +359,7 @@
       </td>
     </tr>
 
-    <tr>
+    <tr class='ifOnCampusClass'>
       <td>
         Do you see role models on campus?
       </td>
@@ -346,7 +402,7 @@
       </td>
     </tr>
 
-    <tr>
+    <tr class='ifOnCampusClass'>
       <td>
         Do you review your class notes after class?
       </td>
@@ -407,7 +463,7 @@
       </td>
     </tr>
 
-    <tr>
+    <tr class='ifOnCampusClass'>
       <td>
         In general, how many class sessions do you miss over the course of a semester?
       </td>
@@ -421,7 +477,7 @@
         Are you currently attending tutoring sessions?
       </td>
       <td>
-        <select>
+        <select id='isTutoring'>
           <option value='yes'>Yes</option>
           <option value='no'>No</option>
           <option value='notsure'>Not Sure</option>
@@ -430,7 +486,7 @@
       </td>
     </tr>
 
-    <tr>
+    <tr class='ifTutoring'>
       <td>
         On average, how many hours do you spend in tutoring sessions per week?
       </td>
@@ -439,7 +495,7 @@
       </td>
     </tr>
 
-    <tr>
+    <tr class='ifNotTutoring'>
       <td>
         Would you attend tutoring sessions if they were freely available?
       </td>
@@ -454,7 +510,7 @@
     </tr>
 
 
-    <tr>
+    <tr class='ifNotTutoring'>
       <td>
         Have you looked for tutoring help?
       </td>
@@ -469,7 +525,7 @@
     </tr>
 
 
-    <tr id='ifNotGrad'>
+    <tr class='ifNotGrad'>
       <td>
         Compared to high school, has the time you spend studying for classes...
       </td>
@@ -488,19 +544,9 @@
       <td>
         How often do you do the following:
       </td>
-      <td>
-        <select>
-          <option value='never'>Never</option>
-          <option value='rarely'>Rarely</option>
-          <option value='some'>Some</option>
-          <option value='often'>Often</option>
-          <option value='notsure'>Not Sure</option>
-          <option value='nocomment'>No Comment</option>
-        </select>
-      </td>
     </tr>
 
-    <tr>
+    <tr class='ifOnCampusClass'>
       <td>
         Show up late for class (1)
       </td>
@@ -578,7 +624,7 @@
       </td>
     </tr>
 
-    <tr>
+    <tr class='ifOnCampusClass'>
       <td>
         Do you regularly ask questions in class? (2)
       </td>
@@ -592,7 +638,7 @@
       </td>
     </tr>
 
-    <tr>
+    <tr class='ifOnCampusClass'>
       <td>
         Do your professors ask you questions during class? (3)
       </td>
@@ -606,7 +652,7 @@
       </td>
     </tr>
 
-     <tr>
+     <tr class='ifOnCampusClass'>
       <td>
         Do you take complete class notes? (4)
       </td>
@@ -676,7 +722,7 @@
       </td>
     </tr>
 
-    <tr>
+    <tr class='ifOnCampusClass'>
       <td>
         Do you usually have all of the required books and materials by the second class meeting? (9)
       </td>
@@ -690,7 +736,7 @@
       </td>
     </tr>
 
-    <tr>
+    <tr class='ifOnCampusClass'>
       <td>
         When professors ask questions, are you typically among the first to raise your hand? (10)
       </td>
@@ -704,7 +750,7 @@
       </td>
     </tr>
 
-    <tr>
+    <tr class='ifOnCampusClass'>
       <td>
         In a typical classroom, where do you usually sit when seating is not assigned?
       </td>
@@ -741,7 +787,7 @@
       </td>
     </tr>
 
-    <tr id='ifNotGrad'>
+    <tr class='ifNotGrad'>
       <td>
         Programs that help students transition from High School to College
       </td>
@@ -821,7 +867,7 @@
       </td>
     </tr>
 
-    <tr id='ifNotGrad'>
+    <tr class='ifNotGrad'>
       <td>
         Parent(s)/ Guardian(s) desire for me to earn a college degree
       </td>
@@ -837,7 +883,7 @@
       </td>
     </tr>
 
-    <tr id='ifNotGrad'>
+    <tr class='ifNotGrad'>
       <td>
         Hearing my parent(s)/guardian(s) bragging about me for attending college
       </td>
@@ -853,7 +899,7 @@
       </td>
     </tr>
 
-    <tr id='ifNotGrad'>
+    <tr class='ifNotGrad'>
       <td>
         Parent(s)/Guardian(s) giving gifts or money for making good grades
       </td>
@@ -917,7 +963,7 @@
       </td>
     </tr>
 
-    <tr>
+    <tr class='ifOnCampusClass'>
       <td>
         Reviewing course notes shortly after class
       </td>
@@ -949,7 +995,7 @@
       </td>
     </tr>
 
-    <tr id='ifNotGrad'>
+    <tr class='ifNotGrad'>
       <td>
         Do you participate in programs that help students transition from high school to college?
       </td>
@@ -963,7 +1009,7 @@
       </td>
     </tr>
 
-    <tr id='ifNotGrad'>
+    <tr class='ifNotGrad'>
       <td>
         Do you have a peer mentor?
       </td>
@@ -991,7 +1037,7 @@
       </td>
     </tr>
 
-    <tr id='ifNotGrad'>
+    <tr class='ifNotGrad'>
       <td>
         Do you have a one-on-one staff mentor?
       </td>
@@ -1019,7 +1065,7 @@
       </td>
     </tr>
 
-    <tr id='ifNotGrad'>
+    <tr class='ifNotGrad'>
       <td>
         Do you hear your parents/guardians bragging about you for attending college?
       </td>
@@ -1033,7 +1079,7 @@
       </td>
     </tr>
 
-    <tr id='ifNotGrad'>
+    <tr class='ifNotGrad'>
       <td>
         Do you parents/guardians give you gifts or money for making good grades?
       </td>
@@ -1160,7 +1206,7 @@
       </td>   
     </tr>
 
-    <tr id='ifNotGrad'>
+    <tr class='ifNotGrad'>
       <td>
         What do your PARENT(S)/ GUARDIAN(S) expect you to make? (2)
       </td>
@@ -1254,7 +1300,7 @@
       </td>
     </tr>
 
-    <tr id='ifNotGrad'>
+    <tr class='ifNotGrad'>
       <td>
         How many on-line classes have you completed with a grade of  less than "C" at MSU?
       </td>
@@ -1268,7 +1314,7 @@
         Did you attend a Student Orientation session before starting college?
       </td>
       <td>
-        <select>
+        <select id='didOrientation'>
           <option value='yes'>Yes</option>
           <option value='no'>No</option>
           <option value='notsure'>Not Sure</option>
@@ -1277,7 +1323,7 @@
       </td>
     </tr>
 
-    <tr id='ifNotGrad'>
+    <tr class='ifNotGrad ifOrientation'>
       <td>
         Did your parents (or guardians) attend an orientation session with you?
       </td>
@@ -1291,7 +1337,7 @@
       </td>
     </tr>
 
-    <tr id='ifNotGrad'>
+    <tr class='ifNotGrad'>
       <td>
         Do you share your grades with your parent(s) or legal guardian(s)?
       </td>
@@ -1305,7 +1351,7 @@
       </td>
     </tr>
 
-    <tr id='ifNotGrad'>
+    <tr class='ifNotGrad'>
       <td>
         Do your parents (or guardians) require you to maintain a certain GPA in college?
       </td>
@@ -1457,7 +1503,7 @@
         Do you belong to any student organizations?
       </td>
       <td>
-        <select>
+        <select id='isOrg'>
           <option value='yes'>Yes</option>
           <option value='no'>No</option>
           <option value='notsure'>Not Sure</option>
@@ -1466,7 +1512,7 @@
       </td>
     </tr>
 
-    <tr>
+    <tr class='ifOrg'>
       <td>
         How many hours per week do you spend doing student organization related services or activities?
       </td>
@@ -1480,7 +1526,7 @@
         Do you live on or off campus?
       </td>
       <td>
-        <select>
+        <select id='isOnCampus'>
           <option value='on'>On Campus</option>
           <option value='off'>Off Campus</option>
           <option value='notsure'>Not Sure</option>
@@ -1489,12 +1535,12 @@
       </td>
     </tr>
 
-    <tr>
+    <tr class='ifOnCampus'>
       <td>
         While attending college, do you live away from home?
       </td>
       <td>
-        <select>
+        <select id='isAway'>
           <option value='yes'>Yes</option>
           <option value='no'>No</option>
           <option value='notsure'>Not Sure</option>
@@ -1503,7 +1549,7 @@
       </td>
     </tr>
 
-    <tr>
+    <tr class='ifAway'>
       <td>
         How many times per semester do you go home?  
       </td>
@@ -1536,7 +1582,7 @@
     </tr>
 
     
-    <tr id="ifDrink">
+    <tr class="ifDrink">
       <td>
         On days that you drink, about how many drinks do you consume?  
       </td>
@@ -1667,7 +1713,7 @@
          Are you currently employed?
       </td>
       <td>
-        <select>
+        <select id='doesWork'>
           <option value='yes'>Yes</option>
           <option value='no'>No</option>
           <option value='notsure'>Not Sure</option>
@@ -1676,7 +1722,7 @@
       </td>
     </tr>
 
-    <tr>
+    <tr class='ifWork'>
       <td>
          Do you work on or off campus?
       </td>
@@ -1690,7 +1736,7 @@
       </td>
     </tr>
 
-    <tr>
+    <tr class='ifWork'>
       <td>
          On average, how many hours per week do you work?
       </td>
@@ -1699,7 +1745,7 @@
       </td>
     </tr>
 
-    <tr>
+    <tr class='ifWork'>
       <td>
          Do you work anytime between the hours of 5pm - 12am?
       </td>
@@ -1802,7 +1848,7 @@
       </td>
     </tr>
 
-    <tr id='ifNotGrad'>
+    <tr class='ifNotGrad'>
       <td>
          Do you receive the Pell grant?
       </td>
