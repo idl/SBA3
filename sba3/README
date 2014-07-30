@@ -1,0 +1,14 @@
+CHANGELOG
+---------------------------
+  - Changed #id context to $(this) inside each condition function
+  - Added comments above condition functions
+  - Added a class condition .ifOnCampusClass to #47, was missing causing it
+    to stay visible
+  - Fixed #isOnCampus values from 'yes' and 'no' to 'on' and 'off' to match
+    values in HTML
+  - Added .ifNotOnCampus class condition to satisfy #48 logic
+  - Added .ifAwayOrIfOnCampus class condition to satisfy #49. Added logic below
+    to #isOnCampus and #isAway change event functions to implement OR:
+  		[(#47 ans = Lives on campus) || (#48 ans =  Lives away from home)]
+  - Changed .hide() and .show() methods to .css() background change, to visually
+    see what questions skipped
