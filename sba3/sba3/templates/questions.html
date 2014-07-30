@@ -7,78 +7,90 @@
   <script type="text/javascript" src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 
   <script>
-  $('document').ready(function(){
-    $('#classification').on('change', function(){
-      if($('#classification').val() == 'master' ||
-        $('#classification').val() == 'doctorate'){
-        $('.ifNotGrad').hide();
+  $('document').ready(function() {
+    $('#classification').on('change', function() {
+        console.log('#classification loaded');
+      if($(this).val() == 'master' || $(this).val() == 'doctorate') {
+        $('.ifNotGrad').css('background', 'red'); //.hide();
       } else {
-        $('.ifNotGrad').show();
+        $('.ifNotGrad').css('background', 'white'); //.show();
       }
     });
-    $('#doesDrink').on('change', function(){
-      if($('#doesDrink').val() == 'yes'){
-          $('.ifDrink').show();
+    $('#isDistance').on('change', function() {
+      if($(this).val() == 'yes') {
+        $('.ifDistance').css('background', 'white'); //.show();
       } else {
-          $('.ifDrink').hide();
+        $('.ifDistance').css('background', 'red'); //.hide();
       }
     });
-    $('#isDistance').on('change', function(){
-      if($('#isDistance').val() == 'yes'){
-        $('.ifDistance').show();
+    $('#isOnCampusClass').on('change', function() {
+      if($(this).val() == 'yes') {
+        $('.ifOnCampusClass').css('background', 'white'); //.show();
       } else {
-        $('.ifDistance').hide();
+        $('.ifOnCampusClass').css('background', 'red'); //.hide();
       }
     });
-    $('#isTutoring').on('change', function(){
-      if($('#isTutoring').val() == 'yes'){
-        $('.ifTutoring').show();
-        $('.ifNotTutoring').hide();
+    $('#doesDrink').on('change', function() {
+      if($(this).val() == 'yes') {
+          $('.ifDrink').css('background', 'white'); //.show();
       } else {
-        $('.ifTutoring').hide();
-        $('.ifNotTutoring').show();
+          $('.ifDrink').css('background', 'red'); //.hide();
       }
     });
-    $('#isOnCampusClass').on('change', function(){
-      if($('#isOnCampusClass').val() == 'yes'){
-        $('.ifOnCampusClass').show();
+    $('#isTutoring').on('change', function() {
+      if($(this).val() == 'yes') {
+        $('.ifTutoring').css('background', 'white'); //.show();
+        $('.ifNotTutoring').css('background', 'red'); //.hide();
       } else {
-        $('.ifOnCampusClass').hide();
+        $('.ifTutoring').css('background', 'red'); //.hide();
+        $('.ifNotTutoring').css('background', 'white'); //.show();
       }
     });
-    $('#didOrientation').on('change', function(){
-      if($('#isOrientation').val() == 'yes'){
-        $('.ifOrientation').show();
+    $('#didOrientation').on('change', function() {
+      if($(this).val() == 'yes') {
+        $('.ifOrientation').css('background', 'white'); //.show();
       } else {
-        $('.ifOrientation').hide();
+        $('.ifOrientation').css('background', 'red'); //.hide();
       }
     });
-    $('#isOrg').on('change', function(){
-      if($('#isOrg').val() == 'yes'){
-        $('.ifOrg').show();
+    $('#isOrg').on('change', function() {
+      if($(this).val() == 'yes') {
+        $('.ifOrg').css('background', 'white'); //.show();
       } else {
-        $('.ifOrg').hide();
+        $('.ifOrg').css('background', 'red'); //.hide();
       }
     });
-    $('#isOnCampus').on('change', function(){
-      if($('#isOnCampus').val() == 'yes'){
-        $('.ifOnCampus').show();
+    $('#isOnCampus').on('change', function() {
+      if($(this).val() == 'on') {
+        $('.ifOnCampus').css('background', 'red'); //.hide();
+        $('.ifNotOnCampus').css('background', 'white'); //.show();
       } else {
-        $('.ifOnCampus').hide();
+        $('.ifOnCampus').css('background', 'white'); //.show();
+        $('.ifNotOnCampus').css('background', 'red'); //.hide();
+      }
+      if($(this).val() == 'on' || $('#isAway').val() == 'yes')  {
+        $('.ifAwayOrIfOnCampus').css('background', 'white'); //.show();
+      } else {
+        $('.ifAwayOrIfOnCampus').css('background', 'red'); //.hide();
       }
     });
-    $('#isAway').on('change', function(){
-      if($('#isAway').val() == 'yes'){
-        $('.ifAway').show();
+    $('#isAway').on('change', function() {
+      if($(this).val() == 'no') {
+        $('.ifAway').css('background', 'red'); //.hide();
       } else {
-        $('.ifAway').hide();
+        $('.ifAway').css('background', 'white'); //.show();
+      }
+      if($(this).val() == 'yes' || $('#isOnCampus').val() == 'on')  {
+        $('.ifAwayOrIfOnCampus').css('background', 'white'); //.show();
+      } else {
+        $('.ifAwayOrIfOnCampus').css('background', 'red'); //.hide();
       }
     });
-    $('#doesWork').on('change', function(){
-      if($('#doesWork').val() == 'yes'){
-        $('.ifWork').show();
+    $('#doesWork').on('change', function() {
+      if($(this).val() == 'yes') {
+        $('.ifWork').css('background', 'white'); //.show();
       } else {
-        $('.ifWork').hide();
+        $('.ifWork').css('background', 'red'); //.hide();
       }
     });
   });
@@ -524,7 +536,6 @@
       </td>
     </tr>
 
-
     <tr class='ifNotGrad'>
       <td>
         Compared to high school, has the time you spend studying for classes...
@@ -541,11 +552,10 @@
     </tr>
 
     <tr>
-      <td>
+      <td colspan="2">
         How often do you do the following:
       </td>
     </tr>
-
     <tr class='ifOnCampusClass'>
       <td>
         Show up late for class (1)
@@ -1519,15 +1529,15 @@
       <td>
         <input type='number' min='0' max='168'>
       </td>
-    </tr>
+    </tr> 
 
-    <tr>
+    <tr class='ifOnCampusClass'>
       <td>
         Do you live on or off campus?
       </td>
       <td>
         <select id='isOnCampus'>
-          <option value='on'>On Campus</option>
+          <option value='on' selected="selected">On Campus</option>
           <option value='off'>Off Campus</option>
           <option value='notsure'>Not Sure</option>
           <option value='nocomment'>No Comment</option>
@@ -1549,7 +1559,7 @@
       </td>
     </tr>
 
-    <tr class='ifAway'>
+    <tr class='ifAwayOrIfOnCampus'>
       <td>
         How many times per semester do you go home?  
       </td>
