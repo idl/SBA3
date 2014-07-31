@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+{% block body %}
+  <tr>
+    <td>
+      Did you attend a Student Orientation session before starting college?
+    </td>
+    <td>
+      <select name='p8q1' id='didOrientation'>
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifNotGrad ifOrientation'>
+    <td>
+      Did your parents (or guardians) attend an orientation session with you?
+    </td>
+    <td>
+      <select name='p8q2'>
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifNotGrad'>
+    <td>
+      Do you share your grades with your parent(s) or legal guardian(s)?
+    </td>
+    <td>
+      <select name='p8q3'>
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifNotGrad'>
+    <td>
+      Do your parents (or guardians) require you to maintain a certain GPA in college?
+    </td>
+    <td>
+      <select name='p8q4'>
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Do you believe you were academically prepared for college?
+    </td>
+    <td>
+      <select name='p8q5'>
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      I should have read more books before college. (1)
+    </td>
+    <td>
+      <select name='p8q6'>
+        <option value=''>----</option>
+        <option value='strongdisagree'>Strongly Disagree</option>
+        <option value='disagree'>Disagree</option>
+        <option value='neutral'>Neither Agree nor Disagree</option>
+        <option value='agree'>Agree</option>
+        <option value='strongagree'>Strongly Agree</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      I should have taken more math courses in high school. (2)
+    </td>
+    <td>
+      <select name='p8q7'>
+        <option value=''>----</option>
+        <option value='strongdisagree'>Strongly Disagree</option>
+        <option value='disagree'>Disagree</option>
+        <option value='neutral'>Neither Agree nor Disagree</option>
+        <option value='agree'>Agree</option>
+        <option value='strongagree'>Strongly Agree</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      I should have taken more science courses in high school. (3)
+    </td>
+    <td>
+      <select name='p8q8'>
+        <option value=''>----</option>
+        <option value='strongdisagree'>Strongly Disagree</option>
+        <option value='disagree'>Disagree</option>
+        <option value='neutral'>Neither Agree nor Disagree</option>
+        <option value='agree'>Agree</option>
+        <option value='strongagree'>Strongly Agree</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      I should have paid more attention in classes. (4)
+    </td>
+    <td>
+      <select name='p8q9'>
+        <option value=''>----</option>
+        <option value='strongdisagree'>Strongly Disagree</option>
+        <option value='disagree'>Disagree</option>
+        <option value='neutral'>Neither Agree nor Disagree</option>
+        <option value='agree'>Agree</option>
+        <option value='strongagree'>Strongly Agree</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      I should have worked harder on written assignments. (5)
+    </td>
+    <td>
+      <select name='p8q10'>
+        <option value=''>----</option>
+        <option value='strongdisagree'>Strongly Disagree</option>
+        <option value='disagree'>Disagree</option>
+        <option value='neutral'>Neither Agree nor Disagree</option>
+        <option value='agree'>Agree</option>
+        <option value='strongagree'>Strongly Agree</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      I should have worked with a tutor. (6)
+    </td>
+    <td>
+      <select name='p8q11'>
+        <option value=''>----</option>
+        <option value='strongdisagree'>Strongly Disagree</option>
+        <option value='disagree'>Disagree</option>
+        <option value='neutral'>Neither Agree nor Disagree</option>
+        <option value='agree'>Agree</option>
+        <option value='strongagree'>Strongly Agree</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      I should have enrolled in a program to improve studying skills.
+    </td>
+    <td>
+      <select name='p8q12'>
+        <option value=''>----</option>
+        <option value='strongdisagree'>Strongly Disagree</option>
+        <option value='disagree'>Disagree</option>
+        <option value='neutral'>Neither Agree nor Disagree</option>
+        <option value='agree'>Agree</option>
+        <option value='strongagree'>Strongly Agree</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No comment</option>
+      </select>
+    </td>
+  </tr>
+{% endblock %}

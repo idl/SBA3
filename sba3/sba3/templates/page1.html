@@ -1,0 +1,256 @@
+{% extends 'base.html' %}
+  {% block body %}
+    <tr>
+      <td>
+        What is your class status?
+      </td>
+      <td>
+        <select name='p1q1' id='classification'>
+          <option value=''>----</option>
+          <option value='freshman'>Freshman</option>
+          <option value='sophomore'>Sophomore</option>
+          <option value='junior'>Junior</option>
+          <option value='senior'>Senior</option>
+          <option value='master'>Master's</option>
+          <option value='doctorate'>Doctorate</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        What is your major?
+      </td>
+      <td>
+        <select name='p1q2'>
+          <option value=''>----</option>
+          <option value='accounting'>Accounting Major </option>
+          <option value='aerospaceengineering'>Aerospace Engineering Major </option>
+          <option value='agribusiness'>Agribusiness Major </option>
+          <option value='art'>Art Major </option>
+          <option value='agriengineering'>Agricultural Engineering Technology and Business Major </option>
+          <option value='agriinformation'>Agricultural Information Science Major </option>
+          <option value='agriculture'>Agricultural Science Major </option>
+          <option value='agronomy'>Agronomy Major </option>
+          <option value='dairyscience'>Animal and Dairy Science Major </option>
+          <option value='anthropology'>Anthropology Major </option>
+          <option value='architecture'>Architecture Major </option>
+          <option value='art'>Art Major </option>
+          <option value='biochemistry'>Biochemistry Major </option>
+          <option value='bioengineering'>Biological Engineering Major </option>
+          <option value='biology'>Biological Sciences Major </option>
+          <option value='building'>Building Construction Science Major </option>
+          <option value='businessadmin'>Business Administration Major </option>
+          <option value='businessecon'>Business Economics Major </option>
+          <option value='businessinfo'>Business Information Systems Major </option>
+          <option value='chemengineering'>Chemical Engineering Major </option>
+          <option value='chemistry'>Chemistry Major </option>
+          <option value='civilengineering'>Civil Engineering Major </option>
+          <option value='communication'>Communication Major </option>
+          <option value='computerengineering'>Computer Engineering Major </option>
+          <option value='computerscience'>Computer Science Major </option>
+          <option value='criminology'>Criminology Major </option>
+          <option value='culinology'>Culinology Major </option>
+          <option value='economics'>Economics Major (Arts and Sciences) </option>
+          <option value='educationalpsyc'>Educational Psychology Major </option>
+          <option value='electricalengineering'>Electrical Engineering Major </option>
+          <option value='elementaryed'>Elementary Education Major </option>
+          <option value='english'>English Major </option>
+          <option value='enviromentalecon'>Environmental Economics and Management Major </option>
+          <option value='finance'>Finance Major </option>
+          <option value='foodscience'>Food Science, Nutrition and Health Promotion Major </option>
+          <option value='foreignlanguage'>Foreign Language Major </option>
+          <option value='forestry'>Forestry Major </option>
+          <option value='generallibarts'>General Liberal Arts Major </option>
+          <option value='generalscience'>General Science Major </option>
+          <option value='geoscience'>Geosciences Major </option>
+          <option value='history'>History Major </option>
+          <option value='horticulture'>Horticulture Major </option>
+          <option value='humanscience'>Human Sciences Major </option>
+          <option value='industrialengineering'>Industrial Engineering Major </option>
+          <option value='industrialtech'>Industrial Technology Major </option>
+          <option value='informationtech'>Information Technology Services Major </option>
+          <option value='interdisciplinary'>Interdisciplinary Studies </option>
+          <option value='interiordesign'>Interior Design Major </option>
+          <option value='kinesiology'>Kinesiology Major </option>
+          <option value='landscapearchitecture'>Landscape Architecture Major </option>
+          <option value='landscapecontracting'>Landscape Contracting Major </option>
+          <option value='management'>Management Major </option>
+          <option value='marketing'>Marketing Major </option>
+          <option value='mathematics'>Mathematics Major </option>
+          <option value='mechanicalengineering'>Mechanical Engineering Major </option>
+          <option value='medicaltech'>Medical Technology Major </option>
+          <option value='microbiology'>Microbiology Major </option>
+          <option value='musiceducation'>Music Education Major </option>
+          <option value='music'>Music Major </option>
+          <option value='philosophy'>Philosophy Major </option>
+          <option value='physics'>Physics Major </option>
+          <option value='polyscience'>Political Science Major </option>
+          <option value='pultryscience'>Poultry Science Major </option>
+          <option value='psychology'>Psychology Major </option>
+          <option value='secondaryeducation'>Secondary Education Major </option>
+          <option value='socialwork'>Social Work Major </option>
+          <option value='sociology'>Sociology Major </option>
+          <option value='softwareengineering'>Software Engineering Major </option>
+          <option value='specialeducation'>Special Education Major </option>
+          <option value='techteachereducation'>Technology Teacher Education Major </option>
+          <option value='veterinarymedical'>Veterinary Medical Technology </option>
+          <option value='wildlife'>Wildlife, Fisheries and Aquaculture Major </option>
+          <option value='other'>Something Else </option>
+          <option value='undecided'>Undecided </option>
+          <option value='nocomment'>No Comment </option>
+        </select>
+      </td>
+    </tr>
+
+    <tr class="ifNotGrad">
+      <td>
+        Did you transfer from a community/junior college?
+      </td>
+      <td>
+        <select name='p1q3'>
+          <option value=''>----</option>
+          <option value='yes'>Yes</option>
+          <option value='no'>No</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        Are you enrolled in a "Distance or Online" degree program at MSU?
+      </td>
+      <td>
+        <select name='p1q4' id='isDistance'>
+          <option value=''>----</option>
+          <option value='yes'>Yes</option>
+          <option value='no'>No</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr class='ifDistance'>
+      <td>
+        Have you ever taken a course that meets on campus?
+      </td>
+      <td>
+        <select name='p1q5' id='isOnCampusClass'>
+          <option value=''>----</option>
+          <option value='yes'>Yes</option>
+          <option value='no'>No</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        Did you attend a pre-kindergarten program?
+      </td>
+      <td>
+        <select name='p1q6'>
+          <option value=''>----</option>
+          <option value='yes'>Yes</option>
+          <option value='no'>No</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr class='ifNotGrad'>
+      <td>
+        Did you complete any advanced placement courses in high school?
+      </td>
+      <td>
+        <select name='p1q7'>
+          <option value=''>----</option>
+          <option value='yes'>Yes</option>
+          <option value='no'>No</option>
+          <option value='notavailable'>None were avaliable</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        Do you consider yourself a first generation college student?
+      </td>
+      <td>
+        <select name='p1q8'>
+          <option value=''>----</option>
+          <option value='yes'>Yes</option>
+          <option value='no'>No</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        Prior to High School, did you personally know anyone who worked in the fields of Science, Technology, Engineering, or Math?
+      </td>
+      <td>
+        <select name='p1q9'>
+          <option value=''>----</option>
+          <option value='yes'>Yes</option>
+          <option value='no'>No</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        Please consider the following statement: Education was encouraged in my family. Would you...
+      </td>
+      <td>
+        <select name='p1q10'>
+          <option value=''>----</option>
+          <option value='strongdisagree'>Strongly Disagree</option>
+          <option value='disagree'>Disagree</option>
+          <option value='neutral'>Neither Agree nor Disagree</option>
+          <option value='agree'>Agree</option>
+          <option value='strongagree'>Strongly Agree</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No comment</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        In terms of your academic achievement, who contributed to your success the most?
+      </td>
+      <td>
+        <select name='p1q11'>
+          <option value=''>----</option>
+          <option value='parent'>Parent(s)</option>
+          <option value='grandparent'>Grandparents</option>
+          <option value='sibling'>Siblings</option>
+          <option value='auntuncle'>Aunts or Uncles</option>
+          <option value='familyfriend'>Family friends</option>
+          <option value='peer'>Peers</option>
+          <option value='teammate'>Teammates</option>
+          <option value='teacher'>Teacher</option>
+          <option value='coach'>Coach</option>
+          <option value='signother'>Significant Other</option>
+          <option value='family'>Family</option>
+          <option value='none'>None of these</option>
+          <option value='notsure'>Not sure</option>
+          <option value='nocomment'>No comment</option>
+        </select>
+      </td>
+    </tr>
+  {% endblock %}
