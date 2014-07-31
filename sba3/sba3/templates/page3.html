@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+{% block body %}
+  <tr>
+    <td>
+      Are you currently attending tutoring sessions?
+    </td>
+    <td>
+      <select name='p3q1' id='isTutoring'>
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifTutoring'>
+    <td>
+      On average, how many hours do you spend in tutoring sessions per week?
+    </td>
+    <td>
+      <input name='p3q2' type='number' min='0' max='168'>
+    </td>
+  </tr>
+
+  <tr class='ifNotTutoring'>
+    <td>
+      Would you attend tutoring sessions if they were freely available?
+    </td>
+    <td>
+      <select name='p3q3'>
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifNotTutoring'>
+    <td>
+      Have you looked for tutoring help?
+    </td>
+    <td>
+      <select name='p3q4'>
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifNotGrad'>
+    <td>
+      Compared to high school, has the time you spend studying for classes...
+    </td>
+    <td>
+      <select name='p3q5'>
+        <option value=''>----</option>
+        <option value=''>Decreased </option>
+        <option value=''>Increased</option>
+        <option value=''>Stayed the same</option>
+        <option value=''>Not Sure</option>
+        <option value=''>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      How often do you do the following:
+    </td>
+  </tr>
+  <tr class='ifOnCampusClass'>
+    <td>
+      Show up late for class (1)
+    </td>
+    <td>
+      <select name='p3q6'>
+        <option value=''>----</option>
+        <option value='never'>Never</option>
+        <option value='rarely'>Rarely</option>
+        <option value='some'>Some</option>
+        <option value='often'>Often</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Turn assignments in late or incomplete (2)
+    </td>
+    <td>
+      <select name='p3q7'>
+        <option value=''>----</option>
+        <option value='never'>Never</option>
+        <option value='rarely'>Rarely</option>
+        <option value='some'>Some</option>
+        <option value='often'>Often</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Miss an exam or quiz (3)
+    </td>
+    <td>
+      <select name='p3q8'>
+        <option value=''>----</option>
+        <option value='never'>Never</option>
+        <option value='rarely'>Rarely</option>
+        <option value='some'>Some</option>
+        <option value='often'>Often</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Seek extra credit to improve a grade (4) 
+    </td>
+    <td>
+      <select name='p3q9'>
+        <option value=''>----</option>
+        <option value='never'>Never</option>
+        <option value='rarely'>Rarely</option>
+        <option value='some'>Some</option>
+        <option value='often'>Often</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+{% endblock %}

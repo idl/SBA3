@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% block body %}
+  <tr>
+    <td>
+      Do you belong to any student organizations?
+    </td>
+    <td>
+      <select name='p9q1' id='isOrg'>
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifOrg'>
+    <td>
+      How many hours per week do you spend doing student organization related services or activities?<br>
+      (-1 for Not Sure, -2 for No Comment)
+    </td>
+    <td>
+      <input name='p9q2' type='number' min='-2' max='168'>
+    </td>
+  </tr> 
+
+  <tr class='ifOnCampusClass'>
+    <td>
+      Do you live on or off campus?
+    </td>
+    <td>
+      <select name='p9q3' id='isOnCampus'>
+        <option value=''>----</option>
+        <option value='on'>On Campus</option>
+        <option value='off'>Off Campus</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifOnCampus'>
+    <td>
+      While attending college, do you live away from home?
+    </td>
+    <td>
+      <select name='p9q4' id='isAway'>
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifAwayOrIfOnCampus'>
+    <td>
+      How many times per semester do you go home?  <br>
+      (-1 for Not Sure, -2 for No Comment)
+    </td>
+    <td>
+      <input name='p9q5' type='number' min='-2' max='100'>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      On average, how many hours per week do you spend partying?<br>
+      (-1 for Not Sure, -2 for No Comment)
+    </td>
+    <td>
+      <input name='p9q6' type='number' min='-2' max='168'>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Do you drink alcoholic beverages?
+    </td>
+    <td>
+      <select name='p9q7' id="doesDrink">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  
+  <tr class="ifDrink">
+    <td>
+      On days that you drink, about how many drinks do you consume?  <br>
+      (-1 for Not Sure, -2 for No Comment)
+    </td>
+    <td>
+      <input name='p9q8' type='number' min='-2' max='40'>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      On average, how many hours of sleep do you get on a weeknight?<br>
+      (-1 for Not Sure, -2 for No Comment)
+    </td>
+    <td>
+      <input name='p9q9' type='number' min='-2' max='24'>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How many days per week do you exercise for at least 15 minutes?<br>
+      (-1 for Not Sure, -2 for No Comment)
+    </td>
+    <td>
+      <input name='p9q10' type='number' min='-2' max='7'>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How many days during the week do you eat a nutritious (e.g., fruits, vegetable, nuts, lean meats etc) meal for breakfast?<br>
+      (-1 for Not Sure, -2 for No Comment)
+    </td>
+    <td>
+      <input name='p9q11' type='number' min='-2' max='7'>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How many days during the week do you eat a nutritious (e.g., fruits, vegetable, nuts, lean meats etc) meal for lunch?<br>
+      (-1 for Not Sure, -2 for No Comment)
+    </td>
+    <td>
+      <input name='p9q12' type='number' min='-2' max='7'>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How many days during the week do you eat a nutritious (e.g., fruits, vegetable, nuts, lean meats etc) meal for dinner?<br>
+      (-1 for Not Sure, -2 for No Comment)
+    </td>
+    <td>
+      <input name='p9q13' type='number' min='-2' max='7'>
+    </td>
+  </tr>
+{% endblock %}

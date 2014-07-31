@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% block body %}
+  <tr>
+    <td>
+      What Letter Grade do YOU expect to make at MSU?
+    </td>
+    <td>
+      <select name='p7q1'>
+        <option value=''>----</option>
+        <option value='a'>A</option>
+        <option value='b'>B</option>
+        <option value='c'>C</option>
+        <option value='d'>D</option>
+        <option value='f'>F</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>   
+  </tr>
+
+  <tr class='ifNotGrad'>
+    <td>
+      What Letter Grade do your PARENT(S)/ GUARDIAN(S) expect you to make at MSU?
+    </td>
+    <td>
+      <select name='p7q2'>
+        <option value=''>----</option>
+        <option value='a'>A</option>
+        <option value='b'>B</option>
+        <option value='c'>C</option>
+        <option value='d'>D</option>
+        <option value='f'>F</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>   
+  </tr>
+
+  <tr>
+    <td>
+      What Letter Grade do your TEACHERS/ PROFESSORS expect you to make at MSU?
+    </td>
+    <td>
+      <select name='p7q3'>
+        <option value=''>----</option>
+        <option value='a'>A</option>
+        <option value='b'>B</option>
+        <option value='c'>C</option>
+        <option value='d'>D</option>
+        <option value='f'>F</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>   
+  </tr>
+
+  <tr>
+    <td>
+      What Letter Grade do your CLOSE FRIENDS expect you to make at MSU?
+    </td>
+    <td>
+      <select name='p7q4'>
+        <option value=''>----</option>
+        <option value='a'>A</option>
+        <option value='b'>B</option>
+        <option value='c'>C</option>
+        <option value='d'>D</option>
+        <option value='f'>F</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>   
+  </tr>
+
+  <tr>
+    <td>
+      What Letter Grade do your BROTHER(S)/ SISTER(S) expect you to make at MSU?
+    </td>
+    <td>
+      <select name='p7q5'>
+        <option value=''>----</option>
+        <option value='a'>A</option>
+        <option value='b'>B</option>
+        <option value='c'>C</option>
+        <option value='d'>D</option>
+        <option value='f'>F</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>   
+  </tr>
+
+  <tr>
+    <td>
+      What was your highest ACT Score?<br>
+      (-1 for Not Sure, -2 for No Comment)
+    </td>
+    <td>
+      <input name='p7q6' type='number' min='-2' max='36'>
+    </td>
+  </tr>
+
+  <tr>
+     <td>
+      What was your overall grade point average (GPA) in High School?<br>
+      (-1 for Not Sure, -2 for No Comment)
+    </td>
+    <td>
+      <input name='p7q7' type='number' min='-2' max='5'>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      What was your overall grade point average (GPA) in College?<br>
+      (-1 for Not Sure, -2 for No Comment)
+    <td>
+      <input type='number' min='-2' max='5'>
+    </td>
+  </tr>
+
+  <tr class='ifNotGrad'>
+    <td>
+      How many on-line classes have you completed with a grade of less than "C" at MSU?<br>
+      (-1 for Not Sure, -2 for No Comment)
+    </td>
+    <td>
+      <input name='p7q8' type='number' min='-2' max='50'>
+    </td>
+  </tr>
+{% endblock %}

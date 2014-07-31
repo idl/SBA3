@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+
+{% block body %}
+  <tr>
+    <td>
+      While growing up, did you have a mentor?
+    </td>
+    <td>
+      <select name='p2q1'>
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Do you have a mentor now?
+    </td>
+    <td>
+      <select name='p2q2'>
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifOnCampusClass'>
+    <td>
+      Do you see role models on campus?
+    </td>
+    <td>
+      <select name='p2q3'>
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How would you rate your time management skills?
+    </td>
+    <td>
+      <select name='p2q4'>
+        <option value=''>----</option>
+        <option value='poor'>Poor</option>
+        <option value='belowaverage'>Below Average</option>
+        <option value='average'>Average</option>
+        <option value='aboveaverage'>Above Average</option>
+        <option value='excellent'>Excellent</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Do you routinely use a calendar or daily planner (paper or digital)?
+    </td>
+    <td>
+      <select name='p2q5'>
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifOnCampusClass'>
+    <td>
+      Do you review your class notes after class?
+    </td>
+    <td>
+      <select name='p2q6'>
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+       In general, do you study for tests by yourself?
+    </td>
+    <td>
+      <select name='p2q7'>
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Select the type of learning style that describes you best:
+    </td>
+    <td>
+      <select name='p2q8'>
+        <option value=''>----</option>
+        <option value='visual'>Visual (Seeing)</option>
+        <option value='auditory'>Auditory (Hearing)</option>
+        <option value='kinsethetics'>Kinesthetics (Hands-on)</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      On average, how many hours per DAY do you spend studying?<br>
+      (-1 for Not Sure, -2 for No Comment)
+    </td>
+    <td>
+      <input name='p2q9' type='number' min='-2' max='24'>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      On average how many days in advance do you begin studying for upcoming exams?<br>
+      (-1 for Not Sure, -2 for No Comment)
+    </td>
+    <td>
+      <input name='p2q10' type='number' min='-2' max='200'>
+    </td>
+  </tr>
+
+  <tr class='ifOnCampusClass'>
+    <td>
+      In general, how many class sessions do you miss over the course of a semester?<br>
+      (-1 for Not Sure, -2 for No Comment)
+    </td>
+    <td>
+      <input name='p2q11' type='number' min='-2' max='200'>
+    </td>
+  </tr>
+{% endblock %}
