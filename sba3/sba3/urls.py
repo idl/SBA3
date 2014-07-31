@@ -10,5 +10,7 @@ urlpatterns = patterns('sba3.views',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^questions$', 'questions', name='questions'),
-    url(r'^page/(?P<pagenum>[0-9]{1,2})$', 'page', name='page')
+    url(r'^page/(?P<pagenum>[0-9]{1,2})$', 'page', name='page'),
+    url(r'^previous$', 'previous' , name='previous'),
+    url(r'^next$', 'next' , name='next')
 )

@@ -1,6 +1,5 @@
   $('document').ready(function() {
     $('#classification').on('change', function() {
-        console.log('#classification loaded');
       if($(this).val() == 'master' || $(this).val() == 'doctorate') {
         $('.ifNotGrad').css('background', 'red'); //.hide();
       } else {
