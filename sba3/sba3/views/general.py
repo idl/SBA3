@@ -11,26 +11,40 @@ def questions(request):
 
 def page(request, pagenum):
     if pagenum=='1':
-        return render(request, 'page1.html')
+        return render(request, 'page1.html', {'pagenum': pagenum})
     elif pagenum=='2':
-        return render(request, 'page2.html')
+        return render(request, 'page2.html', {'pagenum': pagenum})
     elif pagenum=='3':
-        return render(request, 'page3.html')
+        return render(request, 'page3.html', {'pagenum': pagenum})
     elif pagenum=='4':
-        return render(request, 'page4.html')
+        return render(request, 'page4.html', {'pagenum': pagenum})
     elif pagenum=='5':
-        return render(request, 'page5.html')
+        return render(request, 'page5.html', {'pagenum': pagenum})
     elif pagenum=='6':
-        return render(request, 'page6.html')
+        return render(request, 'page6.html', {'pagenum': pagenum})
     elif pagenum=='7':
-        return render(request, 'page7.html')
+        return render(request, 'page7.html', {'pagenum': pagenum})
     elif pagenum=='8':
-        return render(request, 'page8.html')
+        return render(request, 'page8.html', {'pagenum': pagenum})
     elif pagenum=='9':
-        return render(request, 'page9.html')
+        return render(request, 'page9.html', {'pagenum': pagenum})
     elif pagenum=='10':
-        return render(request, 'page10.html')
+        return render(request, 'page10.html', {'pagenum': pagenum})
     elif pagenum=='11':
-        return render(request, 'page11.html')
+        return render(request, 'page11.html', {'pagenum': pagenum})
     else:
-        return render(request, 'questions.html')
+        return render(request, 'questions.html', {'pagenum': pagenum})
+
+def previous(request):
+    pagenum = int(request.POST.get('pagenum', 1))
+    if pagenum <= 1:
+        return redirect('page', 1)
+    else:
+        return redirect('page', pagenum - 1)
+
+def next(request):
+    pagenum = int(request.POST.get('pagenum', 1))
+    if pagenum >= 11:
+        return redirect('page', 11)
+    else:
+        return redirect('page', pagenum + 1)

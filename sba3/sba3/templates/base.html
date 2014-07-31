@@ -5,13 +5,46 @@
   <link href="{{ STATIC_URL }}css/main.css" rel="stylesheet" media="screen">
   <script type='text/javascript' src="http://code.jquery.com/jquery-1.9.1.js"></script>
   <script type="text/javascript" src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
-  <script type="text/javascriot" src="{{ STATIC_URL }}js/skiplogic.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}js/skiplogic.js"></script>
+  <script>
+  $('document').ready(function() {
+    $('#prev').on('click', function() {
+      if($('select').val() == ''){
+        $('#error').show();
+      }
+      else if($('input').val() == ''){
+        $('#error').show();
+      }
+      else{
+        $('form').attr('action', '{% url "previous"%}');
+      }
+    });
+    $('#next').on('click', function() {
+      if($('select').val() == ''){
+        $('#error').show();
+      }
+      else if($('input').val() == ''){
+        $('#error').show();
+      }
+      else{
+        $('form').attr('action', '{% url "next"%}');
+      }
+    });
+  });
+  </script>
+
   </head>
   <body>
   SBA-3
+  <form action='#' method='post'>
+  {% csrf_token %}
   <table class="table table-hover">
     {% block body %}
     {% endblock %}
   </table>
+  <input type='hidden' name='pagenum' value='{{pagenum}}'>
+  <button type='submit' class='btn' id='prev'>Previous</button>
+  <button type='submit' class='btn' id='next'>Next</button>
+  </form>
   </body>
 </html>
