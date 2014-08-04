@@ -9,15 +9,7 @@
   <script>
   $('document').ready(function() {
     $('#prev').on('click', function() {
-      if($('select').val() == ''){
-        $('#error').show();
-      }
-      else if($('input').val() == ''){
-        $('#error').show();
-      }
-      else{
-        $('form').attr('action', '{% url "previous"%}');
-      }
+      $('form').attr('action', '{% url "previous"%}');
     });
     $('#next').on('click', function() {
       if($('select').val() == ''){
@@ -30,9 +22,21 @@
         $('form').attr('action', '{% url "next"%}');
       }
     });
+    $('#submit').on('click', function() {
+      if($('select').val() == ''){
+        $('#error').show();
+      }
+      else if($('input').val() == ''){
+        $('#error').show();
+      }
+      else{
+        $('form').attr('action', '{% url "submit"%}');
+      }
+    });
   });
   </script>
-
+  {% block script %}
+  {% endblock %}
   </head>
   <body>
   SBA-3
@@ -44,8 +48,14 @@
     {% endblock %}
   </table>
   <input type='hidden' name='pagenum' value='{{pagenum}}'>
+  {% if pagenum != "1" %}
   <button type='submit' class='btn' id='prev'>Previous</button>
+  {% endif %}
+  {% if pagenum == "11" %}
+  <button type='submit' class='btn' id='submit'>Submit</button>
+  {% else %}
   <button type='submit' class='btn' id='next'>Next</button>
+  {% endif %}
   </form>
   </body>
 </html>

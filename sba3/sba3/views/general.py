@@ -34,17 +34,3 @@ def page(request, pagenum):
         return render(request, 'page11.html', {'pagenum': pagenum})
     else:
         return render(request, 'questions.html', {'pagenum': pagenum})
-
-def previous(request):
-    pagenum = int(request.POST.get('pagenum', 1))
-    if pagenum <= 1:
-        return redirect('page', 1)
-    else:
-        return redirect('page', pagenum - 1)
-
-def next(request):
-    pagenum = int(request.POST.get('pagenum', 1))
-    if pagenum >= 11:
-        return redirect('page', 11)
-    else:
-        return redirect('page', pagenum + 1)

@@ -1,4 +1,19 @@
 {% extends 'base.html' %}
+  {% block script %}
+    <script>
+      $('document').ready(function() {
+        $('#p3q1').val('{{request.session.p3.0}}');
+        $('#p3q2').val('{{request.session.p3.1}}');
+        $('#p3q3').val('{{request.session.p3.2}}');
+        $('#p3q4').val('{{request.session.p3.3}}');
+        $('#p3q5').val('{{request.session.p3.4}}');
+        $('#p3q6').val('{{request.session.p3.5}}');
+        $('#p3q7').val('{{request.session.p3.6}}');
+        $('#p3q8').val('{{request.session.p3.7}}');
+        $('#p3q9').val('{{request.session.p3.8}}');
+      });
+    </script>
+  {% endblock %}
 
 {% block body %}
   <tr>
@@ -6,7 +21,7 @@
       Are you currently attending tutoring sessions?
     </td>
     <td>
-      <select name='p3q1' id='isTutoring'>
+      <select name='p3[]' id='p3q1'>
         <option value=''>----</option>
         <option value='yes'>Yes</option>
         <option value='no'>No</option>
@@ -21,7 +36,7 @@
       On average, how many hours do you spend in tutoring sessions per week?
     </td>
     <td>
-      <input name='p3q2' type='number' min='0' max='168'>
+      <input name='p3[]' id='p3q2' type='number' min='0' max='168'>
     </td>
   </tr>
 
@@ -30,7 +45,7 @@
       Would you attend tutoring sessions if they were freely available?
     </td>
     <td>
-      <select name='p3q3'>
+      <select name='p3[]' id='p3q3'>
         <option value=''>----</option>
         <option value='yes'>Yes</option>
         <option value='no'>No</option>
@@ -45,7 +60,7 @@
       Have you looked for tutoring help?
     </td>
     <td>
-      <select name='p3q4'>
+      <select name='p3[]' id='p3q4'>
         <option value=''>----</option>
         <option value='yes'>Yes</option>
         <option value='no'>No</option>
@@ -60,7 +75,7 @@
       Compared to high school, has the time you spend studying for classes...
     </td>
     <td>
-      <select name='p3q5'>
+      <select name='p3[]' id='p3q5'>
         <option value=''>----</option>
         <option value=''>Decreased </option>
         <option value=''>Increased</option>
@@ -81,7 +96,7 @@
       Show up late for class (1)
     </td>
     <td>
-      <select name='p3q6'>
+      <select name='p3[]' id='p3q6'>
         <option value=''>----</option>
         <option value='never'>Never</option>
         <option value='rarely'>Rarely</option>
@@ -98,7 +113,7 @@
       Turn assignments in late or incomplete (2)
     </td>
     <td>
-      <select name='p3q7'>
+      <select name='p3[]' id='p3q7'>
         <option value=''>----</option>
         <option value='never'>Never</option>
         <option value='rarely'>Rarely</option>
@@ -115,7 +130,7 @@
       Miss an exam or quiz (3)
     </td>
     <td>
-      <select name='p3q8'>
+      <select name='p3[]' id='p3q8'>
         <option value=''>----</option>
         <option value='never'>Never</option>
         <option value='rarely'>Rarely</option>
@@ -132,7 +147,7 @@
       Seek extra credit to improve a grade (4) 
     </td>
     <td>
-      <select name='p3q9'>
+      <select name='p3[]' id='p3q9'>
         <option value=''>----</option>
         <option value='never'>Never</option>
         <option value='rarely'>Rarely</option>
