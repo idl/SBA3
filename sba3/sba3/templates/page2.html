@@ -1,4 +1,21 @@
 {% extends 'base.html' %}
+  {% block script %}
+    <script>
+      $('document').ready(function() {
+        $('#p2q1').val('{{request.session.p2.0}}');
+        $('#p2q2').val('{{request.session.p2.1}}');
+        $('#p2q3').val('{{request.session.p2.2}}');
+        $('#p2q4').val('{{request.session.p2.3}}');
+        $('#p2q5').val('{{request.session.p2.4}}');
+        $('#p2q6').val('{{request.session.p2.5}}');
+        $('#p2q7').val('{{request.session.p2.6}}');
+        $('#p2q8').val('{{request.session.p2.7}}');
+        $('#p2q9').val('{{request.session.p2.8}}');
+        $('#p2q10').val('{{request.session.p2.9}}');
+        $('#p2q11').val('{{request.session.p2.10}}');
+      });
+    </script>
+  {% endblock %}
 
 {% block body %}
   <tr>
@@ -6,7 +23,7 @@
       While growing up, did you have a mentor?
     </td>
     <td>
-      <select name='p2q1'>
+      <select name='p2[]' id='p2q1'>
         <option value=''>----</option>
         <option value='yes'>Yes</option>
         <option value='no'>No</option>
@@ -21,7 +38,7 @@
       Do you have a mentor now?
     </td>
     <td>
-      <select name='p2q2'>
+      <select name='p2[]' id='p2q2'>
         <option value=''>----</option>
         <option value='yes'>Yes</option>
         <option value='no'>No</option>
@@ -36,7 +53,7 @@
       Do you see role models on campus?
     </td>
     <td>
-      <select name='p2q3'>
+      <select name='p2[]' id='p2q3'>
         <option value=''>----</option>
         <option value='yes'>Yes</option>
         <option value='no'>No</option>
@@ -51,7 +68,7 @@
       How would you rate your time management skills?
     </td>
     <td>
-      <select name='p2q4'>
+      <select name='p2[]' id='p2q4'>
         <option value=''>----</option>
         <option value='poor'>Poor</option>
         <option value='belowaverage'>Below Average</option>
@@ -67,7 +84,7 @@
       Do you routinely use a calendar or daily planner (paper or digital)?
     </td>
     <td>
-      <select name='p2q5'>
+      <select name='p2[]' id='p2q5'>
         <option value=''>----</option>
         <option value='yes'>Yes</option>
         <option value='no'>No</option>
@@ -82,7 +99,7 @@
       Do you review your class notes after class?
     </td>
     <td>
-      <select name='p2q6'>
+      <select name='p2[]' id='p2q6'>
         <option value=''>----</option>
         <option value='yes'>Yes</option>
         <option value='no'>No</option>
@@ -97,7 +114,7 @@
        In general, do you study for tests by yourself?
     </td>
     <td>
-      <select name='p2q7'>
+      <select name='p2[]' id='p2q7'>
         <option value=''>----</option>
         <option value='yes'>Yes</option>
         <option value='no'>No</option>
@@ -112,7 +129,7 @@
       Select the type of learning style that describes you best:
     </td>
     <td>
-      <select name='p2q8'>
+      <select name='p2[]' id='p2q8'>
         <option value=''>----</option>
         <option value='visual'>Visual (Seeing)</option>
         <option value='auditory'>Auditory (Hearing)</option>
@@ -129,7 +146,7 @@
       (-1 for Not Sure, -2 for No Comment)
     </td>
     <td>
-      <input name='p2q9' type='number' min='-2' max='24'>
+      <input name='p2[]' id='p2q9' type='number' min='-2' max='24'>
     </td>
   </tr>
 
@@ -139,7 +156,7 @@
       (-1 for Not Sure, -2 for No Comment)
     </td>
     <td>
-      <input name='p2q10' type='number' min='-2' max='200'>
+      <input name='p2[]' id='p2q10' type='number' min='-2' max='200'>
     </td>
   </tr>
 
@@ -149,7 +166,7 @@
       (-1 for Not Sure, -2 for No Comment)
     </td>
     <td>
-      <input name='p2q11' type='number' min='-2' max='200'>
+      <input name='p2[]' id='p2q11' type='number' min='-2' max='200'>
     </td>
   </tr>
 {% endblock %}

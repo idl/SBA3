@@ -1,12 +1,33 @@
 {% extends 'base.html' %}
-{% block body %}
+  {% block script %}
+    <script>
+      $('document').ready(function() {
+        $('#p11q1').val('{{request.session.p11.0}}');
+        $('#p11q2').val('{{request.session.p11.1}}');
+        $('#p11q3').val('{{request.session.p11.2}}');
+        $('#p11q4').val('{{request.session.p11.3}}');
+        $('#p11q5').val('{{request.session.p11.4}}');
+        $('#p11q6').val('{{request.session.p11.5}}');
+        $('#p11q7').val('{{request.session.p11.6}}');
+        $('#p11q8').val('{{request.session.p11.7}}');
+        $('#p11q9').val('{{request.session.p11.8}}');
+        $('#p11q10').val('{{request.session.p11.9}}');
+        $('#p11q11').val('{{request.session.p11.10}}');
+        $('#p11q12').val('{{request.session.p11.11}}');
+        $('#p11q13').val('{{request.session.p11.12}}');
+        $('#p11q14').val('{{request.session.p11.13}}');
+      });
+    </script>
+  {% endblock %}
+
+  {% block body %}
     <tr>
       <td>
          What is your age?<br>
          (-1 for Not Sure, -2 for No Comment)
       </td>
       <td>
-        <input name='p11q1' type='number' min='-2' max='100'>
+        <input name="p11[]" id='p11q1' type='number' min='-2' max='100'>
       </td>
     </tr>
 
@@ -15,7 +36,7 @@
          What is your gender?
       </td>
       <td>
-        <select name='p11q2'>
+        <select name="p11[]" id='p11q2'>
           <option value=''>----</option>
           <option value='female'>Female</option>
           <option value='male'>Male</option>
@@ -29,7 +50,7 @@
          Are you currently employed?
       </td>
       <td>
-        <select name='p11q3' id='doesWork'>
+        <select name="p11[]" id='p11q3'>
           <option value=''>----</option>
           <option value='yes'>Yes</option>
           <option value='no'>No</option>
@@ -44,7 +65,7 @@
          Do you work on or off campus?
       </td>
       <td>
-        <select name='p11q4'>
+        <select name="p11[]" id='p11q4'>
           <option value=''>----</option>
           <option value='yes'>Yes</option>
           <option value='no'>No</option>
@@ -60,7 +81,7 @@
          (-1 for Not Sure, -2 for No Comment)
       </td>
       <td>
-        <input name='p11q5' type='number' min='-2' max='80'>
+        <input name="p11[]" id='p11q5' type='number' min='-2' max='80'>
       </td>
     </tr>
 
@@ -69,7 +90,7 @@
          Do you work anytime between the hours of 5pm - 12am?
       </td>
       <td>
-        <select name='p11q6'>
+        <select name="p11[]" id='p11q6'>
           <option value=''>----</option>
           <option value='yes'>Yes</option>
           <option value='no'>No</option>
@@ -84,7 +105,7 @@
          What is the highest level of education completed by your mother?
       </td>
       <td>
-        <select name='p11q7'>
+        <select name="p11[]" id='p11q7'>
           <option value=''>----</option>
           <option value='none'>No formal education</option>
           <option value='somehighschool'>Some High School or less</option>
@@ -106,7 +127,7 @@
          What is the highest level of education completed by your father?
       </td>
       <td>
-        <select name='p11q8'>
+        <select name="p11[]" id='p11q8'>
           <option value=''>----</option>
           <option value='none'>No formal education</option>
           <option value='somehighschool'>Some High School or less</option>
@@ -128,7 +149,7 @@
          In general, how would you describe the racial mix of your high school?
       </td>
       <td>
-        <select name='p11q9'>
+        <select name="p11[]" id='p11q9'>
           <option value=''>----</option>
           <option value='black'>Majority Black</option>
           <option value='white'>Majority White</option>
@@ -144,7 +165,7 @@
          Which category best describes your race?
       </td>
       <td>
-        <select name='p11q10'>
+        <select name="p11[]" id='p11q10'>
           <option value=''>----</option>
           <option value='black'>African American</option>
           <option value='white'>White/ Caucasian</option>
@@ -163,7 +184,7 @@
          Do you have friends of other ethnic groups?
       </td>
       <td>
-        <select name='p11q11'>
+        <select name="p11[]" id='p11q11'>
           <option value=''>----</option>
           <option value='yes'>Yes</option>
           <option value='no'>No</option>
@@ -178,7 +199,7 @@
          Do you receive the Pell grant?
       </td>
       <td>
-        <select name='p11q12'>
+        <select name="p11[]" id='p11q12'>
           <option value=''>----</option>
           <option value='yes'>Yes</option>
           <option value='no'>No</option>
@@ -193,7 +214,7 @@
          While in high school, did you qualify for or receive free or reduced priced lunch?
       </td>
       <td>
-        <select name='p11q13'>
+        <select name="p11[]" id='p11q13'>
           <option value=''>----</option>
           <option value='yes'>Yes</option>
           <option value='no'>No</option>
@@ -208,7 +229,7 @@
          In your opinion, did the majority of students in your high school receive free or reduced priced lunch?
       </td>
       <td>
-        <select name='p11q14'>
+        <select name="p11[]" id='p11q14'>
           <option value=''>----</option>
           <option value='yes'>Yes</option>
           <option value='no'>No</option>
@@ -217,4 +238,4 @@
         </select>
       </td>
     </tr>
-{% endblock %}
+  {% endblock %}

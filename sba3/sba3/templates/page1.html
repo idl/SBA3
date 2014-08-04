@@ -1,13 +1,33 @@
 {% extends 'base.html' %}
+  {% block script %}
+    <script>
+      $('document').ready(function() {
+        $('#p1q1').val('{{request.session.p1.0}}');
+        $('#p1q2').val('{{request.session.p1.1}}');
+        $('#p1q3').val('{{request.session.p1.2}}');
+        $('#p1q4').val('{{request.session.p1.3}}');
+        $('#p1q5').val('{{request.session.p1.4}}');
+        $('#p1q6').val('{{request.session.p1.5}}');
+        $('#p1q7').val('{{request.session.p1.6}}');
+        $('#p1q8').val('{{request.session.p1.7}}');
+        $('#p1q9').val('{{request.session.p1.8}}');
+        $('#p1q10').val('{{request.session.p1.9}}');
+        $('#p1q11').val('{{request.session.p1.10}}');
+      });
+    </script>
+  {% endblock %}
+
   {% block body %}
     <tr>
       <td>
         What is your class status?
       </td>
       <td>
-        <select name='p1q1' id='classification'>
+        <select name='p1[]' id='p1q1'>
           <option value=''>----</option>
-          <option value='freshman'>Freshman</option>
+          <option value='freshman'>
+            Freshman
+          </option>
           <option value='sophomore'>Sophomore</option>
           <option value='junior'>Junior</option>
           <option value='senior'>Senior</option>
@@ -24,7 +44,7 @@
         What is your major?
       </td>
       <td>
-        <select name='p1q2'>
+        <select name='p1[]' id='p1q2'>
           <option value=''>----</option>
           <option value='accounting'>Accounting Major </option>
           <option value='aerospaceengineering'>Aerospace Engineering Major </option>
@@ -110,7 +130,7 @@
         Did you transfer from a community/junior college?
       </td>
       <td>
-        <select name='p1q3'>
+        <select name='p1[]' id='p1q3'>
           <option value=''>----</option>
           <option value='yes'>Yes</option>
           <option value='no'>No</option>
@@ -125,7 +145,7 @@
         Are you enrolled in a "Distance or Online" degree program at MSU?
       </td>
       <td>
-        <select name='p1q4' id='isDistance'>
+        <select name='p1[]' id='p1q4'>
           <option value=''>----</option>
           <option value='yes'>Yes</option>
           <option value='no'>No</option>
@@ -140,7 +160,7 @@
         Have you ever taken a course that meets on campus?
       </td>
       <td>
-        <select name='p1q5' id='isOnCampusClass'>
+        <select name='p1[]' id='p1q5'>
           <option value=''>----</option>
           <option value='yes'>Yes</option>
           <option value='no'>No</option>
@@ -155,7 +175,7 @@
         Did you attend a pre-kindergarten program?
       </td>
       <td>
-        <select name='p1q6'>
+        <select name='p1[]' id='p1q6'>
           <option value=''>----</option>
           <option value='yes'>Yes</option>
           <option value='no'>No</option>
@@ -170,7 +190,7 @@
         Did you complete any advanced placement courses in high school?
       </td>
       <td>
-        <select name='p1q7'>
+        <select name='p1[]' id='p1q7'>
           <option value=''>----</option>
           <option value='yes'>Yes</option>
           <option value='no'>No</option>
@@ -186,7 +206,7 @@
         Do you consider yourself a first generation college student?
       </td>
       <td>
-        <select name='p1q8'>
+        <select name='p1[]' id='p1q8'>
           <option value=''>----</option>
           <option value='yes'>Yes</option>
           <option value='no'>No</option>
@@ -201,7 +221,7 @@
         Prior to High School, did you personally know anyone who worked in the fields of Science, Technology, Engineering, or Math?
       </td>
       <td>
-        <select name='p1q9'>
+        <select name='p1[]' id='p1q9'>
           <option value=''>----</option>
           <option value='yes'>Yes</option>
           <option value='no'>No</option>
@@ -216,7 +236,7 @@
         Please consider the following statement: Education was encouraged in my family. Would you...
       </td>
       <td>
-        <select name='p1q10'>
+        <select name='p1[]' id='p1q10'>
           <option value=''>----</option>
           <option value='strongdisagree'>Strongly Disagree</option>
           <option value='disagree'>Disagree</option>
@@ -234,7 +254,7 @@
         In terms of your academic achievement, who contributed to your success the most?
       </td>
       <td>
-        <select name='p1q11'>
+        <select name='p1[]' id='p1q11'>
           <option value=''>----</option>
           <option value='parent'>Parent(s)</option>
           <option value='grandparent'>Grandparents</option>

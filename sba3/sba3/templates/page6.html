@@ -1,191 +1,209 @@
 {% extends 'base.html' %}
-{% block body %}
-  <tr class='ifNotGrad'>
-    <td>
-      Do you participate in programs that help students transition from high school to college?
-    </td>
-    <td>
-      <select name='p6q1'>
-        <option value=''>----</option>
-        <option value='yes'>Yes</option>
-        <option value='no'>No</option>
-        <option value='notsure'>Not Sure</option>
-        <option value='nocomment'>No Comment</option>
-      </select>
-    </td>
-  </tr>
+  {% block script %}
+    <script>
+      $('document').ready(function() {
+        $('#p6q1').val('{{request.session.p6.0}}');
+        $('#p6q2').val('{{request.session.p6.1}}');
+        $('#p6q3').val('{{request.session.p6.2}}');
+        $('#p6q4').val('{{request.session.p6.3}}');
+        $('#p6q5').val('{{request.session.p6.4}}');
+        $('#p6q6').val('{{request.session.p6.5}}');
+        $('#p6q7').val('{{request.session.p6.6}}');
+        $('#p6q8').val('{{request.session.p6.7}}');
+        $('#p6q9').val('{{request.session.p6.8}}');
+        $('#p6q10').val('{{request.session.p6.9}}');
+        $('#p6q11').val('{{request.session.p6.10}}');
+        $('#p6q12').val('{{request.session.p6.11}}');
+      });
+    </script>
+  {% endblock %}
+  {% block body %}
+    <tr class='ifNotGrad'>
+      <td>
+        Do you participate in programs that help students transition from high school to college?
+      </td>
+      <td>
+        <select name='p6[]' id='p6q1'>
+          <option value=''>----</option>
+          <option value='yes'>Yes</option>
+          <option value='no'>No</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
 
-  <tr class='ifNotGrad'>
-    <td>
-      Do you have a peer mentor?
-    </td>
-    <td>
-      <select name='p6q2'>
-        <option value=''>----</option>
-        <option value='yes'>Yes</option>
-        <option value='no'>No</option>
-        <option value='notsure'>Not Sure</option>
-        <option value='nocomment'>No Comment</option>
-      </select>
-    </td>
-  </tr>
+    <tr class='ifNotGrad'>
+      <td>
+        Do you have a peer mentor?
+      </td>
+      <td>
+        <select name='p6[]' id='p6q2'>
+          <option value=''>----</option>
+          <option value='yes'>Yes</option>
+          <option value='no'>No</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
 
-  <tr>
-    <td>
-      Do you have a one-on-one faculty mentor?
-    </td>
-    <td>
-      <select name='p6q3'>
-        <option value=''>----</option>
-        <option value='yes'>Yes</option>
-        <option value='no'>No</option>
-        <option value='notsure'>Not Sure</option>
-        <option value='nocomment'>No Comment</option>
-      </select>
-    </td>
-  </tr>
+    <tr>
+      <td>
+        Do you have a one-on-one faculty mentor?
+      </td>
+      <td>
+        <select name='p6[]' id='p6q3'>
+          <option value=''>----</option>
+          <option value='yes'>Yes</option>
+          <option value='no'>No</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
 
-  <tr class='ifNotGrad'>
-    <td>
-      Do you have a one-on-one staff mentor?
-    </td>
-    <td>
-      <select name='p6q4'>
-        <option value=''>----</option>
-        <option value='yes'>Yes</option>
-        <option value='no'>No</option>
-        <option value='notsure'>Not Sure</option>
-        <option value='nocomment'>No Comment</option>
-      </select>
-    </td>
-  </tr>
+    <tr class='ifNotGrad'>
+      <td>
+        Do you have a one-on-one staff mentor?
+      </td>
+      <td>
+        <select name='p6[]' id='p6q4'>
+          <option value=''>----</option>
+          <option value='yes'>Yes</option>
+          <option value='no'>No</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
 
-  <tr>
-    <td>
-      Do you receive encouraging words from your professors?
-    </td>
-    <td>
-      <select name='p6q5'>
-        <option value=''>----</option>
-        <option value='yes'>Yes</option>
-        <option value='no'>No</option>
-        <option value='notsure'>Not Sure</option>
-        <option value='nocomment'>No Comment</option>
-      </select>
-    </td>
-  </tr>
+    <tr>
+      <td>
+        Do you receive encouraging words from your professors?
+      </td>
+      <td>
+        <select name='p6[]' id='p6q5'>
+          <option value=''>----</option>
+          <option value='yes'>Yes</option>
+          <option value='no'>No</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
 
-  <tr class='ifNotGrad'>
-    <td>
-      Do you hear your parents/guardians bragging about you for attending college?
-    </td>
-    <td>
-      <select name='p6q6'>
-        <option value=''>----</option>
-        <option value='yes'>Yes</option>
-        <option value='no'>No</option>
-        <option value='notsure'>Not Sure</option>
-        <option value='nocomment'>No Comment</option>
-      </select>
-    </td>
-  </tr>
+    <tr class='ifNotGrad'>
+      <td>
+        Do you hear your parents/guardians bragging about you for attending college?
+      </td>
+      <td>
+        <select name='p6[]' id='p6q6'>
+          <option value=''>----</option>
+          <option value='yes'>Yes</option>
+          <option value='no'>No</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
 
-  <tr class='ifNotGrad'>
-    <td>
-      Do you parents/guardians give you gifts or money for making good grades?
-    </td>
-    <td>
-      <select name='p6q7'>
-        <option value=''>----</option>
-        <option value='yes'>Yes</option>
-        <option value='no'>No</option>
-        <option value='notsure'>Not Sure</option>
-        <option value='nocomment'>No Comment</option>
-      </select>
-    </td>
-  </tr>
+    <tr class='ifNotGrad'>
+      <td>
+        Do you parents/guardians give you gifts or money for making good grades?
+      </td>
+      <td>
+        <select name='p6[]' id='p6q7'>
+          <option value=''>----</option>
+          <option value='yes'>Yes</option>
+          <option value='no'>No</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
 
-  <tr>
-    <td>
-      Do your friends encourage you to do well in college?
-    </td>
-    <td>
-      <select name='p6q8'>
-        <option value=''>----</option>
-        <option value='yes'>Yes</option>
-        <option value='no'>No</option>
-        <option value='notsure'>Not Sure</option>
-        <option value='nocomment'>No Comment</option>
-      </select>
-    </td>
-  </tr>
+    <tr>
+      <td>
+        Do your friends encourage you to do well in college?
+      </td>
+      <td>
+        <select name='p6[]' id='p6q8'>
+          <option value=''>----</option>
+          <option value='yes'>Yes</option>
+          <option value='no'>No</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
 
-  <tr>
-    <td>
-      Do you receive encouragement from your church family or community to stay in school?
-    </td>
-    <td>
-      <select name='p6q9'>
-        <option value=''>----</option>
-        <option value='yes'>Yes</option>
-        <option value='no'>No</option>
-        <option value='notsure'>Not Sure</option>
-        <option value='nocomment'>No Comment</option>
-      </select>
-    </td>
-  </tr>
+    <tr>
+      <td>
+        Do you receive encouragement from your church family or community to stay in school?
+      </td>
+      <td>
+        <select name='p6[]' id='p6q9'>
+          <option value=''>----</option>
+          <option value='yes'>Yes</option>
+          <option value='no'>No</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
 
-  <tr>
-    <td>
-      My professors expect me to do well in most classes. 
-    </td>
-    <td>
-      <select name='p6q10'>
-        <option value=''>----</option>
-        <option value='strongdisagree'>Strongly Disagree</option>
-        <option value='disagree'>Disagree</option>
-        <option value='neutral'>Neither Agree nor Disagree</option>
-        <option value='agree'>Agree</option>
-        <option value='strongagree'>Strongly Agree</option>
-        <option value='notsure'>Not Sure</option>
-        <option value='nocomment'>No comment</option>
-      </select>
-    </td>
-  </tr>
+    <tr>
+      <td>
+        My professors expect me to do well in most classes. 
+      </td>
+      <td>
+        <select name='p6[]' id='p6q10'>
+          <option value=''>----</option>
+          <option value='strongdisagree'>Strongly Disagree</option>
+          <option value='disagree'>Disagree</option>
+          <option value='neutral'>Neither Agree nor Disagree</option>
+          <option value='agree'>Agree</option>
+          <option value='strongagree'>Strongly Agree</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No comment</option>
+        </select>
+      </td>
+    </tr>
 
-  <tr>
-    <td>
-      My professors make me feel good about my academic work in class.
-    </td>
-    <td>
-      <select name='p6q11'>
-        <option value=''>----</option>
-        <option value='strongdisagree'>Strongly Disagree</option>
-        <option value='disagree'>Disagree</option>
-        <option value='neutral'>Neither Agree nor Disagree</option>
-        <option value='agree'>Agree</option>
-        <option value='strongagree'>Strongly Agree</option>
-        <option value='notsure'>Not Sure</option>
-        <option value='nocomment'>No comment</option>
-      </select>
-    </td>
-  </tr>
+    <tr>
+      <td>
+        My professors make me feel good about my academic work in class.
+      </td>
+      <td>
+        <select name='p6[]' id='p6q11'>
+          <option value=''>----</option>
+          <option value='strongdisagree'>Strongly Disagree</option>
+          <option value='disagree'>Disagree</option>
+          <option value='neutral'>Neither Agree nor Disagree</option>
+          <option value='agree'>Agree</option>
+          <option value='strongagree'>Strongly Agree</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No comment</option>
+        </select>
+      </td>
+    </tr>
 
-  <tr>
-    <td>
-      Earning a college degree is the best path to financial security.
-    </td>
-    <td>
-      <select name='p6q12'>
-        <option value=''>----</option>
-        <option value='strongdisagree'>Strongly Disagree</option>
-        <option value='disagree'>Disagree</option>
-        <option value='neutral'>Neither Agree nor Disagree</option>
-        <option value='agree'>Agree</option>
-        <option value='strongagree'>Strongly Agree</option>
-        <option value='notsure'>Not Sure</option>
-        <option value='nocomment'>No comment</option>
-      </select>
-    </td>
-  </tr>
-{% endblock %}
+    <tr>
+      <td>
+        Earning a college degree is the best path to financial security.
+      </td>
+      <td>
+        <select name='p6[]' id='p6q12'>
+          <option value=''>----</option>
+          <option value='strongdisagree'>Strongly Disagree</option>
+          <option value='disagree'>Disagree</option>
+          <option value='neutral'>Neither Agree nor Disagree</option>
+          <option value='agree'>Agree</option>
+          <option value='strongagree'>Strongly Agree</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No comment</option>
+        </select>
+      </td>
+    </tr>
+  {% endblock %}
