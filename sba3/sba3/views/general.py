@@ -34,3 +34,7 @@ def page(request, pagenum):
         return render(request, 'page11.html', {'pagenum': pagenum})
     else:
         return render(request, 'questions.html', {'pagenum': pagenum})
+
+def clearSession(request):
+    request.session.flush()
+    return render(request, 'page1.html', 1)
