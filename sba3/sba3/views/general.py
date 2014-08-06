@@ -37,4 +37,4 @@ def page(request, pagenum):
 
 def clearSession(request):
     request.session.flush()
-    return render(request, 'page1.html', 1)
+    return redirect('page', 1)
