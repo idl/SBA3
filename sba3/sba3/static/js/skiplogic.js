@@ -1,33 +1,30 @@
   $('document').ready(function() {
-    $('#classification').on('change', function() {
+    // classification
+    $('#p1q1').on('change', function() {
       if($(this).val() == 'master' || $(this).val() == 'doctorate') {
         $('.ifNotGrad').css('background', 'red'); //.hide();
       } else {
         $('.ifNotGrad').css('background', 'white'); //.show();
       }
     });
-    $('#isDistance').on('change', function() {
+    // isDistance
+    $('#p1q4').on('change', function() {
       if($(this).val() == 'yes') {
         $('.ifDistance').css('background', 'white'); //.show();
       } else {
         $('.ifDistance').css('background', 'red'); //.hide();
       }
     });
-    $('#isOnCampusClass').on('change', function() {
+    // isOnCampusClass
+    $('#p1q5').on('change', function() {
       if($(this).val() == 'yes') {
         $('.ifOnCampusClass').css('background', 'white'); //.show();
       } else {
         $('.ifOnCampusClass').css('background', 'red'); //.hide();
       }
     });
-    $('#doesDrink').on('change', function() {
-      if($(this).val() == 'yes') {
-          $('.ifDrink').css('background', 'white'); //.show();
-      } else {
-          $('.ifDrink').css('background', 'red'); //.hide();
-      }
-    });
-    $('#isTutoring').on('change', function() {
+    // isTutoring
+    $('#p3q1').on('change', function() {
       if($(this).val() == 'yes') {
         $('.ifTutoring').css('background', 'white'); //.show();
         $('.ifNotTutoring').css('background', 'red'); //.hide();
@@ -36,21 +33,24 @@
         $('.ifNotTutoring').css('background', 'white'); //.show();
       }
     });
-    $('#didOrientation').on('change', function() {
+    // didOrientation
+    $('#p8q1').on('change', function() {
       if($(this).val() == 'yes') {
         $('.ifOrientation').css('background', 'white'); //.show();
       } else {
         $('.ifOrientation').css('background', 'red'); //.hide();
       }
     });
-    $('#isOrg').on('change', function() {
+    // isOrg
+    $('#p9q1').on('change', function() {
       if($(this).val() == 'yes') {
         $('.ifOrg').css('background', 'white'); //.show();
       } else {
         $('.ifOrg').css('background', 'red'); //.hide();
       }
     });
-    $('#isOnCampus').on('change', function() {
+    // isOnCampus
+    $('#p9q4').on('change', function() {
       if($(this).val() == 'on') {
         $('.ifOnCampus').css('background', 'red'); //.hide();
         $('.ifNotOnCampus').css('background', 'white'); //.show();
@@ -64,7 +64,8 @@
         $('.ifAwayOrIfOnCampus').css('background', 'red'); //.hide();
       }
     });
-    $('#isAway').on('change', function() {
+    // isAway
+    $('#p9q4').on('change', function() {
       if($(this).val() == 'no') {
         $('.ifAway').css('background', 'red'); //.hide();
       } else {
@@ -76,7 +77,16 @@
         $('.ifAwayOrIfOnCampus').css('background', 'red'); //.hide();
       }
     });
-    $('#doesWork').on('change', function() {
+    // doesDrink
+    $('#p9q7').on('change', function() {
+      if($(this).val() == 'yes') {
+          $('.ifDrink').css('background', 'white'); //.show();
+      } else {
+          $('.ifDrink').css('background', 'red'); //.hide();
+      }
+    });
+    // doesWork
+    $('#p11q3').on('change', function() {
       if($(this).val() == 'yes') {
         $('.ifWork').css('background', 'white'); //.show();
       } else {

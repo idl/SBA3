@@ -38,16 +38,11 @@ def submit(request):
     row = {}
 
     for pagenum in range(1,12):
-        print "pagestart"
         page = "p" + str(pagenum)
-        print page
         answer_array = request.session[page]
-        print answer_array
         answernum = 1
         for answer in answer_array:
-            print "answerstart"
             column = page + "q" + str(answernum)
-            print column
             row[column] = answer
             answernum = answernum + 1
 
