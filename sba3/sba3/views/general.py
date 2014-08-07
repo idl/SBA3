@@ -5,7 +5,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db.models.loading import get_model
 
-
 def questions(request):
    return render(request,'questions.html')
 

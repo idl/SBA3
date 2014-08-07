@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-
 from ..models import Answers
 
 def previous(request):
@@ -23,6 +22,8 @@ def next(request):
     array_name = "p" + request.POST.get('pagenum', 1)
     answer_array = request.POST.getlist(array_name + "[]")
     request.session[array_name] = answer_array
+    for i in range(len(answer_array)):
+        print str(i)+": "+answer_array[i]
 
     # Redirect
     if pagenum >= 11:
