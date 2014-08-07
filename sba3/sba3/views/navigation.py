@@ -66,6 +66,7 @@ def report(request):
             answer_array = request.session[page]
         except:
             return redirect('page', pagenum)
+            break
         answernum = 1
         for answer in answer_array:
             column = page + "q" + str(answernum)
@@ -74,4 +75,4 @@ def report(request):
 
     request.session.flush()
 
-    return render(request, 'answers.html', row)
+    return render(request, 'answers.html', {'row':row})
