@@ -14,5 +14,6 @@ urlpatterns = patterns('sba3.views',
     url(r'^previous$', 'previous' , name='previous'),
     url(r'^next$', 'next' , name='next'),
     url(r'^submit$', 'submit' , name='submit'),
-    url(r'^clear$', 'clearSession', name='clear')
+    url(r'^clear$', 'clearSession', name='clear'),
+    url(r'^report$', 'report', name='report')
 )
