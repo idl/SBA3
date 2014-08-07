@@ -12,27 +12,57 @@ def page(request, pagenum):
     if pagenum=='1':
         return render(request, 'page1.html', {'pagenum': pagenum})
     elif pagenum=='2':
-        return render(request, 'page2.html', {'pagenum': pagenum})
+        if 'p1' in request.session:
+            return render(request, 'page2.html', {'pagenum': pagenum})
+        else:
+            return redirect('page', 1)
     elif pagenum=='3':
-        return render(request, 'page3.html', {'pagenum': pagenum})
+        if 'p2' in request.session:
+            return render(request, 'page3.html', {'pagenum': pagenum})
+        else:
+            return redirect('page', 2)
     elif pagenum=='4':
-        return render(request, 'page4.html', {'pagenum': pagenum})
+        if 'p3' in request.session:
+            return render(request, 'page4.html', {'pagenum': pagenum})
+        else:
+            return redirect('page', 3)
     elif pagenum=='5':
-        return render(request, 'page5.html', {'pagenum': pagenum})
+        if 'p4' in request.session:
+            return render(request, 'page5.html', {'pagenum': pagenum})
+        else:
+            return redirect('page', 4)
     elif pagenum=='6':
-        return render(request, 'page6.html', {'pagenum': pagenum})
+        if 'p5' in request.session:
+            return render(request, 'page6.html', {'pagenum': pagenum})
+        else:
+            return redirect('page', 5)
     elif pagenum=='7':
-        return render(request, 'page7.html', {'pagenum': pagenum})
+        if 'p6' in request.session:
+            return render(request, 'page7.html', {'pagenum': pagenum})
+        else:
+            return redirect('page', 6)
     elif pagenum=='8':
-        return render(request, 'page8.html', {'pagenum': pagenum})
+        if 'p7' in request.session:
+            return render(request, 'page8.html', {'pagenum': pagenum})
+        else:
+            return redirect('page', 7)
     elif pagenum=='9':
-        return render(request, 'page9.html', {'pagenum': pagenum})
+        if 'p8' in request.session:
+            return render(request, 'page9.html', {'pagenum': pagenum})
+        else:
+            return redirect('page', 8)
     elif pagenum=='10':
-        return render(request, 'page10.html', {'pagenum': pagenum})
+        if 'p9' in request.session:
+            return render(request, 'page10.html', {'pagenum': pagenum})
+        else:
+            return redirect('page', 9)
     elif pagenum=='11':
-        return render(request, 'page11.html', {'pagenum': pagenum})
+        if 'p10' in request.session:
+            return render(request, 'page11.html', {'pagenum': pagenum})
+        else:
+            return redirect('page', 10)
     else:
-        return render(request, 'questions.html', {'pagenum': pagenum})
+        return redirect('page', 1)
 
 def clearSession(request):
     request.session.flush()
