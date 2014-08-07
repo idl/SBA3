@@ -36,21 +36,42 @@ def submit(request):
     request.session[array_name] = answer_array
 
     row = {}
+    answer_array = []
 
     for pagenum in range(1,12):
         page = "p" + str(pagenum)
-        answer_array = request.session[page]
+        try:
+            answer_array = request.session[page]
+        except:
+            return redirect('page', pagenum)
         answernum = 1
         for answer in answer_array:
             column = page + "q" + str(answernum)
             row[column] = answer
             answernum = answernum + 1
 
-    print row
 
     submission = Answers(**row)
     submission.save()
 
+    return redirect('report')
+
+def report(request):
+    row = {}
+    answer_array = []
+
+    for pagenum in range(1,12):
+        page = "p" + str(pagenum)
+        try:
+            answer_array = request.session[page]
+        except:
+            return redirect('page', pagenum)
+        answernum = 1
+        for answer in answer_array:
+            column = page + "q" + str(answernum)
+            row[column] = answer
+            answernum = answernum + 1
+
     request.session.flush()
 
-    return render(request, 'questions.html')
+    return render(request, 'answers.html', row)
