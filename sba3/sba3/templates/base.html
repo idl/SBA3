@@ -13,7 +13,7 @@
   {% block body %}
   
   {% if error %}
-    <p id="error">Please fill in all fields.</p>
+    <!-- <p id="error">Please fill in all fields.</p> -->
   {% endif %}
   
   <form method='post'>
@@ -24,12 +24,12 @@
   </table>
   <input type='hidden' name='pagenum' value='{{pagenum}}'>
   {% if pagenum != "1" %}
-  <button type='submit' class='btn' id='prev'>Previous</button>
+  <input type='submit' class='btn' id='prev'>Previous</input>
   {% endif %}
   {% if pagenum == "11" %}
-  <button type='submit' class='btn' id='submit'>Submit</button>
+  <input type='submit' class='btn' id='submit'>Submit</input>
   {% else %}
-  <button type='submit' class='btn' id='next'>Next</button>
+  <input type='submit' class='btn' id='next'>Next</input>
   {% endif %}
   </form>
 
