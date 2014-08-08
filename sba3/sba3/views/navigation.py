@@ -12,22 +12,21 @@ def previous(request):
 
 def next(request):
     pagenum = int(request.POST.get('pagenum', 1))
-    error = False
 
     # Get the answers and store them in the session
-    array_name = "p" + request.POST.get('pagenum', 1)
+    array_name = "p" + str(request.POST.get('pagenum', 1))
     answer_array = request.POST.getlist(array_name + "[]")
     request.session[array_name] = answer_array
     for i in enumerate(request.session[array_name]):
         if i[1] == '':
-            error = True
-            return redirect('page', pagenum, error)
+            request.session['error'] = True
+            return redirect('page', pagenum)
 
     # Redirect
     if pagenum >= 11:
-        return redirect('page', 11, error)
+        return redirect('page', 11)
     else:
-        return redirect('page', pagenum + 1, error)
+        return redirect('page', pagenum + 1)
 
 def submit(request):
     array_name = "p11"
