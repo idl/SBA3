@@ -1,41 +1,39 @@
 {% extends 'base.html' %}
 
-  {% block script %}
-    {% include 'script.html' %}
-    <script>
-    $('document').ready(function() {
-      $('#prev').on('click', function() {
-        $('form').attr('action', '{% url "previous"%}');
-      });
-      $('#next').on('click', function() {
-        if($('select').val() == ''){
-          $('#error').show();
-        }
-        else if($('input').val() == ''){
-          $('#error').show();
-        }
-        else{
-          $('form').attr('action', '{% url "next"%}');
-        }
-      });
-      $('#submit').on('click', function() {
-        if($('select').val() == ''){
-          $('#error').show();
-        }
-        else if($('input').val() == ''){
-          $('#error').show();
-        }
-        else{
-          $('form').attr('action', '{% url "submit"%}');
-        }
-      });
+{% block script %}
+  {% include 'script.html' %}
+  <script>
+  $('document').ready(function() {
+    $('#prev').click(function() {
+      $('form').attr('action', '{% url "previous"%}');
     });
-    </script>
-  {% endblock %}
+    $('#next').click(function() {
+      console.log($('select, input'));
+      if($('select, input').val() == '') {
+        e.preventDefault();
+        $('#error').show();
+      } else {
+        $('form').attr('action', '{% url "next"%}');
+      }
+    });
+    $('#submit').click(function(e) {
+      console.log($('select, input').val());
+      if($('select, input').val() == '') {
+        e.preventDefault();
+        $('#error').show();
+      } else {
+        $('form').attr('action', '{% url "submit"%}');
+      }
+    });
+  });
+  </script>
+{% endblock %}
 
-  {% block body %}
-    <p id="error" style='display:none;'> Fill in all fields </p>
-    <form method='post'>
+{% block body %}
+  {% if error %}
+      <p class="error">Please fill in all fields </p>
+  {% endif %}
+  <form method='post'>
     {% csrf_token %}
     <table class="table table-hover">
       {% block table_body %}
@@ -43,13 +41,12 @@
     </table>
     <input type='hidden' name='pagenum' value='{{pagenum}}'>
     {% if pagenum != "1" %}
-    <button type='submit' class='btn' id='prev'>Previous</button>
+      <input type='submit' class='btn' id='prev' value='Previous'>
     {% endif %}
     {% if pagenum == "11" %}
-    <button type='submit' class='btn' id='submit'>Submit</button>
+      <input type='submit' class='btn' id='submit' value='Submit'>
     {% else %}
-    <button type='submit' class='btn' id='next'>Next</button>
+      <input type='submit' class='btn' id='next' value='Next'>
     {% endif %}
-    </form>
-
-  {% endblock %}
+  </form>
+{% endblock %}

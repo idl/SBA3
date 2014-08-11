@@ -1,18 +1,12 @@
 from django.shortcuts import render, redirect
-
 from ..models import Answers
 
 def previous(request):
     pagenum = int(request.POST.get('pagenum', 1))
 
-    # Get the answers and store them in the session
-    array_name = "p" + request.POST.get('pagenum', 1)
-    answer_array = request.POST.getlist(array_name + "[]")
-    request.session[array_name] = answer_array
-
     # Redirect
     if pagenum <= 1:
-        return redirect('page', 1, test= 'test')
+        return redirect('page', 1)
     else:
         return redirect('page', pagenum - 1)
 
@@ -20,9 +14,13 @@ def next(request):
     pagenum = int(request.POST.get('pagenum', 1))
 
     # Get the answers and store them in the session
-    array_name = "p" + request.POST.get('pagenum', 1)
+    array_name = "p" + str(request.POST.get('pagenum', 1))
     answer_array = request.POST.getlist(array_name + "[]")
     request.session[array_name] = answer_array
+    for i in enumerate(request.session[array_name]):
+        if i[1] == '':
+            request.session['error'] = True
+            return redirect('page', pagenum)
 
     # Redirect
     if pagenum >= 11:
