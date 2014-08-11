@@ -1,14 +1,13 @@
 {% extends 'base.html' %}
 
 {% block script %}
-  {% include 'script.html' %}
   <script>
   $('document').ready(function() {
     $('#prev').click(function() {
       $('form').attr('action', '{% url "previous"%}');
     });
     $('#next').click(function() {
-      if($('select, input').filter(':visible').val() == '') {
+      if($('select, input').val() == '') {
         e.preventDefault();
         $('#error').show();
       } else {
@@ -16,7 +15,7 @@
       }
     });
     $('#submit').click(function(e) {
-      if($('select, input').filter(':visible').val() == '') {
+      if($('select, input').val() == '') {
         e.preventDefault();
         $('#error').show();
       } else {
@@ -47,4 +46,8 @@
       <input type='submit' class='btn' id='next' value='Next'>
     {% endif %}
   </form>
+{% endblock %}
+
+{% block footer%}
+  {% include 'script.html' %}
 {% endblock %}
