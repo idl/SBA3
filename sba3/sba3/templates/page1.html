@@ -1,5 +1,6 @@
-{% extends 'base.html' %}
+{% extends 'questions.html' %}
   {% block script %}
+    {{ block.super }}
     <script>
       $('document').ready(function() {
         $('#p1q1').val('{{request.session.p1.0}}');
@@ -17,14 +18,14 @@
     </script>
   {% endblock %}
 
-  {% block body %}
+  {% block table_body %}
     <tr>
       <td>
         What is your class status?
       </td>
       <td>
         <select name='p1[]' id='p1q1'>
-          <option value=''>----</option>
+          <option value='' selected='selected'>----</option>
           <option value='freshman'>
             Freshman
           </option>
@@ -45,7 +46,7 @@
       </td>
       <td>
         <select name='p1[]' id='p1q2'>
-          <option value=''>----</option>
+          <option value='' selected='selected'>----</option>
           <option value='accounting'>Accounting Major </option>
           <option value='aerospaceengineering'>Aerospace Engineering Major </option>
           <option value='agribusiness'>Agribusiness Major </option>
@@ -131,7 +132,7 @@
       </td>
       <td>
         <select name='p1[]' id='p1q3'>
-          <option value=''>----</option>
+          <option value='' selected='selected'>----</option>
           <option value='yes'>Yes</option>
           <option value='no'>No</option>
           <option value='notsure'>Not Sure</option>
@@ -146,7 +147,7 @@
       </td>
       <td>
         <select name='p1[]' id='p1q4'>
-          <option value=''>----</option>
+          <option value='' selected='selected'>----</option>
           <option value='yes'>Yes</option>
           <option value='no'>No</option>
           <option value='notsure'>Not Sure</option>
@@ -161,7 +162,7 @@
       </td>
       <td>
         <select name='p1[]' id='p1q5'>
-          <option value=''>----</option>
+          <option value='' selected='selected'>----</option>
           <option value='yes'>Yes</option>
           <option value='no'>No</option>
           <option value='notsure'>Not Sure</option>
@@ -176,7 +177,7 @@
       </td>
       <td>
         <select name='p1[]' id='p1q6'>
-          <option value=''>----</option>
+          <option value='' selected='selected'>----</option>
           <option value='yes'>Yes</option>
           <option value='no'>No</option>
           <option value='notsure'>Not Sure</option>
@@ -191,7 +192,7 @@
       </td>
       <td>
         <select name='p1[]' id='p1q7'>
-          <option value=''>----</option>
+          <option value='' selected='selected'>----</option>
           <option value='yes'>Yes</option>
           <option value='no'>No</option>
           <option value='notavailable'>None were avaliable</option>
@@ -207,7 +208,7 @@
       </td>
       <td>
         <select name='p1[]' id='p1q8'>
-          <option value=''>----</option>
+          <option value='' selected='selected'>----</option>
           <option value='yes'>Yes</option>
           <option value='no'>No</option>
           <option value='notsure'>Not Sure</option>
@@ -222,7 +223,7 @@
       </td>
       <td>
         <select name='p1[]' id='p1q9'>
-          <option value=''>----</option>
+          <option value='' selected='selected'>----</option>
           <option value='yes'>Yes</option>
           <option value='no'>No</option>
           <option value='notsure'>Not Sure</option>
@@ -237,7 +238,7 @@
       </td>
       <td>
         <select name='p1[]' id='p1q10'>
-          <option value=''>----</option>
+          <option value='' selected='selected'>----</option>
           <option value='strongdisagree'>Strongly Disagree</option>
           <option value='disagree'>Disagree</option>
           <option value='neutral'>Neither Agree nor Disagree</option>
@@ -255,7 +256,7 @@
       </td>
       <td>
         <select name='p1[]' id='p1q11'>
-          <option value=''>----</option>
+          <option value='' selected='selected'>----</option>
           <option value='parent'>Parent(s)</option>
           <option value='grandparent'>Grandparents</option>
           <option value='sibling'>Siblings</option>
