@@ -2,8 +2,9 @@
   $('document').ready(function() {
     // session check
     // classification
-    if( '{{request.session.p1.0}}' == 'master' || '{{request.session.p1.0}}' == 'doctorate' ){
+    if( '{{request.session.p1.0}}' == 'master' || '{{request.session.p1.0}}' == 'doctorate' ) {
       $('.ifNotGrad').css('background', 'red'); //.hide();
+      $('.ifNotGrad select option:first-child').val('NA');
     }
     // isDistance
     if('{{request.session.p1.3}}' != 'yes') {
@@ -12,6 +13,7 @@
     // isOnCampusClass
     if('{{request.session.p1.4}}' != 'yes') {
       $('.ifOnCampusClass').css('background', 'red'); //.hide();
+      $('.ifOnCampusClass select option:first-child').val('NA');
     }
     // isTutoring
     if('{{request.session.p3.0}}' == 'yes') {
