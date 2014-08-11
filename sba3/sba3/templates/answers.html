@@ -1,0 +1,1916 @@
+{% extends 'base.html' %}
+
+{% block script %}
+<script>
+$('document').ready(function(){
+{% for question, answer in row.items %}
+  $('#{{ question }}').val('{{ answer }}');
+{% endfor %}
+});
+</script>
+{% endblock %}
+
+{% block body %}
+<table class="table table-striped">
+  <tr>
+    <td>
+      What is your class status?
+    </td>
+    <td>
+      <select name='p1[]' id='p1q1' disabled="true">
+        <option value=''>----</option>
+        <option value='freshman'>
+          Freshman
+        </option>
+        <option value='sophomore'>Sophomore</option>
+        <option value='junior'>Junior</option>
+        <option value='senior'>Senior</option>
+        <option value='master'>Master's</option>
+        <option value='doctorate'>Doctorate</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      What is your major?
+    </td>
+    <td>
+      <select name='p1[]' id='p1q2' disabled="true">
+        <option value=''>----</option>
+        <option value='accounting'>Accounting Major </option>
+        <option value='aerospaceengineering'>Aerospace Engineering Major </option>
+        <option value='agribusiness'>Agribusiness Major </option>
+        <option value='art'>Art Major </option>
+        <option value='agriengineering'>Agricultural Engineering Technology and Business Major </option>
+        <option value='agriinformation'>Agricultural Information Science Major </option>
+        <option value='agriculture'>Agricultural Science Major </option>
+        <option value='agronomy'>Agronomy Major </option>
+        <option value='dairyscience'>Animal and Dairy Science Major </option>
+        <option value='anthropology'>Anthropology Major </option>
+        <option value='architecture'>Architecture Major </option>
+        <option value='art'>Art Major </option>
+        <option value='biochemistry'>Biochemistry Major </option>
+        <option value='bioengineering'>Biological Engineering Major </option>
+        <option value='biology'>Biological Sciences Major </option>
+        <option value='building'>Building Construction Science Major </option>
+        <option value='businessadmin'>Business Administration Major </option>
+        <option value='businessecon'>Business Economics Major </option>
+        <option value='businessinfo'>Business Information Systems Major </option>
+        <option value='chemengineering'>Chemical Engineering Major </option>
+        <option value='chemistry'>Chemistry Major </option>
+        <option value='civilengineering'>Civil Engineering Major </option>
+        <option value='communication'>Communication Major </option>
+        <option value='computerengineering'>Computer Engineering Major </option>
+        <option value='computerscience'>Computer Science Major </option>
+        <option value='criminology'>Criminology Major </option>
+        <option value='culinology'>Culinology Major </option>
+        <option value='economics'>Economics Major (Arts and Sciences) </option>
+        <option value='educationalpsyc'>Educational Psychology Major </option>
+        <option value='electricalengineering'>Electrical Engineering Major </option>
+        <option value='elementaryed'>Elementary Education Major </option>
+        <option value='english'>English Major </option>
+        <option value='enviromentalecon'>Environmental Economics and Management Major </option>
+        <option value='finance'>Finance Major </option>
+        <option value='foodscience'>Food Science, Nutrition and Health Promotion Major </option>
+        <option value='foreignlanguage'>Foreign Language Major </option>
+        <option value='forestry'>Forestry Major </option>
+        <option value='generallibarts'>General Liberal Arts Major </option>
+        <option value='generalscience'>General Science Major </option>
+        <option value='geoscience'>Geosciences Major </option>
+        <option value='history'>History Major </option>
+        <option value='horticulture'>Horticulture Major </option>
+        <option value='humanscience'>Human Sciences Major </option>
+        <option value='industrialengineering'>Industrial Engineering Major </option>
+        <option value='industrialtech'>Industrial Technology Major </option>
+        <option value='informationtech'>Information Technology Services Major </option>
+        <option value='interdisciplinary'>Interdisciplinary Studies </option>
+        <option value='interiordesign'>Interior Design Major </option>
+        <option value='kinesiology'>Kinesiology Major </option>
+        <option value='landscapearchitecture'>Landscape Architecture Major </option>
+        <option value='landscapecontracting'>Landscape Contracting Major </option>
+        <option value='management'>Management Major </option>
+        <option value='marketing'>Marketing Major </option>
+        <option value='mathematics'>Mathematics Major </option>
+        <option value='mechanicalengineering'>Mechanical Engineering Major </option>
+        <option value='medicaltech'>Medical Technology Major </option>
+        <option value='microbiology'>Microbiology Major </option>
+        <option value='musiceducation'>Music Education Major </option>
+        <option value='music'>Music Major </option>
+        <option value='philosophy'>Philosophy Major </option>
+        <option value='physics'>Physics Major </option>
+        <option value='polyscience'>Political Science Major </option>
+        <option value='pultryscience'>Poultry Science Major </option>
+        <option value='psychology'>Psychology Major </option>
+        <option value='secondaryeducation'>Secondary Education Major </option>
+        <option value='socialwork'>Social Work Major </option>
+        <option value='sociology'>Sociology Major </option>
+        <option value='softwareengineering'>Software Engineering Major </option>
+        <option value='specialeducation'>Special Education Major </option>
+        <option value='techteachereducation'>Technology Teacher Education Major </option>
+        <option value='veterinarymedical'>Veterinary Medical Technology </option>
+        <option value='wildlife'>Wildlife, Fisheries and Aquaculture Major </option>
+        <option value='other'>Something Else </option>
+        <option value='undecided'>Undecided </option>
+        <option value='nocomment'>No Comment </option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class="ifNotGrad">
+    <td>
+      Did you transfer from a community/junior college?
+    </td>
+    <td>
+      <select name='p1[]' id='p1q3' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Are you enrolled in a "Distance or Online" degree program at MSU?
+    </td>
+    <td>
+      <select name='p1[]' id='p1q4' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifDistance'>
+    <td>
+      Have you ever taken a course that meets on campus?
+    </td>
+    <td>
+      <select name='p1[]' id='p1q5' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Did you attend a pre-kindergarten program?
+    </td>
+    <td>
+      <select name='p1[]' id='p1q6' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifNotGrad'>
+    <td>
+      Did you complete any advanced placement courses in high school?
+    </td>
+    <td>
+      <select name='p1[]' id='p1q7' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notavailable'>None were avaliable</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Do you consider yourself a first generation college student?
+    </td>
+    <td>
+      <select name='p1[]' id='p1q8' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Prior to High School, did you personally know anyone who worked in the fields of Science, Technology, Engineering, or Math?
+    </td>
+    <td>
+      <select name='p1[]' id='p1q9' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Please consider the following statement: Education was encouraged in my family. Would you...
+    </td>
+    <td>
+      <select name='p1[]' id='p1q10' disabled="true">
+        <option value=''>----</option>
+        <option value='strongdisagree'>Strongly Disagree</option>
+        <option value='disagree'>Disagree</option>
+        <option value='neutral'>Neither Agree nor Disagree</option>
+        <option value='agree'>Agree</option>
+        <option value='strongagree'>Strongly Agree</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      In terms of your academic achievement, who contributed to your success the most?
+    </td>
+    <td>
+      <select name='p1[]' id='p1q11' disabled="true">
+        <option value=''>----</option>
+        <option value='parent'>Parent(s)</option>
+        <option value='grandparent'>Grandparents</option>
+        <option value='sibling'>Siblings</option>
+        <option value='auntuncle'>Aunts or Uncles</option>
+        <option value='familyfriend'>Family friends</option>
+        <option value='peer'>Peers</option>
+        <option value='teammate'>Teammates</option>
+        <option value='teacher'>Teacher</option>
+        <option value='coach'>Coach</option>
+        <option value='signother'>Significant Other</option>
+        <option value='family'>Family</option>
+        <option value='none'>None of these</option>
+        <option value='notsure'>Not sure</option>
+        <option value='nocomment'>No comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      While growing up, did you have a mentor?
+    </td>
+    <td>
+      <select name='p2[]' id='p2q1' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Do you have a mentor now?
+    </td>
+    <td>
+      <select name='p2[]' id='p2q2' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifOnCampusClass'>
+    <td>
+      Do you see role models on campus?
+    </td>
+    <td>
+      <select name='p2[]' id='p2q3' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How would you rate your time management skills?
+    </td>
+    <td>
+      <select name='p2[]' id='p2q4' disabled="true">
+        <option value=''>----</option>
+        <option value='poor'>Poor</option>
+        <option value='belowaverage'>Below Average</option>
+        <option value='average'>Average</option>
+        <option value='aboveaverage'>Above Average</option>
+        <option value='excellent'>Excellent</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Do you routinely use a calendar or daily planner (paper or digital)?
+    </td>
+    <td>
+      <select name='p2[]' id='p2q5' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifOnCampusClass'>
+    <td>
+      Do you review your class notes after class?
+    </td>
+    <td>
+      <select name='p2[]' id='p2q6' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+       In general, do you study for tests by yourself?
+    </td>
+    <td>
+      <select name='p2[]' id='p2q7' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Select the type of learning style that describes you best:
+    </td>
+    <td>
+      <select name='p2[]' id='p2q8' disabled="true">
+        <option value=''>----</option>
+        <option value='visual'>Visual (Seeing)</option>
+        <option value='auditory'>Auditory (Hearing)</option>
+        <option value='kinsethetics'>Kinesthetics (Hands-on)</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      On average, how many hours per DAY do you spend studying?<br>
+      (-1 for Not Sure, -2 for No Comment)
+    </td>
+    <td>
+      <input name='p2[]' id='p2q9' type='number' min='-2' max='24' disabled="true">
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      On average how many days in advance do you begin studying for upcoming exams?<br>
+      (-1 for Not Sure, -2 for No Comment)
+    </td>
+    <td>
+      <input name='p2[]' id='p2q10' type='number' min='-2' max='200' disabled="true">
+    </td>
+  </tr>
+
+  <tr class='ifOnCampusClass'>
+    <td>
+      In general, how many class sessions do you miss over the course of a semester?<br>
+      (-1 for Not Sure, -2 for No Comment)
+    </td>
+    <td>
+      <input name='p2[]' id='p2q11' type='number' min='-2' max='200' disabled="true">
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Are you currently attending tutoring sessions?
+    </td>
+    <td>
+      <select name='p3[]' id='p3q1' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifTutoring'>
+    <td>
+      On average, how many hours do you spend in tutoring sessions per week?
+    </td>
+    <td>
+      <input name='p3[]' id='p3q2' type='number' min='0' max='168' disabled="true">
+    </td>
+  </tr>
+
+  <tr class='ifNotTutoring'>
+    <td>
+      Would you attend tutoring sessions if they were freely available?
+    </td>
+    <td>
+      <select name='p3[]' id='p3q3' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifNotTutoring'>
+    <td>
+      Have you looked for tutoring help?
+    </td>
+    <td>
+      <select name='p3[]' id='p3q4' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifNotGrad'>
+    <td>
+      Compared to high school, has the time you spend studying for classes...
+    </td>
+    <td>
+      <select name='p3[]' id='p3q5' disabled="true">
+        <option value=''>----</option>
+        <option value='decressed'>Decreased </option>
+        <option value='increased'>Increased</option>
+        <option value='same'>Stayed the same</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      How often do you do the following:
+    </td>
+  </tr>
+  <tr class='ifOnCampusClass'>
+    <td>
+      Show up late for class (1)
+    </td>
+    <td>
+      <select name='p3[]' id='p3q6' disabled="true">
+        <option value=''>----</option>
+        <option value='never'>Never</option>
+        <option value='rarely'>Rarely</option>
+        <option value='some'>Some</option>
+        <option value='often'>Often</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Turn assignments in late or incomplete (2)
+    </td>
+    <td>
+      <select name='p3[]' id='p3q7' disabled="true">
+        <option value=''>----</option>
+        <option value='never'>Never</option>
+        <option value='rarely'>Rarely</option>
+        <option value='some'>Some</option>
+        <option value='often'>Often</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Miss an exam or quiz (3)
+    </td>
+    <td>
+      <select name='p3[]' id='p3q8' disabled="true">
+        <option value=''>----</option>
+        <option value='never'>Never</option>
+        <option value='rarely'>Rarely</option>
+        <option value='some'>Some</option>
+        <option value='often'>Often</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Seek extra credit to improve a grade (4) 
+    </td>
+    <td>
+      <select name='p3[]' id='p3q9' disabled="true">
+        <option value=''>----</option>
+        <option value='never'>Never</option>
+        <option value='rarely'>Rarely</option>
+        <option value='some'>Some</option>
+        <option value='often'>Often</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+      <td>
+        Do you visit your professors on a regular basis? (1)
+      </td>
+      <td>
+        <select name='p4[]' id='p4q1' disabled="true">
+          <option value=''>----</option>
+          <option value='yes'>Yes</option>
+          <option value='no'>No</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
+
+  <tr class='ifOnCampusClass'>
+    <td>
+      Do you regularly ask questions in class? (2)
+    </td>
+    <td>
+      <select name='p4[]' id='p4q2' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifOnCampusClass'>
+    <td>
+      Do your professors ask you questions during class? (3)
+    </td>
+    <td>
+      <select name='p4[]' id='p4q3' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+   <tr class='ifOnCampusClass'>
+    <td>
+      Do you take complete class notes? (4)
+    </td>
+    <td>
+      <select name='p4[]' id='p4q4' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Do you have a study group? (5)
+    </td>
+    <td>
+      <select name='p4[]' id='p4q5' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Do you own a personal computer? (6)
+    </td>
+    <td>
+      <select name='p4[]' id='p4q6' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Do you have consistent access to broadband Internet? (7)
+    </td>
+    <td>
+      <select name='p4[]' id='p4q7' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Do you use the Internet to complete assignments? (8)
+    </td>
+    <td>
+      <select name='p4[]' id='p4q8' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifOnCampusClass'>
+    <td>
+      Do you usually have all of the required books and materials by the second class meeting? (9)
+    </td>
+    <td>
+      <select name='p4[]' id='p4q9' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifOnCampusClass'>
+    <td>
+      When professors ask questions, are you typically among the first to raise your hand? (10)
+    </td>
+    <td>
+      <select name='p4[]' id='p4q10' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifOnCampusClass'>
+    <td>
+      In a typical classroom, where do you usually sit when seating is not assigned?
+    </td>
+    <td>
+      <select name='p4[]' id='p4q11' disabled="true">
+        <option value=''>----</option>
+        <option value='front'>Near the front</option>
+        <option value='middle'>Middle</option>
+        <option value='back'>Near the back</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How important to your academic success are the following:
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Membership in Student Organization
+    </td>
+    <td>
+      <select name='p5[]' id='p5q1' disabled="true">
+        <option value=''>----</option>
+        <option value='notimportant'>Not At All Important</option>
+        <option value='someimportant'>Somewhat Important</option>
+        <option value='important'>Important</option>
+        <option value='veryimportant'>Very Important</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifNotGrad'>
+    <td>
+      Programs that help students transition from High School to College
+    </td>
+    <td>
+      <select name='p5[]' id='p5q2' disabled="true">
+        <option value=''>----</option>
+        <option value='notimportant'>Not At All Important</option>
+        <option value='someimportant'>Somewhat Important</option>
+        <option value='important'>Important</option>
+        <option value='veryimportant'>Very Important</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Peer Mentoring
+    </td>
+    <td>
+      <select name='p5[]' id='p5q3' disabled="true">
+        <option value=''>----</option>
+        <option value='notimportant'>Not At All Important</option>
+        <option value='someimportant'>Somewhat Important</option>
+        <option value='important'>Important</option>
+        <option value='veryimportant'>Very Important</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      One-on-one mentoring by faculty
+    </td>
+    <td>
+      <select name='p5[]' id='p5q4' disabled="true">
+        <option value=''>----</option>
+        <option value='notimportant'>Not At All Important</option>
+        <option value='someimportant'>Somewhat Important</option>
+        <option value='important'>Important</option>
+        <option value='veryimportant'>Very Important</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      One-on-one mentoring from staff
+    </td>
+    <td>
+      <select name='p5[]' id='p5q5' disabled="true">
+        <option value=''>----</option>
+        <option value='notimportant'>Not At All Important</option>
+        <option value='someimportant'>Somewhat Important</option>
+        <option value='important'>Important</option>
+        <option value='veryimportant'>Very Important</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Encouraging words from my professors/ instructors
+    </td>
+    <td>
+      <select name='p5[]' id='p5q6' disabled="true">
+        <option value=''>----</option>
+        <option value='notimportant'>Not At All Important</option>
+        <option value='someimportant'>Somewhat Important</option>
+        <option value='important'>Important</option>
+        <option value='veryimportant'>Very Important</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifNotGrad'>
+    <td>
+      Parent(s)/ Guardian(s) desire for me to earn a college degree
+    </td>
+    <td>
+      <select name='p5[]' id='p5q7' disabled="true">
+        <option value=''>----</option>
+        <option value='notimportant'>Not At All Important</option>
+        <option value='someimportant'>Somewhat Important</option>
+        <option value='important'>Important</option>
+        <option value='veryimportant'>Very Important</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifNotGrad'>
+    <td>
+      Hearing my parent(s)/guardian(s) bragging about me for attending college
+    </td>
+    <td>
+      <select name='p5[]' id='p5q8' disabled="true">
+        <option value=''>----</option>
+        <option value='notimportant'>Not At All Important</option>
+        <option value='someimportant'>Somewhat Important</option>
+        <option value='important'>Important</option>
+        <option value='veryimportant'>Very Important</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifNotGrad'>
+    <td>
+      Parent(s)/Guardian(s) giving gifts or money for making good grades
+    </td>
+    <td>
+      <select name='p5[]' id='p5q9' disabled="true">
+        <option value=''>----</option>
+        <option value='notimportant'>Not At All Important</option>
+        <option value='someimportant'>Somewhat Important</option>
+        <option value='important'>Important</option>
+        <option value='veryimportant'>Very Important</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Friends' encouragement to do well in college
+    </td>
+    <td>
+      <select name='p5[]' id='p5q10' disabled="true">
+        <option value=''>----</option>
+        <option value='notimportant'>Not At All Important</option>
+        <option value='someimportant'>Somewhat Important</option>
+        <option value='important'>Important</option>
+        <option value='veryimportant'>Very Important</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Encouragement from my church family or community to stay in school
+    </td>
+    <td>
+      <select name='p5[]' id='p5q11' disabled="true">
+        <option value=''>----</option>
+        <option value='notimportant'>Not At All Important</option>
+        <option value='someimportant'>Somewhat Important</option>
+        <option value='important'>Important</option>
+        <option value='veryimportant'>Very Important</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Participation in voluntary study groups
+    </td>
+    <td>
+      <select name='p5[]' id='p5q12' disabled="true">
+        <option value=''>----</option>
+        <option value='notimportant'>Not At All Important</option>
+        <option value='someimportant'>Somewhat Important</option>
+        <option value='important'>Important</option>
+        <option value='veryimportant'>Very Important</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifOnCampusClass'>
+    <td>
+      Reviewing course notes shortly after class
+    </td>
+    <td>
+      <select name='p5[]' id='p5q13' disabled="true">
+        <option value=''>----</option>
+        <option value='notimportant'>Not At All Important</option>
+        <option value='someimportant'>Somewhat Important</option>
+        <option value='important'>Important</option>
+        <option value='veryimportant'>Very Important</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Visiting professors during their office hours
+    </td>
+    <td>
+      <select name='p5[]' id='p5q14' disabled="true">
+        <option value=''>----</option>
+        <option value='notimportant'>Not At All Important</option>
+        <option value='someimportant'>Somewhat Important</option>
+        <option value='important'>Important</option>
+        <option value='veryimportant'>Very Important</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifNotGrad'>
+    <td>
+      Do you participate in programs that help students transition from high school to college?
+    </td>
+    <td>
+      <select name='p6[]' id='p6q1' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifNotGrad'>
+    <td>
+      Do you have a peer mentor?
+    </td>
+    <td>
+      <select name='p6[]' id='p6q2' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Do you have a one-on-one faculty mentor?
+    </td>
+    <td>
+      <select name='p6[]' id='p6q3' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifNotGrad'>
+    <td>
+      Do you have a one-on-one staff mentor?
+    </td>
+    <td>
+      <select name='p6[]' id='p6q4' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Do you receive encouraging words from your professors?
+    </td>
+    <td>
+      <select name='p6[]' id='p6q5' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifNotGrad'>
+    <td>
+      Do you hear your parents/guardians bragging about you for attending college?
+    </td>
+    <td>
+      <select name='p6[]' id='p6q6' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifNotGrad'>
+    <td>
+      Do you parents/guardians give you gifts or money for making good grades?
+    </td>
+    <td>
+      <select name='p6[]' id='p6q7' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Do your friends encourage you to do well in college?
+    </td>
+    <td>
+      <select name='p6[]' id='p6q8' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Do you receive encouragement from your church family or community to stay in school?
+    </td>
+    <td>
+      <select name='p6[]' id='p6q9' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      My professors expect me to do well in most classes. 
+    </td>
+    <td>
+      <select name='p6[]' id='p6q10' disabled="true">
+        <option value=''>----</option>
+        <option value='strongdisagree'>Strongly Disagree</option>
+        <option value='disagree'>Disagree</option>
+        <option value='neutral'>Neither Agree nor Disagree</option>
+        <option value='agree'>Agree</option>
+        <option value='strongagree'>Strongly Agree</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      My professors make me feel good about my academic work in class.
+    </td>
+    <td>
+      <select name='p6[]' id='p6q11' disabled="true">
+        <option value=''>----</option>
+        <option value='strongdisagree'>Strongly Disagree</option>
+        <option value='disagree'>Disagree</option>
+        <option value='neutral'>Neither Agree nor Disagree</option>
+        <option value='agree'>Agree</option>
+        <option value='strongagree'>Strongly Agree</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Earning a college degree is the best path to financial security.
+    </td>
+    <td>
+      <select name='p6[]' id='p6q12' disabled="true">
+        <option value=''>----</option>
+        <option value='strongdisagree'>Strongly Disagree</option>
+        <option value='disagree'>Disagree</option>
+        <option value='neutral'>Neither Agree nor Disagree</option>
+        <option value='agree'>Agree</option>
+        <option value='strongagree'>Strongly Agree</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      What Letter Grade do YOU expect to make at MSU?
+    </td>
+    <td>
+      <select name='p7[]' id='p7q1' disabled="true">
+        <option value=''>----</option>
+        <option value='a'>A</option>
+        <option value='b'>B</option>
+        <option value='c'>C</option>
+        <option value='d'>D</option>
+        <option value='f'>F</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>   
+  </tr>
+
+  <tr class='ifNotGrad'>
+    <td>
+      What Letter Grade do your PARENT(S)/ GUARDIAN(S) expect you to make at MSU?
+    </td>
+    <td>
+      <select name='p7[]' id='p7q2' disabled="true">
+        <option value=''>----</option>
+        <option value='a'>A</option>
+        <option value='b'>B</option>
+        <option value='c'>C</option>
+        <option value='d'>D</option>
+        <option value='f'>F</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>   
+  </tr>
+
+  <tr>
+    <td>
+      What Letter Grade do your TEACHERS/ PROFESSORS expect you to make at MSU?
+    </td>
+    <td>
+      <select name='p7[]' id='p7q3' disabled="true">
+        <option value=''>----</option>
+        <option value='a'>A</option>
+        <option value='b'>B</option>
+        <option value='c'>C</option>
+        <option value='d'>D</option>
+        <option value='f'>F</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>   
+  </tr>
+
+  <tr>
+    <td>
+      What Letter Grade do your CLOSE FRIENDS expect you to make at MSU?
+    </td>
+    <td>
+      <select name='p7[]' id='p7q4' disabled="true">
+        <option value=''>----</option>
+        <option value='a'>A</option>
+        <option value='b'>B</option>
+        <option value='c'>C</option>
+        <option value='d'>D</option>
+        <option value='f'>F</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>   
+  </tr>
+
+  <tr>
+    <td>
+      What Letter Grade do your BROTHER(S)/ SISTER(S) expect you to make at MSU?
+    </td>
+    <td>
+      <select name='p7[]' id='p7q5' disabled="true">
+        <option value=''>----</option>
+        <option value='a'>A</option>
+        <option value='b'>B</option>
+        <option value='c'>C</option>
+        <option value='d'>D</option>
+        <option value='f'>F</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>   
+  </tr>
+
+  <tr>
+    <td>
+      What was your highest ACT Score?<br>
+      (-1 for Not Sure, -2 for No Comment)
+    </td>
+    <td>
+      <input name='p7[]' id='p7q6' type='number' min='-2' max='36' disabled="true">
+    </td>
+  </tr>
+
+  <tr>
+     <td>
+      What was your overall grade point average (GPA) in High School?<br>
+      (-1 for Not Sure, -2 for No Comment)
+    </td>
+    <td>
+      <input name='p7[]' id='p7q7' type='number' min='-2' max='5' disabled="true">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      What was your overall grade point average (GPA) in College?<br>
+      (-1 for Not Sure, -2 for No Comment)
+    <td>
+      <input name='p7[]' id='p7q8' type='number' min='-2' max='5' disabled="true">
+    </td>
+  </tr>
+
+  <tr class='ifNotGrad'>
+    <td>
+      How many on-line classes have you completed with a grade of less than "C" at MSU?<br>
+      (-1 for Not Sure, -2 for No Comment)
+    </td>
+    <td>
+      <input name='p7[]' id='p7q9' type='number' min='-2' max='50' disabled="true">
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Did you attend a Student Orientation session before starting college?
+    </td>
+    <td>
+      <select name='p8[]' id='p8q1' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifNotGrad ifOrientation'>
+    <td>
+      Did your parents (or guardians) attend an orientation session with you?
+    </td>
+    <td>
+      <select name='p8[]' id='p8q2' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifNotGrad'>
+    <td>
+      Do you share your grades with your parent(s) or legal guardian(s)?
+    </td>
+    <td>
+      <select name='p8[]' id='p8q3' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifNotGrad'>
+    <td>
+      Do your parents (or guardians) require you to maintain a certain GPA in college?
+    </td>
+    <td>
+      <select name='p8[]' id='p8q4' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Do you believe you were academically prepared for college?
+    </td>
+    <td>
+      <select name='p8[]' id='p8q5' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      I should have read more books before college. (1)
+    </td>
+    <td>
+      <select name='p8[]' id='p8q6' disabled="true">
+        <option value=''>----</option>
+        <option value='strongdisagree'>Strongly Disagree</option>
+        <option value='disagree'>Disagree</option>
+        <option value='neutral'>Neither Agree nor Disagree</option>
+        <option value='agree'>Agree</option>
+        <option value='strongagree'>Strongly Agree</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      I should have taken more math courses in high school. (2)
+    </td>
+    <td>
+      <select name='p8[]' id='p8q7' disabled="true">
+        <option value=''>----</option>
+        <option value='strongdisagree'>Strongly Disagree</option>
+        <option value='disagree'>Disagree</option>
+        <option value='neutral'>Neither Agree nor Disagree</option>
+        <option value='agree'>Agree</option>
+        <option value='strongagree'>Strongly Agree</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      I should have taken more science courses in high school. (3)
+    </td>
+    <td>
+      <select name='p8[]' id='p8q8' disabled="true">
+        <option value=''>----</option>
+        <option value='strongdisagree'>Strongly Disagree</option>
+        <option value='disagree'>Disagree</option>
+        <option value='neutral'>Neither Agree nor Disagree</option>
+        <option value='agree'>Agree</option>
+        <option value='strongagree'>Strongly Agree</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      I should have paid more attention in classes. (4)
+    </td>
+    <td>
+      <select name='p8[]' id='p8q9' disabled="true">
+        <option value=''>----</option>
+        <option value='strongdisagree'>Strongly Disagree</option>
+        <option value='disagree'>Disagree</option>
+        <option value='neutral'>Neither Agree nor Disagree</option>
+        <option value='agree'>Agree</option>
+        <option value='strongagree'>Strongly Agree</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      I should have worked harder on written assignments. (5)
+    </td>
+    <td>
+      <select name='p8[]' id='p8q10' disabled="true">
+        <option value=''>----</option>
+        <option value='strongdisagree'>Strongly Disagree</option>
+        <option value='disagree'>Disagree</option>
+        <option value='neutral'>Neither Agree nor Disagree</option>
+        <option value='agree'>Agree</option>
+        <option value='strongagree'>Strongly Agree</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      I should have worked with a tutor. (6)
+    </td>
+    <td>
+      <select name='p8[]' id='p8q11' disabled="true">
+        <option value=''>----</option>
+        <option value='strongdisagree'>Strongly Disagree</option>
+        <option value='disagree'>Disagree</option>
+        <option value='neutral'>Neither Agree nor Disagree</option>
+        <option value='agree'>Agree</option>
+        <option value='strongagree'>Strongly Agree</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      I should have enrolled in a program to improve studying skills.
+    </td>
+    <td>
+      <select name='p8[]' id='p8q12' disabled="true">
+        <option value=''>----</option>
+        <option value='strongdisagree'>Strongly Disagree</option>
+        <option value='disagree'>Disagree</option>
+        <option value='neutral'>Neither Agree nor Disagree</option>
+        <option value='agree'>Agree</option>
+        <option value='strongagree'>Strongly Agree</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Do you belong to any student organizations?
+    </td>
+    <td>
+      <select name='p9[]' id='p9q1' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifOrg'>
+    <td>
+      How many hours per week do you spend doing student organization related services or activities?<br>
+      (-1 for Not Sure, -2 for No Comment)
+    </td>
+    <td>
+      <input name='p9[]' id='p9q2' type='number' min='-2' max='168' disabled="true">
+    </td>
+  </tr> 
+
+  <tr class='ifOnCampusClass'>
+    <td>
+      Do you live on or off campus?
+    </td>
+    <td>
+      <select name='p9[]' id='p9q3' disabled="true">
+        <option value=''>----</option>
+        <option value='on'>On Campus</option>
+        <option value='off'>Off Campus</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifOnCampus'>
+    <td>
+      While attending college, do you live away from home?
+    </td>
+    <td>
+      <select name='p9[]' id='p9q4' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifAwayOrIfOnCampus'>
+    <td>
+      How many times per semester do you go home?  <br>
+      (-1 for Not Sure, -2 for No Comment)
+    </td>
+    <td>
+      <input name='p9[]' id='p9q5' type='number' min='-2' max='100' disabled="true">
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      On average, how many hours per week do you spend partying?<br>
+      (-1 for Not Sure, -2 for No Comment)
+    </td>
+    <td>
+      <input name='p9[]' id='p9q6' type='number' min='-2' max='168' disabled="true">
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Do you drink alcoholic beverages?
+    </td>
+    <td>
+      <select name='p9[]' id='p9q7' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  
+  <tr class="ifDrink">
+    <td>
+      On days that you drink, about how many drinks do you consume?  <br>
+      (-1 for Not Sure, -2 for No Comment)
+    </td>
+    <td>
+      <input name='p9[]' id='p9q8' type='number' min='-2' max='40' disabled="true">
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      On average, how many hours of sleep do you get on a weeknight?<br>
+      (-1 for Not Sure, -2 for No Comment)
+    </td>
+    <td>
+      <input name='p9[]' id='p9q9' type='number' min='-2' max='24' disabled="true">
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How many days per week do you exercise for at least 15 minutes?<br>
+      (-1 for Not Sure, -2 for No Comment)
+    </td>
+    <td>
+      <input name='p9[]' id='p9q10' type='number' min='-2' max='7' disabled="true">
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How many days during the week do you eat a nutritious (e.g., fruits, vegetable, nuts, lean meats etc) meal for breakfast?<br>
+      (-1 for Not Sure, -2 for No Comment)
+    </td>
+    <td>
+      <input name='p9[]' id='p9q11' type='number' min='-2' max='7' disabled="true">
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How many days during the week do you eat a nutritious (e.g., fruits, vegetable, nuts, lean meats etc) meal for lunch?<br>
+      (-1 for Not Sure, -2 for No Comment)
+    </td>
+    <td>
+      <input name='p9[]' id='p9q12' type='number' min='-2' max='7' disabled="true">
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How many days during the week do you eat a nutritious (e.g., fruits, vegetable, nuts, lean meats etc) meal for dinner?<br>
+      (-1 for Not Sure, -2 for No Comment)
+    </td>
+    <td>
+      <input name='p9[]' id='p9q13' type='number' min='-2' max='7' disabled="true">
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      For the next three items, please indicate, on average, how much time you spend  per day engaged in the  following activities:
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Social Media (Facebook, Twitter, Instagram…) 
+      1. Hours (1) ____________________
+
+      2. Minutes (2) ____________________
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+       Entertainment (TV, Games, Movies)
+      1. Hours (1) ____________________
+
+      2. Minutes (2) ____________________
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+       Personal Communication (Phone calls, Text messages, Emails)
+      1. Hours (1) ____________________
+
+      2. Minutes (2) ____________________
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+       In your opinion, what are the top three reasons students struggle in college?
+      Most Important Reason (1)
+      Second Most Important Reason (2)
+      Third Most Important Reason (3)
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+       In your opinion, what are the top three reasons students succeed in college?
+      Most Important Reason (1)
+      Second Most Important Reason (2)
+      Third Most Important Reason (3)
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+       What is your age?<br>
+       (-1 for Not Sure, -2 for No Comment)
+    </td>
+    <td>
+      <input name="p11[]" id='p11q1' type='number' min='-2' max='100' disabled="true">
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+       What is your gender?
+    </td>
+    <td>
+      <select name="p11[]" id='p11q2' disabled="true">
+        <option value=''>----</option>
+        <option value='female'>Female</option>
+        <option value='male'>Male</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+       Are you currently employed?
+    </td>
+    <td>
+      <select name="p11[]" id='p11q3' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifWork'>
+    <td>
+       Do you work on or off campus?
+    </td>
+    <td>
+      <select name="p11[]" id='p11q4' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifWork'>
+    <td>
+       On average, how many hours per week do you work?<br>
+       (-1 for Not Sure, -2 for No Comment)
+    </td>
+    <td>
+      <input name="p11[]" id='p11q5' type='number' min='-2' max='80' disabled="true">
+    </td>
+  </tr>
+
+  <tr class='ifWork'>
+    <td>
+       Do you work anytime between the hours of 5pm - 12am?
+    </td>
+    <td>
+      <select name="p11[]" id='p11q6' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+       What is the highest level of education completed by your mother?
+    </td>
+    <td>
+      <select name="p11[]" id='p11q7' disabled="true">
+        <option value=''>----</option>
+        <option value='none'>No formal education</option>
+        <option value='somehighschool'>Some High School or less</option>
+        <option value='highschool'>High School Diploma or GED</option>
+        <option value='somecollege'>Some college, did not complete degree</option>
+        <option value='associate'>Associate Degree</option>
+        <option value='bachelor'>Bachelor's Degree (B.S., B.A.)</option>
+        <option value='master'>Master's Degree (M.S., M.A)</option>
+        <option value='professional'>Professional Degree (MD, JD, EdD, PsyD, ect.)</option>
+        <option value='doctorate'>Doctorate Degree (Ph.D.)</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nodcomment'>No comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+       What is the highest level of education completed by your father?
+    </td>
+    <td>
+      <select name="p11[]" id='p11q8' disabled="true">
+        <option value=''>----</option>
+        <option value='none'>No formal education</option>
+        <option value='somehighschool'>Some High School or less</option>
+        <option value='highschool'>High School Diploma or GED</option>
+        <option value='somecollege'>Some college, did not complete degree</option>
+        <option value='associate'>Associate Degree</option>
+        <option value='bachelor'>Bachelor's Degree (B.S., B.A.)</option>
+        <option value='master'>Master's Degree (M.S., M.A)</option>
+        <option value='professional'>Professional Degree (MD, JD, EdD, PsyD, ect.)</option>
+        <option value='doctorate'>Doctorate Degree (Ph.D.)</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nodcomment'>No comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+       In general, how would you describe the racial mix of your high school?
+    </td>
+    <td>
+      <select name="p11[]" id='p11q9' disabled="true">
+        <option value=''>----</option>
+        <option value='black'>Majority Black</option>
+        <option value='white'>Majority White</option>
+        <option value='neutral'>About Equal</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+       Which category best describes your race?
+    </td>
+    <td>
+      <select name="p11[]" id='p11q10' disabled="true">
+        <option value=''>----</option>
+        <option value='black'>African American</option>
+        <option value='white'>White/ Caucasian</option>
+        <option value='asian'>Asian American</option>
+        <option value='hispanic'>Hispanic/ Latino(a)</option>
+        <option value='native'>Native American</option>
+        <option value='pasific'>Pacific Islander</option>
+        <option value='multi'>Multi-racial</option>
+        <option value='nocomment'>No comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+       Do you have friends of other ethnic groups?
+    </td>
+    <td>
+      <select name="p11[]" id='p11q11' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr class='ifNotGrad'>
+    <td>
+       Do you receive the Pell grant?
+    </td>
+    <td>
+      <select name="p11[]" id='p11q12' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+       While in high school, did you qualify for or receive free or reduced priced lunch?
+    </td>
+    <td>
+      <select name="p11[]" id='p11q13' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+       In your opinion, did the majority of students in your high school receive free or reduced priced lunch?
+    </td>
+    <td>
+      <select name="p11[]" id='p11q14' disabled="true">
+        <option value=''>----</option>
+        <option value='yes'>Yes</option>
+        <option value='no'>No</option>
+        <option value='notsure'>Not Sure</option>
+        <option value='nocomment'>No Comment</option>
+      </select>
+    </td>
+  </tr>
+</table>
+
+
+{% endblock %}

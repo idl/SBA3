@@ -1,5 +1,6 @@
-{% extends 'base.html' %}
+{% extends 'questions.html' %}
   {% block script %}
+    {{ block.super }}
     <script>
       $('document').ready(function() {
         $('#p2q1').val('{{request.session.p2.0}}');
@@ -17,7 +18,7 @@
     </script>
   {% endblock %}
 
-{% block body %}
+{% block table_body %}
   <tr>
     <td>
       While growing up, did you have a mentor?
@@ -166,7 +167,7 @@
       (-1 for Not Sure, -2 for No Comment)
     </td>
     <td>
-      <input name='p2[]' id='p2q11' type='number' min='-2' max='200'>
+      <input name='p2[]' id='p2q11' type='number' min='0' max='200'>
     </td>
   </tr>
 {% endblock %}

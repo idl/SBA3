@@ -1,5 +1,6 @@
-{% extends 'base.html' %}
+{% extends 'questions.html' %}
   {% block script %}
+    {{ block.super }}
     <script>
       $('document').ready(function() {
         $('#p8q1').val('{{request.session.p8.0}}');
@@ -17,7 +18,7 @@
     </script>
   {% endblock %}
 
-  {% block body %}
+  {% block table_body %}
     <tr>
       <td>
         Did you attend a Student Orientation session before starting college?
