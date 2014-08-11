@@ -8,8 +8,7 @@
       $('form').attr('action', '{% url "previous"%}');
     });
     $('#next').click(function() {
-      console.log($('select, input'));
-      if($('select, input').val() == '') {
+      if($('select, input').filter(':visible').val() == '') {
         e.preventDefault();
         $('#error').show();
       } else {
@@ -17,8 +16,7 @@
       }
     });
     $('#submit').click(function(e) {
-      console.log($('select, input').val());
-      if($('select, input').val() == '') {
+      if($('select, input').filter(':visible').val() == '') {
         e.preventDefault();
         $('#error').show();
       } else {
