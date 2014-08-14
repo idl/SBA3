@@ -10,6 +10,7 @@
 {% endblock %}
 </head>
 <body>
+<div class='wrapper'>
   <header>
     SBA-3
   </header>
@@ -18,8 +19,10 @@
     {% endblock %}
   </section>
   <footer>
-  {% block footer%}
-  {% endblock %}
   </footer>
+
+  {% block footer_script %}
+  {% endblock %}
+</div>
 </body>
 </html>
