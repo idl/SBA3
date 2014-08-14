@@ -9,3 +9,8 @@
   float: left;
   margin-left: 100px;
 }
+
+/* line 10, ../sass/main.scss */
+body {
+  background: red;
+}
