@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<!--[if lt IE 7]>      <html class='no-js lt-ie9 lt-ie8 lt-ie7'> <![endif]-->
+<!--[if IE 7]>         <html class='no-js lt-ie9 lt-ie8'> <![endif]-->
+<!--[if IE 8]>         <html class='no-js lt-ie9'> <![endif]-->
+<!--[if gt IE 8]><!--> <html class='no-js' lang='en'> <!--<![endif]-->
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
   <title>SBA-3 Survey</title>
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name='description' content=''>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
 
-  <link href="{{ STATIC_URL }}css/main.css" rel="stylesheet" media="screen">
+  <link href='{{ STATIC_URL }}css/main.css' rel='stylesheet' media='screen'>
 
   {% block header_script %}
   {% endblock %}
@@ -20,19 +20,21 @@
 </head>
 <body>
 <div class='container'>
-  <div class="row">
-    <div class="col-xs-12">
+  <div class='row'>
+    <div class='col-xs-12'>
       <header>
         <h1>SBA-3</h1>
       </header>
-      <section>
-        {% block body %}
-        {% endblock %}
-      </section>
-      <footer>
-      </footer>
     </div>
   </div>
+  <section>
+    <div class='row'>
+      <div class='col-xs-12'>
+          {% block body %}
+          {% endblock %}
+      </div>
+    </div>
+  </section>
 </div>
 
 <footer>
