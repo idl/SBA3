@@ -3,39 +3,37 @@ from ..models import Answers
 
 def previous(request):
     pagenum = int(request.POST.get('pagenum', 1))
-
     # Redirect
     if pagenum <= 1:
         return redirect('page', 1)
     else:
         return redirect('page', pagenum - 1)
 
+
 def next(request):
     pagenum = int(request.POST.get('pagenum', 1))
-
     # Get the answers and store them in the session
     array_name = "p" + str(request.POST.get('pagenum', 1))
     answer_array = request.POST.getlist(array_name + "[]")
     request.session[array_name] = answer_array
+    print "******************\*****************",request.session[array_name]
     for i in enumerate(request.session[array_name]):
         if i[1] == '':
             request.session['error'] = True
             return redirect('page', pagenum)
-
     # Redirect
     if pagenum >= 11:
         return redirect('page', 11)
     else:
         return redirect('page', pagenum + 1)
 
+
 def submit(request):
     array_name = "p11"
     answer_array = request.POST.getlist(array_name + "[]")
     request.session[array_name] = answer_array
-
     row = {}
     answer_array = []
-
     for pagenum in range(1,12):
         page = "p" + str(pagenum)
         try:
@@ -47,17 +45,14 @@ def submit(request):
             column = page + "q" + str(answernum)
             row[column] = answer
             answernum = answernum + 1
-
-
     submission = Answers(**row)
     submission.save()
-
     return redirect('report')
+
 
 def report(request):
     row = {}
     answer_array = []
-
     for pagenum in range(1,12):
         page = "p" + str(pagenum)
         try:
@@ -70,7 +65,5 @@ def report(request):
             column = page + "q" + str(answernum)
             row[column] = answer
             answernum = answernum + 1
-
     request.session.flush()
-
     return render(request, 'answers.html', {'row':row})
