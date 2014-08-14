@@ -1,12 +1,19 @@
-#next, #submit {
-    float: right;
-    margin-right: 100px;
-}
-#prev {
-    float: left;
-    margin-left: 100px;
+@import 'bootstrap';
+
+.wrapper {
+	table {
+		tr {
+			td {
+				select, input {
+					@extend .form-control;
+				}
+			}
+		}
+	}
 }
 
-body {
-	background:red;
+.next, .submit {
 }
+.prev {
+}
+
