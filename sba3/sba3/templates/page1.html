@@ -3,7 +3,6 @@
     {{ block.super }}
     <script>
       $('document').ready(function() {
-        console.log('request.session.p1.0');
         $('#p1q1').val('{{ request.session.p1.0 }}');
         $('#p1q2').val('{{ request.session.p1.1 }}');
         $('#p1q3').val('{{ request.session.p1.2 }}');

@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
 
-{% block script %}
+{% block fill_vals_script %}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script>
   $('document').ready(function() {
-  {% for question, answer in row.items %}
-    $('#{{ question }}').val('{{ answer }}');
-  {% endfor %}
+    {% for question, answer in row.items %}
+      $('#{{ question }}').val('{{ answer }}');
+    {% endfor %}
   });
 </script>
 {% endblock %}
