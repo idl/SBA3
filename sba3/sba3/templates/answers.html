@@ -5,7 +5,11 @@
 <script>
   $('document').ready(function() {
     {% for question, answer in row.items %}
-      $('#{{ question }}').val('{{ answer }}');
+      {% if answer == 'NA' %}
+        $('#{{ question }}').val('');
+      {% else %}
+        $('#{{ question }}').val('{{ answer }}');
+      {% endif %}
     {% endfor %}
   });
 </script>
