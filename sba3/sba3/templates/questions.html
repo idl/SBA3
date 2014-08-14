@@ -4,18 +4,18 @@
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
   <script>
   $('document').ready(function() {
-    $('#prev').click(function() {
+    $('.prev').click(function() {
       $('form').attr('action', '{% url "previous"%}');
     });
-    $('#next').click(function() {
+    $('.next').click(function() {
       if($('select, input').val() == '') {
         e.preventDefault();
-        $('#error').show();
+        $('.error').show();
       } else {
         $('form').attr('action', '{% url "next"%}');
       }
     });
-    $('#submit').click(function(e) {
+    $('.submit').click(function(e) {
       if($('select, input').val() == '') {
         e.preventDefault();
         $('#error').show();
@@ -38,15 +38,23 @@
       {% block table_body %}
       {% endblock %}
     </table>
-    <input type='hidden' name='pagenum' value='{{pagenum}}'>
-    {% if pagenum != "1" %}
-      <input type='submit' class='btn' id='prev' value='Previous'>
-    {% endif %}
-    {% if pagenum == "11" %}
-      <input type='submit' class='btn' id='submit' value='Submit'>
-    {% else %}
-      <input type='submit' class='btn' id='next' value='Next'>
-    {% endif %}
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-6">
+          <input type='hidden' name='pagenum' value='{{ pagenum }}'>
+          {% if pagenum != "1" %}
+            <input type='submit' class='btn prev' value='Previous'>
+          {% endif %}
+        </div>
+        <div class="col-xs-6">
+          {% if pagenum == "11" %}
+            <input type='submit' class='btn submit' value='Submit'>
+          {% else %}
+            <input type='submit' class='btn next' value='Next'>
+          {% endif %}
+        </div>
+      </div>
+    </div>
   </form>
 {% endblock %}
 

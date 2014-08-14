@@ -10,29 +10,32 @@
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link rel="stylesheet" href="{{ STATIC_URL }}css/normalize.css">
-  <link rel="stylesheet" href="{{ STATIC_URL }}css/main.css">
-  <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet" media="screen">
   <link href="{{ STATIC_URL }}css/main.css" rel="stylesheet" media="screen">
 
   {% block header_script %}
   {% endblock %}
+
+  {% block fill_vals_script %}
+  {% endblock %}
 </head>
 <body>
-<div class='wrapper row'>
-  <div class="col-xs-12">
-    <header>
-      SBA-3
-    </header>
-    <section>
-      {% block body %}
-      {% endblock %}
-    </section>
-    <footer>
-    </footer>
+<div class="wrapper">
+  <div class='container-fluid'>
+    <div class="row">
+      <div class="col-xs-12">
+        <header>
+          SBA-3
+        </header>
+        <section>
+          {% block body %}
+          {% endblock %}
+        </section>
+        <footer>
+        </footer>
+      </div>
+    </div>
   </div>
 </div>
-
 
 <footer>
 </footer>
