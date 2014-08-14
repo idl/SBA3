@@ -8073,7 +8073,21 @@ button.close {
     display: none !important;
   }
 }
-/* line 15, ../sass/main.scss */
+/* line 12, ../sass/main.scss */
+.container table tr:first-child td {
+  border-top: none;
+}
+
+/* line 20, ../sass/main.scss */
 h1 {
   font-size: 2em;
+}
+
+/* line 24, ../sass/main.scss */
+.error {
+  margin: 0;
+  padding: 8px;
+  background: rgba(255, 0, 0, 0.25);
+  border: 1px solid rgba(255, 0, 0, 0.5);
+  color: rgba(255, 0, 0, 0.75);
 }
