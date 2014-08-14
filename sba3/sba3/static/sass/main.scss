@@ -1,6 +1,6 @@
 @import 'bootstrap';
 
-.wrapper {
+.container {
 	table {
 		tr {
 			td {
@@ -10,6 +10,10 @@
 			}
 		}
 	}
+}
+
+h1 {
+	font-size: 2em;
 }
 
 .next, .submit {

@@ -16,7 +16,6 @@ def next(request):
     array_name = "p" + str(request.POST.get('pagenum', 1))
     answer_array = request.POST.getlist(array_name + "[]")
     request.session[array_name] = answer_array
-    print "******************\*****************",request.session[array_name]
     for i in enumerate(request.session[array_name]):
         if i[1] == '':
             request.session['error'] = True
