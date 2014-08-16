@@ -16,6 +16,7 @@ def next(request):
     array_name = "p" + str(request.POST.get('pagenum', 1))
     answer_array = request.POST.getlist(array_name + "[]")
     request.session[array_name] = answer_array
+    # Check for empty/blank fields
     for i in enumerate(request.session[array_name]):
         if i[1] == '':
             request.session['error'] = True
@@ -33,6 +34,11 @@ def submit(request):
     request.session[array_name] = answer_array
     row = {}
     answer_array = []
+    # Check for empty/blank fields
+    for i in enumerate(request.session[array_name]):
+        if i[1] == '':
+            request.session['error'] = True
+            return redirect('page', pagenum)
     for pagenum in range(1,12):
         page = "p" + str(pagenum)
         try:
@@ -64,5 +70,5 @@ def report(request):
             column = page + "q" + str(answernum)
             row[column] = answer
             answernum = answernum + 1
-    request.session.flush()
+    # request.session.flush()
     return render(request, 'answers.html', {'row':row})
