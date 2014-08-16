@@ -8,20 +8,10 @@
       $('form').attr('action', '{% url "previous"%}');
     });
     $('.next').click(function() {
-      if($('select, input').val() == '') {
-        e.preventDefault();
-        $('.error').show();
-      } else {
-        $('form').attr('action', '{% url "next"%}');
-      }
+      $('form').attr('action', '{% url "next"%}');
     });
     $('.submit').click(function(e) {
-      if($('select, input').val() == '') {
-        e.preventDefault();
-        $('#error').show();
-      } else {
-        $('form').attr('action', '{% url "submit"%}');
-      }
+      $('form').attr('action', '{% url "submit"%}');
     });
   });
   </script>
