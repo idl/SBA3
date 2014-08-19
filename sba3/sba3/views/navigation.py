@@ -11,6 +11,7 @@ def previous(request):
 
 
 def next(request):
+    print "\n\n--------DEBUG--------"
     pagenum = int(request.POST.get('pagenum', 1))
     # Get the answers and store them in the session
     array_name = "p" + str(request.POST.get('pagenum', 1))
@@ -38,7 +39,7 @@ def submit(request):
     for i in enumerate(request.session[array_name]):
         if i[1] == '':
             request.session['error'] = True
-            return redirect('page', pagenum)
+            # return redirect('page', pagenum)
     for pagenum in range(1,12):
         page = "p" + str(pagenum)
         try:
@@ -51,6 +52,7 @@ def submit(request):
             row[column] = answer
             answernum = answernum + 1
     submission = Answers(**row)
+    print Answers(**row)
     submission.save()
     return redirect('report')
 
@@ -64,11 +66,10 @@ def report(request):
             answer_array = request.session[page]
         except:
             return redirect('page', pagenum)
-            break
         answernum = 1
         for answer in answer_array:
             column = page + "q" + str(answernum)
             row[column] = answer
-            answernum = answernum + 1
-    # request.session.flush()
+            answernum += 1
+    request.session.flush()
     return render(request, 'answers.html', {'row':row})

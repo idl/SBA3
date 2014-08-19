@@ -5,8 +5,9 @@
 <script>
   $('document').ready(function() {
     {% for question, answer in row.items %}
-      {% if answer == 'NA' %}
-        $('#{{ question }}').val('');
+      {% if answer == 'NA' or answer == '-100' %}
+        $('#{{ question }} option:first-child').html('NA');
+        $('input#{{ question }}').attr('type', 'text').val('NA');
       {% else %}
         $('#{{ question }}').val('{{ answer }}');
       {% endif %}
