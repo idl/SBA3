@@ -15,7 +15,6 @@
     });
   });
   </script>
-  {% include 'script.html' %}
 {% endblock %}
 
 {% block body %}
@@ -32,15 +31,15 @@
     <div class="container-fluid">
       {% if pagenum != "1" %}
         <div class="row">
-          <div class="col-xs-6 text-right">
-            <input type='submit' class='btn prev' value='Previous'>
-          </div>
-          <div class="col-xs-6 text-left">
+          <div class="col-xs-6 text-left col-xs-push-6">
             {% if pagenum == "11" %}
               <input type='submit' class='btn submit' value='Submit'>
             {% else %}
               <input type='submit' class='btn next' value='Next'>
             {% endif %}
+          </div>
+          <div class="col-xs-6 text-right col-xs-pull-6">
+            <input type='submit' class='btn prev' value='Previous'>
           </div>
         </div>
       {% else %}
@@ -59,7 +58,6 @@
   <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/jquery-1.10.2.min.js"><\/script>')</script>
   <script type="text/javascript" src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
   <script type='text/javascript' src='{{STATIC_URL}}js/skiplogic.js'></script>
-
   <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
   <script>
   (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
@@ -69,4 +67,6 @@
   r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
   ga('create','UA-XXXXX-X');ga('send','pageview');
   </script>
+  <!-- KEEP SCRIPT LAST -->
+  {% include 'script.html' %}
 {% endblock %}
