@@ -66,6 +66,12 @@ def page(request, pagenum):
     else:
         return redirect('page', 11)
 
+def login(request):
+	return render(request, 'login.html')
+
+def logout(request):
+	return render(request, 'logout.html')
+
 def clearSession(request):
     request.session.flush()
     return redirect('page', 1)

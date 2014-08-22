@@ -1,19 +1,16 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns, url, include
 
-from django.contrib import admin
-admin.autodiscover()
+urlpatterns = patterns('',
+    url(r'^questions$', 'sba3.views.questions', name='questions'),
+    url(r'^page/(?P<pagenum>[0-9]{1,2})$', 'sba3.views.page', name='page'),
+    url(r'^previous$', 'sba3.views.previous' , name='previous'),
+    url(r'^next$', 'sba3.views.next' , name='next'),
+    url(r'^submit$', 'sba3.views.submit' , name='submit'),
+    url(r'^clear$', 'sba3.views.clearSession', name='clear'),
+    url(r'^report$', 'sba3.views.report', name='report'),
 
-urlpatterns = patterns('sba3.views',
-    # Examples:
-    # url(r'^$', 'sba3.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
+    url(r'^admin/', include('admin_custom.urls')),
+    url(r'^login$', 'sba3.views.login', name='login'),
+    url(r'^logout$', 'sba3.views.logout', name='logout'),
 
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'^questions$', 'questions', name='questions'),
-    url(r'^page/(?P<pagenum>[0-9]{1,2})$', 'page', name='page'),
-    url(r'^previous$', 'previous' , name='previous'),
-    url(r'^next$', 'next' , name='next'),
-    url(r'^submit$', 'submit' , name='submit'),
-    url(r'^clear$', 'clearSession', name='clear'),
-    url(r'^report$', 'report', name='report')
 )
