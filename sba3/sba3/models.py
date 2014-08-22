@@ -2,8 +2,14 @@ from django.db import models
 
 # Create your models here.
 
-class Answers(models.Model):
-    user_id = models.CharField(max_length=10, db_index = True)
+class School(models.Model):
+    name = models.CharField(max_length=50)
+    def __unicode__(self):
+        return "Answer Set"
+
+class AnswerSet(models.Model):
+    user_id = models.CharField(max_length=10, db_index=True, editable=False)
+    school = models.ForeignKey(School)
     p1q1 = models.CharField(max_length=20)
     p1q2 = models.CharField(max_length=20)
     p1q3 = models.CharField(max_length=20)
@@ -120,3 +126,6 @@ class Answers(models.Model):
     p11q12 = models.CharField(max_length=20)
     p11q13 = models.CharField(max_length=20)
     p11q14 = models.CharField(max_length=20)
+
+    def __unicode__(self):
+    	return "Answer Set"

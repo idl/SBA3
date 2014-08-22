@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from ..models import Answers
+from ..models import AnswerSet
 
 def previous(request):
     pagenum = int(request.POST.get('pagenum', 1))
