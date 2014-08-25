@@ -10,6 +10,7 @@ urlpatterns = patterns('',
     url(r'^report$', 'sba3.views.report', name='report'),
 
     url(r'^admin', include('admin_custom.urls')),
-    url(r'^login$', 'sba3.views.login', name='login'),
-    url(r'^logout$', 'sba3.views.logout', name='logout'),
+    url(r'^login$', 'sba3.views.login_view'),
+    url(r'^logout$', 'sba3.views.logout_view'),
+
 )
