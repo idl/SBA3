@@ -66,10 +66,10 @@ def page(request, pagenum):
     else:
         return redirect('page', 11)
 
-def login(request):
-	return render(request, 'admin_custom/login.html')
+def login_view(request):
+	return redirect('admin_custom.views.admin_index')
 
-def logout(request):
+def logout_view(request):
 	return redirect('admin_custom.views.logout')
 
 def clearSession(request):

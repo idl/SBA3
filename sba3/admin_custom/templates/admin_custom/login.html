@@ -5,6 +5,11 @@
 	<div class="col-xs-6 columns center-block">
 		<form action="/admin/login" method="post" role="form">
 			{% csrf_token %}
+			{% for field in form %}
+				<div class="form-group">
+					<label for="{{  }}"></label>
+				</div>
+			{% endfor %}
 			<div class="form-group">
 				<label for="email">Email address</label>
 				<input type="email" class="form-control" id="email" name="email" placeholder="">
