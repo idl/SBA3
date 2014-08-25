@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from ..models import Answers
+from ..models import AnswerSet
 
 def previous(request):
     pagenum = int(request.POST.get('pagenum', 1))
@@ -17,6 +17,7 @@ def next(request):
     array_name = "p" + str(request.POST.get('pagenum', 1))
     answer_array = request.POST.getlist(array_name + "[]")
     request.session[array_name] = answer_array
+    print str(enumerate(request.session[array_name]))
     # Check for empty/blank fields
     for i in enumerate(request.session[array_name]):
         if i[1] == '':
@@ -51,8 +52,8 @@ def submit(request):
             column = page + "q" + str(answernum)
             row[column] = answer
             answernum = answernum + 1
-    submission = Answers(**row)
-    print Answers(**row)
+    submission = AnswerSet(**row)
+    print AnswerSet(**row)
     submission.save()
     return redirect('report')
 
