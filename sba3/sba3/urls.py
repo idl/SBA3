@@ -9,8 +9,7 @@ urlpatterns = patterns('',
     url(r'^clear$', 'sba3.views.clearSession', name='clear'),
     url(r'^report$', 'sba3.views.report', name='report'),
 
-    url(r'^admin/', include('admin_custom.urls')),
+    url(r'^admin', include('admin_custom.urls')),
     url(r'^login$', 'sba3.views.login', name='login'),
     url(r'^logout$', 'sba3.views.logout', name='logout'),
-
 )
