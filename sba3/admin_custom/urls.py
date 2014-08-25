@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, url, include
 
-urlpatterns = patterns('',
-    url(r'^/?$', 'admin_custom.views.admin_index', name='admin_index'),
-    url(r'^/login$', 'admin_custom.views.login', name='login'),
-    url(r'^/logout$', 'admin_custom.views.logout', name='logout'),
+urlpatterns = patterns('admin_custom.views',
+    url(r'^/?$', 'admin_index', name='admin_index'),
+    url(r'^/login$', 'login_view', name='login'),
+    url(r'^/logout$', 'logout_view', name='logout'),
 )

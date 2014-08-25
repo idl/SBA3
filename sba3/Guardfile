@@ -1,0 +1,6 @@
+# A sample Guardfile
+# More info at https://github.com/guard/guard#readme
+
+guard 'livereload', grace_period: 0.05 do
+  watch(%r{sba3/static/.+\.(html|css|js|py)$})
+end

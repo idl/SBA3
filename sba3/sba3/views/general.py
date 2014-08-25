@@ -67,10 +67,10 @@ def page(request, pagenum):
         return redirect('page', 11)
 
 def login(request):
-	return render(request, 'login.html')
+	return render(request, 'admin_custom/login.html')
 
 def logout(request):
-	return render(request, 'logout.html')
+	return redirect('admin_custom.views.logout')
 
 def clearSession(request):
     request.session.flush()
