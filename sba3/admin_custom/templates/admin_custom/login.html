@@ -3,11 +3,12 @@
 {% block body %}
 <div class="row">
 	<div class="col-xs-6 columns center-block login-container">
-		<form action="/admin/login" method="post" role="form">
+		<form action="" method="post" role="form">
 			{% csrf_token %}
 			<div class="form-group">
 				<label for="email">Email address</label>
-				<input type="email" class="form-control" id="email" name="email" placeholder="">
+				<input type="text" class="form-control" id="email" name="email" placeholder="">
+				^^^ CHANGE TO type='email' !!!
 			</div>
 			<div class="form-group">
 				<label for="password">Password</label>
