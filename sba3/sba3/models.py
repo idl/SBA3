@@ -3,12 +3,16 @@ from django.db import models
 # Create your models here.
 
 class School(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=75, blank=False)
+    email = models.EmailField(unique=True, blank=False)
+    location = models.CharField(max_length=125, help_text="Please enter the city and state of your school.")
+
     def __unicode__(self):
         return "School"
 
 class AnswerSet(models.Model):
     school = models.ForeignKey(School, null=True)
+    uid = models.CharField(max_length=10, blank=False)
     p1q1 = models.CharField(max_length=20)
     p1q2 = models.CharField(max_length=20)
     p1q3 = models.CharField(max_length=20)
