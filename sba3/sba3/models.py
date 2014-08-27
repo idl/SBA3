@@ -5,11 +5,10 @@ from django.db import models
 class School(models.Model):
     name = models.CharField(max_length=50)
     def __unicode__(self):
-        return "Answer Set"
+        return "School"
 
 class AnswerSet(models.Model):
-    user_id = models.CharField(max_length=10, db_index=True, editable=False)
-    school = models.ForeignKey(School)
+    school = models.ForeignKey(School, null=True)
     p1q1 = models.CharField(max_length=20)
     p1q2 = models.CharField(max_length=20)
     p1q3 = models.CharField(max_length=20)

@@ -49,7 +49,7 @@ def submit(request):
             answernum = answernum + 1
 
 
-    submission = Answers(**row)
+    submission = AnswerSet(**row)
     submission.save()
 
     return redirect('report')

@@ -1,4 +1,6 @@
 from django.conf.urls import patterns, url, include
+from django.contrib import admin
+admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^questions$', 'sba3.views.questions', name='questions'),
@@ -9,8 +11,5 @@ urlpatterns = patterns('',
     url(r'^clear$', 'sba3.views.clearSession', name='clear'),
     url(r'^report$', 'sba3.views.report', name='report'),
 
-    url(r'^admin', include('admin_custom.urls')),
-    url(r'^login$', 'sba3.views.login_view'),
-    url(r'^logout$', 'sba3.views.logout_view'),
-
+    url(r'^admin/?', include(admin.site.urls)),
 )
