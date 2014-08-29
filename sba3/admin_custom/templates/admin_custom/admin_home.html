@@ -1,5 +1,6 @@
-{% extends "admin_custom/base.html" %}
+{% extends "base.html" %}
 
 {% block body %}
-This is admin home.
+	Authenticated? <b>{% if is_authenticated %}YES{% else %}NO{% endif %}</b><br><br>
+	Admin home
 {% endblock %}

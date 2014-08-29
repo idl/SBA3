@@ -67,10 +67,10 @@ def page(request, pagenum):
         return redirect('page', 11)
 
 def login_view(request):
-	return redirect('admin_custom.views.admin_index')
+	return redirect('admin_custom.views.login_view')
 
 def logout_view(request):
-	return redirect('admin_custom.views.logout')
+	return redirect('admin_custom.views.logout_view')
 
 def clearSession(request):
     request.session.flush()
