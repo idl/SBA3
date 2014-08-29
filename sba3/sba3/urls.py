@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, url, include
 from django.contrib import admin
+from sba3.admin_custom import urls
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -12,4 +13,6 @@ urlpatterns = patterns('',
     url(r'^report$', 'sba3.views.report', name='report'),
 
     url(r'^admin/?', include(admin.site.urls)),
+
+    url(r'^admincustom/?', include(admin.site.urls)),
 )
