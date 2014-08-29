@@ -15,27 +15,28 @@ def dbprint(input_str):
 	print output_str
 
 # Create your views here.
-def admin_index(request):
-	print "At admin_index view"
-	login(request, authenticate(username="admin", password="admin"))
-	if not request.user.is_authenticated():
-		dbprint("Not authenticated. Redirecting to admin_custom.views.login_view")
+def admin_home(request):
+	is_authenticated = request.user.is_authenticated()
+	dbprint("Authenticated? " + str(is_authenticated))
+	if not is_authenticated:
 		return redirect('admin_custom.views.login_view')
+	return render(request, 'admin_custom/admin_home.html', { "is_authenticated": is_authenticated})
 
 def login_view(request):
-	print authenticate(username="admin", password="admin")
 	if request.user.is_authenticated():
-		dbprint("User is logged in. Redirecting to admin_custom.views.admin_index")
-		return redirect('admin_custom.views.admin_index')
+		return redirect('admin_custom.views.admin_home')
 
 	if request.POST:
 		email = request.POST['email'].strip()
 		password = request.POST['password'].strip()
 		user = authenticate(username=email, password=password)
 		if user:
-			dbprint("Authenticated!!!")
+			login(request, user)
+			dbprint("Authenticated. Redirecting to admin_home")
+			return redirect('admin_custom.views.admin_home')
 		else:
-			dbprint("Not authenticated!!!")
+			dbprint("Not authenticated. Reloading")
+			return render(request, 'admin_custom/login.html', { 'login_err': True})
 	return render(request, 'admin_custom/login.html')
 
 def logout_view(request):
