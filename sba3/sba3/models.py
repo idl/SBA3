@@ -1,14 +1,13 @@
 from django.db import models
-
-# Create your models here.
+from .settings import AUTH_USER_MODEL
 
 class School(models.Model):
     name = models.CharField(max_length=75, blank=False)
     email = models.EmailField(unique=True, blank=False)
-    location = models.CharField(max_length=125, help_text="Please enter the city and state of your school.")
-
+    location = models.CharField(max_length=125, help_text='Please enter the city and state of your school.')
+    user = models.OneToOneField(AUTH_USER_MODEL)
     def __unicode__(self):
-        return "School"
+        return 'School'
 
 class AnswerSet(models.Model):
     school = models.ForeignKey(School, null=True)
@@ -131,4 +130,4 @@ class AnswerSet(models.Model):
     p11q14 = models.CharField(max_length=20)
 
     def __unicode__(self):
-    	return "Answer Set"
+    	return 'Answer Set'
