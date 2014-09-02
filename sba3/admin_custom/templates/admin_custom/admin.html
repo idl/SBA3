@@ -1,0 +1,40 @@
+{% extends "admin_custom/base.html" %}
+
+{% block header %}
+	<header>
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12 page-header">
+					<h1>SBA-3 <small>{{ request.user.username }}</small></h1>
+				</div>
+			</div>
+		</div>
+	</header>
+{% endblock %}
+
+{% block admin_page %}
+	<div class="row admin-page">
+		<div class="col-sm-3 col-md-3">
+			<ul class="nav nav-pills nav-stacked" role="tablist">
+			  <li class="active"><a href="#home" role="tab" data-toggle="pill">Home</a></li>
+			  <li><a href="#users" role="tab" data-toggle="pill">Users</a></li>
+			  <li><a href="#surveys" role="tab" data-toggle="pill">Surveys</a></li>
+			  <li><a href="#settings" role="tab" data-toggle="pill">Account Settings</a></li>
+			</ul>
+		</div>
+		<div class="col-sm-9 col-md-9 tab-content">
+			<div class="tab-pane home active" id="home">{% include 'admin_home.html' %}</div>
+			<div class="tab-pane users" id="users">{% include 'users.html' %}</div>
+			<div class="tab-pane surveys" id="surveys">3</div>
+			<div class="tab-pane settings" id="settings">4</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block tab_script %}
+	<script>
+		$('.nav li a').click(function() {
+			$(this).tab('show');
+		});
+	</script>
+{% endblock %}
