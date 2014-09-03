@@ -1,19 +1,26 @@
-from django.conf.urls import patterns, include, url
-
+from django.conf.urls import patterns, url, include
 from django.contrib import admin
+from django.conf import settings
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from admin_custom import urls as admin_custom_urls
+
 admin.autodiscover()
 
 urlpatterns = patterns('sba3.views',
-    # Examples:
-    # url(r'^$', 'sba3.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
-
-    url(r'^admin/', include(admin.site.urls)),
     url(r'^questions$', 'questions', name='questions'),
     url(r'^page/(?P<pagenum>[0-9]{1,2})$', 'page', name='page'),
     url(r'^previous$', 'previous' , name='previous'),
     url(r'^next$', 'next' , name='next'),
     url(r'^submit$', 'submit' , name='submit'),
     url(r'^clear$', 'clearSession', name='clear'),
-    url(r'^report$', 'report', name='report')
+    url(r'^report$', 'report', name='report'),
+
+    url(r'^admin2', include(admin.site.urls)),
+
+    url(r'^admin', include(admin_custom_urls)),
+    url(r'^login', 'login_view'),
+    url(r'^logout', 'logout_view'),
 )
+
+if settings.DEBUG:
+    urlpatterns += staticfiles_urlpatterns()

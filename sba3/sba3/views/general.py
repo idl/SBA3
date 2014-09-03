@@ -15,6 +15,9 @@ def page(request, pagenum):
     ctx = {'pagenum': pagenum, 'error': error}
     if pagenum=='1':
         return render(request, 'page1.html', ctx)
+    print("******************** " + pagenum)
+    if pagenum=='1':
+        return render(request, 'page1.html', {'pagenum': 5, 'error': error})
     elif pagenum=='2':
         if 'p1' in request.session:
             return render(request, 'page2.html', ctx)
@@ -68,6 +71,13 @@ def page(request, pagenum):
     else:
         return redirect('page', 11)
 
+def login_view(request):
+	return redirect('admin_custom.views.login_view')
+
+def logout_view(request):
+	return redirect('admin_custom.views.logout_view')
+
 def clearSession(request):
     request.session.flush()
     return redirect('page', 1)
+    

@@ -15,6 +15,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'sba3/templates'),
+    os.path.join(BASE_DIR, 'admin_custom/templates/admin_custom'),
 )
 
 STATIC_DIRS = (
@@ -44,7 +45,10 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.redirects',
+    'django.contrib.sites',
     'sba3',
+    'admin_custom',
     'debug_toolbar',
 )
 
@@ -53,20 +57,27 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.RemoteUserMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = {
-    "django.contrib.auth.context_processors.auth",
-    "django.core.context_processors.debug",
-    "django.core.context_processors.i18n",
-    "django.core.context_processors.media",
-    "django.core.context_processors.static",
-    "django.core.context_processors.tz",
-    "django.contrib.messages.context_processors.messages",
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'django.core.context_processors.static',
+    'django.core.context_processors.tz',
+    'django.contrib.messages.context_processors.messages',
     'django.core.context_processors.request',
+
 }
+
+# AUTHENTICATION_BACKENDS = (
+#     'django.contrib.auth.backends.RemoteUserBackend',
+# )
 
 ROOT_URLCONF = 'sba3.urls'
 
@@ -109,9 +120,16 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
+AUTH_USER_MODEL = 'admin_custom.User'
+
+# Static files (CSS, JavaScript, Images)e
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_ROOT = os.path.join(BASE_DIR,'/sba3/static/')
 STATIC_URL = '/static/'
-LOGIN_URL = '/login'
+LOGIN_URL = '/admin/login/'
+
+# http://stackoverflow.com/questions/20984560/django-allauth-site-id-error
+SITE_ID = 1
+# Change default user model
+AUTH_USER_MODEL = 'admin_custom.User'
