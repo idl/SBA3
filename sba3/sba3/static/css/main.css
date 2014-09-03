@@ -8096,3 +8096,41 @@ h1 {
 tr[class^='if'], tr[class^='if'] {
   background: lightblue;
 }
+
+.login-container {
+	padding: 1em;
+	float: none;
+	background: #efefef;
+}
+	.login-container .login_err {
+		margin-bottom: 1em;
+		padding: 0.5em;
+		background: rgba(255, 0, 0, 0.25);
+		border: 1px solid rgba(255, 0, 0, 0.5);
+	}
+
+
+.page-header .logout {
+	margin-top: 2.5em;
+}
+
+.admin-page {
+}
+	.admin-page .tab-pane {
+	}
+		.admin-page .tab-pane h3 {
+			margin-top: 0;
+		}
+
+	.admin-page .home {
+	}
+		.admin-page .tab-pane.home .panel {
+		}
+
+	.admin-page .tab-pane .panel {
+	}
+	.login-container .error {
+		margin-bottom: 1em;
+		background: rgba(255, 0, 0, 0.25);
+		border: 1px solid rgba(255, 0, 0, 0.5);
+	}

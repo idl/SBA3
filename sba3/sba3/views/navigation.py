@@ -54,6 +54,9 @@ def submit(request):
             answernum = answernum + 1
     submission = AnswerSet(**row)
     print AnswerSet(**row)
+
+
+    submission = AnswerSet(**row)
     submission.save()
     return redirect('report')
 
