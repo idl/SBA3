@@ -1,2 +1,9 @@
 *.pyc
-./sba3/db.sqlite3
+db.sqlite3
+
+.sass-cache/
+.DS_Store
+
+Gemfile
+Gemfile.lock
+Guardfile

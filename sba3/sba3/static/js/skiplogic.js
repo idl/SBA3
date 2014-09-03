@@ -1,184 +1,195 @@
   $('document').ready(function() {
     // classification
-    $('#p1q1').on('change', function() {
+    $('#p1q1').change(function() {
       if($(this).val() == 'master' || $(this).val() == 'doctorate') {
-        $('.ifNotGrad').hide(); //.css('background', 'red'); 
+        $('.ifNotGrad').css('background', 'red'); //.hide(); //
         $('.ifNotGrad select option:first-child').val('NA');
         $('.ifNotGrad select').val('NA');
-        $('.ifNotGrad input').val(0);
+        $('.ifNotGrad input').attr('min', -100).val(-100);
       } else {
-        $('.ifNotGrad').show(); //.css('background', 'white')
+        $('.ifNotGrad').show().css('background', 'lightblue');
         $('.ifNotGrad select option:first-child').val('');
         $('.ifNotGrad select').val('');
-        $('.ifNotGrad input').val('');
+        $('.ifNotGrad input').attr('min', -2).val('');
       }
     });
     // isDistance
-    $('#p1q4').on('change', function() {
+    $('#p1q4').change(function() {
       if($(this).val() == 'yes') {
-        $('.ifDistance').show(); //.css('background', 'white')
+        $('.ifDistance').show().css('background', 'lightblue');
         $('.ifDistance select option:first-child').val('');
         $('.ifDistance select').val('');
-        $('.ifDistance input').val('');
+        $('.ifDistance input').attr('min', -2).val('');
       } else {
-        $('.ifDistance').hide(); //.css('background', 'red'); 
+        $('.ifDistance').css('background', 'red'); //.hide(); //
         $('.ifDistance select option:first-child').val('NA');
         $('.ifDistance select').val('NA');
-        $('.ifDistance input').val(0);
+        $('.ifDistance input').attr('min', -100);
+        $('.ifDistance input').val(-100);
       }
     });
     // isOnCampusClass
-    $('#p1q5').on('change', function() {
+    $('#p1q5').change(function() {
       if($(this).val() == 'yes') {
-        $('.ifOnCampusClass').show(); //.css('background', 'white')
+        $('.ifOnCampusClass').show().css('background', 'lightblue');
         $('.ifOnCampusClass select option:first-child').val('');
         $('.ifOnCampusClass select').val('');
-        $('.ifOnCampusClass input').val('');
+        $('.ifOnCampusClass input').attr('min', -2).val('');
       } else {
-        $('.ifOnCampusClass').hide(); //.css('background', 'red'); 
+        $('.ifOnCampusClass').css('background', 'red'); //.hide(); //
         $('.ifOnCampusClass select option:first-child').val('NA');
         $('.ifOnCampusClass select').val('NA');
-        $('.ifOnCampusClass input').val(0);
+        $('.ifOnCampusClass input').attr('min', -100);
+        $('.ifOnCampusClass input').val(-100);
       }
     });
     // isTutoring
-    $('#p3q1').on('change', function() {
+    $('#p3q1').change(function() {
       if($(this).val() == 'yes') {
-        $('.ifTutoring').show(); //.css('background', 'white')
+        $('.ifTutoring').show().css('background', 'lightblue');
         $('.ifTutoring select option:first-child').val('');
         $('.ifTutoring select').val('');
-        $('.ifTutoring input').val('');
+        $('.ifTutoring input').attr('min', -2).val('');
 
-        $('.ifNotTutoring').hide(); //.css('background', 'red'); 
+        $('.ifNotTutoring').css('background', 'red'); //.hide(); //
         $('.ifNotTutoring select option:first-child').val('NA');
         $('.ifNotTutoring select').val('NA');
-        $('.ifNotTutoring input').val(0);
+        $('.ifNotTutoring input').attr('min', -2).val('');
       } else {
-        $('.ifTutoring').hide(); //.css('background', 'red'); 
+        $('.ifTutoring').css('background', 'red'); //.hide(); //
         $('.ifTutoring select option:first-child').val('NA');
         $('.ifTutoring select').val('NA');
-        $('.ifTutoring input').val(0);
+        $('.ifTutoring input').attr('min', -100);
+        $('.ifTutoring input').val(-100);
 
-        $('.ifNotTutoring').show(); //.css('background', 'white')
+        $('.ifNotTutoring').show().css('background', 'lightblue');
         $('.ifNotTutoring select option:first-child').val('');
         $('.ifNotTutoring select').val('');
-        $('.ifNotTutoring input').val('');
+        $('.ifNotTutoring input').attr('min', -2).val('');
       }
     });
     // didOrientation
-    $('#p8q1').on('change', function() {
+    $('#p8q1').change(function() {
       if($(this).val() == 'yes') {
-        $('.ifOrientation').show(); //.css('background', 'white')
+        $('.ifOrientation').show().css('background', 'lightblue');
         $('.ifOrientation select option:first-child').val('');
         $('.ifOrientation select').val('');
-        $('.ifOrientation input').val('');
+        $('.ifOrientation input').attr('min', -2).val('');
       } else {
-        $('.ifOrientation').hide(); //.css('background', 'red'); 
+        $('.ifOrientation').css('background', 'red'); //.hide(); //
         $('.ifOrientation select option:first-child').val('NA');
         $('.ifOrientation select').val('NA');
-        $('.ifOrientation input').val(0);
+        $('.ifOrientation input').attr('min', -100);
+        $('.ifOrientation input').val(-100);
       }
     });
     // isOrg
-    $('#p9q1').on('change', function() {
+    $('#p9q1').change(function() {
       if($(this).val() == 'yes') {
-        $('.ifOrg').show(); //.css('background', 'white')
+        $('.ifOrg').show().css('background', 'lightblue');
         $('.ifOrg select option:first-child').val('');
         $('.ifOrg select').val('');
-        $('.ifOrg input').val('');
+        $('.ifOrg input').attr('min', -2).val('');
       } else {
-        $('.ifOrg').hide(); //.css('background', 'red'); 
+        $('.ifOrg').css('background', 'red'); //.hide(); //
         $('.ifOrg select option:first-child').val('NA');
         $('.ifOrg select').val('NA');
-        $('.ifOrg input').val(0);
+        $('.ifOrg input').attr('min', -100);
+        $('.ifOrg input').val(-100);
       }
     });
     // isOnCampus
-    $('#p9q3').on('change', function() {
+    $('#p9q3').change(function() {
       if($(this).val() == 'on') {
-        $('.ifOnCampus').hide(); //.css('background', 'red'); 
+        $('.ifOnCampus').css('background', 'red'); //.hide(); //
         $('.ifOnCampus select option:first-child').val('NA');
         $('.ifOnCampus select').val('NA');
-        $('.ifOnCampus input').val(0);
+        $('.ifOnCampus input').attr('min', -100);
+        $('.ifOnCampus input').val(-100);
 
-        $('.ifNotOnCampus').show(); //.css('background', 'white')
+        $('.ifNotOnCampus').show().css('background', 'lightblue');
         $('.ifNotOnCampus select option:first-child').val('');
         $('.ifNotOnCampus select').val('');
-        $('.ifNotOnCampus input').val('');
+        $('.ifNotOnCampus input').attr('min', -2).val('');
       } else {
-        $('.ifOnCampus').show(); //.css('background', 'white')
+        $('.ifOnCampus').show().css('background', 'lightblue');
         $('.ifOnCampus select option:first-child').val('');
         $('.ifOnCampus select').val('');
-        $('.ifOnCampus input').val('');
+        $('.ifOnCampus input').attr('min', -2).val('');
 
-        $('.ifNotOnCampus').hide(); //.css('background', 'red'); 
+        $('.ifNotOnCampus').css('background', 'red'); //.hide(); //
         $('.ifNotOnCampus select option:first-child').val('NA');
         $('.ifNotOnCampus select').val('NA');
-        $('.ifNotOnCampus input').val(0);
+        $('.ifNotOnCampus input').attr('min', -100);
+        $('.ifNotOnCampus input').val(-100);
       }
       if($(this).val() == 'on' || $('#isAway').val() == 'yes')  {
-        $('.ifAwayOrIfOnCampus').show(); //.css('background', 'white')
+        $('.ifAwayOrIfOnCampus').show().css('background', 'lightblue');
         $('.ifAwayOrIfOnCampus select option:first-child').val('');
         $('.ifAwayOrIfOnCampus select').val('');
-        $('.ifAwayOrIfOnCampus input').val('');
+        $('.ifAwayOrIfOnCampus input').attr('min', -2).val('');
       } else {
-        $('.ifAwayOrIfOnCampus').hide(); //.css('background', 'red'); 
+        $('.ifAwayOrIfOnCampus').css('background', 'red'); //.hide(); //
         $('.ifAwayOrIfOnCampus select option:first-child').val('NA');
         $('.ifAwayOrIfOnCampus select').val('NA');
-        $('.ifAwayOrIfOnCampus input').val(0);
+        $('.ifAwayOrIfOnCampus input').attr('min', -100);
+        $('.ifAwayOrIfOnCampus input').val(-100);
       }
     });
     // isAway
-    $('#p9q4').on('change', function() {
+    $('#p9q4').change(function() {
       if($(this).val() == 'no') {
-        $('.ifAway').hide(); //.css('background', 'red'); 
+        $('.ifAway').css('background', 'red'); //.hide(); //
         $('.ifAway select option:first-child').val('NA');
         $('.ifAway select').val('NA');
-        $('.ifAway input').val(0);
+        $('.ifAway input').attr('min', -100).val(-100);
       } else {
-        $('.ifAway').show(); //.css('background', 'white')
+        $('.ifAway').show().css('background', 'lightblue');
         $('.ifAway select option:first-child').val('');
         $('.ifAway select').val('');
-        $('.ifAway input').val('');
+        $('.ifAway input').attr('min', -2).val('');
       }
       if($(this).val() == 'yes' || $('#isOnCampus').val() == 'on')  {
-        $('.ifAwayOrIfOnCampus').show(); //.css('background', 'white')
+        $('.ifAwayOrIfOnCampus').show().css('background', 'lightblue');
         $('.ifAwayOrIfOnCampus select option:first-child').val('');
         $('.ifAwayOrIfOnCampus select').val('');
-        $('.ifAwayOrIfOnCampus input').val('');
+        $('.ifAwayOrIfOnCampus input').attr('min', -2).val('');
       } else {
-        $('.ifAwayOrIfOnCampus').hide(); //.css('background', 'red'); 
+        $('.ifAwayOrIfOnCampus').css('background', 'red'); //.hide(); //
         $('.ifAwayOrIfOnCampus select option:first-child').val('NA');
         $('.ifAwayOrIfOnCampus select').val('NA');
-        $('.ifAwayOrIfOnCampus input').val(0);
+        $('.ifAwayOrIfOnCampus input').attr('min', -100);
+        $('.ifAwayOrIfOnCampus input').val(-100);
       }
     });
     // doesDrink
-    $('#p9q7').on('change', function() {
+    $('#p9q7').change(function() {
       if($(this).val() == 'yes') {
-          $('.ifDrink').show(); //.css('background', 'white')
+        $('.ifDrink').show().css('background', 'lightblue');
         $('.ifDrink select option:first-child').val('');
         $('.ifDrink select').val('');
-        $('.ifDrink input').val('');
+        $('.ifDrink input').attr('min', -2).val('');
       } else {
-          $('.ifDrink').hide(); //.css('background', 'red'); 
+        $('.ifDrink').css('background', 'red'); //.hide(); //
         $('.ifDrink select option:first-child').val('NA');
         $('.ifDrink select').val('NA');
-        $('.ifDrink input').val(0);
+        $('.ifDrink input').attr('min', -100);
+        $('.ifDrink input').val(-100);
       }
     });
     // doesWork
-    $('#p11q3').on('change', function() {
+    $('#p11q3').change(function() {
       if($(this).val() == 'yes') {
-        $('.ifWork').show(); //.css('background', 'white')
+        $('.ifWork').show().css('background', 'lightblue');
         $('.ifWork select option:first-child').val('');
         $('.ifWork select').val('');
-        $('.ifWork input').val('');
+        $('.ifWork input').attr('min', -2).val('');
       } else {
-        $('.ifWork').hide(); //.css('background', 'red'); 
+        $('.ifWork').css('background', 'red'); //.hide(); //
         $('.ifWork select option:first-child').val('NA');
         $('.ifWork select').val('NA');
-        $('.ifWork input').val(0);
+        $('.ifWork input').attr('min', -100);
+        $('.ifWork input').val(-100);
       }
     });
   });

@@ -1,5 +1,5 @@
 {% extends 'questions.html' %}
-  {% block script %}
+  {% block fill_vals_script %}
     {{ block.super }}
     <script>
       $('document').ready(function() {
@@ -15,6 +15,7 @@
         $('#p8q10').val('{{request.session.p8.9}}');
         $('#p8q11').val('{{request.session.p8.10}}');
         $('#p8q12').val('{{request.session.p8.11}}');
+      });
     </script>
   {% endblock %}
 
