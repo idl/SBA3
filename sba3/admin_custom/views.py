@@ -21,12 +21,13 @@ def admin(request, username):
 	regsiterSchoolUserForm = registerSchoolUserForm()
 	return render(request, 'admin_custom/admin.html', { 'registerSchoolUserForm': regsiterSchoolUserForm })
 
+
 def login_view(request):
-	# if user is authenticated, redirect back to admin to the url with
-	# the correct username
+	if request.user.username != '':
+		uid = request.session['_auth_user_id']
+		uname = SurveyUser.objects.get(id=uid).username
 	if request.user.is_authenticated():
-		return redirect('admin', SurveyUser.objects.get(email=request.user).username)
-	# if user submitted from login form
+		return redirect('admin', uname)
 	if request.POST:
 		email = request.POST.get('email', '').strip()
 		password = request.POST.get('password', '').strip()
