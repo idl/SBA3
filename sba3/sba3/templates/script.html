@@ -1,86 +1,102 @@
 <script>
+  // Questions with skip logic applied can't have a blank value,
+  // otherwise it will get caught by the error checking. Skipped
+  // questions with <select> field are marked with an 'NA' value
+  // For <input> field, skipped questions are marked with value
+  // -100
   $('document').ready(function() {
     // session check
     // classification
     if( '{{request.session.p1.0}}' == 'master' || '{{request.session.p1.0}}' == 'doctorate' ) {
-      $('.ifNotGrad').hide(); //.css('background', 'red')
+      $('.ifNotGrad').css('background', 'red'); //.hide();
       $('.ifNotGrad select option:first-child').val('NA');
-      $('.ifNotGrad input').val(0);
+      $('.ifNotGrad select').val('NA');
+      $('.ifNotGrad input').attr('min', -100).val(-100);
     }
     // isDistance
     if('{{request.session.p1.3}}' == 'no') {
-      $('.ifDistance').hide(); //.css('background', 'red')
+      $('.ifDistance').css('background', 'red'); //.hide();
       $('.ifDistance select option:first-child').val('NA');
-      $('.ifDistance input').val(0);
+      $('.ifDistance select').val('NA');
+      $('.ifDistance input').attr('min', -100).val(-100);
     }
     // isOnCampusClass
     if('{{request.session.p1.4}}' == 'no') {
-      $('.ifOnCampusClass').hide(); //.css('background', 'red')
+      $('.ifOnCampusClass').css('background', 'red'); //.hide();
       $('.ifOnCampusClass select option:first-child').val('NA');
-      $('.ifOnCampusClass td input').val(0);
+      $('.ifOnCampusClass select').val('NA');
+      $('.ifOnCampusClass td input').attr('min', -100).val(-100);
     }
     // isTutoring
     if('{{request.session.p3.0}}' == 'yes') {
-      $('.ifNotTutoring').hide(); //.css('background', 'red')
+      $('.ifNotTutoring').css('background', 'red'); //.hide();
       $('.ifNotTutoring select option:first-child').val('NA');
-      $('.ifNotTutoring input').val(0);
+      $('.ifNotTutoring select').val('NA');
+      $('.ifNotTutoring input').attr('min', -2).attr('value','');
     } else {
-      $('.ifTutoring').hide(); //.css('background', 'red')
+      $('.ifTutoring').css('background', 'red'); //.hide();
       $('.ifTutoring select option:first-child').val('NA');
-      $('.ifTutoring input').val(0);
+      $('.ifTutoring select').val('NA');
+      $('.ifTutoring input').attr('min', -100).attr('value','-100');
     }
     // didOrientation
     if('{{request.session.p8.0}}' != 'yes') {
-      $('.ifOrientation').hide(); //.css('background', 'red')
+      $('.ifOrientation').css('background', 'red'); //.hide();
       $('.ifOrientation select option:first-child').val('NA');
-      $('.ifOrientation input').val(0);
+      $('.ifOrientation select').val('NA');
+      $('.ifOrientation input').attr('min', -100).val(-100);
     }
     // isOrg
     if('{{request.session.p9.0}}' != 'yes') {
-      $('.ifOrg').hide(); //.css('background', 'red')
+      $('.ifOrg').css('background', 'red'); //.hide();
       $('.ifOrg select option:first-child').val('NA');
-      $('.ifOrg input').val(0);
+      $('.ifOrg select').val('NA');
+      $('.ifOrg input').attr('min', -100).val(-100);
     }
     // isOnCampus
     if('{{request.session.p9.2}}' == 'on') {
-      $('.ifOnCampus').hide(); //.css('background', 'red')
+      $('.ifOnCampus').css('background', 'red'); //.hide();
       $('.ifOnCampus select option:first-child').val('NA');
-      $('.ifOnCampus input').val(0);
+      $('.ifOnCampus select').val('NA');
+      $('.ifOnCampus input').attr('min', -100).val(-100);
     } else {
-      $('.ifNotOnCampus').hide(); //.css('background', 'red')
+      $('.ifNotOnCampus').css('background', 'red'); //.hide();
       $('.ifNotOnCampus select option:first-child').val('NA');
-      $('.ifNotOnCampus input').val(0);
+      $('.ifNotOnCampus select').val('NA');
+      $('.ifNotOnCampus input').attr('min',-100).val(-100);
     }
-    if('{{request.session.p9.2}}' == 'on' || $('#isAway').val() == 'yes')  {
-
-    } else {
-      $('.ifAwayOrIfOnCampus').hide(); //.css('background', 'red')
+    if('{{request.session.p9.2}}' != 'on' || $('#isAway').val() != 'yes')  {
+      $('.ifAwayOrIfOnCampus').css('background', 'red'); //.hide();
       $('.ifAwayOrIfOnCampus select option:first-child').val('NA');
-      $('.ifAwayOrIfOnCampus input').val(0);
+      $('.ifAwayOrIfOnCampus select').val('NA');
+      $('.ifAwayOrIfOnCampus input').attr('min', -100).val(-100);
     }
     // isAway
     if('{{request.session.p9.3}}' == 'no') {
-      $('.ifAway').hide(); //.css('background', 'red')
+      $('.ifAway').css('background', 'red'); //.hide();
       $('.ifAway select option:first-child').val('NA');
-      $('.ifAway input').val(0);
+      $('.ifAway select').val('NA');
+      $('.ifAway input').attr('min', -100).val(-100);
     }
-    if('{{request.session.p9.3}}' == 'yes' || $('#isOnCampus').val() == 'on')  {
-    } else {
-      $('.ifAwayOrIfOnCampus').hide(); //.css('background', 'red')
+    if('{{request.session.p9.3}}' != 'yes' || $('#isOnCampus').val() != 'on') {
+      $('.ifAwayOrIfOnCampus').css('background', 'red'); //.hide();
       $('.ifAwayOrIfOnCampus select option:first-child').val('NA');
-      $('.ifAwayOrIfOnCampus input').val(0);
+      $('.ifAwayOrIfOnCampus select').val('NA');
+      $('.ifAwayOrIfOnCampus input').attr('min', -100).attr('value',-100);
     }
     // doesDrink
     if('{{request.session.p9.6}}' != 'yes') {
-      $('.ifDrink').hide(); //.css('background', 'red')
+      $('.ifDrink').css('background', 'red'); //.hide();
       $('.ifDrink select option:first-child').val('NA');
-      $('.ifDrink input').val(0);
+      $('.ifDrink select').val('NA');
+      $('.ifDrink input').attr('min', -100).val(-100);
     }
     // doesWork
     if('{{request.session.p11.2}}' != 'yes') {
-      $('.ifWork').hide(); //.css('background', 'red')
+      $('.ifWork').css('background', 'red'); //.hide();
       $('.ifWork select option:first-child').val('NA');
-      $('.ifWork input').val(0);
+      $('.ifWork select').val('NA');
+      $('.ifWork input').attr('min', -100).val(-100);
     }
   });
 </script>

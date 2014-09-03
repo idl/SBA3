@@ -1,0 +1,41 @@
+@import 'bootstrap';
+
+.container {
+	table {
+		tr {
+			td {
+				select, input {
+					@extend .form-control;
+				}
+			}
+			&:first-child {
+				td {
+					border-top: none;
+				}
+			}
+		}
+	}
+}
+
+h1 {
+	font-size: 2em;
+}
+
+.error {
+	margin: 0;
+	padding: 8px;
+	background: rgba(red, 0.25);
+	border: 1px solid rgba(red, 0.5);
+	color: rgba(red, 0.75);
+}
+
+.next {
+
+}
+.prev {
+
+}
+
+tr[class^='if'], tr[class^='if'] {
+	background: lightblue;
+}

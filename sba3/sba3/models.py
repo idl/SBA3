@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 
-class Answers(models.Model):
+class AnswerSet(models.Model):
     user_id = models.CharField(max_length=10, db_index = True)
     p1q1 = models.CharField(max_length=20)
     p1q2 = models.CharField(max_length=20)
