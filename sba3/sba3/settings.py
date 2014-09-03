@@ -16,7 +16,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'sba3/templates'),
     os.path.join(BASE_DIR, 'admin_custom/templates/admin_custom'),
+    os.path.join(BASE_DIR, 'admin_custom/templates/admin_custom/'),
 )
+
 STATIC_DIRS = (
     os.path.join(BASE_DIR, 'sba3/static'),
 )
@@ -128,6 +130,7 @@ STATIC_ROOT = os.path.join(BASE_DIR,'/sba3/static/')
 STATIC_URL = '/static/'
 LOGIN_URL = '/admin/login/'
 
-
 # http://stackoverflow.com/questions/20984560/django-allauth-site-id-error
 SITE_ID = 1
+# Change default user model
+AUTH_USER_MODEL = 'admin_custom.User'

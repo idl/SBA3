@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from admin_custom import urls as admin_custom_urls
+
 admin.autodiscover()
 
 urlpatterns = patterns('sba3.views',

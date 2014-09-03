@@ -19,6 +19,11 @@
 		border: 1px solid rgba(255, 0, 0, 0.5);
 	}
 
+
+.page-header .logout {
+	margin-top: 2.5em;
+}
+
 .admin-page {
 }
 	.admin-page .tab-pane {
@@ -33,4 +38,9 @@
 		}
 
 	.admin-page .tab-pane .panel {
+	}
+	.login-container .error {
+		margin-bottom: 1em;
+		background: rgba(255, 0, 0, 0.25);
+		border: 1px solid rgba(255, 0, 0, 0.5);
 	}
