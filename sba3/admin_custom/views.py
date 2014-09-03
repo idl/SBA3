@@ -51,7 +51,7 @@ def login_view(request):
 @login_required(redirect_field_name='')
 def logout_view(request):
 	logout(request)
-	return redirect('login_view')
+	return redirect('home')
 
 @login_required(redirect_field_name='')
 def create_user(request):

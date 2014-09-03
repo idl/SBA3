@@ -5,8 +5,11 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db.models.loading import get_model
 
+from ..forms import surveyLoginForm
+from admin_custom.forms import LoginForm
+
 def home(request):
-    return render(request, 'home.html')
+    return render(request, 'home.html', {'surveyLoginForm':surveyLoginForm, 'login_form':LoginForm})
 
 def questions(request):
    return render(request,'questions.html')
