@@ -9,7 +9,6 @@ def previous(request):
     else:
         return redirect('page', pagenum - 1)
 
-
 def next(request):
     print "\n\n--------DEBUG--------"
     pagenum = int(request.POST.get('pagenum', 1))
@@ -28,7 +27,6 @@ def next(request):
         return redirect('page', 11)
     else:
         return redirect('page', pagenum + 1)
-
 
 def submit(request):
     array_name = "p11"
@@ -59,7 +57,6 @@ def submit(request):
     submission = AnswerSet(**row)
     submission.save()
     return redirect('report')
-
 
 def report(request):
     row = {}

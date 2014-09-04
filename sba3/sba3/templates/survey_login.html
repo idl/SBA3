@@ -10,7 +10,7 @@
           {% endfor %}
         </select>
       {% else %}
-        <input type='{{ field.html_name }}' class='form-control' id='{{ field.id_for_label }}' name='{{ field.html_name }}' value="{% if field.html_name != 'password' %}{{ field.value }}{% endif %}" placeholder=''>
+        <input type='{{ field.html_name }}' class='form-control' id='{{ field.id_for_label }}' name='{{ field.html_name }}' placeholder=''>
       {% endif %}
     </div>
   {% endfor %}
