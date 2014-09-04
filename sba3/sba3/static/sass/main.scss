@@ -21,14 +21,12 @@ h1 {
 	font-size: 2em;
 }
 
-.error {
-	margin: 0;
-	padding: 8px;
-	background: rgba(red, 0.25);
-	border: 1px solid rgba(red, 0.5);
-	color: rgba(red, 0.75);
+.bg-success, .bg-danger {
+	padding: 15px;
 }
-
+body {
+	background: red !important;
+}
 .next {
 
 }
