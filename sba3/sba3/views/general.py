@@ -87,5 +87,5 @@ def logout_view(request):
 
 def clearSession(request):
     request.session.flush()
-    return redirect('page', 1)
+    return redirect('/admin')
     

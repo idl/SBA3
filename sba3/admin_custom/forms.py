@@ -15,3 +15,8 @@ class registerAdminForm(forms.Form):
 
     superuser = forms.BooleanField(required=False, label="Global Admin?", widget=forms.CheckboxInput(attrs={'class': 'form-control'}))
     school = forms.ModelChoiceField(required=False, label='School', queryset=School.objects.all().order_by('name'), widget=forms.Select(attrs={'class': 'form-control'}))
+
+class registerSchoolUserForm(forms.Form):
+	school_name = forms.CharField(required=True, label='School Name', initial='')
+	# school_username = forms.CharField(required=True, label='School Email', initial='')
+	# password = forms.CharField(required=True, label='Password')

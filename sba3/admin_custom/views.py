@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect, render_to_response
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.core.validators import EmailValidator
 from django.template import RequestContext
 from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
 
-from .forms import LoginForm, registerAdminForm
+from .forms import LoginForm, registerAdminForm, registerSchoolUserForm
+
+from sba3.models import School
 
 SurveyUser = get_user_model()
 
@@ -17,13 +20,28 @@ def admin(request):
 	request.session['success'] = ''
 	# if username param in url doesn't match an actual username, redirect to 'login_view'
 	regsiterAdminForm = registerAdminForm()
-	return render(request, 'admin_custom/admin.html', { 'registerAdminForm': regsiterAdminForm, 'err_msg': err_msg, 'success': success })
+	registerError = request.session.get('registerError', False)
+	request.session['registerError'] = False
+	registerSuccess = request.session.get('registerSuccess', False)
+	request.session['registerSuccess'] = False
+	regsiterSchoolUserForm = registerSchoolUserForm()
+	return render(request, 'admin_custom/admin.html', { 'registerAdminForm': regsiterAdminForm, 'err_msg': err_msg, 'success': success, 'registerSchoolUserForm': regsiterSchoolUserForm, 'registerError': registerError, 'registerSuccess': registerSuccess})
 
 
 @login_required(redirect_field_name='')
-def create_user(request):
-	dbprint('in create user')
-	return HttpResponse("test response")
+def create_school(request):
+	if request.POST.get('school_name', '') == '':
+		request.session['registerError'] = True
+		request.session['registerSuccess'] = False
+	else:
+		request.session['registerError'] = False
+		request.session['registerSuccess'] = True
+		vals = { 
+			'name': request.POST['school_name'],
+		}
+		newSchool = School(**vals)
+		newSchool.save()
+	return HttpResponseRedirect(reverse('admin') + '#users')
 
 @login_required
 def register_admin(request):
@@ -66,9 +84,6 @@ def register_admin(request):
 
 
 def login_view(request):
-	# if request.user.email != '':
-	# 	uid = request.session['_auth_user_id']
-	# 	uname = SurveyUser.objects.get(id=uid).email
 	if request.user.is_authenticated():
 		return redirect('admin')
 	if request.POST:
@@ -97,7 +112,6 @@ def login_view(request):
 def logout_view(request):
 	logout(request)
 	return redirect('home')
-
 
 def dbprint(input_str):
 	input_str = str(input_str)
