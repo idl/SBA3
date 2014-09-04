@@ -3,9 +3,8 @@ from .settings import AUTH_USER_MODEL
 
 class School(models.Model):
     name = models.CharField(max_length=75, blank=False)
-    email = models.EmailField(unique=True, blank=False)
     location = models.CharField(max_length=125, help_text='Please enter the city and state of your school.')
-    user = models.OneToOneField(AUTH_USER_MODEL)
+    # user = models.OneToOneField(AUTH_USER_MODEL)
     
     def __unicode__(self):
         return 'School'
