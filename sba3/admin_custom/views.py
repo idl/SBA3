@@ -13,9 +13,11 @@ SurveyUser = get_user_model()
 def admin(request):
 	err_msg = request.session.get('err_msg', '')
 	request.session['err_msg'] = ''
+	success = request.session.get('success', '')
+	request.session['success'] = ''
 	# if username param in url doesn't match an actual username, redirect to 'login_view'
 	regsiterAdminForm = registerAdminForm()
-	return render(request, 'admin_custom/admin.html', { 'registerAdminForm': regsiterAdminForm, 'err_msg': err_msg })
+	return render(request, 'admin_custom/admin.html', { 'registerAdminForm': regsiterAdminForm, 'err_msg': err_msg, 'success': success })
 
 
 @login_required(redirect_field_name='')
@@ -51,14 +53,16 @@ def register_admin(request):
 		except:
 			if request.POST.get('superuser', False) == False:
 				SurveyUser.objects.create_user(email, password)
+				request.session['success'] = 'User Created Successfully'
 			else:
 				SurveyUser.objects.create_superuser(email, password)
+				request.session['success'] = 'Superuser Created Successfully'
 
 		if err_msg != '':
 			request.session['err_msg'] = err_msg
 			return redirect('./#registeradmin')
 
-	return redirect('./')
+	return redirect('./#registeradmin')
 
 
 def login_view(request):
