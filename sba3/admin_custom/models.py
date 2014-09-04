@@ -7,16 +7,13 @@ from django.contrib.auth.hashers import (
 from django.contrib.auth.models import BaseUserManager, PermissionsMixin
 
 class UserManager(BaseUserManager):
-	def _create_user(self, username, email, password, is_superuser=False):
-		if not username:
-			raise ValueError("Users must have a username.")
-		elif not email:
+	def _create_user(self, email, password, is_superuser=False):
+		if not email:
 			raise ValueError("Users must have an email.")
 		elif not password:
 			raise ValueError("Users must have a password.")
 		email = self.normalize_email(email)
-		user = self.model(    
-                            username=username,
+		user = self.model(
                             email=email,
                             is_active=True,
                             is_superuser=is_superuser, 
@@ -27,11 +24,11 @@ class UserManager(BaseUserManager):
 		user.save(using=self._db)
 		return user
 
-	def create_user(self, username, email, password):
-		return self._create_user(username, email, password)
+	def create_user(self, email, password):
+		return self._create_user(email, password)
 
-	def create_superuser(self, username, email, password):
-	    return self._create_user(username, email, password, is_superuser=True)
+	def create_superuser(self, email, password):
+	    return self._create_user(email, password, is_superuser=True)
 
 
 class AbstractBaseUser(models.Model):
@@ -103,21 +100,16 @@ class AbstractUser(AbstractBaseUser, PermissionsMixin):
 
     Username, password and email are required. Other fields are optional.
     """
-    username = models.CharField('username', max_length=30, unique=True, blank=False,
-        help_text='Required. 30 characters or fewer. Letters, numbers and '
-                    '@/./+/-/_ characters',
-        validators=[
-            validators.RegexValidator(re.compile('^[\w.@+-]+$'), 'Enter a valid username.', 'invalid')
-        ])
     email = models.EmailField('email address', unique=True, blank=False)
     display_name = models.CharField('display name', max_length=30, blank=True, default='')
     date_joined = models.DateTimeField('date joined', default=tz.now())
     is_active = models.BooleanField(default=True)
+    school_id = models.CharField('school id', default=None, max_length=30, null=True)
 
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    REQUIRED_FIELDS = []
 
     class Meta:
         verbose_name = 'user'
@@ -147,72 +139,73 @@ class User(AbstractUser):
         swappable = 'AUTH_USER_MODEL'
 
 
-# class AnonymousUser(object):
-#     id = None
-#     pk = None
-#     username = ''
-#     is_staff = False
-#     is_active = False
-#     is_superuser = False
-#     _groups = EmptyManager(Group)
-#     _user_permissions = EmptyManager(Permission)
+class AnonymousUser(object):
+    id = None
+    pk = None
+    username = ''
+    email = ''
+    is_staff = False
+    is_active = False
+    is_superuser = False
+    # _groups = EmptyManager(Group)
+    # _user_permissions = EmptyManager(Permission)
 
-#     def __init__(self):
-#         pass
+    def __init__(self):
+        pass
 
-#     def __str__(self):
-#         return 'AnonymousUser'
+    def __str__(self):
+        return 'AnonymousUser'
 
-#     def __eq__(self, other):
-#         return isinstance(other, self.__class__)
+    def __eq__(self, other):
+        return isinstance(other, self.__class__)
 
-#     def __ne__(self, other):
-#         return not self.__eq__(other)
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
-#     def __hash__(self):
-#         return 1  # instances always return the same hash value
+    def __hash__(self):
+        return 1  # instances always return the same hash value
 
-#     def save(self):
-#         raise NotImplementedError
+    def save(self):
+        raise NotImplementedError
 
-#     def delete(self):
-#         raise NotImplementedError
+    def delete(self):
+        raise NotImplementedError
 
-#     def set_password(self, raw_password):
-#         raise NotImplementedError
+    def set_password(self, raw_password):
+        raise NotImplementedError
 
-#     def check_password(self, raw_password):
-#         raise NotImplementedError
+    def check_password(self, raw_password):
+        raise NotImplementedError
 
-#     def _get_groups(self):
-#         return self._groups
-#     groups = property(_get_groups)
+    def _get_groups(self):
+        return self._groups
+    groups = property(_get_groups)
 
-#     def _get_user_permissions(self):
-#         return self._user_permissions
-#     user_permissions = property(_get_user_permissions)
+    def _get_user_permissions(self):
+        return self._user_permissions
+    user_permissions = property(_get_user_permissions)
 
-#     def get_group_permissions(self, obj=None):
-#         return set()
+    def get_group_permissions(self, obj=None):
+        return set()
 
-#     def get_all_permissions(self, obj=None):
-#         return _user_get_all_permissions(self, obj=obj)
+    def get_all_permissions(self, obj=None):
+        return _user_get_all_permissions(self, obj=obj)
 
-#     def has_perm(self, perm, obj=None):
-#         return _user_has_perm(self, perm, obj=obj)
+    def has_perm(self, perm, obj=None):
+        return _user_has_perm(self, perm, obj=obj)
 
-#     def has_perms(self, perm_list, obj=None):
-#         for perm in perm_list:
-#             if not self.has_perm(perm, obj):
-#                 return False
-#         return True
+    def has_perms(self, perm_list, obj=None):
+        for perm in perm_list:
+            if not self.has_perm(perm, obj):
+                return False
+        return True
 
-#     def has_module_perms(self, module):
-#         return _user_has_module_perms(self, module)
+    def has_module_perms(self, module):
+        return _user_has_module_perms(self, module)
 
-#     def is_anonymous(self):
-#         return True
+    def is_anonymous(self):
+        return True
 
-#     def is_authenticated(self):
-#         return False
+    def is_authenticated(self):
+        return False
 

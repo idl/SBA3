@@ -9,15 +9,8 @@ from .forms import LoginForm, registerSchoolUserForm
 SurveyUser = get_user_model()
 
 @login_required(redirect_field_name='')
-def admin(request, username):
+def admin(request):
 	# if username param in url doesn't match an actual username, redirect to 'login_view'
-	if SurveyUser.objects.filter(username=username).count() == 0:
-		return redirect('login_view')
-	else: # if it does match a registered user's username
-		# if the username in the url does not equal the currently active user's 
-		# username, redirect to 'login_view' to reset url to correct username
-		if username != SurveyUser.objects.get(email=request.user).username:
-			return redirect('login_view')
 	regsiterSchoolUserForm = registerSchoolUserForm()
 	return render(request, 'admin_custom/admin.html', { 'registerSchoolUserForm': regsiterSchoolUserForm })
 
@@ -29,11 +22,11 @@ def create_user(request):
 
 
 def login_view(request):
-	if request.user.username != '':
-		uid = request.session['_auth_user_id']
-		uname = SurveyUser.objects.get(id=uid).username
+	# if request.user.email != '':
+	# 	uid = request.session['_auth_user_id']
+	# 	uname = SurveyUser.objects.get(id=uid).email
 	if request.user.is_authenticated():
-		return redirect('admin', uname)
+		return redirect('admin')
 	if request.POST:
 		email = request.POST.get('email', '').strip()
 		password = request.POST.get('password', '').strip()
