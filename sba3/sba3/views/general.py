@@ -9,7 +9,9 @@ from ..forms import surveyLoginForm
 from admin_custom.forms import LoginForm
 
 def home(request):
-    return render(request, 'home.html', {'surveyLoginForm':surveyLoginForm, 'login_form':LoginForm})
+    err_msg = request.session.get('err_msg', '')
+    request.session['err_msg'] = ''
+    return render(request, 'home.html', {'surveyLoginForm':surveyLoginForm, 'login_form':LoginForm, 'err_msg': err_msg})
 
 def questions(request):
    return render(request,'questions.html')

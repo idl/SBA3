@@ -50,9 +50,11 @@ def login_view(request):
 				err_msg = 'Email cannot be blank.'
 			elif password == '':
 				err_msg = 'Password cannot be blank.'
-			return render(request, 'admin_custom/login.html', { 'login_form': login_form, 'err_msg': err_msg })
+			# return render(request, 'home.html', { 'login_form': login_form, 'err_msg': err_msg })
+			request.session['err_msg'] = err_msg
+			return redirect('/#login')
 	login_form = LoginForm()
-	return render(request, 'admin_custom/login.html', { 'login_form': login_form })
+	return redirect('/#login')
 
 @login_required(redirect_field_name='')
 def logout_view(request):
