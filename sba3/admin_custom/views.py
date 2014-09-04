@@ -22,6 +22,12 @@ def admin(request, username):
 	return render(request, 'admin_custom/admin.html', { 'registerSchoolUserForm': regsiterSchoolUserForm })
 
 
+@login_required(redirect_field_name='')
+def create_user(request):
+	dbprint('in create user')
+	return HttpResponse("test response")
+
+
 def login_view(request):
 	if request.user.username != '':
 		uid = request.session['_auth_user_id']
@@ -52,12 +58,6 @@ def login_view(request):
 def logout_view(request):
 	logout(request)
 	return redirect('home')
-
-@login_required(redirect_field_name='')
-def create_user(request):
-	dbprint('in create user')
-	return HttpResponse("test response")
-
 
 
 def dbprint(input_str):
