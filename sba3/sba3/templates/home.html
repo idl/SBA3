@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="col-sm-3 col-md-3">
+  <ul class="nav nav-pills nav-stacked" role="tablist">
+    <li class="active">
+      <a href="#home" role="tab" data-toggle="pill">Home</a>
+    </li>
+    <li>
+      <a href="#survey" role="tab" data-toggle="pill">Take Survey</a>
+    </li>
+    <li>
+      <a href="{% url 'login_view' %}">Admin Login</a>
+    </li>
+  </ul>
+</div>
+{% endblock %}
