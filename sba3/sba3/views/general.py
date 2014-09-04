@@ -5,8 +5,13 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db.models.loading import get_model
 
+from ..forms import surveyLoginForm
+from admin_custom.forms import LoginForm
+
 def home(request):
-    return render(request, 'home.html')
+    err_msg = request.session.get('err_msg', '')
+    request.session['err_msg'] = ''
+    return render(request, 'home.html', {'surveyLoginForm':surveyLoginForm, 'login_form':LoginForm, 'err_msg': err_msg})
 
 def questions(request):
    return render(request,'questions.html')
@@ -82,5 +87,5 @@ def logout_view(request):
 
 def clearSession(request):
     request.session.flush()
-    return redirect('page', 1)
+    return redirect('/admin')
     

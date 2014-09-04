@@ -3,11 +3,30 @@ from .settings import AUTH_USER_MODEL
 
 class School(models.Model):
     name = models.CharField(max_length=75, blank=False)
-    email = models.EmailField(unique=True, blank=False)
     location = models.CharField(max_length=125, help_text='Please enter the city and state of your school.')
-    user = models.OneToOneField(AUTH_USER_MODEL)
+    # user = models.OneToOneField(AUTH_USER_MODEL)
+    
     def __unicode__(self):
         return 'School'
+
+    # def create_school(self, name, email, location, user_id):
+    #     if not name:
+    #         raise ValueError("School must have a name")
+    #     elif not email:
+    #         raise ValueError("School must have a contact email")
+    #     elif not location:
+    #         raise ValueError("School must have a location")
+    #     elif not user_id:
+    #         raise ValueError("School must have an admin user")
+    #     email = self.normalize_email(email)
+    #     school = self.model(
+    #                             name = name,
+    #                             email = email,
+    #                             location = location,
+    #                             user = user_id
+    #                         )
+    #     school.save(using=self._db)
+    #     return school
 
 class AnswerSet(models.Model):
     user_id = models.CharField(max_length=10, db_index = True)
