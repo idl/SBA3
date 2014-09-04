@@ -7,5 +7,5 @@ class LoginForm(forms.Form):
 
 class registerSchoolUserForm(forms.Form):
 	school_name = forms.CharField(required=True, label='School Name', initial='')
-	school_username = forms.CharField(required=True, label='School Email', initial='')
-	password = forms.CharField(required=True, label='Password')
+	# school_username = forms.CharField(required=True, label='School Email', initial='')
+	# password = forms.CharField(required=True, label='Password')

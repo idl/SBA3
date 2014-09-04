@@ -4,27 +4,40 @@ from django.core.validators import EmailValidator
 from django.template import RequestContext
 from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
+from sba3.models import School
 from .forms import LoginForm, registerSchoolUserForm
 
 SurveyUser = get_user_model()
 
 @login_required(redirect_field_name='')
 def admin(request):
-	# if username param in url doesn't match an actual username, redirect to 'login_view'
+	registerError = request.session.get('registerError', False)
+	request.session['registerError'] = False
+	registerSuccess = request.session.get('registerSuccess', False)
+	request.session['registerSuccess'] = False
 	regsiterSchoolUserForm = registerSchoolUserForm()
-	return render(request, 'admin_custom/admin.html', { 'registerSchoolUserForm': regsiterSchoolUserForm })
+	return render(request, 'admin_custom/admin.html', { 'registerSchoolUserForm': regsiterSchoolUserForm, 'registerError': registerError, 'registerSuccess': registerSuccess})
 
 
 @login_required(redirect_field_name='')
-def create_user(request):
-	dbprint('in create user')
-	return HttpResponse("test response")
+def create_school(request):
+	if request.POST.get('school_name', '') == '':
+		request.session['registerError'] = True
+		request.session['registerSuccess'] = False
+	else:
+		request.session['registerError'] = False
+		request.session['registerSuccess'] = True
+		vals = { 
+			'name': request.POST['school_name'],
+		}
+		newSchool = School(**vals)
+		newSchool.save()
+	return HttpResponseRedirect(reverse('admin') + '#users')
 
 
 def login_view(request):
-	# if request.user.email != '':
-	# 	uid = request.session['_auth_user_id']
-	# 	uname = SurveyUser.objects.get(id=uid).email
 	if request.user.is_authenticated():
 		return redirect('admin')
 	if request.POST:
@@ -53,7 +66,6 @@ def login_view(request):
 def logout_view(request):
 	logout(request)
 	return redirect('home')
-
 
 def dbprint(input_str):
 	input_str = str(input_str)
