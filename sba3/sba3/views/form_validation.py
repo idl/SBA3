@@ -23,4 +23,5 @@ def start_survey(request):
                 err_msg = 'School field cannot be blank.'
             elif user_id == '':
                 err_msg = 'Identifier field cannot be blank.'
-            return render(request, '/#survey', {'err_msg':err_msg})
+            request.session['err_msg'] = err_msg
+            return redirect('/#survey')

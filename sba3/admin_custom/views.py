@@ -4,21 +4,61 @@ from django.core.validators import EmailValidator
 from django.template import RequestContext
 from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib.auth.decorators import login_required
-from .forms import LoginForm, registerSchoolUserForm
+
+from .forms import LoginForm, registerAdminForm
 
 SurveyUser = get_user_model()
 
 @login_required(redirect_field_name='')
 def admin(request):
+	err_msg = request.session.get('err_msg', '')
+	request.session['err_msg'] = ''
 	# if username param in url doesn't match an actual username, redirect to 'login_view'
-	regsiterSchoolUserForm = registerSchoolUserForm()
-	return render(request, 'admin_custom/admin.html', { 'registerSchoolUserForm': regsiterSchoolUserForm })
+	regsiterAdminForm = registerAdminForm()
+	return render(request, 'admin_custom/admin.html', { 'registerAdminForm': regsiterAdminForm, 'err_msg': err_msg })
 
 
 @login_required(redirect_field_name='')
 def create_user(request):
 	dbprint('in create user')
 	return HttpResponse("test response")
+
+@login_required
+def register_admin(request):
+	if request.POST:
+		email = request.POST.get('email', '')
+		password = request.POST.get('password', '')
+		password_confirm = request.POST.get('password_confirm', '')
+		err_msg = ''
+
+		if email == '' and password == '':
+			err_msg = 'Email and password fields cannot be blank.'
+		elif email == '':
+			err_msg = 'Email cannot be blank.'
+		elif password == '':
+			err_msg = 'Password cannot be blank.'
+		elif password != password_confirm:
+			err_msg = 'Passwords must match'
+
+		reg_form = registerAdminForm(request.POST)
+		
+		if not reg_form.is_valid():
+			err_msg = 'Error in the form'
+
+		try:
+			SurveyUser.objects.filter(email=email).get()
+			err_msg = 'Email address in use'
+		except:
+			if request.POST.get('superuser', False) == False:
+				SurveyUser.objects.create_user(email, password)
+			else:
+				SurveyUser.objects.create_superuser(email, password)
+
+		if err_msg != '':
+			request.session['err_msg'] = err_msg
+			return redirect('./#registeradmin')
+
+	return redirect('./')
 
 
 def login_view(request):
