@@ -1,6 +1,7 @@
 <div class='row'>
     <div class='col-xs-7 columns'>
         {% if err_msg %}<div class="login_err">{{ err_msg }}</div>{% endif %}
+        {% if success %}<div class="create_success">{{ success }}</div>{% endif %}
         <h3>Create New Admin</h3>
         <form action='{% url 'register_admin' %}' method='post' role='form'>
             {% csrf_token %}
