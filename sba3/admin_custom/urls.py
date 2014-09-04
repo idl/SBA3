@@ -5,4 +5,5 @@ urlpatterns = patterns('admin_custom.views',
     url(r'^/login/?$', 'login_view', name='login_view'),
     url(r'^/logout/?$', 'logout_view', name='logout_view'),
     url(r'^/createuser/$', 'create_user', name='create_user'),
+    url(r'^/registeradmin$', 'register_admin', name='register_admin')
 )
