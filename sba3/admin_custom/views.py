@@ -14,7 +14,6 @@ SurveyUser = get_user_model()
 
 @login_required(redirect_field_name='')
 def admin(request):
-	dbprint(School.objects.all())
 	err_msg = request.session.get('err_msg', '')
 	request.session['err_msg'] = ''
 	success = request.session.get('success', '')
@@ -67,7 +66,7 @@ def register_admin(request):
 			err_msg = 'Error in the form'
 
 		try:
-			SurveyUser.objects.filter(email=email).get()
+			SurveyUser.objects.get(email=email)
 			err_msg = 'Email address in use'
 		except:
 			if request.POST.get('superuser', False) == False:
