@@ -14,6 +14,7 @@ SurveyUser = get_user_model()
 
 @login_required(redirect_field_name='')
 def admin(request):
+	dbprint(School.objects.all())
 	err_msg = request.session.get('err_msg', '')
 	request.session['err_msg'] = ''
 	success = request.session.get('success', '')
