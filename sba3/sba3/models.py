@@ -7,7 +7,7 @@ class School(models.Model):
     # user = models.OneToOneField(AUTH_USER_MODEL)
     
     def __unicode__(self):
-        return 'School'
+        return self.name
 
     # def create_school(self, name, email, location, user_id):
     #     if not name:
