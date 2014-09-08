@@ -30,17 +30,36 @@ def admin(request):
 
 @login_required(redirect_field_name='')
 def create_school(request):
-	if request.POST.get('school_name', '') == '':
-		request.session['registerError'] = True
-		request.session['registerSuccess'] = False
-	else:
-		request.session['registerError'] = False
-		request.session['registerSuccess'] = True
-		vals = { 
-			'name': request.POST['school_name'],
-		}
-		newSchool = School(**vals)
-		newSchool.save()
+	if request.POST:
+		school_name = request.POST.get('school_name', '')
+
+
+		# School.objects.all().delete()
+
+
+		if school_name == '':
+			request.session['registerError'] = True
+			request.session['registerSuccess'] = False
+		else:
+			try:
+				test = School.objects.filter(name=school_name).get()
+				request.session['registerError'] = True
+				request.session['registerSuccess'] = False
+			except:
+				new_school = School(name=school_name)
+				new_school.save()
+
+				request.session['registerError'] = False
+				request.session['registerSuccess'] = True
+
+			# vals = { 
+			# 	'name': request.POST['school_name'],
+			# }
+			# newSchool = School(**vals)
+			# newSchool.save()
+
+	print School.objects.values('name').all()
+
 	return HttpResponseRedirect(reverse('admin') + '#users')
 
 @login_required
