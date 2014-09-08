@@ -10,7 +10,7 @@ from .forms import LoginForm, registerAdminForm, registerSchoolUserForm
 
 from sba3.models import School
 
-SurveyUser = get_user_model()
+Users = get_user_model()
 
 @login_required(redirect_field_name='')
 def admin(request):
@@ -25,7 +25,32 @@ def admin(request):
 	registerSuccess = request.session.get('registerSuccess', False)
 	request.session['registerSuccess'] = False
 	regsiterSchoolUserForm = registerSchoolUserForm()
-	return render(request, 'admin_custom/admin.html', { 'registerAdminForm': regsiterAdminForm, 'err_msg': err_msg, 'success': success, 'registerSchoolUserForm': regsiterSchoolUserForm, 'registerError': registerError, 'registerSuccess': registerSuccess})
+
+	school_list = School.objects.all()
+	superadmin_list = Users.objects.filter(is_superuser=True)
+	schooladmin_list = []
+	for user in Users.objects.filter(is_superuser=False).order_by('school_id'):
+		schooladmin_entry = {}
+		# schooladmin_entry[]
+		dbprint(user.email)
+		schooladmin_entry['email'] = user.email
+		schooladmin_entry['school'] = School.objects.get(id=user.school_id)
+		schooladmin_entry['last_login'] = user.last_login
+		schooladmin_entry['date_joined'] = user.date_joined
+		schooladmin_list.append(schooladmin_entry)
+	dbprint(schooladmin_list)
+	ctx = { 'registerAdminForm': regsiterAdminForm,
+			'err_msg': err_msg,
+			'success': success,
+			'registerSchoolUserForm': regsiterSchoolUserForm,
+			'registerError': registerError,
+			'registerSuccess': registerSuccess,
+			'school_list': school_list,
+			'superadmin_list': superadmin_list,
+			'schooladmin_list': schooladmin_list
+		  }
+	
+	return render(request, 'admin_custom/admin.html', ctx)
 
 
 @login_required(redirect_field_name='')
@@ -41,7 +66,7 @@ def create_school(request):
 		}
 		newSchool = School(**vals)
 		newSchool.save()
-	return HttpResponseRedirect(reverse('admin') + '#users')
+	return HttpResponseRedirect(reverse('admin') + '#registerschools')
 
 @login_required
 def register_admin(request):
@@ -49,6 +74,7 @@ def register_admin(request):
 		email = request.POST.get('email', '')
 		password = request.POST.get('password', '')
 		password_confirm = request.POST.get('password_confirm', '')
+		school_id = request.POST.get('school', None)
 		err_msg = ''
 
 		if email == '' and password == '':
@@ -66,21 +92,21 @@ def register_admin(request):
 			err_msg = 'Error in the form'
 
 		try:
-			SurveyUser.objects.get(email=email)
+			Users.objects.get(email=email)
 			err_msg = 'Email address in use'
 		except:
 			if request.POST.get('superuser', False) == False:
-				SurveyUser.objects.create_user(email, password)
+				Users.objects.create_user(email, password, school_id)
 				request.session['success'] = 'User Created Successfully'
 			else:
-				SurveyUser.objects.create_superuser(email, password)
+				Users.objects.create_superuser(email, password)
 				request.session['success'] = 'Superuser Created Successfully'
 
 		if err_msg != '':
 			request.session['err_msg'] = err_msg
-			return redirect('./#registeradmin')
+			return redirect('./#users')
 
-	return redirect('./#registeradmin')
+	return redirect('./#users')
 
 
 def login_view(request):

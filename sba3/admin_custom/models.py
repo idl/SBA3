@@ -7,33 +7,36 @@ from django.contrib.auth.hashers import (
 from django.contrib.auth.models import BaseUserManager, PermissionsMixin
 
 class UserManager(BaseUserManager):
-	def _create_user(self, email, password, is_superuser=False):
-		if not email:
-			raise ValueError("Users must have an email.")
-		elif not password:
-			raise ValueError("Users must have a password.")
-		email = self.normalize_email(email)
-		user = self.model(
-                            email=email,
-                            is_active=True,
-                            is_superuser=is_superuser, 
-                            last_login=tz.now(),
-                            date_joined=tz.now()
-                          )
-		user.set_password(password)
-		user.save(using=self._db)
-		return user
+    def _create_user(self, email, password, is_superuser=False, school_id=None):
+        if not email:
+            raise ValueError("Users must have an email.")
+        elif not password:
+            raise ValueError("Users must have a password.")
+        if is_superuser:
+            school_id = None
+        email = self.normalize_email(email)
+        user = self.model(
+                email=email,
+                is_active=True,
+                is_superuser=is_superuser, 
+                last_login=tz.now(),
+                date_joined=tz.now(),
+                school_id=school_id
+                )
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
 
-	def create_user(self, email, password):
-		return self._create_user(email, password)
+    def create_user(self, email, password, school_id):
+        return self._create_user(email, password, school_id=school_id)
 
-	def create_superuser(self, email, password):
-	    return self._create_user(email, password, is_superuser=True)
+    def create_superuser(self, email, password):
+        return self._create_user(email, password, is_superuser=True)
 
 
 class AbstractBaseUser(models.Model):
     password = models.CharField('password', max_length=128)
-    last_login = models.DateTimeField('last login', default=tz.now)
+    last_login = models.DateTimeField('last login', default=tz.now())
 
     is_active = True
 
@@ -101,9 +104,9 @@ class AbstractUser(AbstractBaseUser, PermissionsMixin):
     Username, password and email are required. Other fields are optional.
     """
     email = models.EmailField('email address', unique=True, blank=False)
-    display_name = models.CharField('display name', max_length=30, blank=True, default='')
     date_joined = models.DateTimeField('date joined', default=tz.now())
     is_active = models.BooleanField(default=True)
+    # if school_id is Null then it has to be a superadmin, not school admin
     school_id = models.CharField('school id', default=None, max_length=30, null=True)
 
     objects = UserManager()
@@ -120,9 +123,9 @@ class AbstractUser(AbstractBaseUser, PermissionsMixin):
         return "/users/%s/" % urlquote(self.username)
 
     def get_full_name(self):
-    	if self.display_name != '':
-    		return self.display_name
-    	return self.username.capitalize()
+        if self.display_name != '':
+            return self.display_name
+        return self.username.capitalize()
 
     def get_short_name(self):
         return self.username

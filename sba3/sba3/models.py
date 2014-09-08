@@ -1,10 +1,11 @@
 from django.db import models
 from .settings import AUTH_USER_MODEL
+from django.utils import timezone as tz
 
 class School(models.Model):
     name = models.CharField(max_length=75, blank=False)
     location = models.CharField(max_length=125, help_text='Please enter the city and state of your school.')
-    # user = models.OneToOneField(AUTH_USER_MODEL)
+    date_created = models.DateField(default=tz.now())
     
     def __unicode__(self):
         return self.name

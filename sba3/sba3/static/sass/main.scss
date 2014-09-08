@@ -17,9 +17,6 @@
 	}
 }
 
-h1 {
-	font-size: 2em;
-}
 
 .bg-success, .bg-danger {
 	padding: 15px;
@@ -38,8 +35,67 @@ tr[class^='if'], tr[class^='if'] {
 	background: lightblue;
 }
 
+.logout {
+
+}
+
 .joined-on {
 	display: block;
 	color: #666666;
 	font-size: 0.875em;
+}
+
+h2 {
+	margin-top: 0;
+}
+
+.registerUserForm {
+	padding: 15px;
+	background: #eeeeee;
+	.pull-left {
+		margin: 0;
+	}
+	.pull-down {
+		margin-top: 24px;
+		margin-bottom: 0;
+	}
+}
+.registerSchoolForm {
+	padding: 15px;
+	background: #eeeeee;
+	.text-center
+	 {
+		margin: 0;
+	}
+}
+
+.users-table {
+	&.table-condensed > tbody > tr > td {
+		padding-top: 10px;
+		&.actions {
+			padding-top: 5px;
+		}
+	}
+	.glyphicon {
+		padding: 5px;
+		border-radius: 99px;
+		font-size: 13px;
+		transition: all 0.3s ease-in;
+	}
+	.glyphicon-pencil {
+		color: $brand-info;
+		&:hover {
+			background: $brand-info;
+			color: $white;
+			transition: all 0.3s ease-in;
+		}
+	}
+	.glyphicon-remove {
+		color: $brand-danger;
+		&:hover {
+			background: $brand-danger;
+			color: $white;
+			transition: all 0.3s ease-in;
+		}
+	}
 }
