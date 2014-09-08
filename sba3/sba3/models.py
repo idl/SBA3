@@ -1,6 +1,8 @@
 from django.db import models
 from .settings import AUTH_USER_MODEL
 
+import hashlib
+
 class School(models.Model):
     name = models.CharField(max_length=75, blank=False)
     location = models.CharField(max_length=125, help_text='Please enter the city and state of your school.')
@@ -28,10 +30,48 @@ class School(models.Model):
     #     school.save(using=self._db)
     #     return school
 
-class AnswerSet(models.Model):
+class StudentManager(models.Manager):
+    def create_student(self, user_id, school_id):
+        if not user_id:
+            raise ValueError("Student must have a user_id")
+        elif not school_id:
+            raise ValueError("Student must have a school")
+
+        if Student.objects.filter(user_id=user_id).count() != 0:
+            student = Student.objects.filter(user_id=user_id).get()
+            if student.school_id == school_id:
+                raise ValueError("Student-School association already exists")
+        else:
+            school = School.objects.filter(pk=1).get()
+
+            continue_hash = hashlib.sha256(user_id + school.name).hexdigest()
+            continue_pass = continue_hash[:10]
+
+            student = self.model(
+                                    user_id=user_id,
+                                    school_id=school,
+                                    continue_pass=continue_pass,
+                                    completed=False
+                                )
+            student.save()
+
+            return student
+        return None
+
+class Student(models.Model):
     user_id = models.CharField(max_length=10, db_index = True)
-    school = models.ForeignKey(School, null=True)
-    uid = models.CharField(max_length=10, blank=False)
+    school_id = models.ForeignKey(School, null=True)
+    continue_pass = models.CharField(max_length=10, blank=False)
+    completed = models.BooleanField()
+
+    objects = StudentManager()
+
+    def __unicode__(self):
+        return self.user_id
+
+
+class AnswerSet(models.Model):
+    student_id = models.CharField(max_length=10, db_index = True)
     p1q1 = models.CharField(max_length=20)
     p1q2 = models.CharField(max_length=20)
     p1q3 = models.CharField(max_length=20)
