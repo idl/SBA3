@@ -36,7 +36,7 @@ tr[class^='if'], tr[class^='if'] {
 }
 
 .logout {
-
+	margin-top: 2em;
 }
 
 .joined-on {
@@ -50,6 +50,7 @@ h2 {
 }
 
 .registerUserForm {
+	margin-bottom: 20px;
 	padding: 15px;
 	background: #eeeeee;
 	.pull-left {
@@ -74,20 +75,21 @@ h2 {
 		padding-top: 10px;
 		&.actions {
 			padding-top: 5px;
+			text-align: right;
 		}
 	}
 	.glyphicon {
 		padding: 5px;
 		border-radius: 99px;
 		font-size: 13px;
-		transition: all 0.3s ease-in;
+		transition: all 0.15s ease-in;
 	}
 	.glyphicon-pencil {
 		color: $brand-info;
 		&:hover {
 			background: $brand-info;
 			color: $white;
-			transition: all 0.3s ease-in;
+			transition: all 0.15s ease-in;
 		}
 	}
 	.glyphicon-remove {
@@ -96,6 +98,14 @@ h2 {
 			background: $brand-danger;
 			color: $white;
 			transition: all 0.3s ease-in;
+		}
+	}
+}
+
+.modal {
+	&#deleteAdminUser {
+		.modal-footer {
+			text-align: center;
 		}
 	}
 }

@@ -3177,12 +3177,12 @@ th {
   vertical-align: top;
   border-top: 1px solid #dddddd;
 }
-/* line 35, ../sass/bootstrap/_tables.scss */
+/* line 36, ../sass/bootstrap/_tables.scss */
 .table > thead > tr > th {
   vertical-align: bottom;
   border-bottom: 2px solid #dddddd;
 }
-/* line 45, ../sass/bootstrap/_tables.scss */
+/* line 46, ../sass/bootstrap/_tables.scss */
 .table > caption + thead > tr:first-child > th,
 .table > caption + thead > tr:first-child > td,
 .table > colgroup + thead > tr:first-child > th,
@@ -3191,16 +3191,16 @@ th {
 .table > thead:first-child > tr:first-child > td {
   border-top: 0;
 }
-/* line 51, ../sass/bootstrap/_tables.scss */
+/* line 52, ../sass/bootstrap/_tables.scss */
 .table > tbody + tbody {
   border-top: 2px solid #dddddd;
 }
-/* line 56, ../sass/bootstrap/_tables.scss */
+/* line 57, ../sass/bootstrap/_tables.scss */
 .table .table {
   background-color: white;
 }
 
-/* line 70, ../sass/bootstrap/_tables.scss */
+/* line 71, ../sass/bootstrap/_tables.scss */
 .table-condensed > thead > tr > th,
 .table-condensed > thead > tr > td,
 .table-condensed > tbody > tr > th,
@@ -3210,11 +3210,11 @@ th {
   padding: 5px;
 }
 
-/* line 82, ../sass/bootstrap/_tables.scss */
+/* line 83, ../sass/bootstrap/_tables.scss */
 .table-bordered {
   border: 1px solid #dddddd;
 }
-/* line 89, ../sass/bootstrap/_tables.scss */
+/* line 90, ../sass/bootstrap/_tables.scss */
 .table-bordered > thead > tr > th,
 .table-bordered > thead > tr > td,
 .table-bordered > tbody > tr > th,
@@ -3223,32 +3223,32 @@ th {
 .table-bordered > tfoot > tr > td {
   border: 1px solid #dddddd;
 }
-/* line 96, ../sass/bootstrap/_tables.scss */
+/* line 97, ../sass/bootstrap/_tables.scss */
 .table-bordered > thead > tr > th,
 .table-bordered > thead > tr > td {
   border-bottom-width: 2px;
 }
 
-/* line 110, ../sass/bootstrap/_tables.scss */
+/* line 111, ../sass/bootstrap/_tables.scss */
 .table-striped > tbody > tr:nth-child(odd) > td,
 .table-striped > tbody > tr:nth-child(odd) > th {
   background-color: #f9f9f9;
 }
 
-/* line 124, ../sass/bootstrap/_tables.scss */
+/* line 125, ../sass/bootstrap/_tables.scss */
 .table-hover > tbody > tr:hover > td,
 .table-hover > tbody > tr:hover > th {
   background-color: whitesmoke;
 }
 
-/* line 135, ../sass/bootstrap/_tables.scss */
+/* line 136, ../sass/bootstrap/_tables.scss */
 table col[class*="col-"] {
   position: static;
   float: none;
   display: table-column;
 }
 
-/* line 143, ../sass/bootstrap/_tables.scss */
+/* line 144, ../sass/bootstrap/_tables.scss */
 table td[class*="col-"],
 table th[class*="col-"] {
   position: static;
@@ -3357,7 +3357,7 @@ table th[class*="col-"] {
 }
 
 @media screen and (max-width: 767px) {
-  /* line 171, ../sass/bootstrap/_tables.scss */
+  /* line 172, ../sass/bootstrap/_tables.scss */
   .table-responsive {
     width: 100%;
     margin-bottom: 15px;
@@ -3367,11 +3367,11 @@ table th[class*="col-"] {
     border: 1px solid #dddddd;
     -webkit-overflow-scrolling: touch;
   }
-  /* line 182, ../sass/bootstrap/_tables.scss */
+  /* line 183, ../sass/bootstrap/_tables.scss */
   .table-responsive > .table {
     margin-bottom: 0;
   }
-  /* line 191, ../sass/bootstrap/_tables.scss */
+  /* line 192, ../sass/bootstrap/_tables.scss */
   .table-responsive > .table > thead > tr > th,
   .table-responsive > .table > thead > tr > td,
   .table-responsive > .table > tbody > tr > th,
@@ -3380,11 +3380,11 @@ table th[class*="col-"] {
   .table-responsive > .table > tfoot > tr > td {
     white-space: nowrap;
   }
-  /* line 199, ../sass/bootstrap/_tables.scss */
+  /* line 200, ../sass/bootstrap/_tables.scss */
   .table-responsive > .table-bordered {
     border: 0;
   }
-  /* line 208, ../sass/bootstrap/_tables.scss */
+  /* line 209, ../sass/bootstrap/_tables.scss */
   .table-responsive > .table-bordered > thead > tr > th:first-child,
   .table-responsive > .table-bordered > thead > tr > td:first-child,
   .table-responsive > .table-bordered > tbody > tr > th:first-child,
@@ -3393,7 +3393,7 @@ table th[class*="col-"] {
   .table-responsive > .table-bordered > tfoot > tr > td:first-child {
     border-left: 0;
   }
-  /* line 212, ../sass/bootstrap/_tables.scss */
+  /* line 213, ../sass/bootstrap/_tables.scss */
   .table-responsive > .table-bordered > thead > tr > th:last-child,
   .table-responsive > .table-bordered > thead > tr > td:last-child,
   .table-responsive > .table-bordered > tbody > tr > th:last-child,
@@ -3402,7 +3402,7 @@ table th[class*="col-"] {
   .table-responsive > .table-bordered > tfoot > tr > td:last-child {
     border-right: 0;
   }
-  /* line 225, ../sass/bootstrap/_tables.scss */
+  /* line 226, ../sass/bootstrap/_tables.scss */
   .table-responsive > .table-bordered > tbody > tr:last-child > th,
   .table-responsive > .table-bordered > tbody > tr:last-child > td,
   .table-responsive > .table-bordered > tfoot > tr:last-child > th,
@@ -8093,6 +8093,11 @@ tr[class^='if'], tr[class^='if'] {
   background: lightblue;
 }
 
+/* line 38, ../sass/main.scss */
+.logout {
+  margin-top: 2em;
+}
+
 /* line 42, ../sass/main.scss */
 .joined-on {
   display: block;
@@ -8107,61 +8112,68 @@ h2 {
 
 /* line 52, ../sass/main.scss */
 .registerUserForm {
+  margin-bottom: 20px;
   padding: 15px;
   background: #eeeeee;
 }
-/* line 55, ../sass/main.scss */
+/* line 56, ../sass/main.scss */
 .registerUserForm .pull-left {
   margin: 0;
 }
-/* line 58, ../sass/main.scss */
+/* line 59, ../sass/main.scss */
 .registerUserForm .pull-down {
   margin-top: 24px;
   margin-bottom: 0;
 }
 
-/* line 63, ../sass/main.scss */
+/* line 64, ../sass/main.scss */
 .registerSchoolForm {
   padding: 15px;
   background: #eeeeee;
 }
-/* line 67, ../sass/main.scss */
+/* line 68, ../sass/main.scss */
 .registerSchoolForm .text-center {
   margin: 0;
 }
 
-/* line 73, ../sass/main.scss */
+/* line 74, ../sass/main.scss */
 .users-table.table-condensed > tbody > tr > td {
   padding-top: 10px;
 }
-/* line 75, ../sass/main.scss */
+/* line 76, ../sass/main.scss */
 .users-table.table-condensed > tbody > tr > td.actions {
   padding-top: 5px;
+  text-align: right;
 }
-/* line 79, ../sass/main.scss */
+/* line 81, ../sass/main.scss */
 .users-table .glyphicon {
   padding: 5px;
   border-radius: 99px;
   font-size: 13px;
-  transition: all 0.3s ease-in;
+  transition: all 0.15s ease-in;
 }
-/* line 85, ../sass/main.scss */
+/* line 87, ../sass/main.scss */
 .users-table .glyphicon-pencil {
   color: #5bc0de;
 }
-/* line 87, ../sass/main.scss */
+/* line 89, ../sass/main.scss */
 .users-table .glyphicon-pencil:hover {
   background: #5bc0de;
   color: white;
-  transition: all 0.3s ease-in;
+  transition: all 0.15s ease-in;
 }
-/* line 93, ../sass/main.scss */
+/* line 95, ../sass/main.scss */
 .users-table .glyphicon-remove {
   color: #d9534f;
 }
-/* line 95, ../sass/main.scss */
+/* line 97, ../sass/main.scss */
 .users-table .glyphicon-remove:hover {
   background: #d9534f;
   color: white;
   transition: all 0.3s ease-in;
+}
+
+/* line 107, ../sass/main.scss */
+.modal#deleteAdminUser .modal-footer {
+  text-align: center;
 }

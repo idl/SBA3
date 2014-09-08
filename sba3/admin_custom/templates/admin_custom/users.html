@@ -67,18 +67,18 @@
                     <th>Email</th>
                     <th>Last Logged In</th>
                     <th>Date Created</th>
-                    <th>Actions</th>
+                    <th class="text-right">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 {% for user in superadmin_list %}    
-                    <tr>
+                    <tr data-user-id="{{ user.id }}">
                         <td>{{ user.email }}</td>
                         <td>{{ user.last_login }}</td>
                         <td>{{ user.date_joined }}</td>
                         <td class="actions">
-                            <a href="#"><span class="glyphicon glyphicon-pencil"></span></a>
-                            <a href="#"><span class="glyphicon glyphicon-remove"></span></a>
+                            <a href="#" data-toggle="modal" data-target="#editAdminUser"><span class="glyphicon glyphicon-pencil"></span></a>
+                            <a href="#" data-toggle="modal" data-target="#deleteAdminUser"><span class="glyphicon glyphicon-remove"></span></a>
                         </td>
                     </tr>
                 {% endfor %}
@@ -96,19 +96,19 @@
                     <th>School</th>
                     <th>Last Login</th>
                     <th>Date Added</th>
-                    <th>Actions</th>
+                    <th class="text-right">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 {% for user in schooladmin_list %}
-                    <tr>
+                    <tr data-user-id="{{ user.id }}">
                         <td>{{ user.email }}</td>
                         <td>{{ user.school }}</td>
                         <td>{{ user.last_login }}</td>
                         <td>{{ user.date_joined }}</td>
                         <td class="actions">
-                            <a href="#"><span class="glyphicon glyphicon-pencil"></span></a>
-                            <a href="#"><span class="glyphicon glyphicon-remove"></span></a>
+                            <a href="#" data-toggle="modal" data-target="#editAdminUser"><span class="glyphicon glyphicon-pencil"></span></a>
+                            <a href="#" data-toggle="modal" data-target="#deleteAdminUser"><span class="glyphicon glyphicon-remove"></span></a>
                         </td>
                     </tr>
                 {% endfor %}

@@ -33,6 +33,7 @@ def admin(request):
 		schooladmin_entry = {}
 		# schooladmin_entry[]
 		dbprint(user.email)
+		schooladmin_entry['id'] = user.id
 		schooladmin_entry['email'] = user.email
 		schooladmin_entry['school'] = School.objects.get(id=user.school_id)
 		schooladmin_entry['last_login'] = user.last_login
@@ -55,17 +56,28 @@ def admin(request):
 
 @login_required(redirect_field_name='')
 def create_school(request):
-	if request.POST.get('school_name', '') == '':
+	if request.POST:
+		school_name = request.POST.get('school_name', '')
+	# School.objects.all().delete()
+	if school_name == '':
 		request.session['registerError'] = True
 		request.session['registerSuccess'] = False
 	else:
-		request.session['registerError'] = False
-		request.session['registerSuccess'] = True
-		vals = { 
-			'name': request.POST['school_name'],
-		}
-		newSchool = School(**vals)
-		newSchool.save()
+		try:
+			test = School.objects.filter(name=school_name).get()
+			request.session['registerError'] = True
+			request.session['registerSuccess'] = False
+		except:
+			new_school = School(name=school_name)
+			new_school.save()
+			request.session['registerError'] = False
+			request.session['registerSuccess'] = True
+			# vals = { 
+			# 	'name': request.POST['school_name'],
+			# }
+			# newSchool = School(**vals)
+			# newSchool.save()
+	print School.objects.values('name').all()
 	return HttpResponseRedirect(reverse('admin') + '#registerschools')
 
 @login_required
@@ -105,9 +117,11 @@ def register_admin(request):
 		if err_msg != '':
 			request.session['err_msg'] = err_msg
 			return redirect('./#users')
-
 	return redirect('./#users')
 
+def delete_admin(request, admin_id):
+	dbprint("DELETE ADMIN")
+	return HttpResponse("Delete admin")
 
 def login_view(request):
 	if request.user.is_authenticated():
