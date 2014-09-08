@@ -7,6 +7,7 @@ from django.db.models.loading import get_model
 
 from ..forms import surveyLoginForm
 from admin_custom.forms import LoginForm
+from ..models import Student
 
 def start_survey(request):
     if request.POST:
@@ -14,8 +15,14 @@ def start_survey(request):
         user_id = request.POST.get('identifier', '')
         survey_form = surveyLoginForm(request.POST)
         if user_id and survey_form.is_valid():
-            request.session['user_id'] = user_id
-            return redirect('page', 1)
+            try:
+                new_student = Student.objects.create_student(user_id, school_id)
+                request.session['user_id'] = new_student.user_id
+                request.session['continue_pass'] = new_student.continue_pass
+                return redirect('page', 1)
+            except ValueError, e:
+                request.session['err_msg'] = e
+                redirect('/#survey')
         else:
             if school_id == '' and user_id == '':
                 err_msg = 'School and Identifier fields cannot be blank.'
@@ -24,4 +31,4 @@ def start_survey(request):
             elif user_id == '':
                 err_msg = 'Identifier field cannot be blank.'
             request.session['err_msg'] = err_msg
-            return redirect('/#survey')
+    return redirect('/#survey')

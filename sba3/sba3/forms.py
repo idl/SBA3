@@ -3,5 +3,7 @@ from django import forms
 from models import School
 
 class surveyLoginForm(forms.Form):
-    school = forms.ModelChoiceField(required=True, label='School', queryset=School.objects.all().order_by('name'))
-    identifier = forms.CharField(required=True, label='Identifier')
+    school_list = School.objects.all().order_by('name')
+    
+    school = forms.ModelChoiceField(required=False, label='School', queryset=school_list, widget=forms.Select(attrs={'class': 'form-control'}))
+    identifier = forms.CharField(required=True, label='Identifier', widget=forms.TextInput(attrs={'class': 'form-control'}))
