@@ -126,7 +126,7 @@ USE_TZ = True
 
 STATIC_ROOT = os.path.join(BASE_DIR,'/sba3/static/')
 STATIC_URL = '/static/'
-LOGIN_URL = '/admin/login/'
+LOGIN_URL = '/admin/login'
 
 # http://stackoverflow.com/questions/20984560/django-allauth-site-id-error
 SITE_ID = 1
