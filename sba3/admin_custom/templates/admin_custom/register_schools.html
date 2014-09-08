@@ -1,0 +1,36 @@
+<div class="row">
+    <div class="col-xs-12">
+        <h2>Create New School</h2>
+    </div>
+</div>
+<div class='row'>
+	<div class='col-xs-7 columns'>
+		{% if registerError %}<p class="bg-danger">School name cannot be blank.</p>{% endif %}
+		{% if registerSuccess %}<p class="bg-success">New school has been created.</p>{% endif %}
+		<form action='/admin/createschool' method='post' role='form' class='registerSchoolForm'>
+			{% csrf_token %}
+			{% for field in registerSchoolUserForm %}
+				<div class='form-group'>
+					<label for='{{ field.id_for_label }}'>{{ field.label }}</label>
+					<input type='{{ field.html_name }}' class='form-control' id='{{ field.id_for_label }}' name='{{ field.html_name }}' value="{% if field.html_name != 'password' %}{{ field.value }}{% endif %}" placeholder=''>
+				</div>
+			{% endfor %}
+			<div class='form-group text-center'>
+				<button type='submit' class='btn btn-default'>Submit</button>
+			</div>
+		</form>
+	</div>
+	<div class="col-xs-5 columns">
+		<div class="panel panel-default">
+			<div class="panel-heading"><h6 class="panel-title">Registered Schools</h6></div>
+			<ul class="list-group">
+				{% if school_list|length == 0 %}
+					<li class="list-group-item">No schools created</li>
+				{% endif %}
+				{% for school in school_list %}
+					<li class="list-group-item"><a href="#">{{ school.name }}</a> <span class="joined-on">Added: {{ school.date_created }}</span></li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+</div>

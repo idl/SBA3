@@ -10,8 +10,6 @@ class Users(AbstractBaseUser):
     REQUIRED_FIELDS = ['email', ] # only affects createsuperuser command
     is_active = True
 
-
-
     # Required to override these methods, else throw exception when called
     def get_full_name(self):
     	if display_name == "":

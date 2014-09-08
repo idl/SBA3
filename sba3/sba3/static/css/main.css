@@ -366,8 +366,8 @@ th {
 }
 @font-face {
   font-family: 'Glyphicons Halflings';
-  src: url("bootstrap/glyphicons-halflings-regular.eot");
-  src: url("bootstrap/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("bootstrap/glyphicons-halflings-regular.woff") format("woff"), url("bootstrap/glyphicons-halflings-regular.ttf") format("truetype"), url("bootstrap/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg");
+  src: url("fonts/glyphicons-halflings-regular.eot");
+  src: url("fonts/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("fonts/glyphicons-halflings-regular.woff") format("woff"), url("fonts/glyphicons-halflings-regular.ttf") format("truetype"), url("fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg");
 }
 
 /* line 25, ../sass/bootstrap/_glyphicons.scss */
@@ -7722,6 +7722,11 @@ button.close {
     bottom: 20px;
   }
 }
+/* line 8, ../sass/bootstrap/_utilities.scss */
+.no-margin {
+  margin: 0;
+}
+
 /* line 15, ../sass/bootstrap/mixins/_clearfix.scss */
 .clearfix:before, .clearfix:after {
   content: " ";
@@ -7732,39 +7737,39 @@ button.close {
   clear: both;
 }
 
-/* line 12, ../sass/bootstrap/_utilities.scss */
+/* line 19, ../sass/bootstrap/_utilities.scss */
 .center-block {
   display: block;
   margin-left: auto;
   margin-right: auto;
 }
 
-/* line 15, ../sass/bootstrap/_utilities.scss */
+/* line 22, ../sass/bootstrap/_utilities.scss */
 .pull-right {
   float: right !important;
 }
 
-/* line 18, ../sass/bootstrap/_utilities.scss */
+/* line 25, ../sass/bootstrap/_utilities.scss */
 .pull-left {
   float: left !important;
 }
 
-/* line 27, ../sass/bootstrap/_utilities.scss */
+/* line 34, ../sass/bootstrap/_utilities.scss */
 .hide {
   display: none !important;
 }
 
-/* line 30, ../sass/bootstrap/_utilities.scss */
+/* line 37, ../sass/bootstrap/_utilities.scss */
 .show {
   display: block !important;
 }
 
-/* line 33, ../sass/bootstrap/_utilities.scss */
+/* line 40, ../sass/bootstrap/_utilities.scss */
 .invisible {
   visibility: hidden;
 }
 
-/* line 36, ../sass/bootstrap/_utilities.scss */
+/* line 43, ../sass/bootstrap/_utilities.scss */
 .text-hide {
   font: 0/0 a;
   color: transparent;
@@ -7773,13 +7778,13 @@ button.close {
   border: 0;
 }
 
-/* line 45, ../sass/bootstrap/_utilities.scss */
+/* line 52, ../sass/bootstrap/_utilities.scss */
 .hidden {
   display: none !important;
   visibility: hidden !important;
 }
 
-/* line 54, ../sass/bootstrap/_utilities.scss */
+/* line 61, ../sass/bootstrap/_utilities.scss */
 .affix {
   position: fixed;
   -webkit-transform: translate3d(0, 0, 0);
@@ -8078,24 +8083,85 @@ button.close {
   border-top: none;
 }
 
-/* line 20, ../sass/main.scss */
-h1 {
-  font-size: 2em;
-}
-
-/* line 24, ../sass/main.scss */
+/* line 21, ../sass/main.scss */
 .bg-success, .bg-danger {
   padding: 15px;
 }
 
-/* line 37, ../sass/main.scss */
+/* line 34, ../sass/main.scss */
 tr[class^='if'], tr[class^='if'] {
   background: lightblue;
 }
 
-/* line 41, ../sass/main.scss */
+/* line 42, ../sass/main.scss */
 .joined-on {
   display: block;
   color: #666666;
   font-size: 0.875em;
+}
+
+/* line 48, ../sass/main.scss */
+h2 {
+  margin-top: 0;
+}
+
+/* line 52, ../sass/main.scss */
+.registerUserForm {
+  padding: 15px;
+  background: #eeeeee;
+}
+/* line 55, ../sass/main.scss */
+.registerUserForm .pull-left {
+  margin: 0;
+}
+/* line 58, ../sass/main.scss */
+.registerUserForm .pull-down {
+  margin-top: 24px;
+  margin-bottom: 0;
+}
+
+/* line 63, ../sass/main.scss */
+.registerSchoolForm {
+  padding: 15px;
+  background: #eeeeee;
+}
+/* line 67, ../sass/main.scss */
+.registerSchoolForm .text-center {
+  margin: 0;
+}
+
+/* line 73, ../sass/main.scss */
+.users-table.table-condensed > tbody > tr > td {
+  padding-top: 10px;
+}
+/* line 75, ../sass/main.scss */
+.users-table.table-condensed > tbody > tr > td.actions {
+  padding-top: 5px;
+}
+/* line 79, ../sass/main.scss */
+.users-table .glyphicon {
+  padding: 5px;
+  border-radius: 99px;
+  font-size: 13px;
+  transition: all 0.3s ease-in;
+}
+/* line 85, ../sass/main.scss */
+.users-table .glyphicon-pencil {
+  color: #5bc0de;
+}
+/* line 87, ../sass/main.scss */
+.users-table .glyphicon-pencil:hover {
+  background: #5bc0de;
+  color: white;
+  transition: all 0.3s ease-in;
+}
+/* line 93, ../sass/main.scss */
+.users-table .glyphicon-remove {
+  color: #d9534f;
+}
+/* line 95, ../sass/main.scss */
+.users-table .glyphicon-remove:hover {
+  background: #d9534f;
+  color: white;
+  transition: all 0.3s ease-in;
 }
