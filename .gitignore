@@ -1,7 +1,9 @@
 *.pyc
 db.sqlite3
 
-.sass-cache/
+**/.sass-cache
+**/.sass-cache/*
+
 .DS_Store
 
 Gemfile
