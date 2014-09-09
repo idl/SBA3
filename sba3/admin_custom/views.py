@@ -116,8 +116,8 @@ def register_admin(request):
 
 		if err_msg != '':
 			request.session['err_msg'] = err_msg
-			return redirect('./#users')
-	return redirect('./#users')
+			return redirect('/admin#users')
+	return redirect('/admin#users')
 
 def delete_admin(request, admin_id):
 	dbprint("DELETE ADMIN")

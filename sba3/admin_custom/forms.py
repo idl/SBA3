@@ -8,8 +8,6 @@ class LoginForm(forms.Form):
     password = forms.CharField(required=True, label='Password')
 
 class registerAdminForm(forms.Form):
-    school_list = School.objects.all().order_by('name')
-    
     email = forms.EmailField(required=True, label='Email', initial='', widget=forms.EmailInput(attrs={'class': 'form-control'}))
     password = forms.CharField(required=True, label='Password', widget=forms.TextInput(attrs={'class': 'form-control', 'type':'password'}))
     password_confirm = forms.CharField(required=True, label='Confirm Password', widget=forms.TextInput(attrs={'class': 'form-control', 'type':'password'}))
