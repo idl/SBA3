@@ -35,7 +35,7 @@ def admin(request):
 		dbprint(user.email)
 		schooladmin_entry['id'] = user.id
 		schooladmin_entry['email'] = user.email
-		schooladmin_entry['school'] = School.objects.get(id=user.school_id)
+		# schooladmin_entry['school'] = School.objects.get(id=user.school_id)
 		schooladmin_entry['last_login'] = user.last_login
 		schooladmin_entry['date_joined'] = user.date_joined
 		schooladmin_list.append(schooladmin_entry)
@@ -116,8 +116,8 @@ def register_admin(request):
 
 		if err_msg != '':
 			request.session['err_msg'] = err_msg
-			return redirect('./#users')
-	return redirect('./#users')
+			return redirect('/admin/#users')
+	return redirect('/admin/#users')
 
 def delete_admin(request, admin_id):
 	dbprint("DELETE ADMIN")
