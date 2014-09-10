@@ -32,14 +32,14 @@ def admin(request):
 	for user in Users.objects.filter(is_superuser=False).order_by('school_id'):
 		schooladmin_entry = {}
 		# schooladmin_entry[]
-		dbprint(user.email)
 		schooladmin_entry['id'] = user.id
 		schooladmin_entry['email'] = user.email
-		schooladmin_entry['school'] = School.objects.get(id=user.school_id)
+		if user.school_id == None:
+			dbprint(user + ": None")
+		# schooladmin_entry['school'] = School.objects.get(id=user.school_id)
 		schooladmin_entry['last_login'] = user.last_login
 		schooladmin_entry['date_joined'] = user.date_joined
 		schooladmin_list.append(schooladmin_entry)
-	dbprint(schooladmin_list)
 	ctx = { 'registerAdminForm': regsiterAdminForm,
 			'err_msg': err_msg,
 			'success': success,
@@ -50,7 +50,6 @@ def admin(request):
 			'superadmin_list': superadmin_list,
 			'schooladmin_list': schooladmin_list
 		  }
-	
 	return render(request, 'admin_custom/admin.html', ctx)
 
 
@@ -86,28 +85,35 @@ def register_admin(request):
 		email = request.POST.get('email', '')
 		password = request.POST.get('password', '')
 		password_confirm = request.POST.get('password_confirm', '')
-		school_id = request.POST.get('school', None)
-		err_msg = ''
+		school_id = request.POST.get('school', '')
+		is_superuser = request.POST.get('superuser', False)
+		err_msg = []
 
 		if email == '' and password == '':
-			err_msg = 'Email and password fields cannot be blank.'
+			err_msg.append('Email and password fields cannot be blank.')
 		elif email == '':
-			err_msg = 'Email cannot be blank.'
+			err_msg.append('Email cannot be blank.')
 		elif password == '':
-			err_msg = 'Password cannot be blank.'
+			err_msg.append('Password cannot be blank.')
+		elif password_confirm == '':
+			err_msg.append('Please confirm password.')
 		elif password != password_confirm:
-			err_msg = 'Passwords must match'
-
-		reg_form = registerAdminForm(request.POST)
+			err_msg.append('Passwords must match')
 		
-		if not reg_form.is_valid():
-			err_msg = 'Error in the form'
+		if (school_id == '' and is_superuser == False) or (school_id != '' and is_superuser == True):
+			err_msg.append('New user <b>must</b> be either a School Admin or a Global admin.')
+
+		# Custom form validation is already implemented above; reg_form.is_valid() is not needed
+		#
+		# reg_form = registerAdminForm(request.POST)
+		# if not reg_form.is_valid():
+			# err_msg = ['Error processing form. Please ensure all fields are populated and the email address is in the correct format.']
 
 		try:
-			Users.objects.get(email=email)
-			err_msg = 'Email address in use'
+			dbprint(Users.objects.get(email=email))
+			err_msg.append('Email address in use.')
 		except:
-			if request.POST.get('superuser', False) == False:
+			if is_superuser == False:
 				Users.objects.create_user(email, password, school_id)
 				request.session['success'] = 'User Created Successfully'
 			else:
@@ -116,6 +122,7 @@ def register_admin(request):
 
 		if err_msg != '':
 			request.session['err_msg'] = err_msg
+			dbprint(request.session['err_msg'])
 			return redirect('/admin#users')
 	return redirect('/admin#users')
 
