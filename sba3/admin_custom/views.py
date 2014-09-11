@@ -106,23 +106,23 @@ def register_admin(request):
 		# reg_form = registerAdminForm(request.POST)
 		# if not reg_form.is_valid():
 			# err_msg = ['Error processing form. Please ensure all fields are populated and the email address is in the correct format.']
-
 		try:
-			dbprint(Users.objects.get(email=email))
+			# if email is already registered
+			Users.objects.get(email=email)
 			err_msg.append('Email address in use.')
 		except:
 			pass
-		dbprint("IS SUPER? " + str(bool(is_superuser)))
-		if is_superuser == False:
-			Users.objects.create_user(email, password, school_id)
-			request.session['success'] = 'User Created Successfully'
-		else:
-			Users.objects.create_superuser(email, password)
-			request.session['success'] = 'Superuser Created Successfully'
 
-		if err_msg != '':
+		if len(err_msg) > 0:
+			dbprint(err_msg)
 			request.session['err_msg'] = err_msg
 			return redirect('/admin/#users')
+		if is_superuser == False:
+			Users.objects.create_user(email, password, school_id)
+			request.session['success'] = 'School admin created successfully!'
+		else:
+			Users.objects.create_superuser(email, password)
+			request.session['success'] = 'Superadmin created successfully!'
 	return redirect('/admin/#users')
 
 def delete_admin(request, admin_id):
