@@ -16,11 +16,15 @@
 	// Regiser Admin User
 	// Hide select school dropdown when click Global Admin checkbox and set to ''
 	// If a school is selected while Global Admin checkbox is asserted, uncheck it
-	$('#id_superuser').click(function() {
-		console.log("Initial val: " + $('#id_school').val());
-		if($('#id_school').val() != '') {
-			$('#id_school option').val('');
-			console.log("After-click val: " + $('#id_school').val());
+	$('#id_superuser').change(function() {
+		var originalOptionsHTML = $('#id_school').html();
+		// console.log("Initial val: '" + $('#id_school').val() + "'");
+		// console.log("'" + typeof $('#id_superuser:checked').val() + "'")
+		if($(this).is(':checked')) {
+			console.log('CHECKED');
+			$('.school-select').fadeOut();
+		} else {
+			$('.school-select').fadeIn();
 		}
 	});
 })(jQuery);
