@@ -8088,11 +8088,6 @@ button.close {
   padding: 15px;
 }
 
-/* line 34, ../sass/main.scss */
-tr[class^='if'], tr[class^='if'] {
-  background: lightblue;
-}
-
 /* line 38, ../sass/main.scss */
 .logout {
   margin-top: 2em;
