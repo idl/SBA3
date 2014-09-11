@@ -111,12 +111,14 @@ def register_admin(request):
 			dbprint(Users.objects.get(email=email))
 			err_msg.append('Email address in use.')
 		except:
-			if is_superuser == False:
-				Users.objects.create_user(email, password, school_id)
-				request.session['success'] = 'User Created Successfully'
-			else:
-				Users.objects.create_superuser(email, password)
-				request.session['success'] = 'Superuser Created Successfully'
+			pass
+		dbprint("IS SUPER? " + str(bool(is_superuser)))
+		if is_superuser == False:
+			Users.objects.create_user(email, password, school_id)
+			request.session['success'] = 'User Created Successfully'
+		else:
+			Users.objects.create_superuser(email, password)
+			request.session['success'] = 'Superuser Created Successfully'
 
 		if err_msg != '':
 			request.session['err_msg'] = err_msg
