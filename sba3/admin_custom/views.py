@@ -31,10 +31,9 @@ def admin(request):
 	schooladmin_list = []
 	for user in Users.objects.filter(is_superuser=False).order_by('school_id'):
 		schooladmin_entry = {}
-		# schooladmin_entry[]
 		schooladmin_entry['id'] = user.id
 		schooladmin_entry['email'] = user.email
-		# schooladmin_entry['school'] = School.objects.get(id=user.school_id)
+		schooladmin_entry['school'] = School.objects.get(id=user.school_id)
 		schooladmin_entry['last_login'] = user.last_login
 		schooladmin_entry['date_joined'] = user.date_joined
 		schooladmin_list.append(schooladmin_entry)
@@ -74,8 +73,7 @@ def create_school(request):
 			# }
 			# newSchool = School(**vals)
 			# newSchool.save()
-	print School.objects.values('name').all()
-	return HttpResponseRedirect(reverse('admin') + '#registerschools')
+	return redirect('/admin/#registerschools')
 
 @login_required
 def register_admin(request):
@@ -114,7 +112,6 @@ def register_admin(request):
 			pass
 
 		if len(err_msg) > 0:
-			dbprint(err_msg)
 			request.session['err_msg'] = err_msg
 			return redirect('/admin/#users')
 		if is_superuser == False:
