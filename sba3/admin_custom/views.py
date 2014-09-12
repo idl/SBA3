@@ -19,28 +19,29 @@ def admin(request):
 	success = request.session.get('success', '')
 	request.session['success'] = ''
 	# if username param in url doesn't match an actual username, redirect to 'login_view'
-	regsiterAdminForm = registerAdminForm()
+	registerAdminForm = registerAdminForm()
 	registerError = request.session.get('registerError', False)
 	request.session['registerError'] = False
 	registerSuccess = request.session.get('registerSuccess', False)
 	request.session['registerSuccess'] = False
-	regsiterSchoolUserForm = registerSchoolUserForm()
+	registerSchoolUserForm = registerSchoolUserForm()
 
 	school_list = School.objects.all()
 	superadmin_list = Users.objects.filter(is_superuser=True)
 	schooladmin_list = []
 	for user in Users.objects.filter(is_superuser=False).order_by('school_id'):
 		schooladmin_entry = {}
+		# schooladmin_entry[]
 		schooladmin_entry['id'] = user.id
 		schooladmin_entry['email'] = user.email
-		schooladmin_entry['school'] = School.objects.get(id=user.school_id)
+		# schooladmin_entry['school'] = School.objects.get(id=user.school_id)
 		schooladmin_entry['last_login'] = user.last_login
 		schooladmin_entry['date_joined'] = user.date_joined
 		schooladmin_list.append(schooladmin_entry)
-	ctx = { 'registerAdminForm': regsiterAdminForm,
+	ctx = { 'registerAdminForm': registerAdminForm,
 			'err_msg': err_msg,
 			'success': success,
-			'registerSchoolUserForm': regsiterSchoolUserForm,
+			'registerSchoolUserForm': registerSchoolUserForm,
 			'registerError': registerError,
 			'registerSuccess': registerSuccess,
 			'school_list': school_list,
