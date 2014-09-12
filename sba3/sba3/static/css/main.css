@@ -8122,73 +8122,78 @@ h2 {
 }
 /* line 63, ../sass/main.scss */
 .registerAdminUserForm button.pull-down {
-  margin-top: 24px;
+  margin-top: 26px;
+}
+/* line 66, ../sass/main.scss */
+.registerAdminUserForm .form-note {
+  margin-top: 30px;
+  display: none;
 }
 
-/* line 68, ../sass/main.scss */
+/* line 72, ../sass/main.scss */
 .registerAdminUserFormErrors ul {
   padding-left: 0.5em;
   list-style: none;
 }
-/* line 71, ../sass/main.scss */
+/* line 75, ../sass/main.scss */
 .registerAdminUserFormErrors ul li {
   position: relative;
 }
-/* line 73, ../sass/main.scss */
+/* line 77, ../sass/main.scss */
 .registerAdminUserFormErrors ul li span {
   position: relative;
   top: -1px;
   font-size: 0.5em;
 }
 
-/* line 81, ../sass/main.scss */
+/* line 85, ../sass/main.scss */
 .registerSchoolForm {
   padding: 15px;
   background: #eeeeee;
 }
-/* line 85, ../sass/main.scss */
+/* line 89, ../sass/main.scss */
 .registerSchoolForm .text-center {
   margin: 0;
 }
 
-/* line 91, ../sass/main.scss */
+/* line 95, ../sass/main.scss */
 .users-table.table-condensed > tbody > tr > td {
   padding-top: 8px;
 }
-/* line 93, ../sass/main.scss */
+/* line 97, ../sass/main.scss */
 .users-table.table-condensed > tbody > tr > td.actions {
   padding-top: 5px;
   text-align: right;
 }
-/* line 98, ../sass/main.scss */
+/* line 102, ../sass/main.scss */
 .users-table .glyphicon {
   padding: 5px;
   border-radius: 99px;
   font-size: 13px;
   transition: all 0.15s ease-in;
 }
-/* line 104, ../sass/main.scss */
+/* line 108, ../sass/main.scss */
 .users-table .glyphicon-pencil {
   color: #5bc0de;
 }
-/* line 106, ../sass/main.scss */
+/* line 110, ../sass/main.scss */
 .users-table .glyphicon-pencil:hover {
   background: #5bc0de;
   color: white;
   transition: all 0.15s ease-in;
 }
-/* line 112, ../sass/main.scss */
+/* line 116, ../sass/main.scss */
 .users-table .glyphicon-remove {
   color: #d9534f;
 }
-/* line 114, ../sass/main.scss */
+/* line 118, ../sass/main.scss */
 .users-table .glyphicon-remove:hover {
   background: #d9534f;
   color: white;
   transition: all 0.3s ease-in;
 }
 
-/* line 124, ../sass/main.scss */
+/* line 128, ../sass/main.scss */
 .modal#deleteAdminUser .modal-footer {
   text-align: center;
 }

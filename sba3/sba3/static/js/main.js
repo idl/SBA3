@@ -17,14 +17,25 @@
 	// Hide select school dropdown when click Global Admin checkbox and set to ''
 	// If a school is selected while Global Admin checkbox is asserted, uncheck it
 	$('#id_superuser').change(function() {
-		var originalOptionsHTML = $('#id_school').html();
-		// console.log("Initial val: '" + $('#id_school').val() + "'");
-		// console.log("'" + typeof $('#id_superuser:checked').val() + "'")
 		if($(this).is(':checked')) {
-			console.log('CHECKED');
-			$('.school-select').fadeOut();
+			$('.school-select').fadeOut(function() {
+				$('.form-note').fadeIn();
+			});
 		} else {
-			$('.school-select').fadeIn();
+			$('.form-note').fadeOut(function() {
+				$('.school-select').fadeIn();
+			});
 		}
+	});
+	$('#id_school').change(function() {
+		if($(this).val() != '') {
+			$('.superuser-select').fadeOut();
+		} else {
+			$('.superuser-select').fadeIn();
+		}
+	});
+
+	$('.editAdmin').click(function() {
+		var user_id = $(this).parent().parent().attr('data-user-id'));
 	});
 })(jQuery);
