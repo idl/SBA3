@@ -124,6 +124,11 @@ h2 {
 }
 
 .modal {
+	.modal-title {
+		small {
+			margin-left: 1em;
+		}
+	}
 	&#deleteAdminUser {
 		.modal-footer {
 			text-align: center;

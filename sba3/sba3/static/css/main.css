@@ -8194,6 +8194,10 @@ h2 {
 }
 
 /* line 128, ../sass/main.scss */
+.modal .modal-title small {
+  margin-left: 1em;
+}
+/* line 133, ../sass/main.scss */
 .modal#deleteAdminUser .modal-footer {
   text-align: center;
 }

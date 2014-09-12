@@ -36,6 +36,6 @@
 	});
 
 	$('.editAdmin').click(function() {
-		var user_id = $(this).parent().parent().attr('data-user-id'));
+		var user_id = $(this).parent().parent().attr('data-user-id');
 	});
 })(jQuery);
