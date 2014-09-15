@@ -3,22 +3,26 @@
 {% block body %}
   <div class="col-sm-3 col-md-3">
     <ul class="nav nav-pills nav-stacked" role="tablist">
-      <li {% if not err_msg %}class="active"{% endif %}>
+      <li {% ifequal err_msg '' %}class="active"{% endifequal %}>
         <a href="#home" role="tab" data-toggle="pill">Home</a>
       </li>
       <li>
         <a href="#survey" role="tab" data-toggle="pill">Take Survey</a>
       </li>
-      <li {% if err_msg %}class="active"{% endif %}>
+      <li>
+        <a href='#continue' role='tab' data-toggle='pill'>Continue Survey</a>
+      </li>
+      <li {% ifnotequal err_msg '' %}class="active"{% endifnotequal %}>
         <!-- <a href="{% url 'login_view' %}">Admin Login</a> -->
         <a href="#login" role="tab" data-toggle="pill">Admin Login</a>
       </li>
     </ul>
   </div>
   <div class="col-sm-9 col-md-9 tab-content">
-    <div class="tab-pane home {% if not err_msg %}active{% endif %}" id="home">1</div>
+    <div class="tab-pane home {% if err_msg == '' %}active{% endif %}" id="home">1</div>
     <div class="tab-pane survey" id="survey">{% include 'survey_login.html' %}</div>
-    <div class="tab-pane login {% if err_msg %}active{% endif %}" id="login">{% include 'admin_custom/login.html' %}</div>
+    <div class="tab-pane continue" id="continue">{% include 'survey_continue.html' %}</div>
+    <div class="tab-pane login {% if not err_msg == '' %}active{% endif %}" id="login">{% include 'admin_custom/login.html' %}</div>
   </div>
 {% endblock %}
 

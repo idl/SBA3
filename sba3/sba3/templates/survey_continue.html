@@ -1,7 +1,7 @@
 {% if err_msg %}<div class="login_err">{{ err_msg }}</div>{% endif %}
-<form action='{% url 'start_survey' %}' method='post' role='form'>
+<form action='{% url 'continue_survey' %}' method='post' role='form'>
   {% csrf_token %}
-  {% for field in surveyLoginForm %}
+  {% for field in surveyContinueForm %}
     <div class='form-group'>
         {{ field.label_tag }}
         {{ field }}

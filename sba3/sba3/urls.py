@@ -18,6 +18,7 @@ urlpatterns = patterns('sba3.views',
     url(r'^report$', 'report', name='report'),
 
     url(r'^start_survey$', 'start_survey', name='start_survey'),
+    url(r'^continue_survey$', 'continue_survey', name='continue_survey'),
 
     url(r'^admin2', include(admin.site.urls)),
 
