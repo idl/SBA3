@@ -4,70 +4,29 @@
 <!--[if IE 7]>         <html class='no-js lt-ie9 lt-ie8'> <![endif]-->
 <!--[if IE 8]>         <html class='no-js lt-ie9'> <![endif]-->
 <!--[if gt IE 8]>      <html class='no-js' lang='en'> <![endif]-->
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>SBA-3 Survey</title>
-    <meta name='description' content=''>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>SBA-3 Survey</title>
+  <meta name='description' content=''>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
 
-    <link href='{{ STATIC_URL }}css/main.css' rel='stylesheet' media='screen'>
+  <link href='{{ STATIC_URL }}css/main.css' rel='stylesheet' media='screen'>
 
-    {% block header_script %}
-    {% endblock %}
-    {% block fill_vals_script %}
-    {% endblock %}
-  </head>
-  <body>
-    <header>
-      <div class="container">
-        <div class="row page-header">
-          <div class="col-xs-6 columns">
-            <h1>SBA-3</h1>
-          </div>
-        </div>
-      </div>
-    </header>
+  {% block header_script %}
+  {% endblock %}
+  {% block fill_vals_script %}
+  {% endblock %}
+</head>
+<body>
 
-    <div class='container survey-main'>
-      <section>
-        <div class='row'>
-          <div class='col-xs-12'>
-              {% block body %}
-                <div class="row">
-                  <div class="col-sm-3 col-md-3">
-                    <ul class="nav nav-pills nav-stacked" role="tablist">
-                      <li {% if not err_msg %}class="active"{% endif %}>
-                        <a href="#home" role="tab" data-toggle="pill">Home</a>
-                      </li>
-                      <li>
-                        <a href="#survey" role="tab" data-toggle="pill">Take Survey</a>
-                      </li>
-                      <li {% if err_msg %}class="active"{% endif %}>
-                        <!-- <a href="{% url 'login_view' %}">Admin Login</a> -->
-                        <a href="#login" role="tab" data-toggle="pill">Admin Login</a>
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="col-sm-9 col-md-9 tab-content">
-                    <div class="tab-pane home {% if not err_msg %}active{% endif %}" id="home">1</div>
-                    <div class="tab-pane survey" id="survey">{% include 'survey_login.html' %}</div>
-                    <div class="tab-pane login {% if err_msg %}active{% endif %}" id="login">{% include 'admin_custom/login.html' %}</div>
-                  </div>
-                </div>
-              {% endblock %}
-          </div>
-        </div>
-      </section>
-    </div>
-    <footer class="text-center">
-    <br>
-    <b>Dev:</b> <a href="/clear">Clear Session</a>
-    </footer>
-    {% block tab_script %}
-    {% endblock %}
-    {% block footer_script %}
-    {% endblock %}
-  </body>
+{% block survey_login %}
+{% endblock %}
+
+{% block tab_script %}
+{% endblock %}
+{% block footer_script %}
+{% endblock %}
+</body>
 </html>
 <!-- END SBA3 BASE -->

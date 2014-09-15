@@ -1,5 +1,4 @@
 from django import forms
-
 from sba3.models import School
 
 class LoginForm(forms.Form):
@@ -16,4 +15,4 @@ class GlobalAdminForm(forms.Form):
 
 class SchoolAdminForm(forms.Form):
 	school_name = forms.CharField(required=True, label='School Name', initial='')
-	# password = forms.CharField(required=True, label='Password')
+	password = forms.CharField(required=True, label='Password')
