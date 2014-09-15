@@ -6,7 +6,7 @@ from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 
-from .forms import LoginForm, registerAdminForm, registerSchoolUserForm
+from .forms import LoginForm, GlobalAdminForm, SchoolAdminForm
 
 from sba3.models import School
 
@@ -19,22 +19,21 @@ def admin(request):
 	success = request.session.get('success', '')
 	request.session['success'] = ''
 	# if username param in url doesn't match an actual username, redirect to 'login_view'
-	registerAdminForm = registerAdminForm()
+	registerAdminForm = GlobalAdminForm()
 	registerError = request.session.get('registerError', False)
 	request.session['registerError'] = False
 	registerSuccess = request.session.get('registerSuccess', False)
 	request.session['registerSuccess'] = False
-	registerSchoolUserForm = registerSchoolUserForm()
+	registerSchoolUserForm = SchoolAdminForm()
 
 	school_list = School.objects.all()
 	superadmin_list = Users.objects.filter(is_superuser=True)
 	schooladmin_list = []
 	for user in Users.objects.filter(is_superuser=False).order_by('school_id'):
 		schooladmin_entry = {}
-		# schooladmin_entry[]
 		schooladmin_entry['id'] = user.id
 		schooladmin_entry['email'] = user.email
-		# schooladmin_entry['school'] = School.objects.get(id=user.school_id)
+		schooladmin_entry['school'] = School.objects.get(id=user.school_id)
 		schooladmin_entry['last_login'] = user.last_login
 		schooladmin_entry['date_joined'] = user.date_joined
 		schooladmin_list.append(schooladmin_entry)
