@@ -11,7 +11,7 @@ from admin_custom.forms import LoginForm
 def home(request):
     err_msg = request.session.get('err_msg', '')
     request.session['err_msg'] = ''
-    return render(request, 'home.html', {'surveyLoginForm':surveyLoginForm, 'login_form':LoginForm, 'err_msg': err_msg})
+    return render(request, 'survey_login.html', {'surveyLoginForm':surveyLoginForm, 'login_form':LoginForm, 'err_msg': err_msg})
 
 def questions(request):
    return render(request,'questions.html')
@@ -19,11 +19,9 @@ def questions(request):
 def page(request, pagenum):
     error = request.session.get('error', False)
     request.session['error'] = False
-    # print '\n\n',request.POST.lists(),'\n\n'
     ctx = {'pagenum': pagenum, 'error': error}
     if pagenum=='1':
         return render(request, 'page1.html', ctx)
-    print("******************** " + pagenum)
     if pagenum=='1':
         return render(request, 'page1.html', {'pagenum': 5, 'error': error})
     elif pagenum=='2':

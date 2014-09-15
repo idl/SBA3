@@ -7,7 +7,7 @@ from admin_custom import urls as admin_custom_urls
 admin.autodiscover()
 
 urlpatterns = patterns('sba3.views',
-    url(r'^$', 'home', name='home'),
+    url(r'^$', 'survey_begin', name='survey_begin'),
 
     url(r'^questions$', 'questions', name='questions'),
     url(r'^page/(?P<pagenum>[0-9]{1,2})$', 'page', name='page'),

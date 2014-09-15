@@ -5,9 +5,7 @@ from django.template import RequestContext
 from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-
 from .forms import LoginForm, GlobalAdminForm, SchoolAdminForm
-
 from sba3.models import School
 
 Users = get_user_model()
@@ -54,7 +52,6 @@ def admin(request):
 def create_school(request):
 	if request.POST:
 		school_name = request.POST.get('school_name', '')
-	# School.objects.all().delete()
 	if school_name == '':
 		request.session['registerError'] = True
 		request.session['registerSuccess'] = False
