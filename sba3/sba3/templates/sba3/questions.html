@@ -19,7 +19,7 @@
 
 {% block body %}
   {% if error %}
-      <p class="error">Please fill in all fields </p>
+      <div class="alert alert-danger">Please fill in all fields.</div>
   {% endif %}
   <form method='post'>
     {% csrf_token %}

@@ -17,21 +17,22 @@
 	// Hide select school dropdown when click Global Admin checkbox and set to ''
 	// If a school is selected while Global Admin checkbox is asserted, uncheck it
 	$('#id_superuser').change(function() {
+		// .stop() - http://stackoverflow.com/questions/2857998/stop-jquery-animations-stacking
 		if($(this).is(':checked')) {
-			$('.school-select').fadeOut(function() {
-				$('.form-note').fadeIn();
+			$('.school-select').stop().fadeOut(function() {
+				$('.form-note').stop().fadeIn();
 			});
 		} else {
-			$('.form-note').fadeOut(function() {
-				$('.school-select').fadeIn();
+			$('.form-note').stop().fadeOut(function() {
+				$('.school-select').stop().fadeIn();
 			});
 		}
 	});
 	$('#id_school').change(function() {
 		if($(this).val() != '') {
-			$('.superuser-select').fadeOut();
+			$('.superuser-select').stop().fadeOut();
 		} else {
-			$('.superuser-select').fadeIn();
+			$('.superuser-select').stop().fadeIn();
 		}
 	});
 
