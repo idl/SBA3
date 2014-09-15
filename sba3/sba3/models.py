@@ -40,7 +40,7 @@ class StudentManager(models.Manager):
         if Student.objects.filter(user_id=user_id).count() != 0:
             student = Student.objects.filter(user_id=user_id).get()
             if student.school_id == school_id:
-                raise ValueError("Student-School association already exists")
+                raise ValueError({'error':'Student - School association already exists'})
         else:
             school = School.objects.filter(pk=1).get()
 
@@ -71,7 +71,7 @@ class Student(models.Model):
 
 
 class AnswerSet(models.Model):
-    student_id = models.CharField(max_length=10, db_index = True)
+    student_id = models.ForeignKey(Student, db_index = True)
     p1q1 = models.CharField(max_length=20)
     p1q2 = models.CharField(max_length=20)
     p1q3 = models.CharField(max_length=20)

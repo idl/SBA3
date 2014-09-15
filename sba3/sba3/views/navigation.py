@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from ..models import AnswerSet
+from ..models import AnswerSet, Student
 
 def previous(request):
     pagenum = int(request.POST.get('pagenum', 1))
@@ -50,6 +50,8 @@ def submit(request):
             column = page + "q" + str(answernum)
             row[column] = answer
             answernum = answernum + 1
+    current_student = Student.objects.filter(id=request.session['user_id']).get()
+    row['student_id'] = current_student
     submission = AnswerSet(**row)
     print AnswerSet(**row)
 
