@@ -64,9 +64,36 @@ def continue_survey(request):
                 request.session['continue_pass'] = continue_pass
                 request.session['user_id'] = current_student.id
                 try:
-                    current_answers = AnswerSet.objects.values().filter(student_id=current_student)
+                    session_build = {}
+                    current_answers = AnswerSet.objects.values().filter(student_id=current_student).get()
                     for answer in current_answers:
-                        print answer
+                        if answer[0] == 'p':
+                            if answer[2] == 'q':
+                                array_name = answer[:2]
+                                question_number = answer[3:]
+                            elif answer[3]  == 'q':
+                                array_name = answer[:3]
+                                question_number = answer[4:]
+                            else:
+                                array_name = ''
+                                question_number = ''
+
+                            if array_name in session_build:
+                                session_build[array_name].update({question_number: current_answers[answer]})
+                            else:
+                                session_build[array_name] = {question_number: current_answers[answer]}
+       
+                    print session_build
+                    for array_name in session_build:
+                        current = 1
+                        temp_array = []
+                        current_array = session_build[array_name]
+                        for answer in current_array:
+                            temp_array.append(current_array.get(str(current), ''))
+                            current = current + 1
+     
+                        request.session[array_name] = temp_array
+
                         # rebuild session
                     return redirect('page', 1)
                 except:
