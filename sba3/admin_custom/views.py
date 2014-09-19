@@ -5,7 +5,7 @@ from django.template import RequestContext
 from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from .forms import LoginForm, GlobalAdminForm, SchoolAdminForm
+from .forms import LoginForm, RegisterGlobalAdminForm, SchoolAdminForm
 from sba3.models import School
 
 Users = get_user_model()
@@ -13,16 +13,18 @@ Users = get_user_model()
 @login_required(redirect_field_name='')
 def admin(request):
 	err_msg = request.session.get('err_msg', '')
-	request.session['err_msg'] = ''
 	success = request.session.get('success', '')
+	request.session['err_msg'] = ''
+	request.session['login_err_msg'] = ''
 	request.session['success'] = ''
-	# if username param in url doesn't match an actual username, redirect to 'login_view'
-	registerAdminForm = GlobalAdminForm()
-	registerError = request.session.get('registerError', False)
-	request.session['registerError'] = False
-	registerSuccess = request.session.get('registerSuccess', False)
-	request.session['registerSuccess'] = False
+	registerAdminForm = RegisterGlobalAdminForm()
 	registerSchoolUserForm = SchoolAdminForm()
+	registerError = request.session.get('registerError', False)
+	registerSuccess = request.session.get('registerSuccess', False)
+	request.session['registerError'] = False
+	request.session['registerSuccess'] = False
+
+	
 
 	school_list = School.objects.all()
 	superadmin_list = Users.objects.filter(is_superuser=True)
@@ -72,26 +74,24 @@ def create_school(request):
 			# newSchool.save()
 	return redirect('/admin/#registerschools')
 
-@login_required
+@login_required(redirect_field_name='')
 def register_admin(request):
-	if request.POST:
+	if request.POST:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
 		email = request.POST.get('email', '')
-		password = request.POST.get('password', '')
-		password_confirm = request.POST.get('password_confirm', '')
+		tmp_password = request.POST.get('tmp_password', '')
+		# password_confirm = request.POST.get('password_confirm', '')
 		school_id = request.POST.get('school', '')
 		is_superuser = request.POST.get('superuser', False)
 		err_msg = []
 
-		if email == '' and password == '':
-			err_msg.append('Email and password fields cannot be blank.')
+		if email == '' and tmp_password == '':
+			err_msg.append('Email and temporary password fields cannot be blank.')
 		elif email == '':
 			err_msg.append('Email cannot be blank.')
-		elif password == '':
-			err_msg.append('Password cannot be blank.')
-		elif password_confirm == '':
-			err_msg.append('Please confirm password.')
-		elif password != password_confirm:
-			err_msg.append('Passwords must match')
+		elif tmp_password == '':
+			err_msg.append('Temporary password cannot be blank.')
+		# elif password_confirm == '':
+		# 	err_msg.append('Please confirm password.')
 		
 		if (school_id == '' and is_superuser == False) or (school_id != '' and is_superuser == True):
 			err_msg.append('New user <b>must</b> be either a School Admin or a Global admin.')
@@ -135,23 +135,22 @@ def login_view(request):
 			login(request, user)
 			return redirect('login_view')
 		else:
-			err_msg = "Email and password combination doesn't match database records. Please try logging in again."
+			login_err_msg = "Email and password combination doesn't match database records. Please try logging in again."
 			if email == '' and password == '':
-				err_msg = 'Email and password fields cannot be blank.'
+				login_err_msg = 'Email and password fields cannot be blank.'
 			elif email == '':
-				err_msg = 'Email cannot be blank.'
+				login_err_msg = 'Email cannot be blank.'
 			elif password == '':
-				err_msg = 'Password cannot be blank.'
-			# return render(request, 'home.html', { 'login_form': login_form, 'err_msg': err_msg })
-			request.session['err_msg'] = err_msg
-			return redirect('/#login')
+				login_err_msg = 'Password cannot be blank.'
+			# return render(request, 'home.html', { 'login_form': login_form, 'login_err_msg': login_err_msg })
+			request.session['login_err_msg'] = login_err_msg
+			return redirect('/admin')
 	login_form = LoginForm()
-	return redirect('/#login')
+	return render(request, 'admin_custom/login.html', { 'login_form': login_form })
 
-@login_required(redirect_field_name='')
 def logout_view(request):
 	logout(request)
-	return redirect('home')
+	return redirect('login_view')
 
 def dbprint(input_str):
 	input_str = str(input_str)

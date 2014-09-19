@@ -8083,127 +8083,147 @@ button.close {
   float: none;
 }
 
-/* line 16, ../sass/main.scss */
+/* line 15, ../sass/main.scss */
 .container.survey-main table tr:first-child td {
   border-top: none;
 }
 
-/* line 25, ../sass/main.scss */
+/* line 24, ../sass/main.scss */
 .bg-success, .bg-danger {
   padding: 15px;
 }
 
-/* line 42, ../sass/main.scss */
+/* line 41, ../sass/main.scss */
+.login-container {
+  margin-top: 3em;
+  float: none;
+}
+
+/* line 45, ../sass/main.scss */
 .logout {
   margin-top: 2em;
 }
 
-/* line 46, ../sass/main.scss */
+/* line 49, ../sass/main.scss */
 .joined-on {
   display: block;
   color: #666666;
   font-size: 0.875em;
 }
 
-/* line 52, ../sass/main.scss */
+/* line 55, ../sass/main.scss */
 h2 {
   margin-top: 0;
 }
 
-/* line 56, ../sass/main.scss */
+/* line 59, ../sass/main.scss */
 .registerAdminUserForm {
   margin-bottom: 20px;
   padding: 15px;
   background: #eeeeee;
 }
-/* line 60, ../sass/main.scss */
+/* line 63, ../sass/main.scss */
 .registerAdminUserForm .pull-left {
   margin: 0;
 }
-/* line 63, ../sass/main.scss */
+/* line 66, ../sass/main.scss */
 .registerAdminUserForm .pull-down {
-  margin-top: 28px;
+  margin-top: -3px;
   margin-bottom: 0;
-}
-/* line 67, ../sass/main.scss */
-.registerAdminUserForm button.pull-down {
-  margin-top: 26px;
 }
 /* line 70, ../sass/main.scss */
 .registerAdminUserForm .form-note {
   max-width: 174px;
-  margin-top: 15px;
+  margin-top: 22px;
   display: none;
+  text-align: center;
+}
+/* line 75, ../sass/main.scss */
+.registerAdminUserForm .form-note small {
+  display: block;
+}
+/* line 79, ../sass/main.scss */
+.registerAdminUserForm .help-block {
+  font-size: 0.875em;
+}
+/* line 82, ../sass/main.scss */
+.registerAdminUserForm .form-group {
+  margin-bottom: 0;
 }
 
-/* line 77, ../sass/main.scss */
+/* line 87, ../sass/main.scss */
 .registerAdminUserFormErrors ul {
   padding-left: 0.5em;
   list-style: none;
 }
-/* line 80, ../sass/main.scss */
+/* line 90, ../sass/main.scss */
 .registerAdminUserFormErrors ul li {
   position: relative;
 }
-/* line 82, ../sass/main.scss */
+/* line 92, ../sass/main.scss */
 .registerAdminUserFormErrors ul li span {
   position: relative;
   top: -1px;
   font-size: 0.5em;
 }
 
-/* line 90, ../sass/main.scss */
+/* line 100, ../sass/main.scss */
 .registerSchoolForm {
   padding: 15px;
   background: #eeeeee;
 }
-/* line 94, ../sass/main.scss */
+/* line 104, ../sass/main.scss */
 .registerSchoolForm .text-center {
   margin: 0;
 }
 
-/* line 100, ../sass/main.scss */
+/* line 110, ../sass/main.scss */
 .users-table.table-condensed > tbody > tr > td {
   padding-top: 8px;
 }
-/* line 102, ../sass/main.scss */
+/* line 112, ../sass/main.scss */
 .users-table.table-condensed > tbody > tr > td.actions {
   padding-top: 5px;
   text-align: right;
 }
-/* line 107, ../sass/main.scss */
+/* line 117, ../sass/main.scss */
 .users-table .glyphicon {
   padding: 5px;
   border-radius: 99px;
   font-size: 13px;
   transition: all 0.15s ease-in;
 }
-/* line 113, ../sass/main.scss */
+/* line 123, ../sass/main.scss */
 .users-table .glyphicon-pencil {
   color: #5bc0de;
 }
-/* line 115, ../sass/main.scss */
+/* line 125, ../sass/main.scss */
 .users-table .glyphicon-pencil:hover {
   background: #5bc0de;
   color: white;
   transition: all 0.15s ease-in;
 }
-/* line 121, ../sass/main.scss */
+/* line 131, ../sass/main.scss */
 .users-table .glyphicon-remove {
   color: #d9534f;
 }
-/* line 123, ../sass/main.scss */
+/* line 133, ../sass/main.scss */
 .users-table .glyphicon-remove:hover {
   background: #d9534f;
   color: white;
   transition: all 0.3s ease-in;
 }
 
-/* line 133, ../sass/main.scss */
+/* line 143, ../sass/main.scss */
 .modal .modal-title small {
-  margin-left: 1em;
+  display: block;
 }
-/* line 138, ../sass/main.scss */
+/* line 148, ../sass/main.scss */
 .modal#deleteAdminUser .modal-footer {
   text-align: center;
+}
+
+/* line 156, ../sass/main.scss */
+.admin-page .admin-nav .nav {
+  margin-bottom: 1em;
 }

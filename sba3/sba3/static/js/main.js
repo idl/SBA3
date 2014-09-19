@@ -29,14 +29,22 @@
 		}
 	});
 	$('#id_school').change(function() {
+		// hiding the superadmin checkbox causes submit button to shift up
 		if($(this).val() != '') {
-			$('.superuser-select').stop().fadeOut();
+			var superuserselect_height = $('.superuser-select').height();
+			$('.superuser-select').stop().fadeOut(function() {
+				$('.registerAdminUserForm button[type="submit"]').css('margin-top', superuserselect_height - 3);
+			});
 		} else {
 			$('.superuser-select').stop().fadeIn();
+			$('.registerAdminUserForm button[type="submit"]').css('margin-top', 0);
 		}
 	});
 
 	$('.editAdmin').click(function() {
-		var user_id = $(this).parent().parent().attr('data-user-id');
+		var user_row = $(this).parent().parent();
+		var user_id = user_row.attr('data-user-id');
+		$('.modal .modal-title small').html(user_row.find('.user_email').html());
+		console.log($('.modal-title small').html());
 	});
 })(jQuery);
