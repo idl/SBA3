@@ -19,51 +19,43 @@
         <form action='{% url "register_admin" %}' method='post' role='form' class='registerAdminUserForm'>
             {% csrf_token %}
             {% for field in registerAdminForm %}
-                {% if forloop.counter0 == 0 %}
+                {% if field.name == 'email' %}
                     <div class="row">
-                        <div class="col-xs-4 columns">
-                            <div class='form-group'>
-                                {{ field.label_tag }}
-                                {{ field }}
-                            </div>
-                {% elif forloop.counter0 == 1 %}
-                        <div class='form-group'>
-                            {{ field.label_tag }}
-                            {{ field }}
-                        </div>
-                    </div>
-                {% elif forloop.counter0 == 2 %}
-                        <div class="col-xs-4 columns">
+                        <div class="col-xs-3 columns">
                             <div class='form-group'>
                                 {{ field.label_tag }}
                                 {{ field }}
                             </div>
                         </div>
-                    </div>
-                {% elif forloop.counter0 == 3 %}
-                    <div class="row">
-                        <div class="col-xs-5 columns">
-                            <div class='form-group no-margin school-select'>
+                {% elif field.name == 'school' %}
+                        <div class="col-xs-3 columns">
+                            <div class='form-group school-select'>
                                 {{ field.label_tag }}
                                 {{ field }}
                             </div>
                             <div class="form-group no-margin form-note">
-                            	<small>Global Admins are not associated with a school.</small>
+                                <small>Global Admins are not associated with a school.</small>
                             </div>
                         </div>
-                {% elif forloop.counter0 == 4 %}
-                    <div class="col-xs-4 columns">
-                        <div class="form-group text-center pull-down superuser-select">
+                {% elif field.name == 'tmp_password' %}
+                    <div class="col-xs-3 columns">
+                        <div class='form-group no-margin'>
                             {{ field.label_tag }}
                             {{ field }}
+                            <!-- <span class="help-block">Set a temporary password for admin to use on first login.</span> -->
                         </div>
                     </div>
-                    <div class="col-xs-3 columns">
-                        <button type='submit' class='btn btn-primary pull-right pull-down'>Create Admin</button>
+                {% elif field.name == 'superuser' %}
+                        <div class="col-xs-3 columns text-left">
+                            <div class="form-group pull-down superuser-select">
+                                {{ field.label_tag }}
+                                {{ field }}
+                            </div>
+                            <button type='submit' class='btn btn-primary btn-block'>Create Admin</button>
+                        </div>
                     </div>
                 {% endif %}
             {% endfor %}
-            </div>
         </form>
     </div>
 </div>
@@ -82,7 +74,7 @@
             <tbody>
                 {% for user in superadmin_list %}    
                     <tr data-user-id="{{ user.id }}">
-                        <td>{{ user.email }}</td>
+                        <td class="user_email">{{ user.email }}</td>
                         <td>{{ user.last_login }}</td>
                         <td>{{ user.date_joined }}</td>
                         <td class="actions">
@@ -111,8 +103,8 @@
             <tbody>
                 {% for user in schooladmin_list %}
                     <tr data-user-id="{{ user.id }}">
-                        <td>{{ user.email }}</td>
-                        <td>{{ user.school }}</td>
+                        <td class="user_email">{{ user.email }}</td>
+                        <td class="user_school">{{ user.school }}</td>
                         <td>{{ user.last_login }}</td>
                         <td>{{ user.date_joined }}</td>
                         <td class="actions">

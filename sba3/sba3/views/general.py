@@ -8,7 +8,7 @@ from django.db.models.loading import get_model
 from ..forms import surveyLoginForm
 from admin_custom.forms import LoginForm
 
-def home(request):
+def survey_begin(request):
     err_msg = request.session.get('err_msg', '')
     request.session['err_msg'] = ''
     return render(request, 'survey_login.html', {'surveyLoginForm':surveyLoginForm, 'login_form':LoginForm, 'err_msg': err_msg})
