@@ -67,21 +67,22 @@ def continue_survey(request):
                     session_build = {}
                     current_answers = AnswerSet.objects.values().filter(student_id=current_student).get()
                     for answer in current_answers:
-                        if answer[0] == 'p':
-                            if answer[2] == 'q':
-                                array_name = answer[:2]
-                                question_number = answer[3:]
-                            elif answer[3]  == 'q':
-                                array_name = answer[:3]
-                                question_number = answer[4:]
-                            else:
-                                array_name = ''
-                                question_number = ''
+                        if current_answers[answer]:
+                            if answer[0] == 'p':
+                                if answer[2] == 'q':
+                                    array_name = answer[:2]
+                                    question_number = answer[3:]
+                                elif answer[3]  == 'q':
+                                    array_name = answer[:3]
+                                    question_number = answer[4:]
+                                else:
+                                    array_name = ''
+                                    question_number = ''
 
-                            if array_name in session_build:
-                                session_build[array_name].update({question_number: current_answers[answer]})
-                            else:
-                                session_build[array_name] = {question_number: current_answers[answer]}
+                                if array_name in session_build:
+                                    session_build[array_name].update({question_number: current_answers[answer]})
+                                else:
+                                    session_build[array_name] = {question_number: current_answers[answer]}
        
                     print session_build
                     for array_name in session_build:
@@ -95,7 +96,7 @@ def continue_survey(request):
                         request.session[array_name] = temp_array
 
                         # rebuild session
-                    return redirect('page', 1)
+                    return redirect('page', 11)
                 except:
                     return redirect('page', 1)
 

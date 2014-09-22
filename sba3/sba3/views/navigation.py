@@ -53,12 +53,34 @@ def submit(request):
     current_student = Student.objects.filter(id=request.session['user_id']).get()
     row['student_id'] = current_student
     submission = AnswerSet(**row)
-    print AnswerSet(**row)
-
-
-    submission = AnswerSet(**row)
     submission.save()
+
     return redirect('report')
+
+def save_survey(request):
+    row = {}
+    answer_array = []
+    for pagenum in range(1,12):
+        page = "p" + str(pagenum)
+        try:
+            answer_array = request.session[page]
+            answernum = 1
+            for answer in answer_array:
+                column = page + "q" + str(answernum)
+                row[column] = answer
+                answernum = answernum + 1
+        except:
+            pass
+        
+    current_student = Student.objects.filter(id=request.session['user_id']).get()
+    row['student_id'] = current_student
+    AnswerSet.objects.filter(student_id=current_student).delete()
+    submission = AnswerSet(**row)
+
+    submission.save()
+
+    request.session.flush()
+    return redirect('/#continue')
 
 def report(request):
     row = {}
