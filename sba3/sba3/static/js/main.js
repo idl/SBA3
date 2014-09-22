@@ -42,9 +42,12 @@
 	});
 
 	$('.editAdmin').click(function() {
-		var user_row = $(this).parent().parent();
-		var user_id = user_row.attr('data-user-id');
+		var user_row, user_id, user_email, user_school;
+		user_row = $(this).parent().parent();
+		user_id = user_row.attr('data-user-id');
+		user_email = user_row.find('.user_email').html();
+		console.log(user_id + " :: " + user_email + " :: " + user_school);
 		$('.modal .modal-title small').html(user_row.find('.user_email').html());
-		console.log($('.modal-title small').html());
+
 	});
 })(jQuery);

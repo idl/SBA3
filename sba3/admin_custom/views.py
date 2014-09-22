@@ -5,7 +5,7 @@ from django.template import RequestContext
 from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from .forms import LoginForm, RegisterGlobalAdminForm, SchoolAdminForm
+from .forms import LoginForm, RegisterAdminForm, RegisterSchoolForm, EditGlobalAdminForm
 from sba3.models import School
 
 Users = get_user_model()
@@ -17,14 +17,10 @@ def admin(request):
 	request.session['err_msg'] = ''
 	request.session['login_err_msg'] = ''
 	request.session['success'] = ''
-	registerAdminForm = RegisterGlobalAdminForm()
-	registerSchoolUserForm = SchoolAdminForm()
 	registerError = request.session.get('registerError', False)
 	registerSuccess = request.session.get('registerSuccess', False)
 	request.session['registerError'] = False
 	request.session['registerSuccess'] = False
-
-	
 
 	school_list = School.objects.all()
 	superadmin_list = Users.objects.filter(is_superuser=True)
@@ -37,10 +33,11 @@ def admin(request):
 		schooladmin_entry['last_login'] = user.last_login
 		schooladmin_entry['date_joined'] = user.date_joined
 		schooladmin_list.append(schooladmin_entry)
-	ctx = { 'registerAdminForm': registerAdminForm,
+	ctx = { 'editGlobalAdminForm': EditGlobalAdminForm(),
+			'registerAdminForm': RegisterAdminForm(),
+			'registerSchoolForm': RegisterSchoolForm(),
 			'err_msg': err_msg,
 			'success': success,
-			'registerSchoolUserForm': registerSchoolUserForm,
 			'registerError': registerError,
 			'registerSuccess': registerSuccess,
 			'school_list': school_list,
@@ -98,7 +95,7 @@ def register_admin(request):
 
 		# Custom form validation is already implemented above; reg_form.is_valid() is not needed
 		#
-		# reg_form = registerAdminForm(request.POST)
+		# reg_form = RegisterGlobalAdminForm(request.POST)
 		# if not reg_form.is_valid():
 			# err_msg = ['Error processing form. Please ensure all fields are populated and the email address is in the correct format.']
 		try:
@@ -112,10 +109,10 @@ def register_admin(request):
 			request.session['err_msg'] = err_msg
 			return redirect('/admin/#users')
 		if is_superuser == False:
-			Users.objects.create_user(email, password, school_id)
+			Users.objects.create_user(email, tmp_password, school_id)
 			request.session['success'] = 'School admin created successfully!'
 		else:
-			Users.objects.create_superuser(email, password)
+			Users.objects.create_superuser(email, tmp_password)
 			request.session['success'] = 'Superadmin created successfully!'
 	return redirect('/admin/#users')
 
