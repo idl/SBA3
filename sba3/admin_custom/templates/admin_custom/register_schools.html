@@ -9,7 +9,7 @@
 		{% if registerSuccess %}<p class="bg-success">New school has been created.</p>{% endif %}
 		<form action='/admin/createschool' method='post' role='form' class='registerSchoolForm'>
 			{% csrf_token %}
-			{% for field in registerSchoolUserForm %}
+			{% for field in registerSchoolForm %}
 				<div class='form-group'>
 					<label for='{{ field.id_for_label }}'>{{ field.label }}</label>
 					<input type='{{ field.html_name }}' class='form-control' id='{{ field.id_for_label }}' name='{{ field.html_name }}' value="{% if field.html_name != 'password' %}{{ field.value }}{% endif %}" placeholder=''>
