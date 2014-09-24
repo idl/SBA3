@@ -1,0 +1,242 @@
+{% extends 'sba3/questions.html' %}
+  {% block fill_vals_script %}
+    {{ block.super }}
+    <script>
+      $('document').ready(function() {
+        $('#p11q1').val('{{request.session.p11.0}}');
+        $('#p11q2').val('{{request.session.p11.1}}');
+        $('#p11q3').val('{{request.session.p11.2}}');
+        $('#p11q4').val('{{request.session.p11.3}}');
+        $('#p11q5').val('{{request.session.p11.4}}');
+        $('#p11q6').val('{{request.session.p11.5}}');
+        $('#p11q7').val('{{request.session.p11.6}}');
+        $('#p11q8').val('{{request.session.p11.7}}');
+        $('#p11q9').val('{{request.session.p11.8}}');
+        $('#p11q10').val('{{request.session.p11.9}}');
+        $('#p11q11').val('{{request.session.p11.10}}');
+        $('#p11q12').val('{{request.session.p11.11}}');
+        $('#p11q13').val('{{request.session.p11.12}}');
+        $('#p11q14').val('{{request.session.p11.13}}');
+      });
+    </script>
+  {% endblock %}
+
+  {% block table_body %}
+    <tr>
+      <td>
+         What is your age?<br>
+         (-1 for Not Sure, -2 for No Comment)
+      </td>
+      <td>
+        <input name="p11[]" id='p11q1' type='number' min='-2' max='100'>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+         What is your gender?
+      </td>
+      <td>
+        <select name="p11[]" id='p11q2'>
+          <option value=''>----</option>
+          <option value='female'>Female</option>
+          <option value='male'>Male</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+         Are you currently employed?
+      </td>
+      <td>
+        <select name="p11[]" id='p11q3'>
+          <option value=''>----</option>
+          <option value='yes'>Yes</option>
+          <option value='no'>No</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr class='ifWork'>
+      <td>
+         Do you work on or off campus?
+      </td>
+      <td>
+        <select name="p11[]" id='p11q4'>
+          <option value=''>----</option>
+          <option value='yes'>Yes</option>
+          <option value='no'>No</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr class='ifWork'>
+      <td>
+         On average, how many hours per week do you work?<br>
+         (-1 for Not Sure, -2 for No Comment)
+      </td>
+      <td>
+        <input name="p11[]" id='p11q5' type='number' min='-2' max='80'>
+      </td>
+    </tr>
+
+    <tr class='ifWork'>
+      <td>
+         Do you work anytime between the hours of 5pm - 12am?
+      </td>
+      <td>
+        <select name="p11[]" id='p11q6'>
+          <option value=''>----</option>
+          <option value='yes'>Yes</option>
+          <option value='no'>No</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+         What is the highest level of education completed by your mother?
+      </td>
+      <td>
+        <select name="p11[]" id='p11q7'>
+          <option value=''>----</option>
+          <option value='none'>No formal education</option>
+          <option value='somehighschool'>Some High School or less</option>
+          <option value='highschool'>High School Diploma or GED</option>
+          <option value='somecollege'>Some college, did not complete degree</option>
+          <option value='associate'>Associate Degree</option>
+          <option value='bachelor'>Bachelor's Degree (B.S., B.A.)</option>
+          <option value='master'>Master's Degree (M.S., M.A)</option>
+          <option value='professional'>Professional Degree (MD, JD, EdD, PsyD, ect.)</option>
+          <option value='doctorate'>Doctorate Degree (Ph.D.)</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nodcomment'>No comment</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+         What is the highest level of education completed by your father?
+      </td>
+      <td>
+        <select name="p11[]" id='p11q8'>
+          <option value=''>----</option>
+          <option value='none'>No formal education</option>
+          <option value='somehighschool'>Some High School or less</option>
+          <option value='highschool'>High School Diploma or GED</option>
+          <option value='somecollege'>Some college, did not complete degree</option>
+          <option value='associate'>Associate Degree</option>
+          <option value='bachelor'>Bachelor's Degree (B.S., B.A.)</option>
+          <option value='master'>Master's Degree (M.S., M.A)</option>
+          <option value='professional'>Professional Degree (MD, JD, EdD, PsyD, ect.)</option>
+          <option value='doctorate'>Doctorate Degree (Ph.D.)</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nodcomment'>No comment</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+         In general, how would you describe the racial mix of your high school?
+      </td>
+      <td>
+        <select name="p11[]" id='p11q9'>
+          <option value=''>----</option>
+          <option value='black'>Majority Black</option>
+          <option value='white'>Majority White</option>
+          <option value='neutral'>About Equal</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No comment</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+         Which category best describes your race?
+      </td>
+      <td>
+        <select name="p11[]" id='p11q10'>
+          <option value=''>----</option>
+          <option value='black'>African American</option>
+          <option value='white'>White/ Caucasian</option>
+          <option value='asian'>Asian American</option>
+          <option value='hispanic'>Hispanic/Latino</option>
+          <option value='native'>Native American</option>
+          <option value='pasific'>Pacific Islander</option>
+          <option value='multi'>Multi-racial</option>
+          <option value='nocomment'>No comment</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+         Do you have friends of other ethnic groups?
+      </td>
+      <td>
+        <select name="p11[]" id='p11q11'>
+          <option value=''>----</option>
+          <option value='yes'>Yes</option>
+          <option value='no'>No</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr class='ifNotGrad'>
+      <td>
+         Do you receive the Pell grant?
+      </td>
+      <td>
+        <select name="p11[]" id='p11q12'>
+          <option value=''>----</option>
+          <option value='yes'>Yes</option>
+          <option value='no'>No</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+         While in high school, did you qualify for or receive free or reduced priced lunch?
+      </td>
+      <td>
+        <select name="p11[]" id='p11q13'>
+          <option value=''>----</option>
+          <option value='yes'>Yes</option>
+          <option value='no'>No</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+         In your opinion, did the majority of students in your high school receive free or reduced priced lunch?
+      </td>
+      <td>
+        <select name="p11[]" id='p11q14'>
+          <option value=''>----</option>
+          <option value='yes'>Yes</option>
+          <option value='no'>No</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
+  {% endblock %}

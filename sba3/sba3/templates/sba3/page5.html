@@ -1,0 +1,268 @@
+{% extends 'sba3/questions.html' %}
+  {% block fill_vals_script %}
+    {{ block.super }}
+    <script>
+      $('document').ready(function() {
+        $('#p5q1').val('{{request.session.p5.0}}');
+        $('#p5q2').val('{{request.session.p5.1}}');
+        $('#p5q3').val('{{request.session.p5.2}}');
+        $('#p5q4').val('{{request.session.p5.3}}');
+        $('#p5q5').val('{{request.session.p5.4}}');
+        $('#p5q6').val('{{request.session.p5.5}}');
+        $('#p5q7').val('{{request.session.p5.6}}');
+        $('#p5q8').val('{{request.session.p5.7}}');
+        $('#p5q9').val('{{request.session.p5.8}}');
+        $('#p5q10').val('{{request.session.p5.9}}');
+        $('#p5q11').val('{{request.session.p5.10}}');
+        $('#p5q12').val('{{request.session.p5.11}}');
+        $('#p5q13').val('{{request.session.p5.12}}');
+        $('#p5q14').val('{{request.session.p5.13}}');
+      });
+    </script>
+  {% endblock %}
+
+  {% block table_body %}
+    <tr>
+      <td>
+        How important to your academic success are the following:
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        Membership in Student Organization
+      </td>
+      <td>
+        <select name='p5[]' id='p5q1'>
+          <option value=''>----</option>
+          <option value='notimportant'>Not At All Important</option>
+          <option value='someimportant'>Somewhat Important</option>
+          <option value='important'>Important</option>
+          <option value='veryimportant'>Very Important</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr class='ifNotGrad'>
+      <td>
+        Programs that help students transition from High School to College
+      </td>
+      <td>
+        <select name='p5[]' id='p5q2'>
+          <option value=''>----</option>
+          <option value='notimportant'>Not At All Important</option>
+          <option value='someimportant'>Somewhat Important</option>
+          <option value='important'>Important</option>
+          <option value='veryimportant'>Very Important</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        Peer Mentoring
+      </td>
+      <td>
+        <select name='p5[]' id='p5q3'>
+          <option value=''>----</option>
+          <option value='notimportant'>Not At All Important</option>
+          <option value='someimportant'>Somewhat Important</option>
+          <option value='important'>Important</option>
+          <option value='veryimportant'>Very Important</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        One-on-one mentoring by faculty
+      </td>
+      <td>
+        <select name='p5[]' id='p5q4'>
+          <option value=''>----</option>
+          <option value='notimportant'>Not At All Important</option>
+          <option value='someimportant'>Somewhat Important</option>
+          <option value='important'>Important</option>
+          <option value='veryimportant'>Very Important</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        One-on-one mentoring from staff
+      </td>
+      <td>
+        <select name='p5[]' id='p5q5'>
+          <option value=''>----</option>
+          <option value='notimportant'>Not At All Important</option>
+          <option value='someimportant'>Somewhat Important</option>
+          <option value='important'>Important</option>
+          <option value='veryimportant'>Very Important</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        Encouraging words from my professors/ instructors
+      </td>
+      <td>
+        <select name='p5[]' id='p5q6'>
+          <option value=''>----</option>
+          <option value='notimportant'>Not At All Important</option>
+          <option value='someimportant'>Somewhat Important</option>
+          <option value='important'>Important</option>
+          <option value='veryimportant'>Very Important</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr class='ifNotGrad'>
+      <td>
+        Parent(s)/ Guardian(s) desire for me to earn a college degree
+      </td>
+      <td>
+        <select name='p5[]' id='p5q7'>
+          <option value=''>----</option>
+          <option value='notimportant'>Not At All Important</option>
+          <option value='someimportant'>Somewhat Important</option>
+          <option value='important'>Important</option>
+          <option value='veryimportant'>Very Important</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr class='ifNotGrad'>
+      <td>
+        Hearing my parent(s)/guardian(s) bragging about me for attending college
+      </td>
+      <td>
+        <select name='p5[]' id='p5q8'>
+          <option value=''>----</option>
+          <option value='notimportant'>Not At All Important</option>
+          <option value='someimportant'>Somewhat Important</option>
+          <option value='important'>Important</option>
+          <option value='veryimportant'>Very Important</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr class='ifNotGrad'>
+      <td>
+        Parent(s)/Guardian(s) giving gifts or money for making good grades
+      </td>
+      <td>
+        <select name='p5[]' id='p5q9'>
+          <option value=''>----</option>
+          <option value='notimportant'>Not At All Important</option>
+          <option value='someimportant'>Somewhat Important</option>
+          <option value='important'>Important</option>
+          <option value='veryimportant'>Very Important</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        Friends' encouragement to do well in college
+      </td>
+      <td>
+        <select name='p5[]' id='p5q10'>
+          <option value=''>----</option>
+          <option value='notimportant'>Not At All Important</option>
+          <option value='someimportant'>Somewhat Important</option>
+          <option value='important'>Important</option>
+          <option value='veryimportant'>Very Important</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        Encouragement from my church family or community to stay in school
+      </td>
+      <td>
+        <select name='p5[]' id='p5q11'>
+          <option value=''>----</option>
+          <option value='notimportant'>Not At All Important</option>
+          <option value='someimportant'>Somewhat Important</option>
+          <option value='important'>Important</option>
+          <option value='veryimportant'>Very Important</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        Participation in voluntary study groups
+      </td>
+      <td>
+        <select name='p5[]' id='p5q12'>
+          <option value=''>----</option>
+          <option value='notimportant'>Not At All Important</option>
+          <option value='someimportant'>Somewhat Important</option>
+          <option value='important'>Important</option>
+          <option value='veryimportant'>Very Important</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr class='ifOnCampusClass'>
+      <td>
+        Reviewing course notes shortly after class
+      </td>
+      <td>
+        <select name='p5[]' id='p5q13'>
+          <option value=''>----</option>
+          <option value='notimportant'>Not At All Important</option>
+          <option value='someimportant'>Somewhat Important</option>
+          <option value='important'>Important</option>
+          <option value='veryimportant'>Very Important</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        Visiting professors during their office hours
+      </td>
+      <td>
+        <select name='p5[]' id='p5q14'>
+          <option value=''>----</option>
+          <option value='notimportant'>Not At All Important</option>
+          <option value='someimportant'>Somewhat Important</option>
+          <option value='important'>Important</option>
+          <option value='veryimportant'>Very Important</option>
+          <option value='notsure'>Not Sure</option>
+          <option value='nocomment'>No Comment</option>
+        </select>
+      </td>
+    </tr>
+  {% endblock %}

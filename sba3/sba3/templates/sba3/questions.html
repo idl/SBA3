@@ -1,0 +1,82 @@
+{% extends 'sba3/survey_base.html' %}
+
+{% block header_script %}
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script>
+  $('document').ready(function() {
+    $('.prev').click(function() {
+      $('form').attr('action', '{% url "previous"%}');
+    });
+    $('.next').click(function() {
+      $('form').attr('action', '{% url "next"%}');
+    });
+    $('.submit').click(function(e) {
+      $('form').attr('action', '{% url "submit"%}');
+    });
+  });
+  </script>
+{% endblock %}
+
+{% block body %}
+  {% if error %}
+      <div class="alert alert-danger">Please fill in all fields.</div>
+  {% endif %}
+  <form method='post'>
+    {% csrf_token %}
+    <input type='hidden' name='pagenum' value='{{ pagenum }}'>
+    <table class="table table-hover">
+      {% block table_body %}
+      {% endblock %}
+    </table>
+    <div class="container-fluid">
+      {% if pagenum != "1" %}
+        <div class="row">
+          <div class="col-xs-5 text-left col-xs-push-7">
+            {% if pagenum == "11" %}
+              <input type='submit' class='btn submit' value='Submit'>
+            {% else %}
+              <input type='submit' class='btn next' value='Next' style='width: 81px'>
+            {% endif %}
+          </div>
+          <div class="col-xs-2 text-center">
+          <a href='{% url 'save_survey' %}' class='btn btn-primary submit' value='Save and Quit'>Save and Quit</a>
+        </div>
+          <div class="col-xs-5 text-right col-xs-pull-7">
+            <input type='submit' class='btn prev' value='Previous'>
+          </div>
+        </div>
+      {% else %}
+        <div class="row">
+          <div class="col-xs-12 text-center">
+            <input type='submit' class='btn next' value='Next'>
+          </div>
+        </div>
+      {% endif %}
+      <div class="row">
+        <div class="col-xs-12 text-center">
+          <h5>Continuation Password: {{ request.session.continue_pass }} </h5>
+        </div>
+      </div>
+      <div class="row">
+
+      </div>
+    </div>
+  </form>
+{% endblock %}
+
+{% block footer_script %}
+    <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/jquery-1.11.1.min.js"><\/script>')</script>
+    <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+    <script src="{{ STATIC_URL }}js/skiplogic.js"></script>
+  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+  <script>
+  (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+  function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+  e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+  e.src='//www.google-analytics.com/analytics.js';
+  r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+  ga('create','UA-XXXXX-X');ga('send','pageview');
+  </script>
+  <!-- KEEP SCRIPT LAST -->
+  {% include 'script.html' %}
+{% endblock %}

@@ -1,0 +1,102 @@
+<script>
+  // Questions with skip logic applied can't have a blank value,
+  // otherwise it will get caught by the error checking. Skipped
+  // questions with <select> field are marked with an 'NA' value
+  // For <input> field, skipped questions are marked with value
+  // -100
+  $('document').ready(function() {
+    // session check
+    // classification
+    if( '{{request.session.p1.0}}' == 'master' || '{{request.session.p1.0}}' == 'doctorate' ) {
+      $('.ifNotGrad').fadeOut(); // .css('background', 'red');
+      $('.ifNotGrad select option:first-child').val('NA');
+      $('.ifNotGrad select').val('NA');
+      $('.ifNotGrad input').attr('min', -100).val(-100);
+    }
+    // isDistance
+    if('{{request.session.p1.3}}' == 'no') {
+      $('.ifDistance').fadeOut(); // .css('background', 'red');
+      $('.ifDistance select option:first-child').val('NA');
+      $('.ifDistance select').val('NA');
+      $('.ifDistance input').attr('min', -100).val(-100);
+    }
+    // isOnCampusClass
+    if('{{request.session.p1.4}}' == 'no') {
+      $('.ifOnCampusClass').fadeOut(); // .css('background', 'red');
+      $('.ifOnCampusClass select option:first-child').val('NA');
+      $('.ifOnCampusClass select').val('NA');
+      $('.ifOnCampusClass td input').attr('min', -100).val(-100);
+    }
+    // isTutoring
+    if('{{request.session.p3.0}}' == 'yes') {
+      $('.ifNotTutoring').fadeOut(); // .css('background', 'red');
+      $('.ifNotTutoring select option:first-child').val('NA');
+      $('.ifNotTutoring select').val('NA');
+      $('.ifNotTutoring input').attr('min', -2).attr('value','');
+    } else {
+      $('.ifTutoring').fadeOut(); // .css('background', 'red');
+      $('.ifTutoring select option:first-child').val('NA');
+      $('.ifTutoring select').val('NA');
+      $('.ifTutoring input').attr('min', -100).attr('value','-100');
+    }
+    // didOrientation
+    if('{{request.session.p8.0}}' != 'yes') {
+      $('.ifOrientation').fadeOut(); // .css('background', 'red');
+      $('.ifOrientation select option:first-child').val('NA');
+      $('.ifOrientation select').val('NA');
+      $('.ifOrientation input').attr('min', -100).val(-100);
+    }
+    // isOrg
+    if('{{request.session.p9.0}}' != 'yes') {
+      $('.ifOrg').fadeOut(); // .css('background', 'red');
+      $('.ifOrg select option:first-child').val('NA');
+      $('.ifOrg select').val('NA');
+      $('.ifOrg input').attr('min', -100).val(-100);
+    }
+    // isOnCampus
+    if('{{request.session.p9.2}}' == 'on') {
+      $('.ifOnCampus').fadeOut(); // .css('background', 'red');
+      $('.ifOnCampus select option:first-child').val('NA');
+      $('.ifOnCampus select').val('NA');
+      $('.ifOnCampus input').attr('min', -100).val(-100);
+    } else {
+      $('.ifNotOnCampus').fadeOut(); // .css('background', 'red');
+      $('.ifNotOnCampus select option:first-child').val('NA');
+      $('.ifNotOnCampus select').val('NA');
+      $('.ifNotOnCampus input').attr('min',-100).val(-100);
+    }
+    if('{{request.session.p9.2}}' != 'on' || $('#isAway').val() != 'yes')  {
+      $('.ifAwayOrIfOnCampus').fadeOut(); // .css('background', 'red');
+      $('.ifAwayOrIfOnCampus select option:first-child').val('NA');
+      $('.ifAwayOrIfOnCampus select').val('NA');
+      $('.ifAwayOrIfOnCampus input').attr('min', -100).val(-100);
+    }
+    // isAway
+    if('{{request.session.p9.3}}' == 'no') {
+      $('.ifAway').fadeOut(); // .css('background', 'red');
+      $('.ifAway select option:first-child').val('NA');
+      $('.ifAway select').val('NA');
+      $('.ifAway input').attr('min', -100).val(-100);
+    }
+    if('{{request.session.p9.3}}' != 'yes' || $('#isOnCampus').val() != 'on') {
+      $('.ifAwayOrIfOnCampus').fadeOut(); // .css('background', 'red');
+      $('.ifAwayOrIfOnCampus select option:first-child').val('NA');
+      $('.ifAwayOrIfOnCampus select').val('NA');
+      $('.ifAwayOrIfOnCampus input').attr('min', -100).attr('value',-100);
+    }
+    // doesDrink
+    if('{{request.session.p9.6}}' != 'yes') {
+      $('.ifDrink').fadeOut(); // .css('background', 'red');
+      $('.ifDrink select option:first-child').val('NA');
+      $('.ifDrink select').val('NA');
+      $('.ifDrink input').attr('min', -100).val(-100);
+    }
+    // doesWork
+    if('{{request.session.p11.2}}' != 'yes') {
+      $('.ifWork').fadeOut(); // .css('background', 'red');
+      $('.ifWork select option:first-child').val('NA');
+      $('.ifWork select').val('NA');
+      $('.ifWork input').attr('min', -100).val(-100);
+    }
+  });
+</script>
