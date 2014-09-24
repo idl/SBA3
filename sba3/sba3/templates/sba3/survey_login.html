@@ -4,20 +4,13 @@
 <div class="container">
   <div class="row clearfix">
     <div class="col-xs-6 columns center-block">
-      <form action="/" method="post">
+      {% if err_msg %}<div class="login_err">{{ err_msg }}</div>{% endif %}
+      <form action='{% url 'start_survey' %}' method='post' role='form'>
         {% csrf_token %}
         {% for field in surveyLoginForm %}
           <div class='form-group'>
-            <label for='{{field.id_for_label}}'>{{field.label}}</label>
-            {% if field.label == 'School' %}
-              <select class='form-control' name='{{ field.html_name }}' id='{{ field.id_for_label }}'>
-                {% for school in surveyLoginForm.school.field.queryset %}
-                    <option value='{{school.id}}'>{{school.name}}</option>
-                {% endfor %}
-              </select>
-            {% else %}
-              <input type='{{ field.html_name }}' class='form-control' id='{{ field.id_for_label }}' name='{{ field.html_name }}' placeholder=''>
-            {% endif %}
+              {{ field.label_tag }}
+              {{ field }}
           </div>
         {% endfor %}
         <div class='form-group text-center'>
