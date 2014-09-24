@@ -13,9 +13,17 @@ class RegisterAdminForm(forms.Form):
     # password_confirm = forms.CharField(required=True, label='Confirm Password', widget=forms.TextInput(attrs={'class': 'form-control', 'type':'password'}))
     superuser = forms.BooleanField(required=True, label="Global Admin?", widget=forms.CheckboxInput(attrs={'class': ''}))
 
+class RegisterSchoolForm(forms.Form):
+    school_name = forms.CharField(required=True, label='School Name', initial='')
+
 class EditGlobalAdminForm(forms.Form):
     email = forms.EmailField(required=True, label='Email', initial='', widget=forms.EmailInput(attrs={'class': 'form-control'}))
-    password = forms.CharField(required=True, label='Confirm Password', widget=forms.TextInput(attrs={'class': 'form-control', 'type':'password'}))
+    # have to explicitly check if user wants password updated as well since it is within same form
+    change_password = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'class': 'change_password'}))
+    password = forms.CharField(required=True, label='New Password', widget=forms.TextInput(attrs={'class': 'form-control', 'type':'password'}))
+    confirm_password = forms.CharField(required=True, label='Confirm New Password', widget=forms.TextInput(attrs={'class': 'form-control', 'type':'password'}))
 
-class RegisterSchoolForm(forms.Form):
-	school_name = forms.CharField(required=True, label='School Name', initial='')
+
+class EditSchoolAdminForm(EditGlobalAdminForm):
+    email = forms.EmailField(required=True, label='Email', initial='', widget=forms.EmailInput(attrs={'class': 'form-control'}))
+    password = forms.CharField(required=True, label='Confirm Password', widget=forms.TextInput(attrs={'class': 'form-control', 'type':'password'}))

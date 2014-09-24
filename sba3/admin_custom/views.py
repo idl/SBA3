@@ -5,7 +5,7 @@ from django.template import RequestContext
 from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from .forms import LoginForm, RegisterAdminForm, RegisterSchoolForm, EditGlobalAdminForm
+from .forms import *
 from sba3.models import School
 
 Users = get_user_model()
@@ -33,9 +33,10 @@ def admin(request):
 		schooladmin_entry['last_login'] = user.last_login
 		schooladmin_entry['date_joined'] = user.date_joined
 		schooladmin_list.append(schooladmin_entry)
-	ctx = { 'editGlobalAdminForm': EditGlobalAdminForm(),
-			'registerAdminForm': RegisterAdminForm(),
-			'registerSchoolForm': RegisterSchoolForm(),
+	ctx = { 'editGlobalAdminForm': EditGlobalAdminForm(auto_id='id_edit_globaladmin_%s'),
+			'editSchoolAdminForm': EditSchoolAdminForm(auto_id='id_edit_schooladmin_%s'),
+			'registerAdminForm': RegisterAdminForm(auto_id='id_register_admin_%s'),
+			'registerSchoolForm': RegisterSchoolForm(auto_id='id_register_school_%s'),
 			'err_msg': err_msg,
 			'success': success,
 			'registerError': registerError,

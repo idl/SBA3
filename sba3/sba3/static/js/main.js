@@ -46,8 +46,16 @@
 		user_row = $(this).parent().parent();
 		user_id = user_row.attr('data-user-id');
 		user_email = user_row.find('.user_email').html();
+		user_school = user_row.find('.user_school').html();
+		// is global admin
+		if(user_school === undefined) {
+			$('#id_edit_globaladmin_email').val(user_email);
+		} // is school admin
+		else {
+			$('#id_edit_schooladmin_school').val(user_email);
+		}
+
 		console.log(user_id + " :: " + user_email + " :: " + user_school);
 		$('.modal .modal-title small').html(user_row.find('.user_email').html());
-
 	});
 })(jQuery);
