@@ -14,7 +14,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
 TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, 'sba3/templates'),
+    os.path.join(BASE_DIR, 'sba3/templates/sba3'),
     os.path.join(BASE_DIR, 'admin_custom/templates/admin_custom'),
 )
 

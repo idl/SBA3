@@ -1,4 +1,4 @@
-{% extends "admin_custom/base.html" %}
+{% extends "admin_custom/admin_custom_base.html" %}
 
 {% block header %}
 	<header>
@@ -8,7 +8,7 @@
 					<h1>SBA-3</h1>
 				</div>
 				<div class="col-xs-6 columns text-right">
-					<a href="{% url 'logout_view' %}" class="btn btn-default btn-sm logout">Log Out&nbsp;&nbsp;<span class="glyphicon icon-log-out"></span></a>
+					<a href="{% url 'logout_view' %}" class="btn btn-default btn-sm logout">Log Out&nbsp;&nbsp;<span class="glyphicon glyphicon-log-out"></span></a>
 				</div>
 			</div>
 		</div>
@@ -16,22 +16,141 @@
 {% endblock %}
 
 {% block admin_page %}
-	<div class="row admin-page">
-		<div class="col-sm-3 col-md-3">
-			<ul class="nav nav-pills nav-stacked" role="tablist">
+<section class="container admin-page">
+	<div class="row">
+		<div class="col-xs-12 columns admin-nav">
+			<ul class="nav nav-pills" role="tablist">
 			  <li class="active"><a href="#home" role="tab" data-toggle="pill">Home</a></li>
-			  <li><a href="#registeradmin" role="tab" data-toggle="pill">Register New Admin</a></li>
-			  <li><a href="#users" role="tab" data-toggle="pill">Create School</a></li>
+			  <li><a href="#users" role="tab" data-toggle="pill">Users</a></li>
+			  <li><a href="#registerschools" role="tab" data-toggle="pill">Create School</a></li>
 			  <li><a href="#surveys" role="tab" data-toggle="pill">Surveys</a></li>
-			  <li><a href="#settings" role="tab" data-toggle="pill">Account Settings</a></li>
+			  <li class="pull-right"><a href="#settings" role="tab" data-toggle="pill">Account Settings</a></li>
 			</ul>
 		</div>
-		<div class="col-sm-9 col-md-9 tab-content">
+	</div>
+	<div class="row">
+		<div class="col-xs-12 columns tab-content">
 			<div class="tab-pane home active" id="home">{% include 'admin_home.html' %}</div>
-			<div class="tab-pane registeradmin" id="registeradmin">{% include 'register_admin.html' %}</div>
 			<div class="tab-pane users" id="users">{% include 'users.html' %}</div>
-			<div class="tab-pane surveys" id="surveys">3</div>
-			<div class="tab-pane settings" id="settings">4</div>
+			<div class="tab-pane registerschools" id="registerschools">{% include 'register_schools.html' %}</div>
+			<div class="tab-pane surveys" id="surveys">{% include 'surveys.html' %}</div>
+			<div class="tab-pane settings" id="settings">{% include 'settings.html' %}</div>
+		</div>
+	</div>
+</section>
+{% endblock %}
+
+{% block modal_boxes %}
+	<!-- EDIT USER MODAL -->
+	<div class="modal fade" id="editGlobalAdminUser" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h3 class="modal-title">Edit Admin <small>UserEmailAddr</small></h3>
+				</div>
+				<div class="modal-body">
+					<form action="" method="post" role="form">
+						{% for field in editGlobalAdminForm %}
+							{% if forloop.revcounter0 == 0 %}0
+								<div class="row">
+									<div class="col-xs-12 columns">
+										<div class='form-group'>
+											<label for='{{ field.id_for_label }}'>{{ field.label }}</label>
+											{{ field }}
+										</div>
+									</div>
+								</div>
+							{% endif %}
+							{% if forloop.revcounter0 == 1 %}1
+								<div class="row">
+									<div class="col-xs-12 columns">
+										<div class='form-group'>
+											<label for='{{ field.id_for_label }}'>{{ field.label }}</label>
+											{{ field }}
+										</div>
+									</div>
+								</div>
+							{% endif %}
+							{% if forloop.revcounter0 == 2 %}2
+								<div class="row">
+									<div class="col-xs-12 columns">
+										<div class='form-group'>
+											<label for='{{ field.id_for_label }}'>{{ field.label }}</label>
+											{{ field }}
+										</div>
+							{% endif %}
+							{% if forloop.revcounter0 == 3 %}3
+										<div class='form-group'>
+											<label for='{{ field.id_for_label }}'>{{ field.label }}</label>
+											{{ field }}
+										</div>
+									</div>
+								</div>
+							{% endif %}
+						{% endfor %}endfor
+						<div class="row">
+							<div class="col-xs-12 columns">
+								<div class='form-group'>
+									<label for='{{ field.id_for_label }}'>{{ field.label }}</label>
+									{{ field }}
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer text-center">
+					<button type="button" class="btn btn-primary center-block">Update User</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="editSchoolAdminUser" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h3 class="modal-title">Edit Admin <small>UserEmailAddr</small></h3>
+				</div>
+				<div class="modal-body">
+					<form action="" method="post" role="form">
+						<div class="row">
+							<div class="col-xs-12 columns">
+								{% for field in editSchoolAdminForm %}
+									<div class='form-group'>
+										<label for='{{ field.id_for_label }}'>{{ field.label }}</label>
+										{{ field }}
+									</div>
+								{% endfor %}
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer text-center">
+					<button type="button" class="btn btn-primary center-block">Update User</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- DELETE USER MODAL -->
+	<div class="modal fade" id="deleteAdminUser" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h3 class="modal-title">Are you sure you want to delete this user?<small></small></h3>
+				</div>
+				<div class="modal-body">
+					<b>Once a user is deleted, there aint no goin back.</b>
+				</div>
+				<div class="modal-footer">
+					<form action="" method="post">
+						<button type="button" class="btn btn-danger">Delete User</button>
+					</form>
+				</div>
+			</div>
 		</div>
 	</div>
 {% endblock %}
