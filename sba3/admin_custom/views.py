@@ -144,7 +144,7 @@ def login_view(request):
 			request.session['login_err_msg'] = login_err_msg
 			return redirect('/admin')
 	login_form = LoginForm()
-	return render(request, 'admin_custom/login.html', { 'login_form': login_form })
+	return redirect('/')
 
 def logout_view(request):
 	logout(request)
