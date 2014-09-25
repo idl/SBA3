@@ -33,15 +33,16 @@ class School(models.Model):
 
 class StudentManager(models.Manager):
     def create_student(self, user_id, school_id):
+        error = ''
         if not user_id:
-            raise ValueError("Student must have a user_id")
+            error = "Student must have a user_id"
         elif not school_id:
-            raise ValueError("Student must have a school")
+            error = "Student must have a school"
 
         if Student.objects.filter(user_id=user_id).count() != 0:
             student = Student.objects.filter(user_id=user_id).get()
             if student.school_id == school_id:
-                raise ValueError({'error':'Student - School association already exists'})
+                error = 'Student - School association already exists'
         else:
             school = School.objects.filter(pk=1).get()
 
@@ -57,7 +58,9 @@ class StudentManager(models.Manager):
             student.save()
 
             return student
-        return None
+        if error == '':
+            error = 'Unknown Error'
+        return error
 
 class Student(models.Model):
     user_id = models.CharField(max_length=10, db_index = True)

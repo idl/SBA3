@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row">
     <div class="col-xs-6 login-container center-block">
-      {% if err_msg %}<div class="login_err">{{ err_msg }}</div>{% endif %}
+      {% if err_msg %}<div class="alert alert-danger">{{ err_msg }}</div>{% endif %}
       <form action='{% url 'start_survey' %}' method='post' role='form'>
         {% csrf_token %}
         {% for field in surveyLoginForm %}
