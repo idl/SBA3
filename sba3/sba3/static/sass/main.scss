@@ -3,6 +3,7 @@
 .center-block {
 	float: none;
 }
+
 .container.survey-main {
 	table {
 		tr {
@@ -83,7 +84,7 @@ h2 {
 		margin-bottom: 0;
 	}
 }
-.registerAdminUserFormErrors {
+.registerAdminUserFormErrors, .editAdminUserFormErrors {
 	ul {
 		padding-left: 0.5em;
 		list-style: none;
@@ -156,5 +157,37 @@ h2 {
 		.nav {
 			margin-bottom: 1em;
 		}
+	}
+}
+
+.editGlobalAdminUser, .editSchoolAdminUser {
+	.change-password {
+		margin-bottom: 15px;
+		padding: 5px 0;
+		border-bottom: 1px solid #e5e5e5;
+		border-top: 1px solid #e5e5e5;
+		background: inherit;
+		transition: background 0.3s ease-in-out;
+		.form-group {
+			margin: 0;
+			position: relative;
+		}
+		label, input {
+			margin: 0;
+		}
+		label {
+
+		}
+		input {
+			position: relative;
+			top: 2px;
+		}
+		&:hover {
+			background: #e5e5e5;
+			transition: background 0.3s ease-in-out;
+		}
+	}
+	.change-password-section {
+		display: none;
 	}
 }

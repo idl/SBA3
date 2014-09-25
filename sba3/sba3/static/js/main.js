@@ -16,7 +16,7 @@
 	// Regiser Admin User
 	// Hide select school dropdown when click Global Admin checkbox and set to ''
 	// If a school is selected while Global Admin checkbox is asserted, uncheck it
-	$('#id_superuser').change(function() {
+	$('#id_register_admin_superuser').change(function() {
 		// .stop() - http://stackoverflow.com/questions/2857998/stop-jquery-animations-stacking
 		if($(this).is(':checked')) {
 			$('.school-select').stop().fadeOut(function() {
@@ -28,7 +28,7 @@
 			});
 		}
 	});
-	$('#id_school').change(function() {
+	$('#id_register_admin_school').change(function() {
 		// hiding the superadmin checkbox causes submit button to shift up
 		if($(this).val() != '') {
 			var superuserselect_height = $('.superuser-select').height();
@@ -47,15 +47,36 @@
 		user_id = user_row.attr('data-user-id');
 		user_email = user_row.find('.user_email').html();
 		user_school = user_row.find('.user_school').html();
+
+		$('.modal .modal-title small').html(user_row.find('.user_email').html());
+		$('.editGlobalAdminUser form, .editSchoolAdminUser form').attr('action', '/admin/updateadmin/'+user_id);
 		// is global admin
 		if(user_school === undefined) {
 			$('#id_edit_globaladmin_email').val(user_email);
-		} // is school admin
-		else {
-			$('#id_edit_schooladmin_school').val(user_email);
+		} else { // is school admin
+			$('#id_edit_schooladmin_email').val(user_email);
 		}
-
-		console.log(user_id + " :: " + user_email + " :: " + user_school);
+	});
+	$('.deleteAdmin').click(function() {
+		var user_row, user_id, user_email;
+		user_row = $(this).parent().parent();
+		user_id = user_row.attr('data-user-id');
+		user_email = user_row.find('.user_email').html();
+		$('.deleteAdminUser form').attr('action', '/admin/deleteadmin/'+user_id);
 		$('.modal .modal-title small').html(user_row.find('.user_email').html());
+	});
+	$('.editGlobalAdminUser .change-password input').change(function() {
+		if($(this).is(':checked')) {
+			$('.change-password-section').slideToggle();
+		} else {
+			$('.change-password-section').slideToggle();
+		}
+	});
+	$('.editSchoolAdminUser .change-password input').change(function() {
+		if($(this).is(':checked')) {
+			$('.change-password-section').slideToggle();
+		} else {
+			$('.change-password-section').slideToggle();
+		}
 	});
 })(jQuery);
