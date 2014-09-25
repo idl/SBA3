@@ -40,47 +40,46 @@
   {% if error %}
       <div class="alert alert-danger">Please fill in all fields.</div>
   {% endif %}
-  <form method='post'>
-    {% csrf_token %}
-    <input type='hidden' name='pagenum' value='{{ pagenum }}'>
-    <table class="table table-hover">
-      {% block table_body %}
-      {% endblock %}
-    </table>
-    <div class="container-fluid">
-      {% if pagenum != "1" %}
-        <div class="row">
-          <div class="col-xs-5 text-left col-xs-push-7">
-            {% if pagenum == "11" %}
-              <input type='submit' class='btn submit' value='Submit'>
-            {% else %}
-              <input type='submit' class='btn next' value='Next' style='width: 81px'>
-            {% endif %}
+  <div class="container survey-main">
+    <form method='post' role="form">
+      {% csrf_token %}
+      <input type='hidden' name='pagenum' value='{{ pagenum }}'>
+      <table class="table table-hover">
+        {% block table_body %}
+        {% endblock %}
+      </table>
+      <div class="container-fluid">
+        {% if pagenum != "1" %}
+          <div class="row">
+            <div class="col-xs-5 text-left col-xs-push-7">
+              {% if pagenum == "11" %}
+                <input type='submit' class='btn submit' value='Submit'>
+              {% else %}
+                <input type='submit' class='btn next' value='Next' style='width: 81px'>
+              {% endif %}
+            </div>
+            <div class="col-xs-2 text-center">
+            <a href='{% url 'save_survey' %}' class='btn btn-primary submit' value='Save and Quit'>Save and Quit</a>
           </div>
-          <div class="col-xs-2 text-center">
-          <a href='{% url 'save_survey' %}' class='btn btn-primary submit' value='Save and Quit'>Save and Quit</a>
-        </div>
-          <div class="col-xs-5 text-right col-xs-pull-7">
-            <input type='submit' class='btn prev' value='Previous'>
+            <div class="col-xs-5 text-right col-xs-pull-7">
+              <input type='submit' class='btn prev' value='Previous'>
+            </div>
           </div>
-        </div>
-      {% else %}
+        {% else %}
+          <div class="row">
+            <div class="col-xs-12 text-center">
+              <input type='submit' class='btn next' value='Next'>
+            </div>
+          </div>
+        {% endif %}
         <div class="row">
           <div class="col-xs-12 text-center">
-            <input type='submit' class='btn next' value='Next'>
+            <h5>Continuation Password: {{ request.session.continue_pass }} </h5>
           </div>
         </div>
-      {% endif %}
-      <div class="row">
-        <div class="col-xs-12 text-center">
-          <h5>Continuation Password: {{ request.session.continue_pass }} </h5>
-        </div>
       </div>
-      <div class="row">
-
-      </div>
-    </div>
-  </form>
+    </form>
+  </div>
 {% endblock %}
 
 {% block tab_script %}

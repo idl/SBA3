@@ -8,7 +8,6 @@ admin.autodiscover()
 
 urlpatterns = patterns('sba3.views',
     url(r'^$', 'survey_home', name='survey_home'),
-    url(r'^questions$', 'questions', name='questions'),
     url(r'^page/(?P<pagenum>[0-9]{1,2})$', 'page', name='page'),
     url(r'^previous$', 'previous' , name='previous'),
     url(r'^next$', 'next' , name='next'),

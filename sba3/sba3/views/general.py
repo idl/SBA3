@@ -14,17 +14,12 @@ def survey_home(request):
 
     return render(request, 'survey_home.html', {'surveyLoginForm':surveyLoginForm, 'login_form':LoginForm, 'surveyContinueForm':surveyContinueForm, 'err_msg': err_msg})
 
-def questions(request):
-   return render(request,'questions.html')
-
 def page(request, pagenum):
     error = request.session.get('error', False)
     request.session['error'] = False
     ctx = {'pagenum': pagenum, 'error': error}
     if pagenum=='1':
         return render(request, 'page1.html', ctx)
-    if pagenum=='1':
-        return render(request, 'page1.html', {'pagenum': 5, 'error': error})
     elif pagenum=='2':
         if 'p1' in request.session:
             return render(request, 'page2.html', ctx)
