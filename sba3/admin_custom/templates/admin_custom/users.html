@@ -6,15 +6,24 @@
 <div class="row">
 	<div class="col-xs-12 columns">
         <h3>Create New Admin</h3>
-        {% if err_msg %}
+        {% if register_admin_err_msg %}
 			<div class="alert alert-danger registerAdminUserFormErrors" role="alert">
 				<ul>
-					{% for msg in err_msg %}
+					{% for msg in register_admin_err_msg %}
 						<li><span class='glyphicon glyphicon-asterisk'></span> {% autoescape off %}{{ msg }}{% endautoescape %}</li>
 					{% endfor %}
 				</ul>
 			</div>
 		{% endif %}
+        {% if update_admin_err_msg %}
+            <div class="alert alert-danger editAdminUserFormErrors" role="alert">
+                <ul>
+                    {% for msg in update_admin_err_msg %}
+                        <li><span class='glyphicon glyphicon-asterisk'></span> {% autoescape off %}{{ msg }}{% endautoescape %}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
 		{% if success %}<div class="alert alert-success" role="alert">{{ success }}</div>{% endif %}
         <form action='{% url "register_admin" %}' method='post' role='form' class='registerAdminUserForm'>
             {% csrf_token %}

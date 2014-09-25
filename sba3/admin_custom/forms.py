@@ -20,10 +20,14 @@ class EditGlobalAdminForm(forms.Form):
     email = forms.EmailField(required=True, label='Email', initial='', widget=forms.EmailInput(attrs={'class': 'form-control'}))
     # have to explicitly check if user wants password updated as well since it is within same form
     change_password = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'class': 'change_password'}))
-    password = forms.CharField(required=True, label='New Password', widget=forms.TextInput(attrs={'class': 'form-control', 'type':'password'}))
-    confirm_password = forms.CharField(required=True, label='Confirm New Password', widget=forms.TextInput(attrs={'class': 'form-control', 'type':'password'}))
+    password = forms.CharField(required=False, label='New Password', widget=forms.TextInput(attrs={'class': 'form-control', 'type':'password'}))
+    confirm_password = forms.CharField(required=False, label='Confirm New Password', widget=forms.TextInput(attrs={'class': 'form-control', 'type':'password'}))
 
 
-class EditSchoolAdminForm(EditGlobalAdminForm):
+class EditSchoolAdminForm(forms.Form):
     email = forms.EmailField(required=True, label='Email', initial='', widget=forms.EmailInput(attrs={'class': 'form-control'}))
-    password = forms.CharField(required=True, label='Confirm Password', widget=forms.TextInput(attrs={'class': 'form-control', 'type':'password'}))
+    school = forms.ModelChoiceField(required=True, label='Change School', queryset=School.objects.all().order_by('name'), widget=forms.Select(attrs={'class': 'form-control'}))
+    # have to explicitly check if user wants password updated as well since it is within same form
+    change_password = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'class': 'change_password'}))
+    password = forms.CharField(required=False, label='New Password', widget=forms.TextInput(attrs={'class': 'form-control', 'type':'password'}))
+    confirm_password = forms.CharField(required=False, label='Confirm New Password', widget=forms.TextInput(attrs={'class': 'form-control', 'type':'password'}))

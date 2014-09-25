@@ -12,11 +12,13 @@ Users = get_user_model()
 
 @login_required(redirect_field_name='')
 def admin(request):
-	err_msg = request.session.get('err_msg', '')
+	register_admin_err_msg = request.session.get('register_admin_err_msg', '')
 	success = request.session.get('success', '')
-	request.session['err_msg'] = ''
+	update_admin_err_msg = request.session.get('update_admin_err_msg', '')
+	request.session['register_admin_err_msg'] = []
 	request.session['login_err_msg'] = ''
 	request.session['success'] = ''
+	request.session['update_admin_err_msg'] = []
 	registerError = request.session.get('registerError', False)
 	registerSuccess = request.session.get('registerSuccess', False)
 	request.session['registerError'] = False
@@ -37,7 +39,8 @@ def admin(request):
 			'editSchoolAdminForm': EditSchoolAdminForm(auto_id='id_edit_schooladmin_%s'),
 			'registerAdminForm': RegisterAdminForm(auto_id='id_register_admin_%s'),
 			'registerSchoolForm': RegisterSchoolForm(auto_id='id_register_school_%s'),
-			'err_msg': err_msg,
+			'register_admin_err_msg': register_admin_err_msg,
+			'update_admin_err_msg': update_admin_err_msg,
 			'success': success,
 			'registerError': registerError,
 			'registerSuccess': registerSuccess,
@@ -80,34 +83,34 @@ def register_admin(request):
 		# password_confirm = request.POST.get('password_confirm', '')
 		school_id = request.POST.get('school', '')
 		is_superuser = request.POST.get('superuser', False)
-		err_msg = []
+		register_admin_err_msg = []
 
 		if email == '' and tmp_password == '':
-			err_msg.append('Email and temporary password fields cannot be blank.')
+			register_admin_err_msg.append('Email and temporary password fields cannot be blank.')
 		elif email == '':
-			err_msg.append('Email cannot be blank.')
+			register_admin_err_msg.append('Email cannot be blank.')
 		elif tmp_password == '':
-			err_msg.append('Temporary password cannot be blank.')
+			register_admin_err_msg.append('Temporary password cannot be blank.')
 		# elif password_confirm == '':
-		# 	err_msg.append('Please confirm password.')
+		# 	register_admin_err_msg.append('Please confirm password.')
 		
 		if (school_id == '' and is_superuser == False) or (school_id != '' and is_superuser == True):
-			err_msg.append('New user <b>must</b> be either a School Admin or a Global admin.')
+			register_admin_err_msg.append('New user <b>must</b> be either a School Admin or a Global admin.')
 
 		# Custom form validation is already implemented above; reg_form.is_valid() is not needed
 		#
 		# reg_form = RegisterGlobalAdminForm(request.POST)
 		# if not reg_form.is_valid():
-			# err_msg = ['Error processing form. Please ensure all fields are populated and the email address is in the correct format.']
+			# register_admin_err_msg = ['Error processing form. Please ensure all fields are populated and the email address is in the correct format.']
 		try:
 			# if email is already registered
 			Users.objects.get(email=email)
-			err_msg.append('Email address in use.')
+			register_admin_err_msg.append('Email address in use.')
 		except:
 			pass
 
-		if len(err_msg) > 0:
-			request.session['err_msg'] = err_msg
+		if len(register_admin_err_msg) > 0:
+			request.session['register_admin_err_msg'] = register_admin_err_msg
 			return redirect('/admin/#users')
 		if is_superuser == False:
 			Users.objects.create_user(email, tmp_password, school_id)
@@ -117,9 +120,37 @@ def register_admin(request):
 			request.session['success'] = 'Superadmin created successfully!'
 	return redirect('/admin/#users')
 
+def update_admin(request, admin_id):
+	if request.POST:
+		try:	
+			usr = Users.objects.get(id=admin_id)
+		except:
+			request.session['update_admin_err_msg'] = ["Error updating user. Please try again."]
+			return redirect('/admin/#users')
+		update_admin_err_msg = []
+		email = request.POST.get('email', None)
+		change_password = request.POST.get('change_password', None)
+		password = request.POST.get('password', None)
+		confirm_password = request.POST.get('confirm_password', None)
+		school = request.POST.get('school', None)
+		if(email == ''):
+			update_admin_err_msg.append('New email cannot be blank.')
+		if(change_password):
+			if(password == ''):
+				update_admin_err_msg.append('New password cannot be blank.')
+			if(confirm_password == ''):
+				update_admin_err_msg.append('Please confirm the password.')
+			if(password != confirm_password):
+				update_admin_err_msg.append('New password and its confirmation must match.')
+		if(school == ''):
+			update_admin_err_msg.append('Please pick a school.')
+		if(len(update_admin_err_msg) > 0):
+			request.session['update_admin_err_msg'] = update_admin_err_msg
+		return redirect('/admin/#users')
+
 def delete_admin(request, admin_id):
-	dbprint("DELETE ADMIN")
-	return HttpResponse("Delete admin")
+	dbprint("DELETE ADMIN: " + admin_id)
+	return HttpResponse("<pre>"+str(request.META)+"</pre>")
 
 def login_view(request):
 	if request.user.is_authenticated():
