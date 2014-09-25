@@ -11,8 +11,18 @@ from admin_custom.forms import LoginForm
 def survey_home(request):
     err_msg = request.session.get('err_msg', '')
     request.session['err_msg'] = ''
+    continue_err_msg = request.session.get('continue_err_msg', '')
+    request.session['continue_err_msg'] = ''
 
-    return render(request, 'survey_home.html', {'surveyLoginForm':surveyLoginForm, 'login_form':LoginForm, 'surveyContinueForm':surveyContinueForm, 'err_msg': err_msg})
+    ctx = {
+            'surveyLoginForm':surveyLoginForm, 
+            'login_form':LoginForm, 
+            'surveyContinueForm':surveyContinueForm, 
+            'err_msg': err_msg, 
+            'continue_err_msg': continue_err_msg
+          }
+
+    return render(request, 'survey_home.html', ctx)
 
 def page(request, pagenum):
     error = request.session.get('error', False)
