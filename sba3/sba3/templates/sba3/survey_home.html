@@ -1,0 +1,36 @@
+{% extends "sba3/survey_base.html" %}
+
+{% block header %}
+  <header>
+    <div class="container">
+      <div class="row page-header">
+        <div class="col-xs-12 columns">
+          <h1>SBA-3</h1>
+        </div>
+      </div>
+    </div>
+  </header>
+{% endblock %}
+
+{% block body %}
+<section class="container">
+  <div class="row">
+    <div class="col-xs-12 columns survey-nav">
+      <ul class="nav nav-pills" role="tablist">
+        <li class="active"><a href="#home" role="tab" data-toggle="pill">Home</a></li>
+        <li><a href="#start" role="tab" data-toggle="pill">Start Survey</a></li>
+        <li><a href="#continue" role="tab" data-toggle="pill">Continue Survey</a></li>
+        <li class="pull-right"><a href="#admin" role="tab" data-toggle="pill">Admin Login</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 columns tab-content">
+      <div class="tab-pane home active" id="home">{% include 'survey_about.html' %}</div>
+      <div class="tab-pane start" id="start">{% include 'survey_login.html' %}</div>
+      <div class="tab-pane continue" id="continue">{% include 'survey_continue.html' %}</div>
+      <div class="tab-pane admin" id="admin">{% include 'admin_login.html' %}</div>
+    </div>
+  </div>
+</section>
+{% endblock %}
