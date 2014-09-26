@@ -110,16 +110,10 @@ DATABASES = {
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
-
-
 
 # Static files (CSS, JavaScript, Images)e
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
@@ -127,6 +121,7 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR,'/sba3/static/')
 STATIC_URL = '/static/'
 LOGIN_URL = '/admin/login'
+
 
 # http://stackoverflow.com/questions/20984560/django-allauth-site-id-error
 SITE_ID = 1

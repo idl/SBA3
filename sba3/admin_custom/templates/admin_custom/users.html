@@ -15,16 +15,8 @@
 				</ul>
 			</div>
 		{% endif %}
-        {% if update_admin_err_msg %}
-            <div class="alert alert-danger editAdminUserFormErrors" role="alert">
-                <ul>
-                    {% for msg in update_admin_err_msg %}
-                        <li><span class='glyphicon glyphicon-asterisk'></span> {% autoescape off %}{{ msg }}{% endautoescape %}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endif %}
-		{% if success %}<div class="alert alert-success" role="alert">{{ success }}</div>{% endif %}
+        {% if success %}<div class="alert alert-success" role="alert">{{ success }}</div>{% endif %}
+        {% if update_admin_success_msg %}<div class="alert alert-success" role="alert">{{ update_admin_success_msg }}</div>{% endif %}
         <form action='{% url "register_admin" %}' method='post' role='form' class='registerAdminUserForm'>
             {% csrf_token %}
             {% for field in registerAdminForm %}
@@ -111,9 +103,9 @@
             </thead>
             <tbody>
                 {% for user in schooladmin_list %}
-                    <tr data-user-id="{{ user.id }}">
+                    <tr data-user-id="{{ user.id }}" data-school-id="{{ user.school_id }}">
                         <td class="user_email">{{ user.email }}</td>
-                        <td class="user_school">{{ user.school }}</td>
+                        <td class="user_school_name">{{ user.school_name }}</td>
                         <td>{{ user.last_login }}</td>
                         <td>{{ user.date_joined }}</td>
                         <td class="actions">
