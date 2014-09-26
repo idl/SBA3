@@ -42,19 +42,21 @@
 	});
 
 	$('.editAdmin').click(function() {
-		var user_row, user_id, user_email, user_school;
+		var user_row, user_id, user_email, user_school_id, user_school_name;
 		user_row = $(this).parent().parent();
 		user_id = user_row.attr('data-user-id');
 		user_email = user_row.find('.user_email').html();
-		user_school = user_row.find('.user_school').html();
+		user_school_id = user_row.attr('data-school-id');
+		user_school_name = user_row.find('.user_school_name').html();
 
 		$('.modal .modal-title small').html(user_row.find('.user_email').html());
 		$('.editGlobalAdminUser form, .editSchoolAdminUser form').attr('action', '/admin/updateadmin/'+user_id);
 		// is global admin
-		if(user_school === undefined) {
+		if(user_school_name === undefined) {
 			$('#id_edit_globaladmin_email').val(user_email);
 		} else { // is school admin
 			$('#id_edit_schooladmin_email').val(user_email);
+			$('#id_edit_schooladmin_school').val(user_school_id);
 		}
 	});
 	$('.deleteAdmin').click(function() {
