@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.validators import EmailValidator
+from django.core.mail import send_mail
 from django.template import RequestContext
 from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib.auth.decorators import login_required
@@ -12,11 +13,18 @@ Users = get_user_model()
 
 @login_required(redirect_field_name='')
 def admin(request):
-	err_msg = request.session.get('err_msg', '')
+	register_admin_err_msg = request.session.get('register_admin_err_msg', '')
 	success = request.session.get('success', '')
-	request.session['err_msg'] = ''
+	update_admin_err_msg_list = request.session.get('update_admin_err_msg_list', '')
+	update_admin_err_msg = False
+	update_admin_err_id = request.session.get('update_admin_err_id', None)
+	update_admin_success_msg = request.session.get('update_admin_success_msg', '')
+	request.session['register_admin_err_msg'] = []
 	request.session['login_err_msg'] = ''
 	request.session['success'] = ''
+	request.session['update_admin_err_msg_list'] = []
+	request.session['update_admin_err_id'] = None
+	request.session['update_admin_success_msg'] = ''
 	registerError = request.session.get('registerError', False)
 	registerSuccess = request.session.get('registerSuccess', False)
 	request.session['registerError'] = False
@@ -29,15 +37,22 @@ def admin(request):
 		schooladmin_entry = {}
 		schooladmin_entry['id'] = user.id
 		schooladmin_entry['email'] = user.email
-		schooladmin_entry['school'] = School.objects.get(id=user.school_id)
+		schooladmin_entry['school_id'] = user.school_id
+		schooladmin_entry['school_name'] = School.objects.get(id=user.school_id)
 		schooladmin_entry['last_login'] = user.last_login
 		schooladmin_entry['date_joined'] = user.date_joined
 		schooladmin_list.append(schooladmin_entry)
+	if len(update_admin_err_msg_list) > 0:
+		update_admin_err_msg = True
+
 	ctx = { 'editGlobalAdminForm': EditGlobalAdminForm(auto_id='id_edit_globaladmin_%s'),
 			'editSchoolAdminForm': EditSchoolAdminForm(auto_id='id_edit_schooladmin_%s'),
 			'registerAdminForm': RegisterAdminForm(auto_id='id_register_admin_%s'),
 			'registerSchoolForm': RegisterSchoolForm(auto_id='id_register_school_%s'),
-			'err_msg': err_msg,
+			'register_admin_err_msg': register_admin_err_msg,
+			'update_admin_err_msg_list': update_admin_err_msg_list,
+			'update_admin_err_msg': update_admin_err_msg,
+			'update_admin_success_msg': update_admin_success_msg,
 			'success': success,
 			'registerError': registerError,
 			'registerSuccess': registerSuccess,
@@ -45,6 +60,8 @@ def admin(request):
 			'superadmin_list': superadmin_list,
 			'schooladmin_list': schooladmin_list
 		  }
+	if update_admin_err_id:
+		ctx['update_admin_err_id'] = update_admin_err_id
 	return render(request, 'admin_custom/admin.html', ctx)
 
 
@@ -74,40 +91,42 @@ def create_school(request):
 
 @login_required(redirect_field_name='')
 def register_admin(request):
+	# send_mail('Subject here', 'Here is the message.', 'sba3.test@gmail.com', ['sba3.test@gmail.com'], fail_silently=False)
+
 	if request.POST:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
 		email = request.POST.get('email', '')
 		tmp_password = request.POST.get('tmp_password', '')
 		# password_confirm = request.POST.get('password_confirm', '')
 		school_id = request.POST.get('school', '')
 		is_superuser = request.POST.get('superuser', False)
-		err_msg = []
+		register_admin_err_msg = []
 
 		if email == '' and tmp_password == '':
-			err_msg.append('Email and temporary password fields cannot be blank.')
+			register_admin_err_msg.append('Email and temporary password fields cannot be blank.')
 		elif email == '':
-			err_msg.append('Email cannot be blank.')
+			register_admin_err_msg.append('Email cannot be blank.')
 		elif tmp_password == '':
-			err_msg.append('Temporary password cannot be blank.')
+			register_admin_err_msg.append('Temporary password cannot be blank.')
 		# elif password_confirm == '':
-		# 	err_msg.append('Please confirm password.')
+		# 	register_admin_err_msg.append('Please confirm password.')
 		
 		if (school_id == '' and is_superuser == False) or (school_id != '' and is_superuser == True):
-			err_msg.append('New user <b>must</b> be either a School Admin or a Global admin.')
+			register_admin_err_msg.append('New user <b>must</b> be either a School Admin or a Global admin.')
 
 		# Custom form validation is already implemented above; reg_form.is_valid() is not needed
 		#
 		# reg_form = RegisterGlobalAdminForm(request.POST)
 		# if not reg_form.is_valid():
-			# err_msg = ['Error processing form. Please ensure all fields are populated and the email address is in the correct format.']
+			# register_admin_err_msg = ['Error processing form. Please ensure all fields are populated and the email address is in the correct format.']
 		try:
 			# if email is already registered
 			Users.objects.get(email=email)
-			err_msg.append('Email address in use.')
+			register_admin_err_msg.append('Email address in use.')
 		except:
 			pass
 
-		if len(err_msg) > 0:
-			request.session['err_msg'] = err_msg
+		if len(register_admin_err_msg) > 0:
+			request.session['register_admin_err_msg'] = register_admin_err_msg
 			return redirect('/admin/#users')
 		if is_superuser == False:
 			Users.objects.create_user(email, tmp_password, school_id)
@@ -118,9 +137,47 @@ def register_admin(request):
 	return redirect('/admin/#users')
 
 @login_required
+def update_admin(request, admin_id):
+	if request.POST:
+		try:	
+			usr = Users.objects.get(id=admin_id)
+		except:
+			request.session['update_admin_err_msg_list'] = ["Error updating user. Please try again."]
+			return redirect('/admin/#users')
+		update_admin_err_msg_list = []
+		email = request.POST.get('email', None)
+		change_password = request.POST.get('change_password', None)
+		password = request.POST.get('password', None)
+		confirm_password = request.POST.get('confirm_password', None)
+		school = request.POST.get('school', None)
+		if(email == ''):
+			update_admin_err_msg_list.append('New email cannot be blank.')
+		if(change_password):
+			if(password == ''):
+				update_admin_err_msg_list.append('New password cannot be blank.')
+			if(confirm_password == ''):
+				update_admin_err_msg_list.append('Please confirm the password.')
+			if(password != confirm_password):
+				update_admin_err_msg_list.append('New password and its confirmation must match.')
+		if school == '':
+			update_admin_err_msg_list.append('Please pick a school.')
+		if len(update_admin_err_msg_list) > 0:
+			request.session['update_admin_err_msg_list'] = update_admin_err_msg_list
+			request.session['update_admin_err_id'] = admin_id
+			dbprint("ERRORS")
+			return redirect('/admin/#users')
+		usr.email = email
+		usr.school_id = school
+		if change_password:
+			usr.set_password(password)
+		usr.save()
+		request.session['update_admin_success_msg'] = "User updated successfully."
+		return redirect('/admin/#users')
+
 def delete_admin(request, admin_id):
-	dbprint("DELETE ADMIN")
-	return HttpResponse("Delete admin")
+	usr = Users.objects.get(id=admin_id)
+	usr.delete()
+	return redirect('/admin/#users')
 
 def login_view(request):
 	if request.user.is_authenticated():
