@@ -4,10 +4,10 @@
 	<header>
 		<div class="container">
 			<div class="row page-header">
-				<div class="col-xs-6 columns">
+				<div class="col-xs-6">
 					<h1>SBA-3</h1>
 				</div>
-				<div class="col-xs-6 columns text-right">
+				<div class="col-xs-6 text-right">
 					<a href="{% url 'logout_view' %}" class="btn btn-default btn-sm logout">Log Out&nbsp;&nbsp;<span class="glyphicon glyphicon-log-out"></span></a>
 				</div>
 			</div>
@@ -16,33 +16,33 @@
 {% endblock %}
 
 {% block admin_page %}
-<section class="container admin-page">
-	<div class="row">
-		<div class="col-xs-12 columns admin-nav">
-			<ul class="nav nav-pills" role="tablist">
-			  <li class="active"><a href="#home" role="tab" data-toggle="pill">Home</a></li>
-			  <li><a href="#users" role="tab" data-toggle="pill">Users</a></li>
-			  <li><a href="#registerschools" role="tab" data-toggle="pill">Create School</a></li>
-			  <li><a href="#surveys" role="tab" data-toggle="pill">Surveys</a></li>
-			  <li class="pull-right"><a href="#settings" role="tab" data-toggle="pill">Account Settings</a></li>
-			</ul>
+	<section class="container admin-page">
+		<div class="row">
+			<div class="col-xs-12 admin-nav">
+				<ul class="nav nav-pills" role="tablist">
+				  <li class="active"><a href="#home" role="tab" data-toggle="pill">Home</a></li>
+				  <li><a href="#users" role="tab" data-toggle="pill">Users</a></li>
+				  <li><a href="#registerschools" role="tab" data-toggle="pill">Create School</a></li>
+				  <li><a href="#surveys" role="tab" data-toggle="pill">Surveys</a></li>
+				  <li class="pull-right"><a href="#settings" role="tab" data-toggle="pill">Account Settings</a></li>
+				</ul>
+			</div>
 		</div>
-	</div>
-	<div class="row">
-		<div class="col-xs-12 columns tab-content">
-			<div class="tab-pane home active" id="home">{% include 'admin_home.html' %}</div>
-			<div class="tab-pane users" id="users">{% include 'users.html' %}</div>
-			<div class="tab-pane registerschools" id="registerschools">{% include 'register_schools.html' %}</div>
-			<div class="tab-pane surveys" id="surveys">{% include 'surveys.html' %}</div>
-			<div class="tab-pane settings" id="settings">{% include 'settings.html' %}</div>
+		<div class="row">
+			<div class="col-xs-12 tab-content">
+				<div class="tab-pane home active" id="home">{% include 'admin_home.html' %}</div>
+				<div class="tab-pane users" id="users">{% include 'users.html' %}</div>
+				<div class="tab-pane registerschools" id="registerschools">{% include 'register_schools.html' %}</div>
+				<div class="tab-pane surveys" id="surveys">{% include 'surveys.html' %}</div>
+				<div class="tab-pane settings" id="settings">{% include 'settings.html' %}</div>
+			</div>
 		</div>
-	</div>
-</section>
+	</section>
 {% endblock %}
 
 {% block modal_boxes %}
 	<!-- EDIT USER MODAL -->
-	<div class="modal fade" id="editGlobalAdminUser" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal fade editGlobalAdminUser" id="editGlobalAdminUser" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog modal-sm">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -50,11 +50,21 @@
 					<h3 class="modal-title">Edit Admin <small>UserEmailAddr</small></h3>
 				</div>
 				<div class="modal-body">
+			        {% if update_admin_err_msg %}
+			            <div class="alert alert-danger editAdminUserFormErrors" role="alert">
+			                <ul>
+			                    {% for msg in update_admin_err_msg_list %}
+			                        <li><span class='glyphicon glyphicon-asterisk'></span> {% autoescape off %}{{ msg }}{% endautoescape %}</li>
+			                    {% endfor %}
+			                </ul>
+			            </div>
+			        {% endif %}
 					<form action="" method="post" role="form">
+						{% csrf_token %}
 						{% for field in editGlobalAdminForm %}
-							{% if forloop.revcounter0 == 0 %}0
+							{% if forloop.counter0 == 0 %}
 								<div class="row">
-									<div class="col-xs-12 columns">
+									<div class="col-xs-12">
 										<div class='form-group'>
 											<label for='{{ field.id_for_label }}'>{{ field.label }}</label>
 											{{ field }}
@@ -62,9 +72,9 @@
 									</div>
 								</div>
 							{% endif %}
-							{% if forloop.revcounter0 == 1 %}1
-								<div class="row">
-									<div class="col-xs-12 columns">
+							{% if forloop.counter0 == 1 %}
+								<div class="row change-password">
+									<div class="col-xs-12">
 										<div class='form-group'>
 											<label for='{{ field.id_for_label }}'>{{ field.label }}</label>
 											{{ field }}
@@ -72,15 +82,14 @@
 									</div>
 								</div>
 							{% endif %}
-							{% if forloop.revcounter0 == 2 %}2
-								<div class="row">
-									<div class="col-xs-12 columns">
+							{% if forloop.counter0 == 2 %}
+								<div class="row change-password-section">
+									<div class="col-xs-12">
 										<div class='form-group'>
-											<label for='{{ field.id_for_label }}'>{{ field.label }}</label>
-											{{ field }}
+											<label for='{{ field.id_for_label }}'>{{ field.label }} {{ field }}</label>
 										</div>
 							{% endif %}
-							{% if forloop.revcounter0 == 3 %}3
+							{% if forloop.counter0 == 3 %}
 										<div class='form-group'>
 											<label for='{{ field.id_for_label }}'>{{ field.label }}</label>
 											{{ field }}
@@ -88,25 +97,19 @@
 									</div>
 								</div>
 							{% endif %}
-						{% endfor %}endfor
+						{% endfor %}
 						<div class="row">
-							<div class="col-xs-12 columns">
-								<div class='form-group'>
-									<label for='{{ field.id_for_label }}'>{{ field.label }}</label>
-									{{ field }}
-								</div>
+							<div class="modal-footer text-center">
+								<input type="submit" class="btn btn-primary center-block" value="Update User">
 							</div>
 						</div>
 					</form>
-				</div>
-				<div class="modal-footer text-center">
-					<button type="button" class="btn btn-primary center-block">Update User</button>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div class="modal fade" id="editSchoolAdminUser" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal fade editSchoolAdminUser" id="editSchoolAdminUser" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog modal-sm">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -114,28 +117,77 @@
 					<h3 class="modal-title">Edit Admin <small>UserEmailAddr</small></h3>
 				</div>
 				<div class="modal-body">
+			        {% if update_admin_err_msg %}
+			            <div class="alert alert-danger editAdminUserFormErrors" role="alert">
+			                <ul>
+			                    {% for msg in update_admin_err_msg_list %}
+			                        <li><span class='glyphicon glyphicon-asterisk'></span> {% autoescape off %}{{ msg }}{% endautoescape %}</li>
+			                    {% endfor %}
+			                </ul>
+			            </div>
+			        {% endif %}
 					<form action="" method="post" role="form">
-						<div class="row">
-							<div class="col-xs-12 columns">
-								{% for field in editSchoolAdminForm %}
-									<div class='form-group'>
-										<label for='{{ field.id_for_label }}'>{{ field.label }}</label>
-										{{ field }}
+						{% csrf_token %}
+						{% for field in editSchoolAdminForm %}
+							{% if forloop.counter0 == 0 %}
+								<div class="row">
+									<div class="col-xs-12">
+										<div class='form-group'>
+											<label for='{{ field.id_for_label }}'>{{ field.label }}</label>
+											{{ field }}
+										</div>
 									</div>
-								{% endfor %}
+								</div>
+							{% endif %}
+							{% if forloop.counter0 == 1 %}
+								<div class="row">
+									<div class="col-xs-12">
+										<div class='form-group'>
+											<label for='{{ field.id_for_label }}'>{{ field.label }}</label>
+											{{ field }}
+										</div>
+									</div>
+								</div>
+							{% endif %}
+							{% if forloop.counter0 == 2 %}
+								<div class="row change-password">
+									<div class="col-xs-12">
+										<div class='form-group'>
+											<label for='{{ field.id_for_label }}'>{{ field.label }}</label>
+											{{ field }}
+										</div>
+									</div>
+								</div>
+							{% endif %}
+							{% if forloop.counter0 == 3 %}
+								<div class="row change-password-section">
+									<div class="col-xs-12">
+										<div class='form-group'>
+											<label for='{{ field.id_for_label }}'>{{ field.label }} {{ field }}</label>
+										</div>
+							{% endif %}
+							{% if forloop.counter0 == 4 %}
+										<div class='form-group'>
+											<label for='{{ field.id_for_label }}'>{{ field.label }}</label>
+											{{ field }}
+										</div>
+									</div>
+								</div>
+							{% endif %}
+						{% endfor %}
+						<div class="row">
+							<div class="modal-footer text-center">
+								<input type="submit" class="btn btn-primary center-block" value="Update User">
 							</div>
 						</div>
 					</form>
-				</div>
-				<div class="modal-footer text-center">
-					<button type="button" class="btn btn-primary center-block">Update User</button>
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<!-- DELETE USER MODAL -->
-	<div class="modal fade" id="deleteAdminUser" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal fade deleteAdminUser" id="deleteAdminUser" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog modal-sm">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -147,7 +199,8 @@
 				</div>
 				<div class="modal-footer">
 					<form action="" method="post">
-						<button type="button" class="btn btn-danger">Delete User</button>
+						{% csrf_token %}
+						<input type="submit" class="btn btn-danger" value="Delete User">
 					</form>
 				</div>
 			</div>
