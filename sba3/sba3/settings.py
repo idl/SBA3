@@ -1,3 +1,5 @@
+from .secret import pwd
+
 """
 Django settings for sba3 project.
 
@@ -92,7 +94,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'sba3',
         'USER': 'sba3',
-        'PASSWORD': 'F5sndr78',
+        'PASSWORD': pwd,
         'HOST': 'localhost',
         'PORT': '',
     }
