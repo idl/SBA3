@@ -117,6 +117,7 @@ def register_admin(request):
 			request.session['success'] = 'Superadmin created successfully!'
 	return redirect('/admin/#users')
 
+@login_required
 def delete_admin(request, admin_id):
 	dbprint("DELETE ADMIN")
 	return HttpResponse("Delete admin")
@@ -130,8 +131,11 @@ def login_view(request):
 		user = authenticate(username=email, password=password)
 		login_form = LoginForm(request.POST)
 		if user and login_form.is_valid():
-			login(request, user)
-			return redirect('login_view')
+			if login(request, user):
+				return redirect('login_view')
+			else:
+				login_err_msg = "Email and password combination doesn't match database records. Please try logging in again."
+				request.session['login_err_msg'] = login_err_msg
 		else:
 			login_err_msg = "Email and password combination doesn't match database records. Please try logging in again."
 			if email == '' and password == '':
@@ -142,9 +146,7 @@ def login_view(request):
 				login_err_msg = 'Password cannot be blank.'
 			# return render(request, 'home.html', { 'login_form': login_form, 'login_err_msg': login_err_msg })
 			request.session['login_err_msg'] = login_err_msg
-			return redirect('/admin')
-	login_form = LoginForm()
-	return redirect('/')
+	return redirect('/#admin')
 
 def logout_view(request):
 	logout(request)
