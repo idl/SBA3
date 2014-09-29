@@ -26,19 +26,14 @@ def start_survey(request):
 
             survey_form = surveyLoginForm(request.POST)
             if user_id and survey_form.is_valid():
-                if Student.objects.filter(user_id=user_id, school_id=school).count() > 1:
-                    request.session['user_id'] = user_id
-                    request.session['school_id'] = school_id
-                    return redirect('/#continue')
+                new_student = Student.objects.create_student(user_id, school)
+                if isinstance(new_student, str):
+                    request.session['err_msg'] = new_student
+                    return redirect('/#start')
                 else:
-                    new_student = Student.objects.create_student(user_id, school)
-                    if isinstance(new_student, str):
-                        request.session['err_msg'] = new_student
-                        return redirect('/#start')
-                    else:
-                        request.session['user_id'] = new_student.id
-                        request.session['continue_pass'] = new_student.continue_pass
-                        return redirect('page', 1)
+                    request.session['user_id'] = new_student.id
+                    request.session['continue_pass'] = new_student.continue_pass
+                    return redirect('page', 1)
 
         request.session['err_msg'] = err_msg
     return redirect('/#start')

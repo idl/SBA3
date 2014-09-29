@@ -13,13 +13,16 @@ def survey_home(request):
     request.session['err_msg'] = ''
     continue_err_msg = request.session.get('continue_err_msg', '')
     request.session['continue_err_msg'] = ''
+    login_err_msg = request.session.get('login_err_msg', '')
+    request.session['login_err_msg'] = ''
 
     ctx = {
             'surveyLoginForm':surveyLoginForm, 
             'login_form':LoginForm, 
             'surveyContinueForm':surveyContinueForm, 
             'err_msg': err_msg, 
-            'continue_err_msg': continue_err_msg
+            'continue_err_msg': continue_err_msg,
+            'login_err_msg': login_err_msg
           }
 
     return render(request, 'survey_home.html', ctx)
