@@ -96,5 +96,8 @@ def continue_survey(request):
                     return redirect('page', 11)
                 except:
                     return redirect('page', 1)
+        else:
+            err_msg = "School - User - Continuation Password does not match database records. Please try again"
+            request.session['continue_err_msg'] = err_msg
 
     return redirect('/#continue')

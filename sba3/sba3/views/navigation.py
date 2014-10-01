@@ -58,6 +58,14 @@ def submit(request):
     return redirect('report')
 
 def save_survey(request):
+    page_num = request.POST.get('pagenum','')
+    if page_num != '':
+        array_name = 'p' + str(page_num)
+    else:
+        request.session[save_error] = "incorrect page"
+        return redirect('/')
+    answer_array = request.POST.getlist(array_name + "[]")
+    request.session[array_name] = answer_array
     row = {}
     answer_array = []
     for pagenum in range(1,12):
@@ -75,8 +83,8 @@ def save_survey(request):
     current_student = Student.objects.filter(id=request.session['user_id']).get()
     row['student_id'] = current_student
     AnswerSet.objects.filter(student_id=current_student).delete()
+    
     submission = AnswerSet(**row)
-
     submission.save()
 
     request.session.flush()
