@@ -5,23 +5,26 @@
     <script>
     $('document').ready(function() {
       $('.prev').click(function() {
-        $('form').attr('action', '{% url "previous"%}');
+        $('form').attr('action', '{% url "previous" %}');
       });
       $('.next').click(function() {
-        $('form').attr('action', '{% url "next"%}');
+        $('form').attr('action', '{% url "next" %}');
       });
       $('.submit').click(function(e) {
-        $('form').attr('action', '{% url "submit"%}');
+        $('form').attr('action', '{% url "submit" %}');
+      });
+      $('.save').click(function(e) {
+        $('form').attr('action', '{% url "save_survey" %}');
       });
     });
     </script>
   {% endblock %}
 
 {% block body %}
-  {% if error %}
-      <div class="alert alert-danger">Please fill in all fields.</div>
-  {% endif %}
   <div class="container survey-main">
+  {% if error %}
+    <div class="alert alert-danger">Please fill in all fields.</div>
+  {% endif %}
     <form method='post' role="form">
       {% csrf_token %}
       <input type='hidden' name='pagenum' value='{{ pagenum }}'>
@@ -34,14 +37,14 @@
           <div class="row">
             <div class="col-xs-5 text-left col-xs-push-7">
               {% if pagenum == "11" %}
-                <input type='submit' class='btn submit' value='Submit'>
+                <input type='submit' class='btn btn-primary submit' value='Submit'>
               {% else %}
                 <input type='submit' class='btn next' value='Next' style='width: 81px'>
               {% endif %}
             </div>
             <div class="col-xs-2 text-center">
-            <a href='{% url 'save_survey' %}' class='btn btn-primary submit' value='Save and Quit'>Save and Quit</a>
-          </div>
+              <input type='submit' class='btn btn-primary save' value='Save and Quit'>
+            </div>
             <div class="col-xs-5 text-right col-xs-pull-7">
               <input type='submit' class='btn prev' value='Previous'>
             </div>
