@@ -10,13 +10,16 @@ from admin_custom.forms import LoginForm
 
 def survey_home(request):
     user_id = request.session.get('user_id', '')
-    if user_id != '':
+    admin_id = request.session.get('_auth_user_id', '')
+    if user_id != '' or admin_id != '':
         request.session.flush()
         
     err_msg = request.session.get('err_msg', '')
     request.session['err_msg'] = ''
+
     continue_err_msg = request.session.get('continue_err_msg', '')
     request.session['continue_err_msg'] = ''
+
     login_err_msg = request.session.get('login_err_msg', '')
     request.session['login_err_msg'] = ''
 
@@ -101,4 +104,3 @@ def logout_view(request):
 def clearSession(request):
     request.session.flush()
     return redirect('/admin')
-    

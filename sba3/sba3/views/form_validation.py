@@ -63,18 +63,25 @@ def continue_survey(request):
                 try:
                     session_build = {}
                     current_answers = AnswerSet.objects.values().filter(student_id=current_student).get()
+                    last_page = 1
                     for answer in current_answers:
                         if current_answers[answer]:
                             if answer[0] == 'p':
                                 if answer[2] == 'q':
+                                    page_num = answer[1:2]
                                     array_name = answer[:2]
                                     question_number = answer[3:]
                                 elif answer[3]  == 'q':
+                                    page_num = answer[1:3]
                                     array_name = answer[:3]
                                     question_number = answer[4:]
                                 else:
+                                    page_num = 1
                                     array_name = ''
                                     question_number = ''
+                                if int(page_num) > last_page:
+                                    print page_num
+                                    last_page = int(page_num)
 
                                 if array_name in session_build:
                                     session_build[array_name].update({question_number: current_answers[answer]})
@@ -93,9 +100,12 @@ def continue_survey(request):
                         request.session[array_name] = temp_array
 
                         # rebuild session
-                    return redirect('page', 11)
+                    return redirect('page', last_page)
                 except:
                     return redirect('page', 1)
+            else:
+                request.session['user_id'] = current_student.id
+                return redirect('/report')
         else:
             err_msg = "School - User - Continuation Password does not match database records. Please try again"
             request.session['continue_err_msg'] = err_msg
