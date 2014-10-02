@@ -39,8 +39,6 @@ def next(request):
             instance, created = AnswerSet.objects.get_or_create(student_id=current_student)
             for attr, value in row.iteritems(): 
                 setattr(instance, attr, value)
-                print attr
-                print value
             instance.save()
         except:
             return redirect('page', pagenum)
@@ -72,9 +70,9 @@ def submit(request):
     instance, created = AnswerSet.objects.get_or_create(student_id=current_student)
     for attr, value in row.iteritems(): 
         setattr(instance, attr, value)
-        print attr
-        print value
     instance.save()
+    setattr(current_student, 'completed', True)
+    current_student.save()
 
     return redirect('report')
 
@@ -105,8 +103,6 @@ def save_survey(request):
     instance, created = AnswerSet.objects.get_or_create(student_id=current_student)
     for attr, value in row.iteritems(): 
         setattr(instance, attr, value)
-        print attr
-        print value
     instance.save()
 
     request.session.flush()
@@ -128,9 +124,7 @@ def report(request):
     #         answernum += 1
 
     current_student = Student.objects.filter(id=request.session['user_id']).get()
-    row = AnswerSet.objects.filter(student_id=current_student).get()
-
-    print row
+    row = AnswerSet.objects.values().filter(student_id=current_student).get()
 
     request.session.flush()
     return render(request, 'answers.html', {'row':row})

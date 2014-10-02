@@ -188,11 +188,8 @@ def login_view(request):
 		user = authenticate(username=email, password=password)
 		login_form = LoginForm(request.POST)
 		if user and login_form.is_valid():
-			if login(request, user):
-				return redirect('login_view')
-			else:
-				login_err_msg = "Email and password combination doesn't match database records. Please try logging in again."
-				request.session['login_err_msg'] = login_err_msg
+			login(request, user)
+			return redirect('admin')
 		else:
 			login_err_msg = "Email and password combination doesn't match database records. Please try logging in again."
 			if email == '' and password == '':
@@ -207,7 +204,7 @@ def login_view(request):
 
 def logout_view(request):
 	logout(request)
-	return redirect('login_view')
+	return redirect('/#admin')
 
 def dbprint(input_str):
 	input_str = str(input_str)
