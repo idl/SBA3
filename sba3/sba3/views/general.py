@@ -37,8 +37,10 @@ def survey_home(request):
 def page(request, pagenum):
     if not 'user_id' in request.session:
         return redirect('/#start')
+
     error = request.session.get('error', False)
     request.session['error'] = False
+    
     ctx = {'pagenum': pagenum, 'error': error}
     if pagenum=='1':
         return render(request, 'page1.html', ctx)
