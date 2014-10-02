@@ -14,23 +14,31 @@ Users = get_user_model()
 @login_required(redirect_field_name='')
 def admin(request):
 	register_admin_err_msg = request.session.get('register_admin_err_msg', '')
-	success = request.session.get('success', '')
-	update_admin_err_msg_list = request.session.get('update_admin_err_msg_list', '')
-	update_admin_err_msg = False
-	update_admin_err_id = request.session.get('update_admin_err_id', None)
-	update_admin_success_msg = request.session.get('update_admin_success_msg', '')
 	request.session['register_admin_err_msg'] = []
-	request.session['login_err_msg'] = ''
+
+	success = request.session.get('success', '')
 	request.session['success'] = ''
+
+	update_admin_err_msg_list = request.session.get('update_admin_err_msg_list', '')
 	request.session['update_admin_err_msg_list'] = []
+
+	update_admin_err_id = request.session.get('update_admin_err_id', None)
 	request.session['update_admin_err_id'] = None
+
+	update_admin_success_msg = request.session.get('update_admin_success_msg', '')
 	request.session['update_admin_success_msg'] = ''
+
 	registerError = request.session.get('registerError', False)
-	registerSuccess = request.session.get('registerSuccess', False)
 	request.session['registerError'] = False
+
+	registerSuccess = request.session.get('registerSuccess', False)
 	request.session['registerSuccess'] = False
 
 	school_list = School.objects.all()
+	dbprint(vars(school_list[0]))
+	for i in school_list:
+		dbprint(i)
+
 	superadmin_list = Users.objects.filter(is_superuser=True)
 	schooladmin_list = []
 	for user in Users.objects.filter(is_superuser=False).order_by('school_id'):
@@ -42,6 +50,8 @@ def admin(request):
 		schooladmin_entry['last_login'] = user.last_login
 		schooladmin_entry['date_joined'] = user.date_joined
 		schooladmin_list.append(schooladmin_entry)
+
+	update_admin_err_msg = False
 	if len(update_admin_err_msg_list) > 0:
 		update_admin_err_msg = True
 
@@ -63,6 +73,7 @@ def admin(request):
 	if update_admin_err_id:
 		ctx['update_admin_err_id'] = update_admin_err_id
 	return render(request, 'admin_custom/admin.html', ctx)
+
 
 
 @login_required(redirect_field_name='')
@@ -179,6 +190,8 @@ def delete_admin(request, admin_id):
 	usr.delete()
 	return redirect('/admin/#users')
 
+
+
 def login_view(request):
 	if request.user.is_authenticated():
 		return redirect('admin')
@@ -187,12 +200,9 @@ def login_view(request):
 		password = request.POST.get('password', '').strip()
 		user = authenticate(username=email, password=password)
 		login_form = LoginForm(request.POST)
-		if user and login_form.is_valid():
-			if login(request, user):
-				return redirect('login_view')
-			else:
-				login_err_msg = "Email and password combination doesn't match database records. Please try logging in again."
-				request.session['login_err_msg'] = login_err_msg
+		if user:
+			login(request, user)
+			return redirect('login_view')
 		else:
 			login_err_msg = "Email and password combination doesn't match database records. Please try logging in again."
 			if email == '' and password == '':
@@ -207,7 +217,7 @@ def login_view(request):
 
 def logout_view(request):
 	logout(request)
-	return redirect('login_view')
+	return redirect('/')
 
 def dbprint(input_str):
 	input_str = str(input_str)

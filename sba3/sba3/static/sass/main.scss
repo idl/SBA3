@@ -191,3 +191,14 @@ h2 {
 		display: none;
 	}
 }
+
+.surveys-section {
+	.school-label {
+		&:hover, &:active {
+			box-shadow: none;
+			background: none;
+			border-color: #ADADAD;
+			cursor: default;
+		}
+	}
+}
