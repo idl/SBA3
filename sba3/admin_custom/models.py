@@ -18,7 +18,7 @@ class UserManager(BaseUserManager):
         user = self.model(
                 email=email,
                 is_active=True,
-                is_superuser=is_superuser, 
+                is_superuser=is_superuser,
                 last_login=tz.now(),
                 date_joined=tz.now(),
                 school_id=school_id

@@ -33,7 +33,16 @@
 				<div class="tab-pane home active" id="home">{% include 'admin_home.html' %}</div>
 				<div class="tab-pane users" id="users">{% include 'users.html' %}</div>
 				<div class="tab-pane registerschools" id="registerschools">{% include 'register_schools.html' %}</div>
-				<div class="tab-pane surveys" id="surveys">{% include 'surveys.html' %}</div>
+				<div class="tab-pane surveys" id="surveys">
+					PAGE: {{ current_survey_page }}
+					{% if current_survey_page == 'survey_home' %}
+						{% include 'school_data.html' %}
+					{% if current_survey_page == 'survey_home' %}
+						{% include 'school_data.html' %}
+					{% if current_survey_page == 'survey_home' %}
+						{% include 'school_data.html' %}
+					
+				</div>
 				<div class="tab-pane settings" id="settings">{% include 'settings.html' %}</div>
 			</div>
 		</div>

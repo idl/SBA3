@@ -1436,7 +1436,7 @@ a:hover, a:focus {
 /* line 58, ../sass/bootstrap/_scaffolding.scss */
 a:focus {
   outline: thin dotted;
-  outline: 5px auto -webkit-focus-ring-color;
+  outline: 5px auto #de4f2b;
   outline-offset: -2px;
 }
 
@@ -3477,7 +3477,7 @@ input[type="file"]:focus,
 input[type="radio"]:focus,
 input[type="checkbox"]:focus {
   outline: thin dotted;
-  outline: 5px auto -webkit-focus-ring-color;
+  outline: 5px auto #de4f2b;
   outline-offset: -2px;
 }
 
@@ -4075,7 +4075,7 @@ select[multiple].input-lg,
 /* line 25, ../sass/bootstrap/_buttons.scss */
 .btn:focus, .btn:active:focus, .btn.active:focus {
   outline: thin dotted;
-  outline: 5px auto -webkit-focus-ring-color;
+  outline: 5px auto #de4f2b;
   outline-offset: -2px;
 }
 /* line 31, ../sass/bootstrap/_buttons.scss */
@@ -8178,57 +8178,81 @@ h2 {
 }
 
 /* line 111, ../sass/main.scss */
-.users-table.table-condensed > tbody > tr > td {
+.users-table.table-condensed > tbody > tr > td, .survey-table.table-condensed > tbody > tr > td {
   padding-top: 8px;
 }
 /* line 113, ../sass/main.scss */
-.users-table.table-condensed > tbody > tr > td.actions {
+.users-table.table-condensed > tbody > tr > td.actions, .survey-table.table-condensed > tbody > tr > td.actions {
   padding-top: 5px;
   text-align: right;
 }
-/* line 118, ../sass/main.scss */
-.users-table .glyphicon {
+/* line 119, ../sass/main.scss */
+.users-table.table-condensed.survey-table > tbody > tr > td.actions, .survey-table.table-condensed.survey-table > tbody > tr > td.actions {
+  text-align: left;
+}
+/* line 123, ../sass/main.scss */
+.users-table .glyphicon, .survey-table .glyphicon {
   padding: 5px;
   border-radius: 99px;
   font-size: 13px;
   transition: all 0.15s ease-in;
 }
-/* line 124, ../sass/main.scss */
-.users-table .glyphicon-pencil {
+/* line 129, ../sass/main.scss */
+.users-table .glyphicon-pencil, .survey-table .glyphicon-pencil {
   color: #5bc0de;
 }
-/* line 126, ../sass/main.scss */
-.users-table .glyphicon-pencil:hover {
+/* line 131, ../sass/main.scss */
+.users-table .glyphicon-pencil:hover, .survey-table .glyphicon-pencil:hover {
   background: #5bc0de;
   color: white;
   transition: all 0.15s ease-in;
 }
-/* line 132, ../sass/main.scss */
-.users-table .glyphicon-remove {
+/* line 137, ../sass/main.scss */
+.users-table .glyphicon-remove, .survey-table .glyphicon-remove {
   color: #d9534f;
 }
-/* line 134, ../sass/main.scss */
-.users-table .glyphicon-remove:hover {
+/* line 139, ../sass/main.scss */
+.users-table .glyphicon-remove:hover, .survey-table .glyphicon-remove:hover {
   background: #d9534f;
   color: white;
   transition: all 0.3s ease-in;
 }
+/* line 145, ../sass/main.scss */
+.users-table .glyphicon-eye-open, .survey-table .glyphicon-eye-open {
+  color: #de4f2b;
+}
+/* line 147, ../sass/main.scss */
+.users-table .glyphicon-eye-open:hover, .survey-table .glyphicon-eye-open:hover {
+  background: #de4f2b;
+  color: white;
+  transition: all 0.3s ease-in;
+}
+/* line 153, ../sass/main.scss */
+.users-table .glyphicon-download-alt, .survey-table .glyphicon-download-alt {
+  color: #333333;
+}
+/* line 155, ../sass/main.scss */
+.users-table .glyphicon-download-alt:hover, .survey-table .glyphicon-download-alt:hover {
+  background: #333333;
+  color: white;
+  transition: all 0.3s ease-in;
+}
 
-/* line 144, ../sass/main.scss */
+/* line 165, ../sass/main.scss */
 .modal .modal-title small {
   display: block;
 }
-/* line 149, ../sass/main.scss */
+/* line 170, ../sass/main.scss */
 .modal#deleteAdminUser .modal-footer {
   text-align: center;
 }
 
-/* line 157, ../sass/main.scss */
+/* line 178, ../sass/main.scss */
 .admin-page .admin-nav .nav {
   margin-bottom: 1em;
 }
 
-/* line 164, ../sass/main.scss */
+/* line 185, ../sass/main.scss */
 .editGlobalAdminUser .change-password, .editSchoolAdminUser .change-password {
   margin-bottom: 15px;
   padding: 5px 0;
@@ -8237,34 +8261,43 @@ h2 {
   background: inherit;
   transition: background 0.3s ease-in-out;
 }
-/* line 171, ../sass/main.scss */
+/* line 192, ../sass/main.scss */
 .editGlobalAdminUser .change-password .form-group, .editSchoolAdminUser .change-password .form-group {
   margin: 0;
   position: relative;
 }
-/* line 175, ../sass/main.scss */
+/* line 196, ../sass/main.scss */
 .editGlobalAdminUser .change-password label, .editGlobalAdminUser .change-password input, .editSchoolAdminUser .change-password label, .editSchoolAdminUser .change-password input {
   margin: 0;
 }
-/* line 181, ../sass/main.scss */
+/* line 202, ../sass/main.scss */
 .editGlobalAdminUser .change-password input, .editSchoolAdminUser .change-password input {
   position: relative;
   top: 2px;
 }
-/* line 185, ../sass/main.scss */
+/* line 206, ../sass/main.scss */
 .editGlobalAdminUser .change-password:hover, .editSchoolAdminUser .change-password:hover {
   background: #e5e5e5;
   transition: background 0.3s ease-in-out;
 }
-/* line 190, ../sass/main.scss */
+/* line 211, ../sass/main.scss */
 .editGlobalAdminUser .change-password-section, .editSchoolAdminUser .change-password-section {
   display: none;
 }
 
-/* line 197, ../sass/main.scss */
-.surveys-section .school-label:hover, .surveys-section .school-label:active {
-  box-shadow: none;
-  background: none;
-  border-color: #ADADAD;
-  cursor: default;
+/* line 217, ../sass/main.scss */
+.surveys-section .school-name {
+  margin-left: 1em;
+  padding-bottom: 2px;
+  border-bottom: 1px solid #eeeeee;
+}
+/* line 223, ../sass/main.scss */
+.surveys-section form.survey-school-select-form {
+  margin: 1em 0;
+  padding: 0.3em 0 0.25em;
+  background: #eeeeee;
+}
+/* line 228, ../sass/main.scss */
+.surveys-section form .form-group {
+  margin: 0;
 }
