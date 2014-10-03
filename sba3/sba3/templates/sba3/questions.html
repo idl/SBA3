@@ -25,7 +25,7 @@
   {% if error %}
     <div class="alert alert-danger">Please fill in all fields.</div>
   {% endif %}
-    <form method='post' role="form">
+    <form method='post' role="form" class='form-inline'>
       {% csrf_token %}
       <input type='hidden' name='pagenum' value='{{ pagenum }}'>
       <table class="table table-hover">
