@@ -7,7 +7,8 @@ import hashlib
 class School(models.Model):
     name = models.CharField(max_length=75, blank=False)
     location = models.CharField(max_length=125, help_text='Please enter the city and state of your school.')
-    # user = models.OneToOneField(AUTH_USER_MODEL)
+    survey_title = models.CharField(max_length=50, null=True)
+    date = models.DateField()
     
     def __unicode__(self):
         return self.name
@@ -32,20 +33,16 @@ class School(models.Model):
     #     return school
 
 class StudentManager(models.Manager):
-    def create_student(self, user_id, school_id):
+    def create_student(self, user_id, school):
         error = ''
         if not user_id:
             error = "Student must have a user_id"
-        elif not school_id:
+        elif not school:
             error = "Student must have a school"
 
-        if Student.objects.filter(user_id=user_id).count() != 0:
-            student = Student.objects.filter(user_id=user_id).get()
-            if student.school_id == school_id:
-                error = 'Student - School association already exists'
+        if Student.objects.filter(user_id__iexact=user_id, school_id=school).count() != 0:
+            error = 'Student - School association already exists'
         else:
-            school = School.objects.filter(pk=1).get()
-
             continue_hash = hashlib.sha256(user_id + school.name).hexdigest()
             continue_pass = continue_hash[:10]
 
@@ -63,7 +60,7 @@ class StudentManager(models.Manager):
         return error
 
 class Student(models.Model):
-    user_id = models.CharField(max_length=10, db_index = True)
+    user_id = models.CharField(max_length=10)
     school_id = models.ForeignKey(School, null=True)
     continue_pass = models.CharField(max_length=10, blank=False)
     completed = models.BooleanField()

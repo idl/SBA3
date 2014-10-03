@@ -109,20 +109,6 @@ def save_survey(request):
     return redirect('/#continue')
 
 def report(request):
-    # row = {}
-    # answer_array = []
-    # for pagenum in range(1,12):
-    #     page = "p" + str(pagenum)
-    #     try:
-    #         answer_array = request.session[page]
-    #     except:
-    #         return redirect('page', pagenum)
-    #     answernum = 1
-    #     for answer in answer_array:
-    #         column = page + "q" + str(answernum)
-    #         row[column] = answer
-    #         answernum += 1
-
     current_student = Student.objects.filter(id=request.session['user_id']).get()
     row = AnswerSet.objects.values().filter(student_id=current_student).get()
 
