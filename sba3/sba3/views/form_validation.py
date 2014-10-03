@@ -33,6 +33,7 @@ def start_survey(request):
                 else:
                     request.session['user_id'] = new_student.id
                     request.session['continue_pass'] = new_student.continue_pass
+                    request.session['survey_title'] = school.survey_title
                     return redirect('page', 1)
 
         request.session['err_msg'] = err_msg
@@ -43,10 +44,6 @@ def continue_survey(request):
         continue_pass = request.POST.get('passkey', '')
         user_id = request.POST.get('identifier', '')
         school_id = request.POST.get('school', '')
-
-        print continue_pass
-        print user_id
-        print school_id
 
         if school_id == '' or user_id == '' or continue_pass == '':
             err_msg = 'School, Identifier, and Passkey fields cannot be blank.'
@@ -60,6 +57,7 @@ def continue_survey(request):
             if current_student.completed == False:
                 request.session['continue_pass'] = continue_pass
                 request.session['user_id'] = current_student.id
+                request.session['survey_title'] = school.survey_title
                 try:
                     session_build = {}
                     current_answers = AnswerSet.objects.values().filter(student_id=current_student).get()
@@ -80,7 +78,6 @@ def continue_survey(request):
                                     array_name = ''
                                     question_number = ''
                                 if int(page_num) > last_page:
-                                    print page_num
                                     last_page = int(page_num)
 
                                 if array_name in session_build:

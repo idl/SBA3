@@ -18,6 +18,18 @@
     </script>
   {% endblock %}
 
+
+
+  {% block django_form_body %}
+    {% for field in pageOneForm %}
+      <div class='form-group'>
+          {{ field.label_tag }}
+          {{ field }}
+      </div>
+    {% endfor %}
+
+  {% endblock %}
+
   {% block table_body %}
     <tr>
       <td>

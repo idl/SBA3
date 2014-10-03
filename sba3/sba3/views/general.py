@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db.models.loading import get_model
 
-from ..forms import surveyLoginForm, surveyContinueForm
+from ..forms import surveyLoginForm, surveyContinueForm, page_one
 from admin_custom.forms import LoginForm
 
 def survey_home(request):
@@ -43,6 +43,7 @@ def page(request, pagenum):
     
     ctx = {'pagenum': pagenum, 'error': error}
     if pagenum=='1':
+        ctx['pageOneForm'] = page_one
         return render(request, 'page1.html', ctx)
     elif pagenum=='2':
         if 'p1' in request.session and request.session['p1'][0] != '':

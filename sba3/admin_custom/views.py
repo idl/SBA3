@@ -6,8 +6,11 @@ from django.template import RequestContext
 from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
+
 from .forms import *
 from sba3.models import School
+
+import datetime
 
 Users = get_user_model()
 
@@ -69,6 +72,8 @@ def admin(request):
 def create_school(request):
 	if request.POST:
 		school_name = request.POST.get('school_name', '')
+		school_location = request.POST.get('school_location', '')
+		survey_title = request.POST.get('survey_title', '')
 	if school_name == '':
 		request.session['registerError'] = True
 		request.session['registerSuccess'] = False
@@ -78,7 +83,11 @@ def create_school(request):
 			request.session['registerError'] = True
 			request.session['registerSuccess'] = False
 		except:
-			new_school = School(name=school_name)
+			new_school = School(
+				name=school_name, 
+				location=school_location, 
+				survey_title=survey_title,
+				date=datetime.date.today())
 			new_school.save()
 			request.session['registerError'] = False
 			request.session['registerSuccess'] = True
