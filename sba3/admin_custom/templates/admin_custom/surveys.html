@@ -1,20 +1,23 @@
 <section class='surveys-section'>	
 	<div class="row">
 	    <div class="col-xs-12">
-	        <h2>Surveys Overview</h2>
+	        <h2>Surveys Overview{% if survey_school_selected %} <small class='school-name'>{{ survey_school_name }}</small>{% endif %}</h2>
 	    </div>
 	</div>
-	<form action="" method='post' class='form-horizontal' role='form'>
-		{% csrf_token %}
-		<div class="row">
-			<div class="col-xs-3">
-				<div class="form-group">
-				<label for="#survey-select-school">dfg</label>
-					<select class="form-control" id='survey-select-school'>
-						<option>1</option>
-					</select>
-				</div>
-			</div>
-		</div>
-	</form>
+	{% block school_data %}
+	{% endblock %}
+
+	{% block school_data_viewall %}
+	{% endblock %}
+
+	{% block school_student_data %}
+	{% endblock %}
 </section>
+
+{% block select_selected_school %}
+<script>
+	if({% if survey_school_selected %}1{% else %}0{% endif %}) {
+		$('#survey_school_select').val({{ survey_school_id }});
+	}
+</script>
+{% endblock %}

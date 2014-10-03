@@ -8,6 +8,8 @@ urlpatterns = patterns('admin_custom.views',
     url(r'^/updateadmin/(?P<admin_id>[0-9]{1,3})$', 'update_admin', name='update_admin'),
     url(r'^/deleteadmin/(?P<admin_id>[0-9]{1,3})$', 'delete_admin', name='delete_admin'),
     url(r'^/createschool$', 'create_school', name='create_school'),
-    url(r'^#red$', 'logout_view', name=''),
+    url(r'^/data/(?P<school_id>[0-9]{1,2})$', 'admin', name='school_data'),
+    url(r'^/data/(?P<school_id>[0-9]{1,2})/viewall', 'admin', name='school_data_viewall'),
+    url(r'^/data/(?P<school_id>[0-9]{1,2})/(?P<student_id>[0-9]{1,2})$', 'admin', name='school_student_data'),
 
 )

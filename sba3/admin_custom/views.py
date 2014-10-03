@@ -7,12 +7,14 @@ from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from .forms import *
-from sba3.models import School
+from sba3.models import School, Student
 
 Users = get_user_model()
 
 @login_required(redirect_field_name='')
-def admin(request):
+def admin(request, school_id=None, student_id=None):
+	ctx = {}
+	current_survey_page = 'survey_home'
 	register_admin_err_msg = request.session.get('register_admin_err_msg', '')
 	request.session['register_admin_err_msg'] = []
 
@@ -34,11 +36,19 @@ def admin(request):
 	registerSuccess = request.session.get('registerSuccess', False)
 	request.session['registerSuccess'] = False
 
-	school_list = School.objects.all()
-	dbprint(vars(school_list[0]))
-	for i in school_list:
-		dbprint(i)
+	survey_school_select = request.session.get('survey_school_select', '')
+	request.session['survey_school_select'] = ''
 
+	school_list = School.objects.all()
+	student_list = {}
+
+	survey_school_list = []
+	if request.POST:
+		survey_school_select = request.POST.get('survey_school_select', '')
+		if survey_school_select != '':
+			return redirect('school_data', survey_school_select)
+		else:
+			return redirect('/admin/#surveys')
 	superadmin_list = Users.objects.filter(is_superuser=True)
 	schooladmin_list = []
 	for user in Users.objects.filter(is_superuser=False).order_by('school_id'):
@@ -66,10 +76,29 @@ def admin(request):
 			'success': success,
 			'registerError': registerError,
 			'registerSuccess': registerSuccess,
-			'school_list': school_list,
+			'school_list': School.objects.all(),
 			'superadmin_list': superadmin_list,
-			'schooladmin_list': schooladmin_list
+			'schooladmin_list': schooladmin_list,
+			'student_list': student_list
 		  }
+
+	if school_id != None:
+		if student_id != None:
+			current_survey_page = 'survey_school_student_data'
+			dbprint("on student page")
+		current_survey_page = 'survey_school_data'
+		ctx['survey_school_selected'] = True
+		ctx['survey_school_id'] = school_id
+		cur_school = school_list.filter(id=school_id)
+		student_list = Student.objects.values().filter(school_id=cur_school)
+		ctx['student_list'] = student_list
+		try:
+			ctx['survey_school_name'] = School.objects.get(id=school_id)
+		except:
+			return redirect('/admin/#surveys')
+
+	ctx['current_survey_page'] = current_survey_page
+	
 	if update_admin_err_id:
 		ctx['update_admin_err_id'] = update_admin_err_id
 	return render(request, 'admin_custom/admin.html', ctx)

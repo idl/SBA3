@@ -12,26 +12,26 @@ from ..models import Student, School, AnswerSet
 def start_survey(request):
     if request.POST:
         school_id = request.POST.get('school', '')
-        user_id = request.POST.get('identifier', '')
+        survey_user_id = request.POST.get('identifier', '')
 
-        if school_id == '' and user_id == '':
+        if school_id == '' and survey_user_id == '':
             err_msg = 'School and Identifier fields cannot be blank.'
         elif school_id == '':
             err_msg = 'School field cannot be blank.'
-        elif user_id == '':
+        elif survey_user_id == '':
             err_msg = 'Identifier field cannot be blank.'
 
         else:
             school = School.objects.filter(id=school_id).get()
 
             survey_form = surveyLoginForm(request.POST)
-            if user_id and survey_form.is_valid():
-                new_student = Student.objects.create_student(user_id, school)
+            if survey_user_id and survey_form.is_valid():
+                new_student = Student.objects.create_student(survey_user_id, school)
                 if isinstance(new_student, str):
                     request.session['err_msg'] = new_student
                     return redirect('/#start')
                 else:
-                    request.session['user_id'] = new_student.id
+                    request.session['survey_user_id'] = new_student.id
                     request.session['continue_pass'] = new_student.continue_pass
                     return redirect('page', 1)
 
@@ -41,25 +41,25 @@ def start_survey(request):
 def continue_survey(request):
     if request.POST:
         continue_pass = request.POST.get('passkey', '')
-        user_id = request.POST.get('identifier', '')
+        survey_user_id = request.POST.get('identifier', '')
         school_id = request.POST.get('school', '')
 
         print continue_pass
-        print user_id
+        print survey_user_id
         print school_id
 
-        if school_id == '' or user_id == '' or continue_pass == '':
+        if school_id == '' or survey_user_id == '' or continue_pass == '':
             err_msg = 'School, Identifier, and Passkey fields cannot be blank.'
             request.session['continue_err_msg'] = err_msg
             return redirect('/#continue')
 
         school = School.objects.filter(id=school_id).get()
 
-        if Student.objects.filter(user_id=user_id, school_id=school, continue_pass=continue_pass).count() == 1:
-            current_student = Student.objects.filter(user_id=user_id, school_id=school, continue_pass=continue_pass).get()
+        if Student.objects.filter(survey_user_id=survey_user_id, school_id=school, continue_pass=continue_pass).count() == 1:
+            current_student = Student.objects.filter(survey_user_id=survey_user_id, school_id=school, continue_pass=continue_pass).get()
             if current_student.completed == False:
                 request.session['continue_pass'] = continue_pass
-                request.session['user_id'] = current_student.id
+                request.session['survey_user_id'] = current_student.id
                 try:
                     session_build = {}
                     current_answers = AnswerSet.objects.values().filter(student_id=current_student).get()
