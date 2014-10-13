@@ -8,7 +8,10 @@ from django.db.models.loading import get_model
 from ..forms import surveyLoginForm, surveyContinueForm, page_one
 from admin_custom.forms import LoginForm
 
+from ..models import AnswerSet
+
 def survey_home(request):
+
     user_id = request.session.get('user_id', '')
     admin_id = request.session.get('_auth_user_id', '')
     if user_id != '' or admin_id != '':
