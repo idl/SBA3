@@ -74,9 +74,75 @@ class AnswerSetManager(models.Manager):
         except:
             return 'Student ID is not in the database'
 
+        percent_list = {}
+
+        for page in range(1, 12):
+            for question in range(1, 15):
+                question_id = 'p' + str(page) + 'q' + str(question)
+
+                try:
+                    answer_list = self.values_list(question_id).filter(student_id__completed=True)
+                except:
+                    #return 'Question ID is not in the database'
+                    continue
+
+                try:
+                    student_answer = answer_list.filter(student_id=student_id).get()
+                except:
+                    return 'No Answer for that Student ID'
+
+                student_total = 0.0
+                total_answers = 0.0
+                for answer in answer_list:
+                    if answer == student_answer:
+                        student_total += 1
+                    total_answers += 1
+
+                percent_list[question_id] = student_total / total_answers
+
+        return percent_list
+
     # return the percentage same for every question across participant's school
-    def school_percentage_all(self):
-        pass
+    def school_percentage_all(self, student_id):
+        try:
+            student = Student.objects.values('completed', 'school_id').filter(id=student_id).get()
+            if not student['completed']:
+                return 'Student has not completed the survey'
+        except:
+            return 'Student ID is not in the database'
+
+        try:
+            school_list = Student.objects.values_list('id', flat=True).filter(school_id=student['school_id'], completed=True)
+        except:
+            return 'School ID is not in database'
+
+        percent_list = {}
+
+        for page in range(1, 12):
+            for question in range(1, 15):
+                question_id = 'p' + str(page) + 'q' + str(question)
+
+                try:
+                    answer_list = self.values_list(question_id).filter(student_id__in=school_list)
+                except:
+                    # return 'Question ID is not in the database' 
+                    continue
+
+                try:
+                    student_answer = answer_list.filter(student_id=student_id).get()
+                except:
+                    return 'No Answer for that Student ID'
+
+                student_total = 0.0
+                total_answers = 0.0
+                for answer in answer_list:
+                    if answer == student_answer:
+                        student_total += 1
+                    total_answers += 1
+
+                percent_list[question_id] = student_total / total_answers
+
+        return percent_list
 
     # return the percentage same for given question across all schools
     def overall_percentage_question(self, student_id, question_id):
