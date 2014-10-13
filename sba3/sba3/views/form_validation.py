@@ -52,7 +52,7 @@ def continue_survey(request):
 
         school = School.objects.filter(id=school_id).get()
 
-        if Student.objects.filter(user_id=user_id, school_id=school, continue_pass=continue_pass).count() == 1:
+        if Student.objects.filter(user_id__iexact=user_id, school_id=school, continue_pass=continue_pass).count() == 1:
             current_student = Student.objects.filter(user_id=user_id, school_id=school, continue_pass=continue_pass).get()
             if current_student.completed == False:
                 request.session['continue_pass'] = continue_pass

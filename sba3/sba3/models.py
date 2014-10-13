@@ -13,24 +13,18 @@ class School(models.Model):
     def __unicode__(self):
         return self.name
 
-    # def create_school(self, name, email, location, user_id):
-    #     if not name:
-    #         raise ValueError("School must have a name")
-    #     elif not email:
-    #         raise ValueError("School must have a contact email")
-    #     elif not location:
-    #         raise ValueError("School must have a location")
-    #     elif not user_id:
-    #         raise ValueError("School must have an admin user")
-    #     email = self.normalize_email(email)
-    #     school = self.model(
-    #                             name = name,
-    #                             email = email,
-    #                             location = location,
-    #                             user = user_id
-    #                         )
-    #     school.save(using=self._db)
-    #     return school
+class SchoolUidManager(models.Manager):
+    def check_uid(self, school, uid):
+        if SchoolUid.objects.filter(school_id=school, uid=uid).count == 1:
+            return True
+        else:
+            return False
+
+class SchoolUid(models.Model):
+    school_id = models.ForeignKey(School)
+    uid = models.CharField(max_length=20)
+
+    objects = SchoolUidManager()
 
 class StudentManager(models.Manager):
     def create_student(self, user_id, school):
@@ -60,7 +54,7 @@ class StudentManager(models.Manager):
         return error
 
 class Student(models.Model):
-    user_id = models.CharField(max_length=10)
+    user_id = models.CharField(max_length=20)
     school_id = models.ForeignKey(School, null=True)
     continue_pass = models.CharField(max_length=10, blank=False)
     completed = models.BooleanField()
@@ -69,6 +63,82 @@ class Student(models.Model):
 
     def __unicode__(self):
         return self.user_id
+
+class AnswerSetManager(models.Manager):
+    # return the percentage same for every question across all schools
+    def overall_percentage_all(self, student_id):
+        try:
+            completed = Student.objects.values_list('completed', flat=True).filter(id=student_id).get()
+            if not completed:
+                return 'Student has not completed the survey'
+        except:
+            return 'Student ID is not in the database'
+
+    # return the percentage same for every question across participant's school
+    def school_percentage_all(self):
+        pass
+
+    # return the percentage same for given question across all schools
+    def overall_percentage_question(self, student_id, question_id):
+        try:
+            completed = Student.objects.values_list('completed', flat=True).filter(id=student_id).get()
+            if not completed:
+                return 'Student has not completed the survey'
+        except:
+            return 'Student ID is not in the database'
+
+        try:
+            answer_list = self.values_list(question_id).filter(student_id__completed=True)
+        except:
+            return 'Question ID is not in the database'
+
+        try:
+            student_answer = answer_list.filter(student_id=student_id).get()
+        except:
+            return 'No Answer for that Student ID'
+
+        student_total = 0.0
+        total_answers = 0.0
+        for answer in answer_list:
+            if answer == student_answer:
+                student_total += 1
+            total_answers += 1
+
+        return student_total / total_answers
+
+    # return the percentage same for given question across participant's school
+    def school_percentage_question(self, student_id, question_id):
+        try:
+            student = Student.objects.values('completed', 'school_id').filter(id=student_id).get()
+            if not student['completed']:
+                return 'Student has not completed the survey'
+        except:
+            return 'Student ID is not in the database'
+
+        try:
+            school_list = Student.objects.values_list('id', flat=True).filter(school_id=student['school_id'], completed=True)
+        except:
+            return 'School ID is not in database'
+
+        try:
+            answer_list = self.values_list(question_id).filter(student_id__in=school_list)
+        except:
+            return 'Question ID is not in the database' 
+
+        try:
+            student_answer = answer_list.filter(student_id=student_id).get()
+        except:
+            return 'No Answer for that Student ID'
+
+        student_total = 0.0
+        total_answers = 0.0
+        for answer in answer_list:
+            if answer == student_answer:
+                student_total += 1
+            total_answers += 1
+
+        return student_total / total_answers
+
 
 
 class AnswerSet(models.Model):
@@ -189,6 +259,8 @@ class AnswerSet(models.Model):
     p11q12 = models.CharField(max_length=20, null=True)
     p11q13 = models.CharField(max_length=20, null=True)
     p11q14 = models.CharField(max_length=20, null=True)
+
+    objects = AnswerSetManager()
 
     def __unicode__(self):
     	return 'Answer Set'
