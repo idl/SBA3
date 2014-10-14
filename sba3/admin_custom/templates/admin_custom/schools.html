@@ -1,0 +1,60 @@
+<div class="row">
+  <div class="col-xs-12">
+    <h2>Schools</h2>
+  </div>
+</div>
+<div class='row'>
+  <div class='col-xs-12 columns'>
+    <h3>Create New School</h3>
+    {% if registerError %}<p class="bg-danger">School name cannot be blank.</p>{% endif %}
+    {% if registerSuccess %}<p class="bg-success">New school has been created.</p>{% endif %}
+    <form action='/admin/createschool' method='post' role='form' class='registerSchoolForm'>
+      {% csrf_token %}
+      <div class="row">
+      {% for field in registerSchoolForm %}
+        <div class='col-xs-3'>
+          <div class='form-group'>
+            {{ field.label_tag }}
+            {{ field }}
+          </div>
+        </div>
+      {% endfor %}
+        <div class='col-xs-3'>
+          <div class='form-group text-center pull-down'>
+            <button type='submit' class='btn btn-primary btn-block'>Create</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class='row'>
+  <div class="col-xs-12 columns">
+  <h3>Registered Schools</h3>
+    <table class="table table-striped users-table global-admins">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Location</th>
+          <th>Survey Title</th>
+          <th>Roster</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for school in school_list %}
+          <tr data-school-id='{{ school.id }}'>
+            <td class='school_name'>{{ school.name }}</td>
+            <td>{{ school.location }}</td>
+            <td>{{ school.survey_title }}</td>
+            <td></td>
+            <td class="actions">
+              <a href="#" ><span class="glyphicon glyphicon-pencil"></span></a>
+              <a href="#" data-toggle="modal" data-target="#deleteSchoolModel" class="deleteSchool"><span class="glyphicon glyphicon-remove"></span></a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>

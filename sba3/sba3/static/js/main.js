@@ -81,4 +81,12 @@
 			$('.change-password-section').slideToggle();
 		}
 	});
+	$('.deleteSchool').click(function() {
+		var school_row, school_id;
+		school_row = $(this).parent().parent();
+		school_id = school_row.attr('data-school-id');
+		console.log(school_id);
+		$('.deleteSchool form').attr('action', '/admin/deleteschool/'+school_id);
+		$('.modal .modal-title small').html(school_row.find('school_name').html());
+	});
 })(jQuery);

@@ -8176,6 +8176,9 @@ h2 {
 .registerSchoolForm .text-center {
   margin: 0;
 }
+.registerSchoolForm .pull-down {
+  margin-top: 23px;
+}
 
 /* line 111, ../sass/main.scss */
 .users-table.table-condensed > tbody > tr > td {
