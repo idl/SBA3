@@ -14,9 +14,9 @@ class RegisterAdminForm(forms.Form):
     superuser = forms.BooleanField(required=True, label="Global Admin?", widget=forms.CheckboxInput(attrs={'class': ''}))
 
 class RegisterSchoolForm(forms.Form):
-    school_name = forms.CharField(required=True, label='School Name', initial='', max_length=75)
-    school_location = forms.CharField(required=False, label='School Location', initial='')
-    survey_title = forms.CharField(required=False, label='Survey Title', initial='', max_length=50)
+    school_name = forms.CharField(required=True, label='Name', initial='', max_length=75, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    school_location = forms.CharField(required=False, label='Location', initial='', widget=forms.TextInput(attrs={'class': 'form-control'}))
+    survey_title = forms.CharField(required=False, label='Survey Title', initial='', max_length=50, widget=forms.TextInput(attrs={'class': 'form-control'}))
 
 class EditGlobalAdminForm(forms.Form):
     email = forms.EmailField(required=True, label='Email', initial='', widget=forms.EmailInput(attrs={'class': 'form-control'}))

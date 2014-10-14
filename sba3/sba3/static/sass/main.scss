@@ -99,8 +99,31 @@ h2 {
 	}
 }
 .registerSchoolForm {
+	margin-bottom: 20px;
 	padding: 15px;
 	background: #eeeeee;
+	.pull-left {
+		margin: 0;
+	}
+	.pull-down {
+		margin-top: 23px;
+		margin-bottom: 0;
+	}
+	.form-note {
+		max-width: 174px;
+		margin-top: 22px;
+		display: none;
+		text-align: center;
+		small {
+			display: block;
+		}
+	}
+	.help-block {
+		font-size: 0.875em;
+	}
+	.form-group {
+		margin-bottom: 0;
+	}
 	.text-center
 	 {
 		margin: 0;
