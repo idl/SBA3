@@ -8,6 +8,8 @@ sba3/sba3/secret.py
 
 .DS_Store
 
+sba3/sba3/static/sass
+
 Gemfile
 Gemfile.lock
 Guardfile
