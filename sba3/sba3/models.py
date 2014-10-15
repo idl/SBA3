@@ -206,7 +206,6 @@ class AnswerSetManager(models.Manager):
         return student_total / total_answers
 
 
-
 class AnswerSet(models.Model):
     student_id = models.ForeignKey(Student, db_index = True)
     p1q1 = models.CharField(max_length=20, null=True)
