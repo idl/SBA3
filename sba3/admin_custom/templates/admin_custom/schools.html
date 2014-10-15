@@ -44,13 +44,13 @@
       <tbody>
         {% for school in school_list %}
           <tr data-school-id='{{ school.id }}'>
-            <td class='school_name'>{{ school.name }}</td>
+            <td>{{ school.name }}</td>
             <td>{{ school.location }}</td>
             <td>{{ school.survey_title }}</td>
-            <td></td>
+            <td><a href='{% url "manage_roster" school.id %}' class='btn btn-default'>Manage</a></td>
             <td class="actions">
               <a href="#" ><span class="glyphicon glyphicon-pencil"></span></a>
-              <a href="#" data-toggle="modal" data-target="#deleteSchoolModel" class="deleteSchool"><span class="glyphicon glyphicon-remove"></span></a>
+              <a href="#" data-toggle="modal" data-target="#deleteSchoolModel" class="deleteSchool" data-school-id='{{ school.id }}' data-school-name='{{ school.name }}'><span class="glyphicon glyphicon-remove"></span></a>
             </td>
           </tr>
         {% endfor %}
