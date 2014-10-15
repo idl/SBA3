@@ -8180,6 +8180,14 @@ h2 {
   margin-top: 23px;
 }
 
+.uploadForm {
+  padding: 15px;
+  background: #eeeeee;
+}
+.uploadForm .pull-down{
+  margin-top: 23px;
+}
+
 /* line 111, ../sass/main.scss */
 .users-table.table-condensed > tbody > tr > td {
   padding-top: 8px;

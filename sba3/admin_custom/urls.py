@@ -11,5 +11,6 @@ urlpatterns = patterns('admin_custom.views',
     url(r'^/k$', 'admin', name='admin'),
     url(r'^/(?P<school_id>[0-9]+)/roster$', 'manage_roster', name='manage_roster'),
     url(r'^/(?P<school_id>[0-9]+)/rosterupdate$', 'update_roster', name='update_roster'),
-    url(r'^/(?P<school_id>[0-9]+)/rosterremove$', 'remove_roster', name='remove_roster'),
+    url(r'^/(?P<school_id>[0-9]+)/rosterremove/(?P<uid>[0-9a-zA-Z]+)$', 'remove_roster', name='remove_roster'),
+    url(r'^/(?P<school_id>[0-9]+)/rosterupload$', 'upload_roster', name='upload_roster'),
 )
