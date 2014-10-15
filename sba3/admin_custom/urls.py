@@ -9,5 +9,7 @@ urlpatterns = patterns('admin_custom.views',
     url(r'^/deleteadmin/(?P<admin_id>[0-9]{1,3})$', 'delete_admin', name='delete_admin'),
     url(r'^/createschool$', 'create_school', name='create_school'),
     url(r'^/k$', 'admin', name='admin'),
-
+    url(r'^/(?P<school_id>[0-9]+)/roster$', 'manage_roster', name='manage_roster'),
+    url(r'^/(?P<school_id>[0-9]+)/rosterupdate$', 'update_roster', name='update_roster'),
+    url(r'^/(?P<school_id>[0-9]+)/rosterremove$', 'remove_roster', name='remove_roster'),
 )

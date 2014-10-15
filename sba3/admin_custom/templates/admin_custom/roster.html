@@ -1,0 +1,74 @@
+{% extends "admin_custom/admin_custom_base.html" %}
+
+{% block header %}
+  <header>
+    <div class="container">
+      <div class="row page-header">
+        <div class="col-xs-6">
+          <h1>SBA-3</h1>
+        </div>
+        <div class="col-xs-6 text-right">
+          <a href="{% url 'logout_view' %}" class="btn btn-default btn-sm logout">Log Out&nbsp;&nbsp;<span class="glyphicon glyphicon-log-out"></span></a>
+        </div>
+      </div>
+    </div>
+  </header>
+{% endblock %}
+
+{% block admin_page %}
+  <section class="container admin-page">
+    <div class="row">
+      <div class="col-xs-12 admin-nav">
+        <ul class="nav nav-pills" role="tablist">
+          <li><a href="{% url 'admin' %}#home">Home</a></li>
+          <li><a href="{% url 'admin' %}#users">Users</a></li>
+          <li class='active'><a href="{% url 'admin' %}#registerschools">Schools</a></li>
+          <li><a href="{% url 'admin' %}#surveys">Surveys</a></li>
+          <li class="pull-right"><a href="{% url 'admin' %}#settings">Account Settings</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 tab-content">
+        <div class='row'>
+          <div class='col-xs-12'>
+            <h2>{{ school.name }}</h2>
+          </div>
+        </div>
+        <div class='row'>
+          <div class='col-xs-12'>
+          </div>
+        </div>
+        <div class='row'>
+          <div class='col-xs-12'>
+            <h3>Roster</h3>
+            <table class="table table-striped users-table global-admins">
+              <thead>
+                <tr>
+                  <th>User ID</th>
+                  <th>Active</th>
+                  <th>Continuation Password</th>
+                  <th>Completed</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for uid, info in roster_list.items %}
+                <tr>
+                  <td>{{ uid }}</td>
+                  <td>{{ info.active }}</td>
+                  <td>{{ info.continue }}</td>
+                  <td>{{ info.complete }}</td>
+                  <td></td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock %}
+

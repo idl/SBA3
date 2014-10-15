@@ -8,7 +8,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 
 from .forms import *
-from sba3.models import School
+from sba3.models import School, SchoolUid, Student
+from .models import User
 
 import datetime
 
@@ -183,6 +184,7 @@ def update_admin(request, admin_id):
 		request.session['update_admin_success_msg'] = "User updated successfully."
 		return redirect('/admin/#users')
 
+@login_required
 def delete_admin(request, admin_id):
 	usr = Users.objects.get(id=admin_id)
 	usr.delete()
@@ -225,3 +227,68 @@ def dbprint(input_str):
 	output_str += '#' * (len(input_str) + 4)
 	output_str += '\n\n'
 	print output_str
+
+@login_required
+def manage_roster(request, school_id):
+	if not school_permission_check(request.session['_auth_user_id'], school_id):
+		request.session['manage_err'] = "Not Authorized to edit this school roster"
+		return redirect('/admin/k#registerschools')
+
+	uid_list = SchoolUid.objects.values_list('uid', flat=True).filter(school_id=school_id)
+	student_list = Student.objects.values().filter(school_id=school_id)
+	school = School.objects.filter(id=school_id).get()
+
+	roster_list = {}
+
+	if uid_list:
+		for uid in uid_list:
+			try:
+				student_info = student_list.filter(user_id__iexact=uid).get()
+				roster_list[uid] = {
+					'active': 'True',
+					'continue': student_info['continue_pass'],
+					'complete': student_info['completed']
+				}
+			except:
+				roster_list[uid] = {'active': 'False'}
+	else:
+		if student_list:
+			for student in student_list:
+				roster_list[student['user_id']] = {
+					'active': 'True',
+					'continue': student['continue_pass'],
+					'complete': student['completed']
+				}
+	print roster_list
+
+
+	ctx = {
+		'roster_list': roster_list,
+		'school': school
+	}
+
+	return render(request, 'roster.html', ctx)
+
+
+@login_required
+def update_roster(request, school_id):
+	pass
+
+@login_required
+def remove_roster(request, school_id):
+	pass
+
+
+def school_permission_check(user_id, school_id):
+	try:
+		user_info = User.objects.values('is_superuser', 'school_id').filter(id=user_id).get()
+	except:
+		return False
+
+	if user_info['is_superuser']:
+		return True
+
+	if user_info['school_id'] == school_id:
+		return True
+
+	return False
