@@ -7,7 +7,7 @@ from django.db.models.loading import get_model
 
 from ..forms import surveyLoginForm
 from admin_custom.forms import LoginForm
-from ..models import Student, School, AnswerSet
+from ..models import Student, School, AnswerSet, SchoolUid
 
 def start_survey(request):
     if request.POST:
@@ -26,7 +26,14 @@ def start_survey(request):
 
             survey_form = surveyLoginForm(request.POST)
             if user_id and survey_form.is_valid():
-                new_student = Student.objects.create_student(user_id, school)
+                uid_list = SchoolUid.objects.values_list('uid', flat=True).filter(school_id=school_id)
+                if uid_list:
+                    if user_id in uid_list:
+                        new_student = Student.objects.create_student(user_id, school)
+                    else:  
+                        new_student = str(user_id) + ' is not registerd a registered user id with ' + str(school.name)
+                else:
+                    new_student = Student.objects.create_student(user_id, school)
                 if isinstance(new_student, str):
                     request.session['err_msg'] = new_student
                     return redirect('/#start')

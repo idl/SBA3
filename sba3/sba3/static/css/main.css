@@ -8184,8 +8184,14 @@ h2 {
   padding: 15px;
   background: #eeeeee;
 }
-.uploadForm .pull-down{
-  margin-top: 23px;
+.uploadForm .pull-down-4{
+  margin-top: 4px;
+}
+.uploadForm .pull-down-15{
+  margin-top: 15px;
+}
+.uploadForm .form-group{
+  margin-bottom: 0px;
 }
 
 /* line 111, ../sass/main.scss */
