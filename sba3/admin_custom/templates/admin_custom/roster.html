@@ -49,7 +49,7 @@
           {% csrf_token %}
           <div class='row'>
             <div class='col-xs-4'>
-              <div class='form-group'>
+              <div class='form-group pull-down-4'>
                 <label for='uid'>User ID</label>
                 <input name="uid" id="uid" />
               </div>
@@ -69,12 +69,12 @@
           <div class='row'>
             <div class='col-xs-9'>
               <div class='form-group'>
-                <label for='upload'>User ID List(CSV)</label>
+                <label for='upload'>User ID List <br> (seperate user id's with either a comma [,] or by putting each on its own line)</label>
                 <input type="file" name="uid_list" id='upload' />
               </div>
             </div>
             <div class='col-xs-3'>
-              <div class='form-group pull-down'>
+              <div class='form-group pull-down-15'>
                 <input type='submit' class='btn btn-primary btn-block' value='Upload' />
               </div>
             </div>

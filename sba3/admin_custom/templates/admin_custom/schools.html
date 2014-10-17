@@ -6,8 +6,15 @@
 <div class='row'>
   <div class='col-xs-12 columns'>
     <h3>Create New School</h3>
-    {% if registerError %}<p class="bg-danger">School name cannot be blank.</p>{% endif %}
-    {% if registerSuccess %}<p class="bg-success">New school has been created.</p>{% endif %}
+    {% if registerError %}
+      <p class="bg-danger">School name cannot be blank.</p>
+    {% endif %}
+    {% if registerSuccess %}
+      <p class="bg-success">New school has been created.</p>
+    {% endif %}
+    {% if manage_err %}
+      <p class='bg-danger'>You do not have permission to manage that school</p>
+    {% endif %}
     <form action='/admin/createschool' method='post' role='form' class='registerSchoolForm'>
       {% csrf_token %}
       <div class="row">
@@ -43,14 +50,15 @@
       </thead>
       <tbody>
         {% for school in school_list %}
-          <tr data-school-id='{{ school.id }}'>
-            <td>{{ school.name }}</td>
-            <td>{{ school.location }}</td>
-            <td>{{ school.survey_title }}</td>
+          <tr>
+            <td id='name'>{{ school.name }}</td>
+            <td id='location'>{{ school.location }}</td>
+            <td id='survey_title'>{{ school.survey_title }}</td>
             <td><a href='{% url "manage_roster" school.id %}' class='btn btn-default'>Manage</a></td>
             <td class="actions">
-              <a href="#" ><span class="glyphicon glyphicon-pencil"></span></a>
-              <a href="#" data-toggle="modal" data-target="#deleteSchoolModel" class="deleteSchool" data-school-id='{{ school.id }}' data-school-name='{{ school.name }}'><span class="glyphicon glyphicon-remove"></span></a>
+              <a href="#" data-toggle="modal" data-target="#editSchoolModal" class="editSchool" data-school-id='{{ school.id }}'><span class="glyphicon glyphicon-pencil"></span></a>
+
+              <a href="#" data-toggle="modal" data-target="#deleteSchoolModal" class="deleteSchool" data-school-id='{{ school.id }}' data-school-name='{{ school.name }}'><span class="glyphicon glyphicon-remove"></span></a>
             </td>
           </tr>
         {% endfor %}

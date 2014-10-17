@@ -18,21 +18,29 @@ Users = get_user_model()
 @login_required(redirect_field_name='')
 def admin(request):
     register_admin_err_msg = request.session.get('register_admin_err_msg', '')
-    success = request.session.get('success', '')
-    update_admin_err_msg_list = request.session.get('update_admin_err_msg_list', '')
-    update_admin_err_msg = False
-    update_admin_err_id = request.session.get('update_admin_err_id', None)
-    update_admin_success_msg = request.session.get('update_admin_success_msg', '')
     request.session['register_admin_err_msg'] = []
-    request.session['login_err_msg'] = ''
+
+    success = request.session.get('success', '')
     request.session['success'] = ''
+
+    update_admin_err_msg_list = request.session.get('update_admin_err_msg_list', '')
     request.session['update_admin_err_msg_list'] = []
+    update_admin_err_msg = False
+
+    update_admin_err_id = request.session.get('update_admin_err_id', None)
     request.session['update_admin_err_id'] = None
+
+    update_admin_success_msg = request.session.get('update_admin_success_msg', '')
     request.session['update_admin_success_msg'] = ''
+    
     registerError = request.session.get('registerError', False)
-    registerSuccess = request.session.get('registerSuccess', False)
     request.session['registerError'] = False
+
+    registerSuccess = request.session.get('registerSuccess', False)
     request.session['registerSuccess'] = False
+
+    manage_err = request.session.get('manage_err', '')
+    request.session['manage_err'] = ''
 
     school_list = School.objects.all()
     superadmin_list = Users.objects.filter(is_superuser=True)
@@ -62,7 +70,8 @@ def admin(request):
             'registerSuccess': registerSuccess,
             'school_list': school_list,
             'superadmin_list': superadmin_list,
-            'schooladmin_list': schooladmin_list
+            'schooladmin_list': schooladmin_list, 
+            'manage_err': manage_err
           }
     if update_admin_err_id:
         ctx['update_admin_err_id'] = update_admin_err_id
@@ -97,7 +106,60 @@ def create_school(request):
             # }
             # newSchool = School(**vals)
             # newSchool.save()
-    return redirect('/admin/#registerschools')
+    return redirect('/admin/#schools')
+
+@login_required
+def update_school(request, school_id):
+    if not school_permission_check(request.session['_auth_user_id'], school_id):
+        request.session['manage_err'] = "Not Authorized to edit this school"
+        return redirect('/admin/#schools')
+
+    if not request.POST:
+        request.session['manage_err'] = 'Update school form error'
+        return redirect('/admin/#schools')
+
+    name = request.POST.get('school_name', '')
+    location = request.POST.get('school_location', '')
+    survey_title = request.POST.get('survey_title', '')
+
+    if name == '':
+        request.session['manage_err'] = "Update School error - School must have a name"
+        return redirect('/admin/#schools')
+
+    try:
+        School.objects.filter(id=school_id).update(name=name, location=location, survey_title=survey_title)
+    except:
+        request.session['manage_err'] = "Unknown Error while updating"
+
+    return redirect('/admin/#schools')
+
+@login_required
+def delete_school(request, school_id):
+    if not school_permission_check(request.session['_auth_user_id'], school_id):
+        request.session['manage_err'] = "Not Authorized to edit this school"
+        return redirect('/admin/#schools')
+
+    try:
+        student_list = Student.objects.filter(school_id=school_id)
+        if student_list:
+            for student in student_list:
+                try:
+                    answers = AnswerSet.objects.filter(student_id=student).get()
+                    answers.delete()
+                except:
+                    pass
+
+            student_list.delete()
+    except:
+        pass
+
+    try:
+        SchoolUid.objects.filter(school_id=school_id).delete()
+    except:
+        pass
+
+    School.objects.filter(id=school_id).delete()
+    return redirect('/admin/#schools')
 
 @login_required(redirect_field_name='')
 def register_admin(request):
@@ -232,7 +294,7 @@ def dbprint(input_str):
 def manage_roster(request, school_id):
     if not school_permission_check(request.session['_auth_user_id'], school_id):
         request.session['manage_err'] = "Not Authorized to edit this school roster"
-        return redirect('/admin/k#registerschools')
+        return redirect('/admin/#schools')
 
     roster_uid_err = request.session.get('roster_uid_err', '')
     request.session['roster_uid_err'] = ''
@@ -280,7 +342,7 @@ def manage_roster(request, school_id):
 def update_roster(request, school_id):
     if not school_permission_check(request.session['_auth_user_id'], school_id):
         request.session['manage_err'] = "Not Authorized to edit this school roster"
-        return redirect('/admin/k#registerschools')
+        return redirect('/admin/#schools')
 
     uid = request.POST.get('uid', '')
 
@@ -306,7 +368,7 @@ def update_roster(request, school_id):
 def remove_roster(request, school_id, uid):
     if not school_permission_check(request.session['_auth_user_id'], school_id):
         request.session['manage_err'] = "Not Authorized to edit this school roster"
-        return redirect('/admin/k#registerschools')
+        return redirect('/admin/#schools')
 
     if uid == '':
         request.session['roster_uid_err'] = 'No user id provided'
@@ -332,14 +394,16 @@ def remove_roster(request, school_id, uid):
 def upload_roster(request, school_id):
     if not school_permission_check(request.session['_auth_user_id'], school_id):
         request.session['manage_err'] = "Not Authorized to edit this school roster"
-        return redirect('/admin/k#registerschools')
+        return redirect('/admin/#schools')
 
     roster_file = request.FILES.get('uid_list', False)
     if not roster_file:
         request.session['roster_file_err'] = "File Error"
         return redirect('/admin/'+str(school_id)+'/roster')
 
-    uid_list = []
+    new_uid_list = []
+    uid_list = SchoolUid.objects.values_list('uid', flat=True).filter(school_id=school_id)
+
     school = School.objects.filter(id=school_id).get()
 
     try:
@@ -349,14 +413,17 @@ def upload_roster(request, school_id):
             for uid in values:
                 if uid[:1] == ' ':
                     uid = uid[1:]
-                uid_list.append(
-                    SchoolUid(
-                        school_id=school,
-                        uid=uid
+
+                if uid in uid_list:
+                    continue
+                else:
+                    new_uid_list.append(
+                        SchoolUid(
+                            school_id=school,
+                            uid=uid
+                        )
                     )
-                )
-        SchoolUid.objects.all().delete()
-        SchoolUid.objects.bulk_create(uid_list)
+        SchoolUid.objects.bulk_create(new_uid_list)
     except:
         request.session['roster_file_err'] = "File Error"
 
