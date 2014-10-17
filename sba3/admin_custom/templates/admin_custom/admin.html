@@ -32,8 +32,14 @@
 			<div class="col-xs-12 tab-content">
 				<div class="tab-pane home active" id="home">{% include 'admin_home.html' %}</div>
 				<div class="tab-pane users" id="users">{% include 'users.html' %}</div>
+
 				<div class="tab-pane schools" id="schools">{% include 'schools.html' %}</div>
-				<div class="tab-pane surveys" id="surveys">{% include 'surveys.html' %}</div>
+
+				<div class="tab-pane surveys" id="surveys">
+					PAGE: {{ current_survey_page }}
+					{% if current_survey_page == 'survey_home' %}
+						{% include 'school_data.html' %}
+				</div>
 				<div class="tab-pane settings" id="settings">{% include 'settings.html' %}</div>
 			</div>
 		</div>

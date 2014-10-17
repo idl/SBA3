@@ -13,6 +13,7 @@ class School(models.Model):
     def __unicode__(self):
         return self.name
 
+
 class SchoolUidManager(models.Manager):
     def check_uid(self, school, uid):
         if SchoolUid.objects.filter(school_id=school, uid=uid).count == 1:

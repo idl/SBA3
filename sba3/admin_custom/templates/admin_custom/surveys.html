@@ -1,5 +1,23 @@
-<div class="row">
-    <div class="col-xs-12 columns">
-        <h2>Surveys Overview</h2>
-    </div>
-</div>
+<section class='surveys-section'>	
+	<div class="row">
+	    <div class="col-xs-12">
+	        <h2>Surveys Overview{% if survey_school_selected %} <small class='school-name'>{{ survey_school_name }}</small>{% endif %}</h2>
+	    </div>
+	</div>
+	{% block school_data %}
+	{% endblock %}
+
+	{% block school_data_viewall %}
+	{% endblock %}
+
+	{% block school_student_data %}
+	{% endblock %}
+</section>
+
+{% block select_selected_school %}
+<script>
+	if({% if survey_school_selected %}1{% else %}0{% endif %}) {
+		$('#survey_school_select').val({{ survey_school_id }});
+	}
+</script>
+{% endblock %}
