@@ -14,7 +14,6 @@ Users = get_user_model()
 @login_required(redirect_field_name='')
 def admin(request, school_id=None, student_id=None):
 	ctx = {}
-	current_survey_page = 'survey_home'
 	register_admin_err_msg = request.session.get('register_admin_err_msg', '')
 	request.session['register_admin_err_msg'] = []
 
@@ -42,13 +41,6 @@ def admin(request, school_id=None, student_id=None):
 	school_list = School.objects.all()
 	student_list = {}
 
-	survey_school_list = []
-	if request.POST:
-		survey_school_select = request.POST.get('survey_school_select', '')
-		if survey_school_select != '':
-			return redirect('school_data', survey_school_select)
-		else:
-			return redirect('/admin/#surveys')
 	superadmin_list = Users.objects.filter(is_superuser=True)
 	schooladmin_list = []
 	for user in Users.objects.filter(is_superuser=False).order_by('school_id'):
@@ -82,15 +74,27 @@ def admin(request, school_id=None, student_id=None):
 			'student_list': student_list
 		  }
 
+	# school for select school dropdown
+	survey_school_list = []
+	if request.POST:
+		survey_school_select = request.POST.get('survey_school_select', '')
+		if survey_school_select != '':
+			return redirect('school_data', survey_school_select)
+		else:
+			return redirect('/admin/#surveys')
+
+	# determines what survey page to include in admin.html template based on
+	# the url - if url has a school_id as a param, then you know you're in
+	# the surveys view
+	current_survey_page = 'survey_home'
 	if school_id != None:
+		current_survey_page = 'survey_school_data'
 		if student_id != None:
 			current_survey_page = 'survey_school_student_data'
-			dbprint("on student page")
-		current_survey_page = 'survey_school_data'
 		ctx['survey_school_selected'] = True
 		ctx['survey_school_id'] = school_id
-		cur_school = school_list.filter(id=school_id)
-		student_list = Student.objects.values().filter(school_id=cur_school)
+		student_list = Student.objects.values().filter(school_id=school_id)
+		dbprint(student_list)
 		ctx['student_list'] = student_list
 		try:
 			ctx['survey_school_name'] = School.objects.get(id=school_id)
@@ -98,7 +102,7 @@ def admin(request, school_id=None, student_id=None):
 			return redirect('/admin/#surveys')
 
 	ctx['current_survey_page'] = current_survey_page
-	
+
 	if update_admin_err_id:
 		ctx['update_admin_err_id'] = update_admin_err_id
 	return render(request, 'admin_custom/admin.html', ctx)

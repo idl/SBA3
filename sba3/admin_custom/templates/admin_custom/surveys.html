@@ -4,15 +4,44 @@
 	        <h2>Surveys Overview{% if survey_school_selected %} <small class='school-name'>{{ survey_school_name }}</small>{% endif %}</h2>
 	    </div>
 	</div>
-	{% block school_data %}
-	{% endblock %}
-
-	{% block school_data_viewall %}
-	{% endblock %}
-
-	{% block school_student_data %}
-	{% endblock %}
+	<div class="row">
+		<div class="col-xs-8">
+			<form action='{% url "admin" %}/#surveys' method='post' class="form-horizontal survey-school-select-form" role="form">
+				{% csrf_token %}
+				<div class="form-group">
+					<label for="survey_schools_elect" class="col-sm-2 control-label">School:</label>
+					<div class="col-sm-6">
+						<select name="survey_school_select" id="survey_school_select" class='form-control'>
+							<option value="">--</option>
+							{% for school in school_list %}
+								<option value='{{ school.id }}'>{{ school }}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<div class="col-sm-4">
+						<button type="submit" class="btn btn-default btn-block">View Data</button>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	{% if current_survey_page == 'survey_home' %}
+		{% include 'surveys_home.html' %}
+		include 'surveys_home.html'
+	{% elif current_survey_page == 'survey_school_student_data' %}
+		{% include 'school_student_data.html' %}
+		include 'school_student_data.html'
+	{% elif current_survey_page == 'survey_school_data' %}
+		{% include 'school_data.html' %}
+		include 'school_data.html'
+	{% endif %}
 </section>
+
 
 {% block select_selected_school %}
 <script>
