@@ -16,7 +16,9 @@ import datetime
 Users = get_user_model()
 
 @login_required(redirect_field_name='')
-def admin(request):
+def admin(request, school_id=None, student_id=None):
+    current_survey_page = 'survey_home'
+
     register_admin_err_msg = request.session.get('register_admin_err_msg', '')
     request.session['register_admin_err_msg'] = []
 
@@ -25,7 +27,6 @@ def admin(request):
 
     update_admin_err_msg_list = request.session.get('update_admin_err_msg_list', '')
     request.session['update_admin_err_msg_list'] = []
-    update_admin_err_msg = False
 
     update_admin_err_id = request.session.get('update_admin_err_id', None)
     request.session['update_admin_err_id'] = None
@@ -42,7 +43,20 @@ def admin(request):
     manage_err = request.session.get('manage_err', '')
     request.session['manage_err'] = ''
 
+    survey_school_select = request.session.get('survey_school_select', '')
+    request.session['survey_school_select'] = ''
+
     school_list = School.objects.all()
+    student_list = {}
+
+    survey_school_list = []
+    if request.POST:
+        survey_school_select = request.POST.get('survey_school_select', '')
+        if survey_school_select != '':
+            return redirect('school_data', survey_school_select)
+        else:
+            return redirect('/admin/#surveys')
+
     superadmin_list = Users.objects.filter(is_superuser=True)
     schooladmin_list = []
     for user in Users.objects.filter(is_superuser=False).order_by('school_id'):
@@ -54,6 +68,8 @@ def admin(request):
         schooladmin_entry['last_login'] = user.last_login
         schooladmin_entry['date_joined'] = user.date_joined
         schooladmin_list.append(schooladmin_entry)
+
+    update_admin_err_msg = False
     if len(update_admin_err_msg_list) > 0:
         update_admin_err_msg = True
 
@@ -71,12 +87,30 @@ def admin(request):
             'school_list': school_list,
             'superadmin_list': superadmin_list,
             'schooladmin_list': schooladmin_list, 
+            'student_list': student_list,
             'manage_err': manage_err
           }
+
+    if school_id != None:
+        if student_id != None:
+            current_survey_page = 'survey_school_student_data'
+            dbprint("on student page")
+        current_survey_page = 'survey_school_data'
+        ctx['survey_school_selected'] = True
+        ctx['survey_school_id'] = school_id
+        cur_school = school_list.filter(id=school_id)
+        student_list = Student.objects.values().filter(school_id=cur_school)
+        ctx['student_list'] = student_list
+        try:
+            ctx['survey_school_name'] = School.objects.get(id=school_id)
+        except:
+            return redirect('/admin/#surveys')
+
+    ctx['current_survey_page'] = current_survey_page
+
     if update_admin_err_id:
         ctx['update_admin_err_id'] = update_admin_err_id
     return render(request, 'admin_custom/admin.html', ctx)
-
 
 @login_required(redirect_field_name='')
 def create_school(request):
@@ -252,7 +286,10 @@ def delete_admin(request, admin_id):
     usr.delete()
     return redirect('/admin/#users')
 
+
+
 def login_view(request):
+<<<<<<< HEAD
     if request.user.is_authenticated():
         return redirect('admin')
     if request.POST:
