@@ -105,6 +105,9 @@ h2 {
 	 {
 		margin: 0;
 	}
+	.pull-down {
+		margin-top: 23px;
+	}
 }
 
 .users-table, .survey-table {
@@ -228,5 +231,19 @@ h2 {
 		.form-group {
 			margin: 0;
 		}
+	}
+}
+
+.uploadForm {
+	padding: 15px;
+	background: #eeeeee;
+	.pull-down-4 {
+		margin-top: 4px;
+	}
+	.pull-down-15 {
+		margin-top: 15px;
+	}
+	.form-group {
+		margin-bottom: 0;
 	}
 }

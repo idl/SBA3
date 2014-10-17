@@ -50,7 +50,7 @@ def submit(request):
             column = page + "q" + str(answernum)
             row[column] = answer
             answernum = answernum + 1
-    current_student = Student.objects.filter(id=request.session['user_id']).get()
+    current_student = Student.objects.filter(id=request.session['survey_user_id']).get()
     row['student_id'] = current_student
     submission = AnswerSet(**row)
     submission.save()
@@ -72,7 +72,7 @@ def save_survey(request):
         except:
             pass
         
-    current_student = Student.objects.filter(id=request.session['user_id']).get()
+    current_student = Student.objects.filter(id=request.session['survey_user_id']).get()
     row['student_id'] = current_student
     AnswerSet.objects.filter(student_id=current_student).delete()
     submission = AnswerSet(**row)

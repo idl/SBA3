@@ -11,5 +11,4 @@ urlpatterns = patterns('admin_custom.views',
     url(r'^/data/(?P<school_id>[0-9]{1,2})$', 'admin', name='school_data'),
     url(r'^/data/(?P<school_id>[0-9]{1,2})/viewall', 'admin', name='school_data_viewall'),
     url(r'^/data/(?P<school_id>[0-9]{1,2})/(?P<student_id>[0-9]{1,2})$', 'admin', name='school_student_data'),
-
 )
