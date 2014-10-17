@@ -26,15 +26,15 @@ def start_survey(request):
 
             survey_form = surveyLoginForm(request.POST)
 
-            if user_id and survey_form.is_valid():
+            if survey_user_id and survey_form.is_valid():
                 uid_list = SchoolUid.objects.values_list('uid', flat=True).filter(school_id=school_id)
                 if uid_list:
-                    if user_id in uid_list:
-                        new_student = Student.objects.create_student(user_id, school)
+                    if survey_user_id in uid_list:
+                        new_student = Student.objects.create_student(survey_user_id, school)
                     else:  
-                        new_student = str(user_id) + ' is not registerd a registered user id with ' + str(school.name)
+                        new_student = str(survey_user_id) + ' is not registerd a registered user id with ' + str(school.name)
                 else:
-                    new_student = Student.objects.create_student(user_id, school)
+                    new_student = Student.objects.create_student(survey_user_id, school)
 
                 if isinstance(new_student, str):
                     request.session['err_msg'] = new_student
@@ -55,7 +55,7 @@ def continue_survey(request):
         school_id = request.POST.get('school', '')
 
 
-        if school_id == '' or user_id == '' or continue_pass == '':
+        if school_id == '' or survey_user_id == '' or continue_pass == '':
             err_msg = 'School, Identifier, and Passkey fields cannot be blank.'
             request.session['continue_err_msg'] = err_msg
             return redirect('/#continue')
@@ -63,8 +63,8 @@ def continue_survey(request):
         school = School.objects.filter(id=school_id).get()
 
 
-        if Student.objects.filter(user_id__iexact=user_id, school_id=school, continue_pass=continue_pass).count() == 1:
-            current_student = Student.objects.filter(user_id=user_id, school_id=school, continue_pass=continue_pass).get()
+        if Student.objects.filter(user_id__iexact=survey_user_id, school_id=school, continue_pass=continue_pass).count() == 1:
+            current_student = Student.objects.filter(user_id=survey_user_id, school_id=school, continue_pass=continue_pass).get()
             if current_student.completed == False:
                 request.session['continue_pass'] = continue_pass
                 request.session['survey_user_id'] = current_student.id
@@ -113,7 +113,7 @@ def continue_survey(request):
                 except:
                     return redirect('page', 1)
             else:
-                request.session['user_id'] = current_student.id
+                request.session['survey_user_id'] = current_student.id
                 return redirect('/report')
         else:
             err_msg = "School - User - Continuation Password does not match database records. Please try again"

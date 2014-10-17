@@ -29,7 +29,7 @@ def next(request):
         row = {}
         page = "p" + str(pagenum)
         try:
-            current_student = Student.objects.filter(id=request.session['user_id']).get()
+            current_student = Student.objects.filter(id=request.session['survey_user_id']).get()
             answer_array = request.session[page]
             answernum = 1
             for answer in answer_array:
@@ -66,7 +66,7 @@ def submit(request):
             column = page + "q" + str(answernum)
             row[column] = answer
             answernum = answernum + 1
-    current_student = Student.objects.filter(id=request.session['user_id']).get()
+    current_student = Student.objects.filter(id=request.session['survey_user_id']).get()
     instance, created = AnswerSet.objects.get_or_create(student_id=current_student)
     for attr, value in row.iteritems(): 
         setattr(instance, attr, value)
@@ -99,7 +99,7 @@ def save_survey(request):
         except:
             pass
         
-    current_student = Student.objects.filter(id=request.session['user_id']).get()
+    current_student = Student.objects.filter(id=request.session['survey_user_id']).get()
     instance, created = AnswerSet.objects.get_or_create(student_id=current_student)
     for attr, value in row.iteritems(): 
         setattr(instance, attr, value)
@@ -109,7 +109,7 @@ def save_survey(request):
     return redirect('/#continue')
 
 def report(request):
-    current_student = Student.objects.filter(id=request.session['user_id']).get()
+    current_student = Student.objects.filter(id=request.session['survey_user_id']).get()
     row = AnswerSet.objects.values().filter(student_id=current_student).get()
 
     request.session.flush()
