@@ -289,7 +289,6 @@ def delete_admin(request, admin_id):
 
 
 def login_view(request):
-<<<<<<< HEAD
     if request.user.is_authenticated():
         return redirect('admin')
     if request.POST:

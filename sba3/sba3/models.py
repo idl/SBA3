@@ -62,9 +62,6 @@ class Student(models.Model):
 
     objects = StudentManager()
 
-    def __unicode__(self):
-        return self.user_id
-
 class AnswerSetManager(models.Manager):
     # return the percentage same for every question across all schools
     def overall_percentage_all(self, student_id):
