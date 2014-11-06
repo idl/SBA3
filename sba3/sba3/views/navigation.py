@@ -113,4 +113,5 @@ def report(request):
     row = AnswerSet.objects.values().filter(student_id=current_student).get()
 
     request.session.flush()
+    request.session['survey_user_id'] = current_student.id
     return render(request, 'answers.html', {'row':row})
