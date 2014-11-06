@@ -7,7 +7,7 @@ from django.db.models.loading import get_model
 
 from ..forms import surveyLoginForm
 from admin_custom.forms import LoginForm
-from ..models import Student, School, AnswerSet
+from ..models import Student, School, AnswerSet, SchoolUid
 
 def start_survey(request):
     if request.POST:
@@ -25,14 +25,24 @@ def start_survey(request):
             school = School.objects.filter(id=school_id).get()
 
             survey_form = surveyLoginForm(request.POST)
+
             if survey_user_id and survey_form.is_valid():
-                new_student = Student.objects.create_student(survey_user_id, school)
+                uid_list = SchoolUid.objects.values_list('uid', flat=True).filter(school_id=school_id)
+                if uid_list:
+                    if survey_user_id in uid_list:
+                        new_student = Student.objects.create_student(survey_user_id, school)
+                    else:  
+                        new_student = str(survey_user_id) + ' is not registerd a registered user id with ' + str(school.name)
+                else:
+                    new_student = Student.objects.create_student(survey_user_id, school)
+
                 if isinstance(new_student, str):
                     request.session['err_msg'] = new_student
                     return redirect('/#start')
                 else:
                     request.session['survey_user_id'] = new_student.id
                     request.session['continue_pass'] = new_student.continue_pass
+                    request.session['survey_title'] = school.survey_title
                     return redirect('page', 1)
 
         request.session['err_msg'] = err_msg
@@ -44,9 +54,6 @@ def continue_survey(request):
         survey_user_id = request.POST.get('identifier', '')
         school_id = request.POST.get('school', '')
 
-        print continue_pass
-        print survey_user_id
-        print school_id
 
         if school_id == '' or survey_user_id == '' or continue_pass == '':
             err_msg = 'School, Identifier, and Passkey fields cannot be blank.'
@@ -55,26 +62,35 @@ def continue_survey(request):
 
         school = School.objects.filter(id=school_id).get()
 
-        if Student.objects.filter(survey_user_id=survey_user_id, school_id=school, continue_pass=continue_pass).count() == 1:
-            current_student = Student.objects.filter(survey_user_id=survey_user_id, school_id=school, continue_pass=continue_pass).get()
+
+        if Student.objects.filter(user_id__iexact=survey_user_id, school_id=school, continue_pass=continue_pass).count() == 1:
+            current_student = Student.objects.filter(user_id=survey_user_id, school_id=school, continue_pass=continue_pass).get()
             if current_student.completed == False:
                 request.session['continue_pass'] = continue_pass
                 request.session['survey_user_id'] = current_student.id
+                request.session['survey_title'] = school.survey_title
+
                 try:
                     session_build = {}
                     current_answers = AnswerSet.objects.values().filter(student_id=current_student).get()
+                    last_page = 1
                     for answer in current_answers:
                         if current_answers[answer]:
                             if answer[0] == 'p':
                                 if answer[2] == 'q':
+                                    page_num = answer[1:2]
                                     array_name = answer[:2]
                                     question_number = answer[3:]
                                 elif answer[3]  == 'q':
+                                    page_num = answer[1:3]
                                     array_name = answer[:3]
                                     question_number = answer[4:]
                                 else:
+                                    page_num = 1
                                     array_name = ''
                                     question_number = ''
+                                if int(page_num) > last_page:
+                                    last_page = int(page_num)
 
                                 if array_name in session_build:
                                     session_build[array_name].update({question_number: current_answers[answer]})
@@ -93,8 +109,14 @@ def continue_survey(request):
                         request.session[array_name] = temp_array
 
                         # rebuild session
-                    return redirect('page', 11)
+                    return redirect('page', last_page)
                 except:
                     return redirect('page', 1)
+            else:
+                request.session['survey_user_id'] = current_student.id
+                return redirect('/report')
+        else:
+            err_msg = "School - User - Continuation Password does not match database records. Please try again"
+            request.session['continue_err_msg'] = err_msg
 
     return redirect('/#continue')
