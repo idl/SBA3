@@ -26,6 +26,22 @@ def next(request):
     if pagenum >= 11:
         return redirect('page', 11)
     else:
+        row = {}
+        page = "p" + str(pagenum)
+        try:
+            current_student = Student.objects.filter(id=request.session['survey_user_id']).get()
+            answer_array = request.session[page]
+            answernum = 1
+            for answer in answer_array:
+                column = page + "q" + str(answernum)
+                row[column] = answer
+                answernum = answernum + 1
+            instance, created = AnswerSet.objects.get_or_create(student_id=current_student)
+            for attr, value in row.iteritems(): 
+                setattr(instance, attr, value)
+            instance.save()
+        except:
+            return redirect('page', pagenum)
         return redirect('page', pagenum + 1)
 
 def submit(request):
@@ -51,13 +67,23 @@ def submit(request):
             row[column] = answer
             answernum = answernum + 1
     current_student = Student.objects.filter(id=request.session['survey_user_id']).get()
-    row['student_id'] = current_student
-    submission = AnswerSet(**row)
-    submission.save()
-
+    instance, created = AnswerSet.objects.get_or_create(student_id=current_student)
+    for attr, value in row.iteritems(): 
+        setattr(instance, attr, value)
+    instance.save()
+    setattr(current_student, 'completed', True)
+    current_student.save()
     return redirect('report')
 
 def save_survey(request):
+    page_num = request.POST.get('pagenum','')
+    if page_num != '':
+        array_name = 'p' + str(page_num)
+    else:
+        request.session[save_error] = "incorrect page"
+        return redirect('/')
+    answer_array = request.POST.getlist(array_name + "[]")
+    request.session[array_name] = answer_array
     row = {}
     answer_array = []
     for pagenum in range(1,12):
@@ -73,28 +99,17 @@ def save_survey(request):
             pass
         
     current_student = Student.objects.filter(id=request.session['survey_user_id']).get()
-    row['student_id'] = current_student
-    AnswerSet.objects.filter(student_id=current_student).delete()
-    submission = AnswerSet(**row)
-
-    submission.save()
+    instance, created = AnswerSet.objects.get_or_create(student_id=current_student)
+    for attr, value in row.iteritems(): 
+        setattr(instance, attr, value)
+    instance.save()
 
     request.session.flush()
     return redirect('/#continue')
 
 def report(request):
-    row = {}
-    answer_array = []
-    for pagenum in range(1,12):
-        page = "p" + str(pagenum)
-        try:
-            answer_array = request.session[page]
-        except:
-            return redirect('page', pagenum)
-        answernum = 1
-        for answer in answer_array:
-            column = page + "q" + str(answernum)
-            row[column] = answer
-            answernum += 1
+    current_student = Student.objects.filter(id=request.session['survey_user_id']).get()
+    row = AnswerSet.objects.values().filter(student_id=current_student).get()
+
     request.session.flush()
     return render(request, 'answers.html', {'row':row})

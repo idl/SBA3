@@ -1,6 +1,6 @@
 from django import forms
 
-from models import School
+from ..models import School
 
 class surveyLoginForm(forms.Form):
     school_list = School.objects.all().order_by('name')

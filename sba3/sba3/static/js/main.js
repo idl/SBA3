@@ -81,4 +81,27 @@
 			$('.change-password-section').slideToggle();
 		}
 	});
+
+	$('.editSchool').click(function() {
+		var school_row, school_id, name, location, survey_title;
+		school_row = $(this).parent().parent();
+		school_id = $(this).attr('data-school-id');
+		name = school_row.find('#name').html();
+		location = school_row.find('#location').html();
+		survey_title = school_row.find('#survey_title').html();
+
+		$('.modal .modal-title small').html(name);
+		$('.editSchool form').attr('action', '/admin/updateschool/' + school_id.toString());
+
+		$('.editSchool #id_register_school_school_name').attr('value', name);
+		$('.editSchool #id_register_school_school_location').attr('value', location);
+		$('.editSchool #id_register_school_survey_title').attr('value', survey_title);
+	});
+	$('.deleteSchool').click(function() {
+		var school_id;
+		school_id = $(this).attr('data-school-id');
+		var address = '/admin/deleteschool/'+school_id.toString();
+		$('.deleteSchool a').attr('href', address);
+		$('.modal .modal-title small').html($(this).attr('data-school-name'));
+	});
 })(jQuery);
