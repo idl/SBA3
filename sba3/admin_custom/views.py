@@ -111,7 +111,7 @@ def admin(request, school_id=None, student_id=None):
             'registerSuccess': registerSuccess,
             'school_list': school_list,
             'superadmin_list': superadmin_list,
-            'schooladmin_list': schooladmin_list, 
+            'schooladmin_list': schooladmin_list,
             'student_list': student_list,
             'manage_err': manage_err
           }
@@ -138,14 +138,14 @@ def create_school(request):
             request.session['registerSuccess'] = False
         except:
             new_school = School(
-                name=school_name, 
-                location=school_location, 
+                name=school_name,
+                location=school_location,
                 survey_title=survey_title,
                 date=datetime.date.today())
             new_school.save()
             request.session['registerError'] = False
             request.session['registerSuccess'] = True
-            # vals = { 
+            # vals = {
             #   'name': request.POST['school_name'],
             # }
             # newSchool = School(**vals)
@@ -209,7 +209,7 @@ def delete_school(request, school_id):
 def register_admin(request):
     # send_mail('Subject here', 'Here is the message.', 'sba3.test@gmail.com', ['sba3.test@gmail.com'], fail_silently=False)
 
-    if request.POST:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+    if request.POST:
         email = request.POST.get('email', '')
         tmp_password = request.POST.get('tmp_password', '')
         # password_confirm = request.POST.get('password_confirm', '')
@@ -225,9 +225,12 @@ def register_admin(request):
             register_admin_err_msg.append('Temporary password cannot be blank.')
         # elif password_confirm == '':
         #   register_admin_err_msg.append('Please confirm password.')
-        
+
         if (school_id == '' and is_superuser == False) or (school_id != '' and is_superuser == True):
-            register_admin_err_msg.append('New user <b>must</b> be either a School Admin or a Global admin.')
+          register_admin_err_msg.append('New user <b>must</b> be either a School Admin '+
+                                      'or a Global admin. Please verify that you '+
+                                      'selected a school from the dropdown, or clicked '+
+                                      'the checkbox indicating the Admin type is Global.')
 
         # Custom form validation is already implemented above; reg_form.is_valid() is not needed
         #
@@ -255,7 +258,7 @@ def register_admin(request):
 @login_required
 def update_admin(request, admin_id):
     if request.POST:
-        try:    
+        try:
             usr = Users.objects.get(id=admin_id)
         except:
             request.session['update_admin_err_msg_list'] = ["Error updating user. Please try again."]
@@ -364,7 +367,11 @@ def manage_roster(request, school_id):
                     'complete': student_info['completed']
                 }
             except:
-                roster_list[uid] = {'active': 'False'}
+                roster_list[uid] = {
+                  'active': 'False',
+                  'continue': 'Has not begun survey.',
+                  'complete': 'No'
+                }
     else:
         if student_list:
             for student in student_list:
@@ -380,7 +387,7 @@ def manage_roster(request, school_id):
         'roster_uid_err': roster_uid_err,
         'roster_file_err': roster_file_err
     }
-
+    print roster_list
     return render(request, 'roster.html', ctx)
 
 
