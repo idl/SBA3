@@ -6,7 +6,7 @@
     </div>
     <div class="row">
     	<div class="col-xs-12">
-            <h3>Create New Admin</h3>
+        <h3>Create New Admin <small>(ADMIN DEFAULT TYPE: <b>School Admin)</b></small></h3>
             {% if register_admin_err_msg %}
     			<div class="alert alert-danger registerAdminUserFormErrors" role="alert">
     				<ul>
@@ -74,7 +74,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for user in superadmin_list %}    
+                    {% for user in superadmin_list %}
                         <tr data-user-id="{{ user.id }}">
                             <td class="user_email">{{ user.email }}</td>
                             <td>{{ user.last_login }}</td>

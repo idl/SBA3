@@ -31,7 +31,7 @@ def start_survey(request):
                 if uid_list:
                     if survey_user_id in uid_list:
                         new_student = Student.objects.create_student(survey_user_id, school)
-                    else:  
+                    else:
                         new_student = str(survey_user_id) + ' is not registerd a registered user id with ' + str(school.name)
                 else:
                     new_student = Student.objects.create_student(survey_user_id, school)
@@ -96,7 +96,7 @@ def continue_survey(request):
                                     session_build[array_name].update({question_number: current_answers[answer]})
                                 else:
                                     session_build[array_name] = {question_number: current_answers[answer]}
-       
+
                     print session_build
                     for array_name in session_build:
                         current = 1
@@ -105,7 +105,7 @@ def continue_survey(request):
                         for answer in current_array:
                             temp_array.append(current_array.get(str(current), ''))
                             current = current + 1
-     
+
                         request.session[array_name] = temp_array
 
                         # rebuild session
@@ -119,4 +119,37 @@ def continue_survey(request):
             err_msg = "School - User - Continuation Password does not match database records. Please try again"
             request.session['continue_err_msg'] = err_msg
 
+    return redirect('/#continue')
+
+
+def save_survey(request):
+    page_num = request.POST.get('pagenum','')
+    if page_num != '':
+        array_name = 'p' + str(page_num)
+    else:
+        request.session[save_error] = "incorrect page"
+        return redirect('/')
+    answer_array = request.POST.getlist(array_name + "[]")
+    request.session[array_name] = answer_array
+    row = {}
+    answer_array = []
+    for pagenum in range(1,12):
+        page = "p" + str(pagenum)
+        try:
+            answer_array = request.session[page]
+            answernum = 1
+            for answer in answer_array:
+                column = page + "q" + str(answernum)
+                row[column] = answer
+                answernum = answernum + 1
+        except:
+            pass
+
+    current_student = Student.objects.filter(id=request.session['survey_user_id']).get()
+    instance, created = AnswerSet.objects.get_or_create(student_id=current_student)
+    for attr, value in row.iteritems():
+        setattr(instance, attr, value)
+    instance.save()
+
+    request.session.flush()
     return redirect('/#continue')
