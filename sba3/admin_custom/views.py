@@ -98,6 +98,8 @@ def admin(request, school_id=None, student_id=None):
     if len(update_admin_err_msg_list) > 0:
         update_admin_err_msg = True
 
+    isSuperuser = request.user.is_superuser
+
     ctx = { 'editGlobalAdminForm': EditGlobalAdminForm(auto_id='id_edit_globaladmin_%s'),
             'editSchoolAdminForm': EditSchoolAdminForm(auto_id='id_edit_schooladmin_%s'),
             'registerAdminForm': RegisterAdminForm(auto_id='id_register_admin_%s'),
@@ -113,7 +115,8 @@ def admin(request, school_id=None, student_id=None):
             'superadmin_list': superadmin_list,
             'schooladmin_list': schooladmin_list,
             'student_list': student_list,
-            'manage_err': manage_err
+            'manage_err': manage_err,
+            'isSuperuser': isSuperuser
           }
 
     ctx['current_survey_page'] = current_survey_page

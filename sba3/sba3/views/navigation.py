@@ -37,7 +37,7 @@ def next(request):
                 row[column] = answer
                 answernum = answernum + 1
             instance, created = AnswerSet.objects.get_or_create(student_id=current_student)
-            for attr, value in row.iteritems(): 
+            for attr, value in row.iteritems():
                 setattr(instance, attr, value)
             instance.save()
         except:
@@ -68,44 +68,12 @@ def submit(request):
             answernum = answernum + 1
     current_student = Student.objects.filter(id=request.session['survey_user_id']).get()
     instance, created = AnswerSet.objects.get_or_create(student_id=current_student)
-    for attr, value in row.iteritems(): 
+    for attr, value in row.iteritems():
         setattr(instance, attr, value)
     instance.save()
     setattr(current_student, 'completed', True)
     current_student.save()
     return redirect('report')
-
-def save_survey(request):
-    page_num = request.POST.get('pagenum','')
-    if page_num != '':
-        array_name = 'p' + str(page_num)
-    else:
-        request.session[save_error] = "incorrect page"
-        return redirect('/')
-    answer_array = request.POST.getlist(array_name + "[]")
-    request.session[array_name] = answer_array
-    row = {}
-    answer_array = []
-    for pagenum in range(1,12):
-        page = "p" + str(pagenum)
-        try:
-            answer_array = request.session[page]
-            answernum = 1
-            for answer in answer_array:
-                column = page + "q" + str(answernum)
-                row[column] = answer
-                answernum = answernum + 1
-        except:
-            pass
-        
-    current_student = Student.objects.filter(id=request.session['survey_user_id']).get()
-    instance, created = AnswerSet.objects.get_or_create(student_id=current_student)
-    for attr, value in row.iteritems(): 
-        setattr(instance, attr, value)
-    instance.save()
-
-    request.session.flush()
-    return redirect('/#continue')
 
 def report(request):
     current_student = Student.objects.filter(id=request.session['survey_user_id']).get()
