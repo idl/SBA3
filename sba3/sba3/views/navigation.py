@@ -16,7 +16,6 @@ def next(request):
     array_name = "p" + str(request.POST.get('pagenum', 1))
     answer_array = request.POST.getlist(array_name + "[]")
     request.session[array_name] = answer_array
-    print str(enumerate(request.session[array_name]))
     # Check for empty/blank fields
     for i in enumerate(request.session[array_name]):
         if i[1] == '':
@@ -28,20 +27,21 @@ def next(request):
     else:
         row = {}
         page = "p" + str(pagenum)
-        try:
-            current_student = Student.objects.filter(id=request.session['survey_user_id']).get()
-            answer_array = request.session[page]
-            answernum = 1
-            for answer in answer_array:
-                column = page + "q" + str(answernum)
-                row[column] = answer
-                answernum = answernum + 1
-            instance, created = AnswerSet.objects.get_or_create(student_id=current_student)
-            for attr, value in row.iteritems(): 
-                setattr(instance, attr, value)
-            instance.save()
-        except:
-            return redirect('page', pagenum)
+        # AnswerSet.objects.get_or_create(student_id=1)
+        # try:
+        current_student = Student.objects.filter(id=request.session['survey_user_id']).get()
+        answer_array = request.session[page]
+        answernum = 1
+        for answer in answer_array:
+            column = page + "q" + str(answernum)
+            row[column] = answer
+            answernum = answernum + 1
+        instance, created = AnswerSet.objects.get_or_create(student_id=current_student)
+        for attr, value in row.iteritems():
+            setattr(instance, attr, value)
+        instance.save()
+        # except:
+        #     return redirect('page', pagenum)
         return redirect('page', pagenum + 1)
 
 def submit(request):
@@ -68,45 +68,12 @@ def submit(request):
             answernum = answernum + 1
     current_student = Student.objects.filter(id=request.session['survey_user_id']).get()
     instance, created = AnswerSet.objects.get_or_create(student_id=current_student)
-    for attr, value in row.iteritems(): 
+    for attr, value in row.iteritems():
         setattr(instance, attr, value)
     instance.save()
     setattr(current_student, 'completed', True)
     current_student.save()
-
     return redirect('report')
-
-def save_survey(request):
-    page_num = request.POST.get('pagenum','')
-    if page_num != '':
-        array_name = 'p' + str(page_num)
-    else:
-        request.session[save_error] = "incorrect page"
-        return redirect('/')
-    answer_array = request.POST.getlist(array_name + "[]")
-    request.session[array_name] = answer_array
-    row = {}
-    answer_array = []
-    for pagenum in range(1,12):
-        page = "p" + str(pagenum)
-        try:
-            answer_array = request.session[page]
-            answernum = 1
-            for answer in answer_array:
-                column = page + "q" + str(answernum)
-                row[column] = answer
-                answernum = answernum + 1
-        except:
-            pass
-        
-    current_student = Student.objects.filter(id=request.session['survey_user_id']).get()
-    instance, created = AnswerSet.objects.get_or_create(student_id=current_student)
-    for attr, value in row.iteritems(): 
-        setattr(instance, attr, value)
-    instance.save()
-
-    request.session.flush()
-    return redirect('/#continue')
 
 def report(request):
     current_student = Student.objects.filter(id=request.session['survey_user_id']).get()

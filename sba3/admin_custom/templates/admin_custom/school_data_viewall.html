@@ -1,2 +1,57 @@
-{% extends 'surveys.html' %}
+{% extends "admin_custom/admin_custom_base.html" %}
 
+{% block header %}
+  <header>
+    <div class="container">
+      <div class="row page-header">
+        <div class="col-xs-6">
+          <h1>SBA-3</h1>
+        </div>
+        <div class="col-xs-5 text-right">
+          <span class="logout text-muted" style="display:inline-block; padding-bottom: 3px; border-bottom: 2px solid #cccccc;">{{ currentUserEmail }}</span>
+        </div>
+        <div class="col-xs-1 text-right">
+          <a href="{% url 'logout_view' %}" class="btn btn-default btn-sm logout">Log Out&nbsp;&nbsp;<span class="glyphicon glyphicon-log-out"></span></a>
+        </div>
+      </div>
+    </div>
+  </header>
+{% endblock %}
+
+{% block survey_school_page %}
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <a href="/admin#surveys" class="btn btn-default">
+          <span class="glyphicon glyphicon-arrow-left"></span>
+          Back to Surveys
+        </a>
+      </div>
+    </div><br>
+    <div class="row">
+      <div class="col-xs-12">
+        <table class="table table-striped table-condensed survey-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Completed?</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in student_list %}
+                    <tr>
+                        <td>{{ student.user_id }}</td>
+                        <td>{{ student.completed }}</td>
+                        <td class="actions">
+                            <a href="{% url 'school_student_data' student.school_id_id student.id %}#surveys"><span class="glyphicon glyphicon-eye-open"></span></a>
+                            <a href="#"><span class="glyphicon glyphicon-download-alt"></span></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}
