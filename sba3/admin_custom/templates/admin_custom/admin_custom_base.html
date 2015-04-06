@@ -14,20 +14,25 @@
     <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
 	<link href="{{ STATIC_URL }}css/main.css" rel="stylesheet" media="screen">
 	<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  {% block highcharts %}
+  {% endblock %}
 </head>
 <body>
     <!--[if lt IE 7]>
         <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-	
-	{% block header %}
-	{% endblock %}
-	
-	{% block login_container %}
-	{% endblock %}
 
-	{% block admin_page %}
-	{% endblock %}  
+    {% block header %}
+    {% endblock %}
+
+    {% block login_container %}
+    {% endblock %}
+
+    {% block admin_page %}
+    {% endblock %}
+
+    {% block survey_school_page %}
+    {% endblock %}
 
     {% block tab_script %}
     {% endblock %}
@@ -43,9 +48,7 @@
     <script src="{{ STATIC_URL }}js/main.js"></script>
 
     {% include "edit_user_err_script.html" %}
-    
-    {% block select_selected_school %}
-    {% endblock %}
+
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>
