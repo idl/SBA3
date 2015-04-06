@@ -1,24 +1,24 @@
 {% extends "sba3/survey_base.html" %}
 
-  {% block header_script %}
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script>
-    $('document').ready(function() {
-      $('.prev').click(function() {
-        $('form').attr('action', '{% url "previous" %}');
-      });
-      $('.next').click(function() {
-        $('form').attr('action', '{% url "next" %}');
-      });
-      $('.submit').click(function(e) {
-        $('form').attr('action', '{% url "submit" %}');
-      });
-      $('.save').click(function(e) {
-        $('form').attr('action', '{% url "save_survey" %}');
-      });
+{% block header_script %}
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script>
+  $('document').ready(function() {
+    $('.prev').click(function() {
+      $('form').attr('action', '{% url "previous" %}');
     });
-    </script>
-  {% endblock %}
+    $('.next').click(function() {
+      $('form').attr('action', '{% url "next" %}');
+    });
+    $('.submit').click(function(e) {
+      $('form').attr('action', '{% url "submit" %}');
+    });
+    $('.save').click(function(e) {
+      $('form').attr('action', '{% url "save_survey" %}');
+    });
+  });
+  </script>
+{% endblock %}
 
 {% block body %}
   <div class="container survey-main">

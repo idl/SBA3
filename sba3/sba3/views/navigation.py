@@ -16,7 +16,6 @@ def next(request):
     array_name = "p" + str(request.POST.get('pagenum', 1))
     answer_array = request.POST.getlist(array_name + "[]")
     request.session[array_name] = answer_array
-    print str(enumerate(request.session[array_name]))
     # Check for empty/blank fields
     for i in enumerate(request.session[array_name]):
         if i[1] == '':
@@ -28,6 +27,7 @@ def next(request):
     else:
         row = {}
         page = "p" + str(pagenum)
+        # AnswerSet.objects.get_or_create(student_id=1)
         try:
             current_student = Student.objects.filter(id=request.session['survey_user_id']).get()
             answer_array = request.session[page]
@@ -39,6 +39,7 @@ def next(request):
             instance, created = AnswerSet.objects.get_or_create(student_id=current_student)
             for attr, value in row.iteritems():
                 setattr(instance, attr, value)
+                print value
             instance.save()
         except:
             return redirect('page', pagenum)

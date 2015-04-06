@@ -9,7 +9,7 @@ class School(models.Model):
     location = models.CharField(max_length=125, help_text='Please enter the city and state of your school.')
     survey_title = models.CharField(max_length=50, null=True)
     date = models.DateField()
-    
+
     def __unicode__(self):
         return self.name
 
@@ -123,7 +123,7 @@ class AnswerSetManager(models.Manager):
                 try:
                     answer_list = self.values_list(question_id).filter(student_id__in=school_list)
                 except:
-                    # return 'Question ID is not in the database' 
+                    # return 'Question ID is not in the database'
                     continue
 
                 try:
@@ -187,7 +187,7 @@ class AnswerSetManager(models.Manager):
         try:
             answer_list = self.values_list(question_id).filter(student_id__in=school_list)
         except:
-            return 'Question ID is not in the database' 
+            return 'Question ID is not in the database'
 
         try:
             student_answer = answer_list.filter(student_id=student_id).get()
@@ -308,6 +308,18 @@ class AnswerSet(models.Model):
     p9q11 = models.CharField(max_length=20, null=True)
     p9q12 = models.CharField(max_length=20, null=True)
     p9q13 = models.CharField(max_length=20, null=True)
+    p10q1 = models.CharField(max_length=2, null=True)
+    p10q2 = models.CharField(max_length=2, null=True)
+    p10q3 = models.CharField(max_length=2, null=True)
+    p10q4 = models.CharField(max_length=2, null=True)
+    p10q5 = models.CharField(max_length=2, null=True)
+    p10q6 = models.CharField(max_length=2, null=True)
+    p10q7 = models.TextField(max_length=255, null=True)
+    p10q8 = models.TextField(max_length=255, null=True)
+    p10q9 = models.TextField(max_length=255, null=True)
+    p10q10 = models.TextField(max_length=255, null=True)
+    p10q11 = models.TextField(max_length=255, null=True)
+    p10q12 = models.TextField(max_length=255, null=True)
     p11q1 = models.CharField(max_length=20, null=True)
     p11q2 = models.CharField(max_length=20, null=True)
     p11q3 = models.CharField(max_length=20, null=True)
