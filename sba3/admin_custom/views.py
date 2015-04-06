@@ -489,10 +489,13 @@ def school_permission_check(user_id, school_id):
 
 def survey_data_school_individual(request, school_id, student_id):
   ctx = {}
-  ctx['user_id'] = Student.objects.get(id=student_id).user_id
-  ctx['results'] = AnswerSet.objects.values().get(student_id_id=student_id)
   ctx['school_id'] = school_id
-  return render(request, "school_student_data.html", ctx)
+  try: 
+    ctx['user_id'] = Student.objects.get(id=student_id).user_id
+    ctx['results'] = AnswerSet.objects.values().get(student_id_id=student_id)
+    return render(request, "school_student_data.html", ctx)
+  except:
+    return render(request, "school_student_data_error.html", ctx)
 
 def survey_data_school_aggregate(request, school_id):
   ctx = {}
