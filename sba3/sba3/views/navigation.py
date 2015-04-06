@@ -28,21 +28,20 @@ def next(request):
         row = {}
         page = "p" + str(pagenum)
         # AnswerSet.objects.get_or_create(student_id=1)
-        try:
-            current_student = Student.objects.filter(id=request.session['survey_user_id']).get()
-            answer_array = request.session[page]
-            answernum = 1
-            for answer in answer_array:
-                column = page + "q" + str(answernum)
-                row[column] = answer
-                answernum = answernum + 1
-            instance, created = AnswerSet.objects.get_or_create(student_id=current_student)
-            for attr, value in row.iteritems():
-                setattr(instance, attr, value)
-                print value
-            instance.save()
-        except:
-            return redirect('page', pagenum)
+        # try:
+        current_student = Student.objects.filter(id=request.session['survey_user_id']).get()
+        answer_array = request.session[page]
+        answernum = 1
+        for answer in answer_array:
+            column = page + "q" + str(answernum)
+            row[column] = answer
+            answernum = answernum + 1
+        instance, created = AnswerSet.objects.get_or_create(student_id=current_student)
+        for attr, value in row.iteritems():
+            setattr(instance, attr, value)
+        instance.save()
+        # except:
+        #     return redirect('page', pagenum)
         return redirect('page', pagenum + 1)
 
 def submit(request):
