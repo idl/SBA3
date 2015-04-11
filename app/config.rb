@@ -3,7 +3,7 @@
 # Set this to the root of your project when deployed:
 http_path = "/"
 css_dir = "sba3/static/css"
-sass_dir = "sba3/static/sass"
+sass_dir = "sba3/static/css"
 images_dir = "sba3/static/img"
 javascripts_dir = "sba3/static/js"
 

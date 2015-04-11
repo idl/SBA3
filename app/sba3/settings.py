@@ -17,7 +17,6 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-print BASE_DIR
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
@@ -61,7 +60,7 @@ ROOT_URLCONF = 'sba3.urls'
 TEMPLATES = [
   {
     'BACKEND': 'django.template.backends.django.DjangoTemplates',
-    'DIRS': [],
+    'DIRS': [ 'sba3/templates/' ],
     'APP_DIRS': True,
     'OPTIONS': {
       'context_processors': [
@@ -108,17 +107,13 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
-
-STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'sba3/static/')
+STATIC_URL = 'static/'
+print STATIC_URL
 
 # Bootstrap3 Package settings
 BOOTSTRAP3 = {
   # The complete URL to the Bootstrap CSS file (None means derive it from base_url)
-  'css_url': None
+  # 'css_url': None
 }
 
-# https://docs.djangoproject.com/en/1.8/ref/contrib/messages/#message-tags
-MESSAGE_TAGS = {
-    messages.INFO: '',
-    50: 'critical',
-}
