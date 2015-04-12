@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-# import pprint
 
 ########################
 ### messages example ###
@@ -12,5 +11,5 @@ from django.contrib import messages
   # messages.success(request, 'Hello world.')
 
 def public_index(request):
-  messages.info(request, 'Hello world.')
   return render(request, "public/index.html")
+

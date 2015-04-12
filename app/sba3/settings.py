@@ -109,11 +109,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 STATIC_ROOT = os.path.join(BASE_DIR, 'sba3/static/')
 STATIC_URL = 'static/'
-print STATIC_URL
 
 # Bootstrap3 Package settings
 BOOTSTRAP3 = {
-  # The complete URL to the Bootstrap CSS file (None means derive it from base_url)
-  # 'css_url': None
+  'css_url': '/static/css/bootstrap3-theme-lumen.css',
 }
 
