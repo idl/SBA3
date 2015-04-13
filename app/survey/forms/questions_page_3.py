@@ -9,7 +9,7 @@ questions = {
   'q3': 'Would you attend tutoring sessions if they were freely available?',
   'q4': 'Have you looked for tutoring help?',
   'q5': 'Compared to high school, has the time you spend studying for classes...',
-  'q6': '<span style="font-size:24px;font-weight: 300;">How often do you do the following?</span><br><br>(1) Show up late for class',
+  'q6': safe('<span style="font-size:24px;font-weight: 300;">How often do you do the following?</span><br><br>(1) Show up late for class'),
   'q7': '(2) Turn assignments in late or incomplete',
   'q8': '(3) Miss an exam or quiz',
   'q9': '(4) Seek extra credit to improve a grade',
@@ -81,7 +81,7 @@ class QuestionsPage3Form(forms.Form):
   q3 = forms.ChoiceField(choices=choices['q3'], label=questions['q3'], widget=forms.RadioSelect)
   q4 = forms.ChoiceField(choices=choices['q4'], label=questions['q4'], widget=forms.RadioSelect)
   q5 = forms.ChoiceField(choices=choices['q5'], label=questions['q5'], widget=forms.RadioSelect)
-  q6 = forms.ChoiceField(choices=choices['q6'], label=safe(questions['q6']), widget=forms.RadioSelect)
+  q6 = forms.ChoiceField(choices=choices['q6'], label=questions['q6'], widget=forms.RadioSelect)
   q7 = forms.ChoiceField(choices=choices['q7'], label=questions['q7'], widget=forms.RadioSelect)
   q8 = forms.ChoiceField(choices=choices['q8'], label=questions['q8'], widget=forms.RadioSelect)
   q9 = forms.ChoiceField(choices=choices['q9'], label=questions['q9'], widget=forms.RadioSelect)

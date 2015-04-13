@@ -1,131 +1,40 @@
 # -*- coding: utf-8 -*-
 from django import forms
+from django.template.defaultfilters import safe
 from ..models import School
 
 questions = {
-  'q1': 'What is your class status?',
-  'q2': 'What is your major?',
-  'q3': 'Did you transfer from a community/junior college?',
-  'q4': 'Are you enrolled in a "Distance or Online" degree program at MSU?',
-  'q5': 'Have you ever taken a course that meets on campus?',
-  'q6': 'Did you attend a pre-kindergarten program?',
-  'q7': 'Did you complete any advanced placement courses in high school?',
-  'q8': 'Do you consider yourself a first generation college student?',
-  'q9': 'Prior to High School, did you personally know anyone who worked in the fields of Science, Technology, Engineering, or Math?',
-  'q10': 'Please consider the following statement: Education was encouraged in my family. Would you...',
-  'q11': 'In terms of your academic achievement, who contributed to your success the most?',
+  'q1': 'Do you belong to any student organizations?',
+  'q2': safe('How many hours per week do you spend doing student organization related services or activities?<br>(<code>-1</code> for Not Sure, <code>-2</code> for No Comment)'),
+  'q3': 'Do you live on or off campus?',
+  'q4': 'While attending college, do you live away from home?',
+  'q5': safe('How many times per semester do you go home?<br>(<code>-1</code> for Not Sure, <code>-2</code> for No Comment)'),
+  'q6': safe('On average, how many hours per week do you spend partying?<br>(<code>-1</code> for Not Sure, <code>-2</code> for No Comment)'),
+  'q7': 'Do you drink alcoholic beverages?',
+  'q8': safe('On days that you drink, about how many drinks do you consume?<br>(<code>-1</code> for Not Sure, <code>-2</code> for No Comment)'),
+  'q9': safe('On average, how many hours of sleep do you get on a weeknight?<br>(<code>-1</code> for Not Sure, <code>-2</code> for No Comment)'),
+  'q10': safe('How many days per week do you exercise for at least 15 minutes?<br>(<code>-1</code> for Not Sure, <code>-2</code> for No Comment)'),
+  'q11': safe('How many days during the week do you eat a nutritious (e.g., fruits, vegetable, nuts, lean meats etc) meal for breakfast?<br>(<code>-1</code> for Not Sure, <code>-2</code> for No Comment)'),
+  'q12': safe('How many days during the week do you eat a nutritious (e.g., fruits, vegetable, nuts, lean meats etc) meal for lunch?<br>(<code>-1</code> for Not Sure, <code>-2</code> for No Comment)'),
+  'q13': safe('How many days during the week do you eat a nutritious (e.g., fruits, vegetable, nuts, lean meats etc) meal for dinner?<br>(<code>-1</code> for Not Sure, <code>-2</code> for No Comment)'),
 }
 
 choices = {
   'q1': (
-    ('sophomore', 'Sophomore'),
-    ('junior', 'Junior'),
-    ('senior', 'Senior'),
-    ('master', 'Master'),
-    ('doctorate', 'Doctorate'),
+    ('yes', 'Yes'),
+    ('no', 'No'),
     ('notsure', 'Not Sure'),
     ('nocomment', 'No Comment'),
   ),
-  'q2': (
-    ('', '--------'),
-    ('nocomment', 'No Comment'),
-    ('undecided', 'Undecided'),
-    ('', '--------'),
-    ('accounting', 'Accounting Major'),
-    ('aerospaceengineering', 'Aerospace Engineering Major'),
-    ('agribusiness', 'Agribusiness Major'),
-    ('art', 'Art Major'),
-    ('agriengineering', 'Agricultural Engineering Technology and Business Major'),
-    ('agriinformation', 'Agricultural Information Science Major'),
-    ('agriculture', 'Agricultural Science Major'),
-    ('agronomy', 'Agronomy Major'),
-    ('dairyscience', 'Animal and Dairy Science Major'),
-    ('anthropology', 'Anthropology Major'),
-    ('architecture', 'Architecture Major'),
-    ('art', 'Art Major'),
-    ('biochemistry', 'Biochemistry Major'),
-    ('bioengineering', 'Biological Engineering Major'),
-    ('biology', 'Biological Sciences Major'),
-    ('building', 'Building Construction Science Major'),
-    ('businessadmin', 'Business Administration Major'),
-    ('businessecon', 'Business Economics Major'),
-    ('businessinfo', 'Business Information Systems Major'),
-    ('chemengineering', 'Chemical Engineering Major'),
-    ('chemistry', 'Chemistry Major'),
-    ('civilengineering', 'Civil Engineering Major'),
-    ('communication', 'Communication Major'),
-    ('computerengineering', 'Computer Engineering Major'),
-    ('computerscience', 'Computer Science Major'),
-    ('criminology', 'Criminology Major'),
-    ('culinology', 'Culinology Major'),
-    ('economics', 'Economics Major (Arts and Sciences)'),
-    ('educationalpsyc', 'Educational Psychology Major'),
-    ('electricalengineering', 'Electrical Engineering Major'),
-    ('elementaryed', 'Elementary Education Major'),
-    ('english', 'English Major'),
-    ('enviromentalecon', 'Environmental Economics and Management Major'),
-    ('finance', 'Finance Major'),
-    ('foodscience', 'Food Science, Nutrition and Health Promotion Major'),
-    ('foreignlanguage', 'Foreign Language Major'),
-    ('forestry', 'Forestry Major'),
-    ('generallibarts', 'General Liberal Arts Major'),
-    ('generalscience', 'General Science Major'),
-    ('geoscience', 'Geosciences Major'),
-    ('history', 'History Major'),
-    ('horticulture', 'Horticulture Major'),
-    ('humanscience', 'Human Sciences Major'),
-    ('industrialengineering', 'Industrial Engineering Major'),
-    ('industrialtech', 'Industrial Technology Major'),
-    ('informationtech', 'Information Technology Services Major'),
-    ('interdisciplinary', 'Interdisciplinary Studies'),
-    ('interiordesign', 'Interior Design Major'),
-    ('kinesiology', 'Kinesiology Major'),
-    ('landscapearchitecture', 'Landscape Architecture Major'),
-    ('landscapecontracting', 'Landscape Contracting Major'),
-    ('management', 'Management Major'),
-    ('marketing', 'Marketing Major'),
-    ('mathematics', 'Mathematics Major'),
-    ('mechanicalengineering', 'Mechanical Engineering Major'),
-    ('medicaltech', 'Medical Technology Major'),
-    ('microbiology', 'Microbiology Major'),
-    ('musiceducation', 'Music Education Major'),
-    ('music', 'Music Major'),
-    ('philosophy', 'Philosophy Major'),
-    ('physics', 'Physics Major'),
-    ('polyscience', 'Political Science Major'),
-    ('pultryscience', 'Poultry Science Major'),
-    ('psychology', 'Psychology Major'),
-    ('secondaryeducation', 'Secondary Education Major'),
-    ('socialwork', 'Social Work Major'),
-    ('sociology', 'Sociology Major'),
-    ('softwareengineering', 'Software Engineering Major'),
-    ('specialeducation', 'Special Education Major'),
-    ('techteachereducation', 'Technology Teacher Education Major'),
-    ('veterinarymedical', 'Veterinary Medical Technology'),
-    ('wildlife', 'Wildlife, Fisheries and Aquaculture Major'),
-    ('other', 'Something Else'),
-  ),
   'q3': (
-    ('yes', 'Yes'),
-    ('no', 'No'),
+    ('on', 'On Campus'),
+    ('off', 'Off Campus'),
     ('notsure', 'Not Sure'),
     ('nocomment', 'No Comment'),
   ),
   'q4': (
-    ('yes', 'Yes'),
-    ('no', 'No'),
-    ('notsure', 'Not Sure'),
-    ('nocomment', 'No Comment'),
-  ),
-  'q5': (
-    ('yes', 'Yes'),
-    ('no', 'No'),
-    ('notsure', 'Not Sure'),
-    ('nocomment', 'No Comment'),
-  ),
-  'q6': (
-    ('yes', 'Yes'),
-    ('no', 'No'),
+    ('on', 'On Campus'),
+    ('off', 'Off Campus'),
     ('notsure', 'Not Sure'),
     ('nocomment', 'No Comment'),
   ),
@@ -136,54 +45,17 @@ choices = {
     ('notsure', 'Not Sure'),
     ('nocomment', 'No Comment'),
   ),
-  'q8': (
-    ('yes', 'Yes'),
-    ('no', 'No'),
-    ('notsure', 'Not Sure'),
-    ('nocomment', 'No Comment'),
-  ),
-  'q9': (
-    ('yes', 'Yes'),
-    ('no', 'No'),
-    ('notsure', 'Not Sure'),
-    ('nocomment', 'No Comment'),
-  ),
-  'q10': (
-    ('strongdisagree', 'Strongly Disagree'),
-    ('disagree', 'Disagree'),
-    ('neutral', 'Neither Agree nor Disagree'),
-    ('agree', 'Agree'),
-    ('strongagree', 'Strongly Agree'),
-    ('notsure', 'Not Sure'),
-    ('nocomment', 'No comment'),
-  ),
-  'q11': (
-    ('parent', 'Parent(s)'),
-    ('grandparent', 'Grandparents'),
-    ('sibling', 'Siblings'),
-    ('auntuncle', 'Aunts or Uncles'),
-    ('familyfriend', 'Family friends'),
-    ('peer', 'Peers'),
-    ('teammate', 'Teammates'),
-    ('teacher', 'Teacher'),
-    ('coach', 'Coach'),
-    ('signother', 'Significant Other'),
-    ('family', 'Family'),
-    ('none', 'None of these'),
-    ('notsure', 'Not sure'),
-    ('nocomment', 'No comment'),
-  )
 }
 
 class QuestionsPage9Form(forms.Form):
   q1 = forms.ChoiceField(choices=choices['q1'], label=questions['q1'], widget=forms.RadioSelect)
-  q2 = forms.ChoiceField(choices=choices['q2'], label=questions['q2'])
+  q2 = forms.IntegerField(label=questions['q2'], min_value=-2, max_value=168)
   q3 = forms.ChoiceField(choices=choices['q3'], label=questions['q3'], widget=forms.RadioSelect)
   q4 = forms.ChoiceField(choices=choices['q4'], label=questions['q4'], widget=forms.RadioSelect)
-  q5 = forms.ChoiceField(choices=choices['q5'], label=questions['q5'], widget=forms.RadioSelect)
-  q6 = forms.ChoiceField(choices=choices['q6'], label=questions['q6'], widget=forms.RadioSelect)
+  q5 = forms.IntegerField(label=questions['q5'], min_value=-2, max_value=100)
+  q6 = forms.IntegerField(label=questions['q6'], min_value=-2, max_value=168)
   q7 = forms.ChoiceField(choices=choices['q7'], label=questions['q7'], widget=forms.RadioSelect)
-  q8 = forms.ChoiceField(choices=choices['q8'], label=questions['q8'], widget=forms.RadioSelect)
-  q9 = forms.ChoiceField(choices=choices['q9'], label=questions['q9'], widget=forms.RadioSelect)
-  q10 = forms.ChoiceField(choices=choices['q10'], label=questions['q10'], widget=forms.RadioSelect)
-  q11 = forms.ChoiceField(choices=choices['q11'], label=questions['q11'], widget=forms.RadioSelect)
+  q8 = forms.IntegerField(label=questions['q8'], min_value=-2, max_value=40)
+  q9 = forms.IntegerField(label=questions['q9'], min_value=-2, max_value=24)
+  q10 = forms.IntegerField(label=questions['q10'], min_value=-2, max_value=7)
+  q11 = forms.IntegerField(label=questions['q11'], min_value=-2, max_value=7)

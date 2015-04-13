@@ -26,23 +26,30 @@
       </div>
       {% bootstrap_messages %}
 
-      <form action="/url/to/submit/" method="post" class="form" role="form">
+      <form action="#" method="post" class="form" role="form" id="survey-form">
         {% csrf_token %}
         {{ questions_page_form|bootstrap }}
         <hr>
         <div class="form-group">
           <div class="row">
             <div class="col-xs-6">
-              <button type="submit" class="btn btn-default btn-block">
+              <button type="submit" class="btn btn-default btn-block" name="survey-page-previous">
                 <small>{% bootstrap_icon "menu-left" %}&ensp;</small>
                 Back
               </button>
             </div>
             <div class="col-xs-6">
-              <button type="submit" class="btn btn-primary btn-block">
-                Next&ensp;
-                <small>{% bootstrap_icon "menu-right" %}</small>
-              </button>
+              {% ifequal page_num 11 %}
+                <button type="submit" class="btn btn-success btn-block" name="survey-submit">
+                  Submit&ensp;
+                  <small>{% bootstrap_icon "menu-right" %}</small>
+                </button>
+              {% else %}
+                <button type="submit" class="btn btn-primary btn-block" name="survey-page-next">
+                  Next&ensp;
+                  <small>{% bootstrap_icon "menu-right" %}</small>
+                </button>
+              {% endifequal %}
             </div>
           </div>
         </div>
@@ -52,6 +59,12 @@
       </form>
     </div>
   </div>
+{% endblock %}
+
+{% block survey_js %}
+  <script>
+    console.log($('#survey-form'));
+  </script>
 {% endblock %}
 
 {% block begin_survey_modal %}
