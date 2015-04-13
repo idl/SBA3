@@ -1,0 +1,27 @@
+{% extends "public/public_base.html" %}
+{% load bootstrap3 %}
+
+{% block public_main_content %}
+  <div class="row buffer-bottom">
+    <div class="col-xs-12">
+      <h3>Administrators</h3>
+      <a href="{% url 'public_admin_login' %}" class="btn btn-default btn-block" role="button">
+        Administrator Log In&emsp;
+        {% bootstrap_icon "log-in" %}
+      </a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <h3>Students</h3>
+      <a href="{% url 'public_survey_begin' %}" class="btn btn-success btn-lg btn-block" role="button">
+        Take Survey&emsp;
+        {% bootstrap_icon "play" %}
+      </a>
+      <a href="{#% url 'public_survey_continue' %#}" class="btn btn-primary btn-lg btn-block" role="button">
+        Continue Survey&emsp;
+        {% bootstrap_icon "circle-arrow-right" %}
+      </a>
+    </div>
+  </div>
+{% endblock %}
