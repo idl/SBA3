@@ -38,7 +38,21 @@ num_questions = {
   'p8': 12,
   'p9': 13,
   'p10': 12,
-  'p11': 14
+  'p11': 14,
+  'total': 128
+}
+
+num_questions_so_far = {
+  'p2': 11,
+  'p3': 22,
+  'p4': 31,
+  'p5': 42,
+  'p6': 56,
+  'p7': 68,
+  'p8': 77,
+  'p9': 89,
+  'p10': 102,
+  'p11': 114
 }
 
 def public_begin(request):
@@ -64,6 +78,10 @@ def questions(request, school_id, student_uid, page_num):
   context['page_num'] = int(page_num)
   context['student_uid'] = student_uid
   context['questions_page_form'] = forms[page_num]()
+  try:
+    context['progress_percentage'] = "%0.0f" % (float(num_questions_so_far['p'+page_num])/num_questions['total'] * 100)
+  except:
+    context['progress_percentage'] = 0
   return render(request, "survey/survey_questions.html", context)
 
 
