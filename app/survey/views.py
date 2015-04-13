@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from .forms.begin_survey_form import SurveyBeginForm
 from .forms.questions_page_1 import QuestionsPage1Form
 from .forms.questions_page_2 import QuestionsPage2Form
@@ -26,6 +27,20 @@ forms = {
   '11': QuestionsPage11Form,
 }
 
+num_questions = {
+  'p1': 11,
+  'p2': 11,
+  'p3': 9,
+  'p4': 11,
+  'p5': 14,
+  'p6': 12,
+  'p7': 9,
+  'p8': 12,
+  'p9': 13,
+  'p10': 12,
+  'p11': 14
+}
+
 def public_begin(request):
   context = {}
   if request.POST:
@@ -38,6 +53,13 @@ def public_continue(request):
   return render(request, "survey/survey_continue.html")
 
 def questions(request, school_id, student_uid, page_num):
+  if request.POST:
+    print request.POST
+    for r in range(1, num_questions['p'+page_num]+1):
+      q_res = request.POST.get('q'+str(r))
+      if q_res is None:
+        messages.error(request, 'You must answer all of the questions on the page before continuing.')
+        return redirect('survey_questions', school_id, student_uid, page_num)
   context = {}
   context['page_num'] = int(page_num)
   context['student_uid'] = student_uid

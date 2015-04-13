@@ -61,12 +61,6 @@
   </div>
 {% endblock %}
 
-{% block survey_js %}
-  <script>
-    console.log($('#survey-form'));
-  </script>
-{% endblock %}
-
 {% block begin_survey_modal %}
   {% ifequal page_num 1 %}
     <div class="modal fade" id="begin-survey-modal-message">
@@ -76,7 +70,7 @@
             <h4 class="modal-title">Hello, {{ student_uid }}.</h4>
           </div>
           <div class="modal-body">
-            <p class="lead">You have been emailed a passcode and a link to continue this survey if necessary.</p>
+            <p class="lead">You have been emailed a passcode and a link so you can continue this survey at a later time, if necessary.</p>
             <p><i>Your continuation key is shown at the bottom of this page.</i></p>
           </div>
           <div class="modal-footer">
