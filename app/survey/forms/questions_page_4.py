@@ -16,17 +16,6 @@ questions = {
   'q11': 'In a typical classroom, where do you usually sit when seating is not assigned?',
 }
 
-
-
-
-
-
-
-
-
-
-
-
 choices = {
   'q1': (
     ('yes', 'Yes'),

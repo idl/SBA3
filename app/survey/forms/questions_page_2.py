@@ -12,9 +12,9 @@ questions = {
   'q6': 'Do you review your class notes after class?',
   'q7': 'In general, do you study for tests by yourself?',
   'q8': 'Select the type of learning style that describes you best:',
-  'q9': 'On average, how many hours per DAY do you spend studying?<br>(-1 for Not Sure, -2 for No Comment)',
-  'q10': 'On average how many days in advance do you begin studying for upcoming exams?<br>(-1 for Not Sure, -2 for No Comment)',
-  'q11': 'In general, how many class sessions do you miss over the course of a semester?<br>(-1 for Not Sure, -2 for No Comment)',
+  'q9': safe('On average, how many hours per DAY do you spend studying?<br>(<code>-1</code> for Not Sure, <code>-2</code> for No Comment)'),
+  'q10': safe('On average how many days in advance do you begin studying for upcoming exams?<br>(<code>-1</code> for Not Sure, <code>-2</code> for No Comment)'),
+  'q11': safe('In general, how many class sessions do you miss over the course of a semester?<br>(<code>-1</code> for Not Sure, <code>-2</code> for No Comment)'),
 }
 
 choices = {
@@ -79,6 +79,6 @@ class QuestionsPage2Form(forms.Form):
   q6 = forms.ChoiceField(choices=choices['q6'], label=questions['q6'], widget=forms.RadioSelect)
   q7 = forms.ChoiceField(choices=choices['q7'], label=questions['q7'], widget=forms.RadioSelect)
   q8 = forms.ChoiceField(choices=choices['q8'], label=questions['q8'], widget=forms.RadioSelect)
-  q9 = forms.IntegerField(label=safe(questions['q9']), min_value="-2", max_value="24")
-  q10 = forms.IntegerField(label=safe(questions['q10']), min_value="-2", max_value="24")
-  q11 = forms.IntegerField(label=safe(questions['q11']), min_value="-2", max_value="24")
+  q9 = forms.IntegerField(label=questions['q9'], min_value="-2", max_value="24")
+  q10 = forms.IntegerField(label=questions['q10'], min_value="-2", max_value="24")
+  q11 = forms.IntegerField(label=questions['q11'], min_value="-2", max_value="24")
