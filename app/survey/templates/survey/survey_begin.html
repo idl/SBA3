@@ -1,0 +1,30 @@
+{% extends "survey/survey_base.html" %}
+{% load bootstrap3 %}
+
+{% block survey_main_content %}
+  <div class="row">
+    <div class="col-xs-12">
+      {% bootstrap_messages %}
+      <p>Please select your school and enter your associated user identifier.</p>
+      <form action="{% url 'public_survey_begin' %}" method="post" class="form">
+        {% csrf_token %}
+        {% bootstrap_form survey_begin_form %}
+        {% buttons %}
+          <div class="row">
+            <div class="col-xs-6">
+              <a href="{% url 'public_index' %}" class="btn btn-default btn-block" role="button">
+                <small>{% bootstrap_icon "menu-left" %}&ensp;</small>
+                Go Back
+              </a>
+            </div>
+            <div class="col-xs-6">
+              <button class="btn btn-success btn-block">
+                Begin Survey
+              </button>
+            </div>
+          </div>
+        {% endbuttons %}
+      </form>
+    </div>
+  </div>
+{% endblock %}
