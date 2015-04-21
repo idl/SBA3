@@ -13,5 +13,7 @@ urlpatterns = [
 
   url(r'^survey/(?P<school_id>\d{1,3})/(?P<student_uid>[a-z0-9]{1,24})/page/(?P<page_num>\d{1,2})$', SurveyViews.questions, name='survey_questions'),
   url(r'^survey/begin$', SurveyViews.public_begin, name='public_survey_begin'),
+  url(r'^survey/next$', SurveyViews.next, name='survey_next'),
+  url(r'^survey/previous$', SurveyViews.previous, name='survey_previous'),
   url(r'^survey/continue$', SurveyViews.public_continue, name='public_survey_continue'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

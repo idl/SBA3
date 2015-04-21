@@ -16,8 +16,10 @@
     <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 <![endif]-->
 
+
 {% block begin_survey_modal %}
 {% endblock %}
+
 
 <div class="container survey-container">
   <header class="row">
@@ -51,8 +53,12 @@
   }).resize();
 </script>
 
+{% block survey_main_content_js %}
+{% endblock %}
+
 {% block begin_survey_modal_js %}
 {% endblock %}
+
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
 <script>
   (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=

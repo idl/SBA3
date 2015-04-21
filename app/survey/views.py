@@ -27,7 +27,7 @@ forms = {
   '11': QuestionsPage11Form,
 }
 
-num_questions = {
+num_questions_on_page = {
   'p1': 11,
   'p2': 11,
   'p3': 9,
@@ -67,21 +67,24 @@ def public_continue(request):
   return render(request, "survey/survey_continue.html")
 
 def questions(request, school_id, student_uid, page_num):
-  if request.POST:
-    print request.POST
-    for r in range(1, num_questions['p'+page_num]+1):
-      q_res = request.POST.get('q'+str(r))
-      if q_res is None:
-        messages.error(request, 'You must answer all of the questions on the page before continuing.')
-        return redirect('survey_questions', school_id, student_uid, page_num)
   context = {}
-  context['page_num'] = int(page_num)
+  if request.POST:
+    form = forms[page_num](request.POST)
+    if not form.is_valid():
+      messages.error(request, 'You must answer all of the questions on the page before continuing.')
+      return redirect('next')
   context['student_uid'] = student_uid
   context['questions_page_form'] = forms[page_num]()
+  context['previous_page_num'] = int(page_num)-1
   try:
-    context['progress_percentage'] = "%0.0f" % (float(num_questions_so_far['p'+page_num])/num_questions['total'] * 100)
+    context['progress_percentage'] = "%0.0f" % (float(num_questions_so_far['p'+page_num])/num_questions_on_page['total'] * 100)
   except:
     context['progress_percentage'] = 0
   return render(request, "survey/survey_questions.html", context)
 
+def next(request):
+  return redirect('survey_questions')
+
+def previous(request):
+  return redirect('survey_questions')
 

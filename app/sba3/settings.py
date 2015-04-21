@@ -44,6 +44,8 @@ INSTALLED_APPS = (
   'sba3',
   'admin',
   'survey',
+  'debug_toolbar',
+  # 'south',
 )
 
 MIDDLEWARE_CLASSES = (
