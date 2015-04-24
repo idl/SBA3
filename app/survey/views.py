@@ -73,11 +73,14 @@ def questions(request, school_id, student_uid, page_num):
     form = forms[page_num](request.POST)
     request.session['school_id'] = school_id
     request.session['student_uid'] = student_uid
-    if not form.is_valid():
-      messages.error(request, 'You must answer all of the questions on the page before continuing.')
-      request.session['next_page_num'] = page_num
-    else:
+    if form.is_valid():
       request.session['next_page_num'] = int(page_num) + 1
+    else:
+      messages.error(request, 'You must answer all of the questions on the page before continuing.')
+      request.session['page_results'] = {}
+      request.session['next_page_num'] = page_num
+    for q_num in range(1, num_questions_on_page['p'+str(page_num)]+1):
+      request.session['page_results']['q'+str(q_num)] = request.POST.get('q'+str(q_num))
     return redirect('survey_next')
   context['student_uid'] = student_uid
   context['school_id'] = school_id
@@ -93,6 +96,7 @@ def next(request):
   next_page_num = request.session.get('next_page_num')
   school_id = request.session.get('school_id')
   student_uid = request.session.get('student_uid')
+  print "page results: ", request.session.get('page_results')
   return redirect('survey_questions', school_id, student_uid, next_page_num)
 
 def previous(request):
