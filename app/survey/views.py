@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponse
 from django.contrib import messages
 from .forms.begin_survey_form import SurveyBeginForm
 from .forms.questions_page_1 import QuestionsPage1Form
@@ -70,10 +71,16 @@ def questions(request, school_id, student_uid, page_num):
   context = {}
   if request.POST:
     form = forms[page_num](request.POST)
+    request.session['school_id'] = school_id
+    request.session['student_uid'] = student_uid
     if not form.is_valid():
       messages.error(request, 'You must answer all of the questions on the page before continuing.')
-      return redirect('next')
+      request.session['next_page_num'] = page_num
+    else:
+      request.session['next_page_num'] = int(page_num) + 1
+    return redirect('survey_next')
   context['student_uid'] = student_uid
+  context['school_id'] = school_id
   context['questions_page_form'] = forms[page_num]()
   context['previous_page_num'] = int(page_num)-1
   try:
@@ -83,8 +90,15 @@ def questions(request, school_id, student_uid, page_num):
   return render(request, "survey/survey_questions.html", context)
 
 def next(request):
-  return redirect('survey_questions')
+  next_page_num = request.session.get('next_page_num')
+  school_id = request.session.get('school_id')
+  student_uid = request.session.get('student_uid')
+  return redirect('survey_questions', school_id, student_uid, next_page_num)
 
 def previous(request):
   return redirect('survey_questions')
+
+def clear(request):
+  request.session.flush()
+  return HttpResponse("session cleared")
 
