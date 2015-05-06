@@ -19,18 +19,10 @@ class School(models.Model):
 
 
 
-# class SchoolUidManager(models.Manager):
-#   def check_uid(self, school, uid):
-#     if SchoolUid.objects.filter(school_id=school, uid=uid).count == 1:
-#       return True
-#     else:
-#       return False
 
 # class SchoolUid(models.Model):
 #   school_id = models.ForeignKey(School)
 #   uid = models.CharField(max_length=20)
-
-#   objects = SchoolUidManager()
 
 
 

@@ -25,7 +25,6 @@
         </div>
       </div>
       {% bootstrap_messages %}
-
       <form action="#" method="post" class="form" role="form" id="survey-form">
         {% csrf_token %}
         {{ questions_page_form|bootstrap }}
@@ -43,7 +42,7 @@
             {% else %}
               <div class="col-xs-12">
             {% endif %}
-              {% ifequal page_num 11 %}
+              {% if page_num == 11 %}
                 <button type="submit" class="btn btn-success btn-block" name="survey-submit">
                   Submit&ensp;
                   <small>{% bootstrap_icon "menu-right" %}</small>
@@ -53,7 +52,7 @@
                   Next&ensp;
                   <small>{% bootstrap_icon "menu-right" %}</small>
                 </button>
-              {% endifequal %}
+              {% endif %}
             </div>
           </div>
         </div>
