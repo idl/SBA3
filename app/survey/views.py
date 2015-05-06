@@ -33,17 +33,18 @@ num_questions_on_page = {
   'p2': 11,
   'p3': 9,
   'p4': 11,
-  'p5': 14,
+  'p5': 11,
   'p6': 12,
   'p7': 9,
   'p8': 12,
-  'p9': 13,
+  'p9': 11,
   'p10': 12,
   'p11': 14,
-  'total': 128
+  'total': 123
 }
 
 num_questions_so_far = {
+  'p1': 0,
   'p2': 11,
   'p3': 22,
   'p4': 31,
@@ -58,10 +59,13 @@ num_questions_so_far = {
 
 def public_begin(request):
   context = {}
+  context['survey_begin_form'] = SurveyBeginForm()
   if request.POST:
+    form = SurveyBeginForm(request.POST)
+    if not form.is_valid():
+      messages.error(request, 'You must pick a school and enter your student identifier to take the survey.')
+      return render(request, "survey/survey_begin.html", context)
     return redirect('survey_questions', school_id=1, student_uid="jgb221", page_num=1)
-  else:
-    context['survey_begin_form'] = SurveyBeginForm()
   return render(request, "survey/survey_begin.html", context)
 
 def public_continue(request):
@@ -77,14 +81,14 @@ def questions(request, school_id, student_uid, page_num):
       request.session['next_page_num'] = int(page_num) + 1
     else:
       messages.error(request, 'You must answer all of the questions on the page before continuing.')
-      request.session['page_results'] = {}
       request.session['next_page_num'] = page_num
     for q_num in range(1, num_questions_on_page['p'+str(page_num)]+1):
-      request.session['page_results']['q'+str(q_num)] = request.POST.get('q'+str(q_num))
+      request.session['page_results_q'+str(q_num)] = request.POST.get('q'+str(q_num))
     return redirect('survey_next')
   context['student_uid'] = student_uid
   context['school_id'] = school_id
   context['questions_page_form'] = forms[page_num]()
+  context['page_num'] = int(page_num)
   context['previous_page_num'] = int(page_num)-1
   try:
     context['progress_percentage'] = "%0.0f" % (float(num_questions_so_far['p'+page_num])/num_questions_on_page['total'] * 100)
@@ -93,10 +97,12 @@ def questions(request, school_id, student_uid, page_num):
   return render(request, "survey/survey_questions.html", context)
 
 def next(request):
-  next_page_num = request.session.get('next_page_num')
+  next_page_num = int(request.session.get('next_page_num'))
   school_id = request.session.get('school_id')
   student_uid = request.session.get('student_uid')
-  print "page results: ", request.session.get('page_results')
+  for q in range(1, num_questions_on_page['p'+str(next_page_num)]+1):
+    res = request.session.get('page_results_q'+str(q))
+    print "## ", res
   return redirect('survey_questions', school_id, student_uid, next_page_num)
 
 def previous(request):
