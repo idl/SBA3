@@ -13,6 +13,7 @@ from .forms.questions_page_8 import QuestionsPage8Form
 from .forms.questions_page_9 import QuestionsPage9Form
 from .forms.questions_page_10 import QuestionsPage10Form
 from .forms.questions_page_11 import QuestionsPage11Form
+from .models import Student, School
 
 forms = {
   '1': QuestionsPage1Form,
@@ -29,44 +30,33 @@ forms = {
 }
 
 num_questions_on_page = {
-  'p1': 11,
-  'p2': 11,
-  'p3': 9,
-  'p4': 11,
-  'p5': 11,
-  'p6': 12,
-  'p7': 9,
-  'p8': 12,
-  'p9': 11,
-  'p10': 12,
-  'p11': 14,
+  '1': 11,
+  '2': 11,
+  '3': 9,
+  '4': 11,
+  '5': 11,
+  '6': 12,
+  '7': 9,
+  '8': 12,
+  '9': 11,
+  '10': 12,
+  '11': 14,
   'total': 123
 }
 
 num_questions_so_far = {
-  'p1': 0,
-  'p2': 11,
-  'p3': 22,
-  'p4': 31,
-  'p5': 42,
-  'p6': 56,
-  'p7': 68,
-  'p8': 77,
-  'p9': 89,
-  'p10': 102,
-  'p11': 114
+  '1': 0,
+  '2': 11,
+  '3': 22,
+  '4': 31,
+  '5': 42,
+  '6': 56,
+  '7': 68,
+  '8': 77,
+  '9': 89,
+  '10': 102,
+  '11': 114
 }
-
-def public_begin(request):
-  context = {}
-  context['survey_begin_form'] = SurveyBeginForm()
-  if request.POST:
-    form = SurveyBeginForm(request.POST)
-    if not form.is_valid():
-      messages.error(request, 'You must pick a school and enter your student identifier to take the survey.')
-      return render(request, "survey/survey_begin.html", context)
-    return redirect('survey_questions', school_id=1, student_uid="jgb221", page_num=1)
-  return render(request, "survey/survey_begin.html", context)
 
 def public_continue(request):
   return render(request, "survey/survey_continue.html")
@@ -82,7 +72,7 @@ def questions(request, school_id, student_uid, page_num):
     else:
       messages.error(request, 'You must answer all of the questions on the page before continuing.')
       request.session['next_page_num'] = page_num
-    for q_num in range(1, num_questions_on_page['p'+str(page_num)]+1):
+    for q_num in range(1, num_questions_on_page[page_num]+1):
       request.session['page_results_q'+str(q_num)] = request.POST.get('q'+str(q_num))
     return redirect('survey_next')
   context['student_uid'] = student_uid
@@ -91,7 +81,7 @@ def questions(request, school_id, student_uid, page_num):
   context['page_num'] = int(page_num)
   context['previous_page_num'] = int(page_num)-1
   try:
-    context['progress_percentage'] = "%0.0f" % (float(num_questions_so_far['p'+page_num])/num_questions_on_page['total'] * 100)
+    context['progress_percentage'] = "%0.0f" % (float(num_questions_so_far[page_num])/num_questions_on_page['total'] * 100)
   except:
     context['progress_percentage'] = 0
   return render(request, "survey/survey_questions.html", context)
@@ -100,7 +90,7 @@ def next(request):
   next_page_num = int(request.session.get('next_page_num'))
   school_id = request.session.get('school_id')
   student_uid = request.session.get('student_uid')
-  for q in range(1, num_questions_on_page['p'+str(next_page_num)]+1):
+  for q in range(1, num_questions_on_page[next_page_num]+1):
     res = request.session.get('page_results_q'+str(q))
     print "## ", res
   return redirect('survey_questions', school_id, student_uid, next_page_num)
@@ -111,4 +101,28 @@ def previous(request):
 def clear(request):
   request.session.flush()
   return HttpResponse("session cleared")
+
+def public_begin(request):
+  context = {}
+  context['survey_begin_form'] = SurveyBeginForm()
+  if request.POST:
+    form = SurveyBeginForm(request.POST)
+    if not form.is_valid():
+      messages.error(request, 'You must pick a school and enter your student identifier to take the survey.')
+      return render(request, "survey/survey_begin.html", context)
+    school_id = int(request.POST.get('school'))
+    student_uid = request.POST.get('student_uid')
+    context['school_id'] = school_id
+    context['survey_begin_form'] = form
+    student = None
+    try:
+      student = Student.objects.get(uid=student_uid, school=School.objects.get(id=school_id))
+    except:
+      messages.error(request, 'The user ID "'+student_uid+'" is not registered with this school.')
+      return render(request, "survey/survey_begin.html", context)
+    if student.completed:
+      messages.error(request, 'The student "'+student_uid+'" has already completed the survey.')
+      return render(request, "survey/survey_begin.html", context)
+    return redirect('survey_questions', school_id, student_uid, 1)
+  return render(request, "survey/survey_begin.html", context)
 

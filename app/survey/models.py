@@ -15,62 +15,62 @@ class School(models.Model):
     return self.name
 
   class Meta:
-    db_table = 'School'
+    db_table = u'School'
 
+class StudentManager(models.Manager):
+  def create_student(self, uid, school):
+    error = ''
+    if not uid:
+      error = 'Student must have a uid'
+    elif not school:
+      error = 'Student must have a school'
 
+    if Student.objects.filter(uid__iexact=uid, school=school).count() > 0:
+      error = 'Student - School association already exists'
+    else:
+      continue_hash = hashlib.sha256(uid + school.name).hexdigest()
+      continue_pass = continue_hash[:10]
+
+      student = self.model(
+        uid=uid,
+        school=school,
+        continue_pass=continue_pass,
+        completed=False
+      )
+      student.save()
+
+      return student
+    if error == '':
+      error = 'Unknown Error'
+    return error
+
+class Student(models.Model):
+  uid = models.CharField(max_length=20)
+  school = models.ForeignKey(School, null=True)
+  continue_pass = models.CharField(max_length=10, blank=False)
+  completed = models.BooleanField()
+
+  objects = StudentManager()
+
+  class Meta:
+    db_table = u'Student'
 
 
 # class SchoolUid(models.Model):
-#   school_id = models.ForeignKey(School)
+#   school = models.ForeignKey(School)
 #   uid = models.CharField(max_length=20)
 
 
 
-# class StudentManager(models.Manager):
-#   def create_student(self, user_id, school):
-#     error = ''
-#     if not user_id:
-#       error = 'Student must have a user_id'
-#     elif not school:
-#       error = 'Student must have a school'
 
-#     if Student.objects.filter(user_id__iexact=user_id, school_id=school).count() != 0:
-#       error = 'Student - School association already exists'
-#     else:
-#       continue_hash = hashlib.sha256(user_id + school.name).hexdigest()
-#       continue_pass = continue_hash[:10]
-
-#       student = self.model(
-#         user_id=user_id,
-#         school_id=school,
-#         continue_pass=continue_pass,
-#         completed=False
-#       )
-#       student.save()
-
-#       return student
-#     if error == '':
-#       error = 'Unknown Error'
-#     return error
-
-# class Student(models.Model):
-#   user_id = models.CharField(max_length=20)
-#   school_id = models.ForeignKey(School, null=True)
-#   continue_pass = models.CharField(max_length=10, blank=False)
-#   completed = models.BooleanField()
-
-#   objects = StudentManager()
-
-#   class Meta:
-#     db_table = 'Student'
 
 
 
 # class ResultSetManager(models.Manager):
 #   # return the percentage same for every question across all schools
-#   def overall_percentage_all(self, student_id):
+#   def overall_percentage_all(self, uid):
 #     try:
-#       completed = Student.objects.values_list('completed', flat=True).filter(id=student_id).get()
+#       completed = Student.objects.values_list('completed', flat=True).filter(id=uid).get()
 #       if not completed:
 #         return 'Student has not completed the survey'
 #     except:
@@ -83,13 +83,13 @@ class School(models.Model):
 #         question_id = 'p' + str(page) + 'q' + str(question)
 
 #         try:
-#           answer_list = self.values_list(question_id).filter(student_id__completed=True)
+#           answer_list = self.values_list(question_id).filter(uid__completed=True)
 #         except:
 #           #return 'Question ID is not in the database'
 #           continue
 
 #         try:
-#           student_answer = answer_list.filter(student_id=student_id).get()
+#           student_answer = answer_list.filter(uid=uid).get()
 #         except:
 #           return 'No Answer for that Student ID'
 
@@ -105,16 +105,16 @@ class School(models.Model):
 #     return percent_list
 
 #   # return the percentage same for every question across participant's school
-#   def school_percentage_all(self, student_id):
+#   def school_percentage_all(self, uid):
 #     try:
-#       student = Student.objects.values('completed', 'school_id').filter(id=student_id).get()
+#       student = Student.objects.values('completed', 'school').filter(id=uid).get()
 #       if not student['completed']:
 #         return 'Student has not completed the survey'
 #     except:
 #       return 'Student ID is not in the database'
 
 #     try:
-#       school_list = Student.objects.values_list('id', flat=True).filter(school_id=student['school_id'], completed=True)
+#       school_list = Student.objects.values_list('id', flat=True).filter(school=student['school'], completed=True)
 #     except:
 #       return 'School ID is not in database'
 
@@ -125,13 +125,13 @@ class School(models.Model):
 #         question_id = 'p' + str(page) + 'q' + str(question)
 
 #         try:
-#           answer_list = self.values_list(question_id).filter(student_id__in=school_list)
+#           answer_list = self.values_list(question_id).filter(uid__in=school_list)
 #         except:
 #           # return 'Question ID is not in the database'
 #           continue
 
 #         try:
-#           student_answer = answer_list.filter(student_id=student_id).get()
+#           student_answer = answer_list.filter(uid=uid).get()
 #         except:
 #           return 'No Answer for that Student ID'
 
@@ -147,21 +147,21 @@ class School(models.Model):
 #     return percent_list
 
 #   # return the percentage same for given question across all schools
-#   def overall_percentage_question(self, student_id, question_id):
+#   def overall_percentage_question(self, uid, question_id):
 #     try:
-#       completed = Student.objects.values_list('completed', flat=True).filter(id=student_id).get()
+#       completed = Student.objects.values_list('completed', flat=True).filter(id=uid).get()
 #       if not completed:
 #         return 'Student has not completed the survey'
 #     except:
 #       return 'Student ID is not in the database'
 
 #     try:
-#       answer_list = self.values_list(question_id).filter(student_id__completed=True)
+#       answer_list = self.values_list(question_id).filter(uid__completed=True)
 #     except:
 #       return 'Question ID is not in the database'
 
 #     try:
-#       student_answer = answer_list.filter(student_id=student_id).get()
+#       student_answer = answer_list.filter(uid=uid).get()
 #     except:
 #       return 'No Answer for that Student ID'
 
@@ -175,26 +175,26 @@ class School(models.Model):
 #     return student_total / total_answers
 
 #   # return the percentage same for given question across participant's school
-#   def school_percentage_question(self, student_id, question_id):
+#   def school_percentage_question(self, uid, question_id):
 #     try:
-#       student = Student.objects.values('completed', 'school_id').filter(id=student_id).get()
+#       student = Student.objects.values('completed', 'school').filter(id=uid).get()
 #       if not student['completed']:
 #         return 'Student has not completed the survey'
 #     except:
 #       return 'Student ID is not in the database'
 
 #     try:
-#       school_list = Student.objects.values_list('id', flat=True).filter(school_id=student['school_id'], completed=True)
+#       school_list = Student.objects.values_list('id', flat=True).filter(school=student['school'], completed=True)
 #     except:
 #       return 'School ID is not in database'
 
 #     try:
-#       answer_list = self.values_list(question_id).filter(student_id__in=school_list)
+#       answer_list = self.values_list(question_id).filter(uid__in=school_list)
 #     except:
 #       return 'Question ID is not in the database'
 
 #     try:
-#       student_answer = answer_list.filter(student_id=student_id).get()
+#       student_answer = answer_list.filter(uid=uid).get()
 #     except:
 #       return 'No Answer for that Student ID'
 
@@ -208,7 +208,7 @@ class School(models.Model):
 #     return student_total / total_answers
 
 # class ResultSet(models.Model):
-#   student_id = models.ForeignKey(Student, db_index = True)
+#   uid = models.ForeignKey(Student, db_index = True)
 #   p1q1 = models.CharField(max_length=20, null=True)
 #   p1q2 = models.CharField(max_length=20, null=True)
 #   p1q3 = models.CharField(max_length=20, null=True)
