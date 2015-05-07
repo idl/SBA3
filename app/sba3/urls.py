@@ -10,8 +10,7 @@ urlpatterns = [
   url(r'^$', Sba3Views.public_index, name='public_index'),
 
   url(r'^admin/login$', AdminViews.public_login, name='public_admin_login'),
-
-  url(r'^survey/(?P<school_id>\d{1,3})/(?P<student_uid>[a-z0-9]{1,24})/page/(?P<page_num>\d{1,2})$', SurveyViews.questions, name='survey_questions'),
+  url(r'^survey/(?P<school_id>\d{1,3})/(?P<student_uid>[A-Za-z0-9]{1,24})/page/(?P<page_num>\d{1,2})$', SurveyViews.questions, name='survey_questions'),
   url(r'^survey/begin$', SurveyViews.public_begin, name='public_survey_begin'),
   url(r'^survey/next$', SurveyViews.next, name='survey_next'),
   url(r'^survey/continue$', SurveyViews.public_continue, name='public_survey_continue'),

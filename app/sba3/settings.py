@@ -120,5 +120,7 @@ STATIC_URL = '/static/'
 # Bootstrap3 Package settings
 BOOTSTRAP3 = {
   'css_url': '/static/css/bootstrap3-theme-lumen.css',
+  'success_css_class': '',
+  'error_css_class': ''
 }
 
