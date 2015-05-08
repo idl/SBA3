@@ -1,23 +1,22 @@
+import datetime
 from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.validators import EmailValidator
 from django.core.mail import send_mail
 from django.template import RequestContext
-from django.contrib.auth import login, logout, authenticate, get_user_model
+from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
+from .forms import AdminLoginForm
+# from .models import User
 
-from .forms import *
-from sba3.models import School, SchoolUid, Student, AnswerSet
-from .models import User
 
-import datetime
+def public_login(request):
+  context = {
+    'admin_login_form': AdminLoginForm(),
+  }
+  return render(request, "admin_custom/public_login.html", context)
 
-Users = get_user_model()
-
-# @login_required(redirect_field_name='')
-def admin_home(request):
-  return render(request, 'admin_custom/admin_home.html')
 
 
 # @login_required(redirect_field_name='')

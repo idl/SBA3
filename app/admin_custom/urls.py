@@ -1,8 +1,8 @@
 from django.conf.urls import patterns, url, include
+from . import views as AdminViews
 
-urlpatterns = patterns('admin_custom.views',
-  url(r'^/?$', 'admin_home', name='admin_home'),
-  # url(r'^/login$', 'login_view', name='login_view'),
+urlpatterns = [
+  url(r'^login$', AdminViews.public_login, name='public_admin_login'),
   # url(r'^/logout$', 'logout_view', name='logout_view'),
   # url(r'^/users$', 'users', name='users'),
   # url(r'^/registeradmin$', 'register_admin', name='register_admin'),
@@ -19,4 +19,4 @@ urlpatterns = patterns('admin_custom.views',
   # # url(r'^/data/(?P<school_id>[0-9]{1,2})$', 'survey_data_school', name='school_surveys'),
   # url(r'^/data/(?P<school_id>[0-9]{1,2})/viewall', 'survey_data_school_aggregate', name='school_data_aggregate'),
   # url(r'^/data/(?P<school_id>[0-9]{1,2})/(?P<student_id>[0-9]{1,2})$', 'survey_data_school_individual', name='school_student_data'),
-)
+]
