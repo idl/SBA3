@@ -1,3 +1,5 @@
+import json
+from collections import OrderedDict as ODict
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import messages
@@ -13,7 +15,7 @@ from .forms.questions_page_8 import QuestionsPage8Form
 from .forms.questions_page_9 import QuestionsPage9Form
 from .forms.questions_page_10 import QuestionsPage10Form
 from .forms.questions_page_11 import QuestionsPage11Form
-from .models import Student, School, Uid
+from .models import Student, School, Uid, ResultSet
 from django.contrib.auth.decorators import user_passes_test
 
 forms = {
@@ -65,12 +67,25 @@ def public_continue(request):
 def questions(request, school_id, student_uid, page_num):
   context = {}
 
-  # for q_num in range(1, num_questions_on_page[page_num]+1):
-  #   if ResultSet for this page is empty
-  #     redirect to this page with page_num=page_num-1
+  if int(page_num) > 11 or int(page_num) < 1:
+    return redirect('survey_questions', school_id, student_uid, 11)
 
-  if request.session.get('student_uid') != student_uid or request.session.get('school_id') != school_id:
-    print "doesn't match session"
+  if int(page_num) is not 1:
+    rs = Student.objects.filter(
+      school__id=school_id,
+      uid=Uid.objects.get(uid=student_uid)
+    ).get().result_set
+    if getattr(rs, 'p'+str(page_num)) is None:
+      return redirect('survey_questions', school_id, student_uid, int(page_num)-1)
+    for q_num in range(1, num_questions_on_page[page_num]+1):
+      if json.loads(getattr(rs, 'p'+str(page_num)))['q'+str(q_num)] is None:
+        return redirect('survey_questions', school_id, student_uid, int(page_num)-1)
+
+  # student can only access the survey with their own credentials which are set
+  # in the session when they begin survey
+  if request.session.get('student_uid') != student_uid or request.session.get('school_id') != int(school_id):
+    messages.error(request, 'Could not process your request.')
+    return redirect('public_survey_begin')
 
   try:
     school = School.objects.get(id=school_id)
@@ -105,8 +120,18 @@ def next(request):
   next_page_num = int(request.session.get('next_page_num'))
   school_id = request.session.get('school_id')
   student_uid = request.session.get('student_uid')
-  for q in range(1, num_questions_on_page[str(next_page_num)]+1):
-    res = request.session.get('page_results_q'+str(q))
+  if next_page_num is 1:
+    return redirect('survey_questions', school_id, student_uid, next_page_num)
+  student = Student.objects.filter(
+    school__id=school_id,
+    uid=Uid.objects.get(uid=student_uid)
+  ).get()
+  rs = student.result_set
+  res_set_tmp = {}
+  for q_num in range(1, num_questions_on_page[str(next_page_num-1)]+1):
+    res_set_tmp['q'+str(q_num)] = request.session.get('page_results_q'+str(q_num))
+  setattr(rs, 'p'+str(next_page_num-1), json.dumps(res_set_tmp))
+  rs.save()
   return redirect('survey_questions', school_id, student_uid, next_page_num)
 
 def previous(request):
@@ -130,19 +155,33 @@ def public_begin(request):
     context['survey_begin_form'] = form
     student = None
     try:
-      # print Uid.objects.filter(uid=student_uid)
       student = Student.objects.get(
-        uid=Uid.objects.get(uid=student_uid), school=School.objects.get(id=school_id)
-      )
+        uid=Uid.objects.get(uid=student_uid),
+        school=School.objects.get(id=school_id))
     except:
-      messages.error(request, 'The user ID "'+student_uid+'" is not registered with this school.')
+      messages.error(request,
+        'The user ID "'+student_uid+'" is not registered with this school.')
       return render(request, "survey/survey_begin.html", context)
     if student.completed:
       messages.error(request, 'The student "'+student_uid+'" has already completed the survey.')
       return render(request, "survey/survey_begin.html", context)
+    if student.has_started_survey():
+      messages.error(request, 'The student "'+student_uid+'" has already started the survey. Please click the "Go Back" button and choose the "Continue Survey')
+      return render(request, "survey/survey_begin.html", context)
     request.session['student_uid'] = student_uid
     request.session['school_id'] = school_id
-    print "STUDENT: ", student
+    result_set = None
+    if student.result_set is None:
+      result_set = ResultSet()
+      for page_num in range(1, 12):
+        res_set_outline = {}
+        for q_num in range(1, num_questions_on_page[str(page_num)]+1):
+          res_set_outline['q'+str(q_num)] = None
+        # result_set.p+str(page_num) = json.dumps(res_set_outline)
+        setattr(result_set, 'p'+str(page_num), json.dumps(res_set_outline))
+      result_set.save()
+      student.result_set = result_set
+    student.save()
     return redirect('survey_questions', school_id, student_uid, 1)
   return render(request, "survey/survey_begin.html", context)
 
