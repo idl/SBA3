@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
+import re
 from django import forms
 from django.template.defaultfilters import safe
 from ..models import School
+from ..conditions import if_grad
 
 questions = {
   'q1': 'Are you currently attending tutoring sessions?',
@@ -76,21 +78,7 @@ choices = {
 }
 
 skips = {
-  # 'p3q2': {
-  #   'conditions': [ if_tutoring ]
-  # },
-  # 'p3q3': {
-  #   'conditions': [ if_not_tutoring ]
-  # },
-  # 'p3q4': {
-  #   'conditions': [ if_not_tutoring ]
-  # },
-  # 'p3q5': {
-  #   'conditions': [ if_not_grad ]
-  # },
-  # 'p3q6': {
-  #   'conditions': [ if_on_campus_class ]
-  # }
+  if_grad: [ 'p3q5' ]
 }
 
 class QuestionsPage3Form(forms.Form):
@@ -103,3 +91,14 @@ class QuestionsPage3Form(forms.Form):
   q7 = forms.ChoiceField(choices=choices['q7'], label=questions['q7'], widget=forms.RadioSelect)
   q8 = forms.ChoiceField(choices=choices['q8'], label=questions['q8'], widget=forms.RadioSelect)
   q9 = forms.ChoiceField(choices=choices['q9'], label=questions['q9'], widget=forms.RadioSelect)
+
+  def __init__(self, post_data=None, session=None):
+    super(forms.Form, self).__init__(post_data)
+    if post_data and session:
+      result_set = {}
+      for cond in skips.keys():
+        if cond(session):
+          for q in skips[cond]:
+            print "cond true:", cond, "      hiding", q
+            q_num = re.compile('^p\d{1,2}(q\d{1,2})$').match(q).group(1)
+            self.fields[q_num].widget.attrs['class'] = 'q_debug'

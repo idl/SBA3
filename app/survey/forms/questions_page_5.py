@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
+import re
 from django import forms
 from django.template.defaultfilters import safe
 from ..models import School
+from ..conditions import if_grad
 
 questions = {
   'q1': '<span style="font-size:24px;font-weight: 300;">How important to your academic success are the following:</span><br><br>Membership in Student Organization',
@@ -108,7 +110,35 @@ choices = {
     ('veryimportant', 'Very Important'),
     ('notsure', 'Not Sure'),
     ('nocomment', 'No Comment'),
+  ),
+  'q12': (
+    ('notimportant', 'Not At All Important'),
+    ('someimportant', 'Somewhat Important'),
+    ('important', 'Important'),
+    ('veryimportant', 'Very Important'),
+    ('notsure', 'Not Sure'),
+    ('nocomment', 'No Comment'),
+  ),
+  'q13': (
+    ('notimportant', 'Not At All Important'),
+    ('someimportant', 'Somewhat Important'),
+    ('important', 'Important'),
+    ('veryimportant', 'Very Important'),
+    ('notsure', 'Not Sure'),
+    ('nocomment', 'No Comment'),
+  ),
+  'q14': (
+    ('notimportant', 'Not At All Important'),
+    ('someimportant', 'Somewhat Important'),
+    ('important', 'Important'),
+    ('veryimportant', 'Very Important'),
+    ('notsure', 'Not Sure'),
+    ('nocomment', 'No Comment'),
   )
+}
+
+skips = {
+  if_grad: [ 'p5q2', 'p5q7', 'p5q8', 'p5q9' ]
 }
 
 class QuestionsPage5Form(forms.Form):
@@ -123,3 +153,17 @@ class QuestionsPage5Form(forms.Form):
   q9 = forms.ChoiceField(choices=choices['q9'], label=questions['q9'], widget=forms.RadioSelect)
   q10 = forms.ChoiceField(choices=choices['q10'], label=questions['q10'], widget=forms.RadioSelect)
   q11 = forms.ChoiceField(choices=choices['q11'], label=questions['q11'], widget=forms.RadioSelect)
+  q12 = forms.ChoiceField(choices=choices['q12'], label=questions['q12'], widget=forms.RadioSelect)
+  q13 = forms.ChoiceField(choices=choices['q13'], label=questions['q13'], widget=forms.RadioSelect)
+  q14 = forms.ChoiceField(choices=choices['q14'], label=questions['q14'], widget=forms.RadioSelect)
+
+  def __init__(self, post_data=None, session=None):
+    super(forms.Form, self).__init__(post_data)
+    if post_data and session:
+      result_set = {}
+      for cond in skips.keys():
+        if cond(session):
+          for q in skips[cond]:
+            print "cond true:", cond, "      hiding", q
+            q_num = re.compile('^p\d{1,2}(q\d{1,2})$').match(q).group(1)
+            self.fields[q_num].widget.attrs['class'] = 'q_debug'

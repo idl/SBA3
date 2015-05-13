@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
+import re
 from django import forms
 from django.template.defaultfilters import safe
 from ..models import School
+from ..conditions import if_grad
 
 questions = {
   'q1': 'Do you belong to any student organizations?',
@@ -47,6 +49,9 @@ choices = {
   ),
 }
 
+skips = {
+}
+
 class QuestionsPage9Form(forms.Form):
   q1 = forms.ChoiceField(choices=choices['q1'], label=questions['q1'], widget=forms.RadioSelect)
   q2 = forms.IntegerField(label=questions['q2'], min_value=-2, max_value=168)
@@ -59,3 +64,14 @@ class QuestionsPage9Form(forms.Form):
   q9 = forms.IntegerField(label=questions['q9'], min_value=-2, max_value=24)
   q10 = forms.IntegerField(label=questions['q10'], min_value=-2, max_value=7)
   q11 = forms.IntegerField(label=questions['q11'], min_value=-2, max_value=7)
+
+  def __init__(self, post_data=None, session=None):
+    super(forms.Form, self).__init__(post_data)
+    if post_data and session:
+      result_set = {}
+      for cond in skips.keys():
+        if cond(session):
+          for q in skips[cond]:
+            print "cond true:", cond, "      hiding", q
+            q_num = re.compile('^p\d{1,2}(q\d{1,2})$').match(q).group(1)
+            self.fields[q_num].widget.attrs['class'] = 'q_debug'

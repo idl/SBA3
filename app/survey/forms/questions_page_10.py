@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
+import re
 from django import forms
 from django.template.defaultfilters import safe
 from ..models import School
+from ..conditions import if_grad
 
 questions = {
   'q1': safe('<span style="font-size:24px;font-weight: 300;">For the next three items, please indicate, on average, how much time you spend per day engaged in the following activities:</span><br><br>Social Media (Facebook, Twitter, Instagram…)<br><br>Hours:'),
@@ -13,6 +15,9 @@ questions = {
   'q10': safe('<span style="font-size:24px;font-weight: 300;">In your opinion, what are the top three reasons students succeed in college?</span><br><br>Most Important Reason:'),
   'q11': 'Second Most Important Reason:',
   'q12': 'Third Most Important Reason:',
+}
+
+skips = {
 }
 
 
@@ -29,3 +34,14 @@ class QuestionsPage10Form(forms.Form):
   q10 = forms.CharField(label=questions['q10'])
   q11 = forms.CharField(label=questions['q11'])
   q12 = forms.CharField(label=questions['q12'])
+
+  def __init__(self, post_data=None, session=None):
+    super(forms.Form, self).__init__(post_data)
+    if post_data and session:
+      result_set = {}
+      for cond in skips.keys():
+        if cond(session):
+          for q in skips[cond]:
+            print "cond true:", cond, "      hiding", q
+            q_num = re.compile('^p\d{1,2}(q\d{1,2})$').match(q).group(1)
+            self.fields[q_num].widget.attrs['class'] = 'q_debug'

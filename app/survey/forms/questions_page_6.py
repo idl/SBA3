@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
+import re
 from django import forms
+from django.template.defaultfilters import safe
 from ..models import School
+from ..conditions import if_grad
 
 questions = {
   'q1': 'Do you participate in programs that help students transition from high school to college?',
@@ -12,7 +15,7 @@ questions = {
   'q7': 'Do you parents/guardians give you gifts or money for making good grades?',
   'q8': 'Do your friends encourage you to do well in college?',
   'q9': 'Do you receive encouragement from your church family or community to stay in school?',
-  'q10': 'My professors expect me to do well in most classes. ',
+  'q10': safe('<span style="font-size:24px;font-weight: 300;">For the next 3 questions, to what extend do you agree with each statement?</span><br><br>My professors expect me to do well in most classes. '),
   'q11': 'My professors make me feel good about my academic work in class.',
   'q12': 'Earning a college degree is the best path to financial security.',
 }
@@ -102,6 +105,10 @@ choices = {
   )
 }
 
+skips = {
+  if_grad: [ 'p6q1', 'p6q2', 'p6q4', 'p6q6', 'p6q7' ]
+}
+
 class QuestionsPage6Form(forms.Form):
   q1 = forms.ChoiceField(choices=choices['q1'], label=questions['q1'], widget=forms.RadioSelect)
   q2 = forms.ChoiceField(choices=choices['q2'], label=questions['q2'], widget=forms.RadioSelect)
@@ -115,3 +122,14 @@ class QuestionsPage6Form(forms.Form):
   q10 = forms.ChoiceField(choices=choices['q10'], label=questions['q10'], widget=forms.RadioSelect)
   q11 = forms.ChoiceField(choices=choices['q11'], label=questions['q11'], widget=forms.RadioSelect)
   q12 = forms.ChoiceField(choices=choices['q12'], label=questions['q12'], widget=forms.RadioSelect)
+
+  def __init__(self, post_data=None, session=None):
+    super(forms.Form, self).__init__(post_data)
+    if post_data and session:
+      result_set = {}
+      for cond in skips.keys():
+        if cond(session):
+          for q in skips[cond]:
+            print "cond true:", cond, "      hiding", q
+            q_num = re.compile('^p\d{1,2}(q\d{1,2})$').match(q).group(1)
+            self.fields[q_num].widget.attrs['class'] = 'q_debug'
