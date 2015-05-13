@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
+import re
 from django import forms
 from django.template.defaultfilters import safe
 from ..models import School
+from ..conditions import if_grad
 
 questions = {
   'q1': safe('What is your age?<br>(<code>-1</code> for Not Sure, <code>-2</code> for No Comment)'),
@@ -113,6 +115,10 @@ choices = {
   ),
 }
 
+skips = {
+  if_grad: [ 'p11q12' ]
+}
+
 class QuestionsPage11Form(forms.Form):
   q1 = forms.IntegerField(label=questions['q1'], min_value=-2, max_value=100)
   q2 = forms.ChoiceField(choices=choices['q2'], label=questions['q2'], widget=forms.RadioSelect)
@@ -128,3 +134,14 @@ class QuestionsPage11Form(forms.Form):
   q12 = forms.ChoiceField(choices=choices['q12'], label=questions['q12'], widget=forms.RadioSelect)
   q13 = forms.ChoiceField(choices=choices['q13'], label=questions['q13'], widget=forms.RadioSelect)
   q14 = forms.ChoiceField(choices=choices['q14'], label=questions['q14'], widget=forms.RadioSelect)
+
+  def __init__(self, post_data=None, session=None):
+    super(forms.Form, self).__init__(post_data)
+    if post_data and session:
+      result_set = {}
+      for cond in skips.keys():
+        if cond(session):
+          for q in skips[cond]:
+            print "cond true:", cond, "      hiding", q
+            q_num = re.compile('^p\d{1,2}(q\d{1,2})$').match(q).group(1)
+            self.fields[q_num].widget.attrs['class'] = 'q_debug'

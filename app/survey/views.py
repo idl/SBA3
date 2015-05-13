@@ -17,6 +17,7 @@ from .forms.questions_page_10 import QuestionsPage10Form
 from .forms.questions_page_11 import QuestionsPage11Form
 from .models import Student, School, Uid, ResultSet
 from .constants import num_questions_on_page, num_questions_so_far
+from .conditions import add_condition_questions_to_session
 
 
 forms = {
@@ -82,7 +83,7 @@ def questions(request, school_id, student_uid, page_num):
     return redirect('survey_next')
   if rs.all_questions_answered(page_num):
     res_set = json.loads(getattr(rs, 'p'+str(page_num)))
-    form = forms[page_num](res_set)
+    form = forms[page_num](res_set, session=request.session)
     context['questions_page_form'] = form
   else:
     context['questions_page_form'] = forms[page_num]()
@@ -113,8 +114,10 @@ def next(request):
   rs = student.result_set
   res_set_tmp = {}
   for q_num in range(1, num_questions_on_page[str(next_page_num-1)]+1):
-    res_set_tmp['q'+str(q_num)] = request.session.get('page_results_q'+str(q_num))
+    ans = request.session.get('page_results_q'+str(q_num))
+    res_set_tmp['q'+str(q_num)] = ans
   json_res_set = json.dumps(res_set_tmp)
+  add_condition_questions_to_session(res_set_tmp, next_page_num-1, request.session)
   setattr(rs, 'p'+str(next_page_num-1), json_res_set)
   rs.save()
   return redirect('survey_questions', school_id, student_uid, next_page_num)

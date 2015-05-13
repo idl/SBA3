@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
+import re
 from django import forms
 from django.template.defaultfilters import safe
 from ..models import School
+from ..conditions import if_grad
 
 questions = {
-  'q1': 'What Letter Grade do YOU expect to make at MSU?',
+  'q1': safe('<span style="font-size:24px;font-weight: 300;">Overall, what letter grade do the following people expect you to make?</span><br><br>What Letter Grade do YOU expect to make at MSU?'),
   'q2': 'What Letter Grade do your PARENT(S)/ GUARDIAN(S) expect you to make at MSU?',
   'q3': 'What Letter Grade do your TEACHERS/ PROFESSORS expect you to make at MSU?',
   'q4': 'What Letter Grade do your CLOSE FRIENDS expect you to make at MSU?',
@@ -64,6 +66,10 @@ choices = {
   ),
 }
 
+skips = {
+  if_grad: [ 'p7q2', 'p7q9' ]
+}
+
 class QuestionsPage7Form(forms.Form):
   q1 = forms.ChoiceField(choices=choices['q1'], label=questions['q1'], widget=forms.RadioSelect)
   q2 = forms.ChoiceField(choices=choices['q2'], label=questions['q2'], widget=forms.RadioSelect)
@@ -74,3 +80,14 @@ class QuestionsPage7Form(forms.Form):
   q7 = forms.FloatField(label=questions['q7'], min_value=-2, max_value=5, widget=forms.NumberInput(attrs={'step':'0.1'}))
   q8 = forms.FloatField(label=questions['q8'], min_value=-2, max_value=5, widget=forms.NumberInput(attrs={'step':'0.1'}))
   q9 = forms.IntegerField(label=questions['q9'], min_value=-2, max_value=50)
+
+  def __init__(self, post_data=None, session=None):
+    super(forms.Form, self).__init__(post_data)
+    if post_data and session:
+      result_set = {}
+      for cond in skips.keys():
+        if cond(session):
+          for q in skips[cond]:
+            print "cond true:", cond, "      hiding", q
+            q_num = re.compile('^p\d{1,2}(q\d{1,2})$').match(q).group(1)
+            self.fields[q_num].widget.attrs['class'] = 'q_debug'

@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
+import re
 from django import forms
+from django.template.defaultfilters import safe
 from ..models import School
+from ..conditions import if_grad
 
 questions = {
   'q1': 'Did you attend a Student Orientation session before starting college?',
@@ -8,7 +11,7 @@ questions = {
   'q3': 'Do you share your grades with your parent(s) or legal guardian(s)?',
   'q4': 'Do your parents (or guardians) require you to maintain a certain GPA in college?',
   'q5': 'Do you believe you were academically prepared for college?',
-  'q6': 'I should have read more books before college.',
+  'q6': '<span style="font-size:24px;font-weight: 300;">Given your academic performance in college, to what extend do you agree with the following statements?</span><br><br>I should have read more books before college.',
   'q7': 'I should have taken more math courses in high school.',
   'q8': 'I should have taken more science courses in high school.',
   'q9': 'I should have paid more attention in classes.',
@@ -113,16 +116,31 @@ choices = {
   ),
 }
 
+skips = {
+  if_grad: [ 'p8q2', 'p8q3', 'p8q4' ]
+}
+
 class QuestionsPage8Form(forms.Form):
   q1 = forms.ChoiceField(choices=choices['q1'], label=questions['q1'], widget=forms.RadioSelect)
   q2 = forms.ChoiceField(choices=choices['q2'], label=questions['q2'], widget=forms.RadioSelect)
   q3 = forms.ChoiceField(choices=choices['q3'], label=questions['q3'], widget=forms.RadioSelect)
   q4 = forms.ChoiceField(choices=choices['q4'], label=questions['q4'], widget=forms.RadioSelect)
   q5 = forms.ChoiceField(choices=choices['q5'], label=questions['q5'], widget=forms.RadioSelect)
-  q6 = forms.ChoiceField(choices=choices['q6'], label=questions['q6'], widget=forms.RadioSelect)
+  q6 = forms.ChoiceField(choices=choices['q6'], label=safe(questions['q6']), widget=forms.RadioSelect)
   q7 = forms.ChoiceField(choices=choices['q7'], label=questions['q7'], widget=forms.RadioSelect)
   q8 = forms.ChoiceField(choices=choices['q8'], label=questions['q8'], widget=forms.RadioSelect)
   q9 = forms.ChoiceField(choices=choices['q9'], label=questions['q9'], widget=forms.RadioSelect)
   q10 = forms.ChoiceField(choices=choices['q10'], label=questions['q10'], widget=forms.RadioSelect)
   q11 = forms.ChoiceField(choices=choices['q11'], label=questions['q11'], widget=forms.RadioSelect)
   q12 = forms.ChoiceField(choices=choices['q12'], label=questions['q12'], widget=forms.RadioSelect)
+
+  def __init__(self, post_data=None, session=None):
+    super(forms.Form, self).__init__(post_data)
+    if post_data and session:
+      result_set = {}
+      for cond in skips.keys():
+        if cond(session):
+          for q in skips[cond]:
+            print "cond true:", cond, "      hiding", q
+            q_num = re.compile('^p\d{1,2}(q\d{1,2})$').match(q).group(1)
+            self.fields[q_num].widget.attrs['class'] = 'q_debug'

@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
+import re
 from django import forms
 from django.template.defaultfilters import safe # http://stackoverflow.com/questions/16782116/django-form-field-label-as-html
 from ..models import School
+from ..conditions import if_on_campus_class
 
 questions = {
   'q1': 'While growing up, did you have a mentor?',
@@ -71,15 +73,7 @@ choices = {
 }
 
 skips = {
-  'p2q3': {
-    # 'conditions': [ if_on_campus_class ]
-  },
-  'p2q6': {
-    # 'conditions': [ if_on_campus_class ]
-  },
-  'p2q11': {
-    # 'conditions': [ if_on_campus_class ]
-  }
+  # if_on_campus_class: [ 'p2q3', 'p2q6', 'p2q11' ]
 }
 
 class QuestionsPage2Form(forms.Form):
@@ -94,3 +88,14 @@ class QuestionsPage2Form(forms.Form):
   q9 = forms.IntegerField(label=questions['q9'], min_value=-2, max_value=24)
   q10 = forms.IntegerField(label=questions['q10'], min_value=-2, max_value=24)
   q11 = forms.IntegerField(label=questions['q11'], min_value=-2, max_value=24)
+
+  def __init__(self, post_data=None, session=None):
+    super(forms.Form, self).__init__(post_data)
+    if post_data and session:
+      result_set = {}
+      for cond in skips.keys():
+        if cond(session):
+          for q in skips[cond]:
+            print "cond true:", cond, "      hiding", q
+            q_num = re.compile('^p\d{1,2}(q\d{1,2})$').match(q).group(1)
+            self.fields[q_num].widget.attrs['class'] = 'q_debug'

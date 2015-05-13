@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
+import re
 from django import forms
 from ..models import School
 from ..constants import num_questions_on_page
-from ..conditions import if_not_grad, if_distance
+from ..conditions import if_grad
 
 questions = {
   'q1': 'What is your class status?',
@@ -179,15 +180,7 @@ choices = {
 }
 
 skips = {
-  'p1q3': {
-    'hide_conditions': [ if_not_grad ]
-  },
-  'p1q5': {
-    'hide_conditions': [ if_distance ]
-  },
-  'p1q7': {
-    'hide_conditions': [ if_not_grad ]
-  }
+  if_grad: [ 'p1q3', 'p1q7' ]
 }
 
 
@@ -204,15 +197,13 @@ class QuestionsPage1Form(forms.Form):
   q10 = forms.ChoiceField(choices=choices['q10'], label=questions['q10'], widget=forms.RadioSelect)
   q11 = forms.ChoiceField(choices=choices['q11'], label=questions['q11'], widget=forms.RadioSelect)
 
-  def __init__(self, post_data=None):
+  def __init__(self, post_data=None, session=None):
     super(forms.Form, self).__init__(post_data)
-    answers = {}
-    if post_data:
-      print "Post data: ", post_data
-      answers['p1q1'] = post_data['q1']
-
-    print '************************'
-    self.fields['q1'].widget.attrs['class'] = 'q_debug'
-    print '************************'
-    # print getattr(self, 'p1')
-
+    if post_data and session:
+      result_set = {}
+      for cond in skips.keys():
+        if cond(session):
+          for q in skips[cond]:
+            print "cond true:", cond, "      hiding", q
+            q_num = re.compile('^p\d{1,2}(q\d{1,2})$').match(q).group(1)
+            self.fields[q_num].widget.attrs['class'] = 'q_debug'
