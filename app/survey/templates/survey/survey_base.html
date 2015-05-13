@@ -10,6 +10,19 @@
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
   {% bootstrap_css %}
+  <style>
+    .q_debug:before {
+      padding: 4px 20px;
+      content: 'HIDDEN';
+      width: 20px;
+      height: 20px;
+      background: red;
+      color: white;
+      position: relative;
+      z-index: 99;
+      left: -8px;
+    }
+  </style>
 </head>
 <body>
 <!--[if lt IE 8]>

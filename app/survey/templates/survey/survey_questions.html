@@ -65,40 +65,40 @@
 {% endblock %}
 
 {% block begin_survey_modal %}
-  {% if no_errors %}
-    {% if is_first_page %}
-      <div class="modal fade" id="begin-survey-modal-message">
-        <div class="modal-dialog modal-sm">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">Hello, {{ student_uid }}.</h4>
-            </div>
-            <div class="modal-body">
-              <p class="lead">You have been emailed a passcode and a link so you can continue this survey at a later time, if necessary.</p>
-              <p><i>Your continuation key is shown at the bottom of this page.</i></p>
-            </div>
-            <div class="modal-footer">
-              <button class="btn btn-success btn-block" id='begin-survey-modal-message-hide'>
-                Ok, Start Survey
-              </button>
-            </div>
-          </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-      </div><!-- /.modal -->
-    {% endif %}
+  {% if show_modal %}
+    <div class="modal fade" id="begin-survey-modal-message">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Hello, {{ student_uid }}.</h4>
+          </div>
+          <div class="modal-body">
+            <p class="lead">You have been emailed a passcode and a link so you can continue this survey at a later time, if necessary.</p>
+            <p class="text-center">
+              <b>Continuation Key:</b><br>
+              <span class="lead">{{ continue_pass }}</span>
+            </p>
+            <p><small><i>Your continuation key is also shown at the bottom of this page.</i></small></p>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-success btn-block" id='begin-survey-modal-message-hide'>
+              Ok, Start Survey
+            </button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
   {% endif %}
 {% endblock %}
 
 {% block begin_survey_modal_js %}
-  {% if no_errors %}
-    {% if is_first_page %}
-      <script>
-        $modal = $('#begin-survey-modal-message');
-        $modal.modal('show');
-        $('#begin-survey-modal-message-hide').click(function(e) {
-          $modal = $('#begin-survey-modal-message').modal('hide');
-        });
-      </script>
-    {% endif %}
+  {% if show_modal %}
+    <script>
+      $modal = $('#begin-survey-modal-message');
+      $modal.modal('show');
+      $('#begin-survey-modal-message-hide').click(function(e) {
+        $modal = $('#begin-survey-modal-message').modal('hide');
+      });
+    </script>
   {% endif %}
 {% endblock %}
