@@ -13,8 +13,8 @@ urlpatterns = [
   url(r'^survey/begin$', SurveyViews.public_begin, name='public_survey_begin'),
   url(r'^survey/next$', SurveyViews.next, name='survey_next'),
   url(r'^survey/continue$', SurveyViews.public_continue, name='public_survey_continue'),
+  url(r'^survey/submit$', SurveyViews.submit, name='survey_submit'),
   url(r'^survey/clear$', SurveyViews.clear, name='clear'),
-
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:

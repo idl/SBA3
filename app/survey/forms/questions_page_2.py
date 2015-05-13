@@ -70,6 +70,18 @@ choices = {
   )
 }
 
+skips = {
+  'p2q3': {
+    # 'conditions': [ if_on_campus_class ]
+  },
+  'p2q6': {
+    # 'conditions': [ if_on_campus_class ]
+  },
+  'p2q11': {
+    # 'conditions': [ if_on_campus_class ]
+  }
+}
+
 class QuestionsPage2Form(forms.Form):
   q1 = forms.ChoiceField(choices=choices['q1'], label=questions['q1'], widget=forms.RadioSelect)
   q2 = forms.ChoiceField(choices=choices['q2'], label=questions['q2'], widget=forms.RadioSelect)

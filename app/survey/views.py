@@ -1,8 +1,8 @@
 import json
-from collections import OrderedDict as ODict
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import messages
+from django.contrib.auth.decorators import user_passes_test
 from .forms.begin_survey_form import SurveyBeginForm
 from .forms.questions_page_1 import QuestionsPage1Form
 from .forms.questions_page_2 import QuestionsPage2Form
@@ -16,7 +16,8 @@ from .forms.questions_page_9 import QuestionsPage9Form
 from .forms.questions_page_10 import QuestionsPage10Form
 from .forms.questions_page_11 import QuestionsPage11Form
 from .models import Student, School, Uid, ResultSet
-from django.contrib.auth.decorators import user_passes_test
+from .constants import num_questions_on_page, num_questions_so_far
+
 
 forms = {
   '1': QuestionsPage1Form,
@@ -32,54 +33,28 @@ forms = {
   '11': QuestionsPage11Form,
 }
 
-num_questions_on_page = {
-  '1': 11,
-  '2': 11,
-  '3': 9,
-  '4': 11,
-  '5': 11,
-  '6': 12,
-  '7': 9,
-  '8': 12,
-  '9': 11,
-  '10': 12,
-  '11': 14,
-  'total': 123
-}
-
-num_questions_so_far = {
-  '1': 0,
-  '2': 11,
-  '3': 22,
-  '4': 31,
-  '5': 42,
-  '6': 56,
-  '7': 68,
-  '8': 77,
-  '9': 89,
-  '10': 102,
-  '11': 114
-}
-
 def public_continue(request):
   return render(request, "survey/survey_continue.html")
 
 def questions(request, school_id, student_uid, page_num):
   context = {}
 
+  #
   if int(page_num) > 11 or int(page_num) < 1:
     return redirect('survey_questions', school_id, student_uid, 11)
 
-  if int(page_num) is not 1:
-    rs = Student.objects.filter(
-      school__id=school_id,
-      uid=Uid.objects.get(uid=student_uid)
-    ).get().result_set
-    if getattr(rs, 'p'+str(page_num)) is None:
+  student = Student.objects.filter(
+    school__id=school_id,
+    uid=Uid.objects.get(uid=student_uid)
+  ).get()
+  rs = student.result_set
+
+  # if this page has questions that haven't been answered, redirect to
+  # the previous page (unless the previous page's questions ALL have
+  # been answered)
+  if int(page_num) > 1 and not rs.all_questions_answered(page_num):
+    if not rs.all_questions_answered(int(page_num)-1):
       return redirect('survey_questions', school_id, student_uid, int(page_num)-1)
-    for q_num in range(1, num_questions_on_page[page_num]+1):
-      if json.loads(getattr(rs, 'p'+str(page_num)))['q'+str(q_num)] is None:
-        return redirect('survey_questions', school_id, student_uid, int(page_num)-1)
 
   # student can only access the survey with their own credentials which are set
   # in the session when they begin survey
@@ -105,11 +80,20 @@ def questions(request, school_id, student_uid, page_num):
     for q_num in range(1, num_questions_on_page[page_num]+1):
       request.session['page_results_q'+str(q_num)] = request.POST.get('q'+str(q_num))
     return redirect('survey_next')
+  if rs.all_questions_answered(page_num):
+    res_set = json.loads(getattr(rs, 'p'+str(page_num)))
+    form = forms[page_num](res_set)
+    context['questions_page_form'] = form
+  else:
+    context['questions_page_form'] = forms[page_num]()
   context['student_uid'] = student_uid
   context['school_id'] = school_id
-  context['questions_page_form'] = forms[page_num]()
   context['page_num'] = int(page_num)
   context['previous_page_num'] = int(page_num)-1
+  if request.session.get('show_modal') and int(page_num) is 1:
+    context['show_modal'] = True
+    context['continue_pass'] = student.continue_pass
+    del request.session['show_modal']
   try:
     context['progress_percentage'] = "%0.0f" % (float(num_questions_so_far[page_num])/num_questions_on_page['total'] * 100)
   except:
@@ -130,12 +114,14 @@ def next(request):
   res_set_tmp = {}
   for q_num in range(1, num_questions_on_page[str(next_page_num-1)]+1):
     res_set_tmp['q'+str(q_num)] = request.session.get('page_results_q'+str(q_num))
-  setattr(rs, 'p'+str(next_page_num-1), json.dumps(res_set_tmp))
+  json_res_set = json.dumps(res_set_tmp)
+  setattr(rs, 'p'+str(next_page_num-1), json_res_set)
   rs.save()
   return redirect('survey_questions', school_id, student_uid, next_page_num)
 
-def previous(request):
-  return redirect('survey_questions')
+
+def submit(request):
+  return
 
 def clear(request):
   request.session.flush()
@@ -170,6 +156,7 @@ def public_begin(request):
       return render(request, "survey/survey_begin.html", context)
     request.session['student_uid'] = student_uid
     request.session['school_id'] = school_id
+    request.session['show_modal'] = True
     result_set = None
     if student.result_set is None:
       result_set = ResultSet()
@@ -177,6 +164,7 @@ def public_begin(request):
         res_set_outline = {}
         for q_num in range(1, num_questions_on_page[str(page_num)]+1):
           res_set_outline['q'+str(q_num)] = None
+        # equivalent:
         # result_set.p+str(page_num) = json.dumps(res_set_outline)
         setattr(result_set, 'p'+str(page_num), json.dumps(res_set_outline))
       result_set.save()

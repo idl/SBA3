@@ -1,7 +1,9 @@
 import hashlib
 import collections
+import json
 from django.db import models
 from jsonfield import JSONField
+from .constants import num_questions_on_page, num_questions_so_far
 
 class SchoolManager(models.Manager):
   def has_uid(self, uid):
@@ -186,25 +188,35 @@ class Uid(models.Model):
 
 class ResultSet(models.Model):
   load_kwargs = {'object_pairs_hook': collections.OrderedDict}
-  p1 = JSONField(load_kwargs=load_kwargs, null=True)
-  p2 = JSONField(load_kwargs=load_kwargs, null=True)
-  p3 = JSONField(load_kwargs=load_kwargs, null=True)
-  p4 = JSONField(load_kwargs=load_kwargs, null=True)
-  p5 = JSONField(load_kwargs=load_kwargs, null=True)
-  p6 = JSONField(load_kwargs=load_kwargs, null=True)
-  p7 = JSONField(load_kwargs=load_kwargs, null=True)
-  p8 = JSONField(load_kwargs=load_kwargs, null=True)
-  p9 = JSONField(load_kwargs=load_kwargs, null=True)
-  p10 = JSONField(load_kwargs=load_kwargs, null=True)
-  p11 = JSONField(load_kwargs=load_kwargs, null=True)
+  p1 = JSONField(load_kwargs=load_kwargs)
+  p2 = JSONField(load_kwargs=load_kwargs)
+  p3 = JSONField(load_kwargs=load_kwargs)
+  p4 = JSONField(load_kwargs=load_kwargs)
+  p5 = JSONField(load_kwargs=load_kwargs)
+  p6 = JSONField(load_kwargs=load_kwargs)
+  p7 = JSONField(load_kwargs=load_kwargs)
+  p8 = JSONField(load_kwargs=load_kwargs)
+  p9 = JSONField(load_kwargs=load_kwargs)
+  p10 = JSONField(load_kwargs=load_kwargs)
+  p11 = JSONField(load_kwargs=load_kwargs)
 
   # objects = ResultSetManager()
+
+  # returns Boolean - true if all answers on page are NOT None
+  def all_questions_answered(self, page_num):
+    page_res_set = json.loads(getattr(self, 'p'+str(page_num)))
+    all_questions_answered = True
+    for q_num in range(1, num_questions_on_page[str(page_num)]+1):
+      if page_res_set['q'+str(q_num)] is None:
+        all_questions_answered = False
+    return all_questions_answered
 
   def __unicode__(self):
     return 'ResultSet: ' + str(self.id)
 
   class Meta:
     db_table = 'ResultSet'
+
 
 
 

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from django import forms
 from ..models import School
+from ..constants import num_questions_on_page
+from ..conditions import if_not_grad, if_distance
 
 questions = {
   'q1': 'What is your class status?',
@@ -18,6 +20,7 @@ questions = {
 
 choices = {
   'q1': (
+    ('freshman', 'Freshman'),
     ('sophomore', 'Sophomore'),
     ('junior', 'Junior'),
     ('senior', 'Senior'),
@@ -31,78 +34,78 @@ choices = {
     ('nocomment', 'No Comment'),
     ('undecided', 'Undecided'),
     ('', '--------'),
-    ('accounting', 'Accounting Major'),
-    ('aerospaceengineering', 'Aerospace Engineering Major'),
-    ('agribusiness', 'Agribusiness Major'),
-    ('art', 'Art Major'),
-    ('agriengineering', 'Agricultural Engineering Technology and Business Major'),
-    ('agriinformation', 'Agricultural Information Science Major'),
-    ('agriculture', 'Agricultural Science Major'),
-    ('agronomy', 'Agronomy Major'),
-    ('dairyscience', 'Animal and Dairy Science Major'),
-    ('anthropology', 'Anthropology Major'),
-    ('architecture', 'Architecture Major'),
-    ('art', 'Art Major'),
-    ('biochemistry', 'Biochemistry Major'),
-    ('bioengineering', 'Biological Engineering Major'),
-    ('biology', 'Biological Sciences Major'),
-    ('building', 'Building Construction Science Major'),
-    ('businessadmin', 'Business Administration Major'),
-    ('businessecon', 'Business Economics Major'),
-    ('businessinfo', 'Business Information Systems Major'),
-    ('chemengineering', 'Chemical Engineering Major'),
-    ('chemistry', 'Chemistry Major'),
-    ('civilengineering', 'Civil Engineering Major'),
-    ('communication', 'Communication Major'),
-    ('computerengineering', 'Computer Engineering Major'),
-    ('computerscience', 'Computer Science Major'),
-    ('criminology', 'Criminology Major'),
-    ('culinology', 'Culinology Major'),
+    ('accounting', 'Accounting'),
+    ('aerospaceengineering', 'Aerospace Engineering'),
+    ('agribusiness', 'Agribusiness'),
+    ('art', 'Art'),
+    ('agriengineering', 'Agricultural Engineering Technology and Business'),
+    ('agriinformation', 'Agricultural Information Science'),
+    ('agriculture', 'Agricultural Science'),
+    ('agronomy', 'Agronomy'),
+    ('dairyscience', 'Animal and Dairy Science'),
+    ('anthropology', 'Anthropology'),
+    ('architecture', 'Architecture'),
+    ('art', 'Art'),
+    ('biochemistry', 'Biochemistry'),
+    ('bioengineering', 'Biological Engineering'),
+    ('biology', 'Biological Sciences'),
+    ('building', 'Building Construction Science'),
+    ('businessadmin', 'Business Administration'),
+    ('businessecon', 'Business Economics'),
+    ('businessinfo', 'Business Information Systems'),
+    ('chemengineering', 'Chemical Engineering'),
+    ('chemistry', 'Chemistry'),
+    ('civilengineering', 'Civil Engineering'),
+    ('communication', 'Communication'),
+    ('computerengineering', 'Computer Engineering'),
+    ('computerscience', 'Computer Science'),
+    ('criminology', 'Criminology'),
+    ('culinology', 'Culinology'),
     ('economics', 'Economics Major (Arts and Sciences)'),
-    ('educationalpsyc', 'Educational Psychology Major'),
-    ('electricalengineering', 'Electrical Engineering Major'),
-    ('elementaryed', 'Elementary Education Major'),
-    ('english', 'English Major'),
-    ('enviromentalecon', 'Environmental Economics and Management Major'),
-    ('finance', 'Finance Major'),
-    ('foodscience', 'Food Science, Nutrition and Health Promotion Major'),
-    ('foreignlanguage', 'Foreign Language Major'),
-    ('forestry', 'Forestry Major'),
-    ('generallibarts', 'General Liberal Arts Major'),
-    ('generalscience', 'General Science Major'),
-    ('geoscience', 'Geosciences Major'),
-    ('history', 'History Major'),
-    ('horticulture', 'Horticulture Major'),
-    ('humanscience', 'Human Sciences Major'),
-    ('industrialengineering', 'Industrial Engineering Major'),
-    ('industrialtech', 'Industrial Technology Major'),
-    ('informationtech', 'Information Technology Services Major'),
+    ('educationalpsyc', 'Educational Psychology'),
+    ('electricalengineering', 'Electrical Engineering'),
+    ('elementaryed', 'Elementary Education'),
+    ('english', 'English'),
+    ('enviromentalecon', 'Environmental Economics and Management'),
+    ('finance', 'Finance'),
+    ('foodscience', 'Food Science, Nutrition and Health Promotion'),
+    ('foreignlanguage', 'Foreign Language'),
+    ('forestry', 'Forestry'),
+    ('generallibarts', 'General Liberal Arts'),
+    ('generalscience', 'General Science'),
+    ('geoscience', 'Geosciences'),
+    ('history', 'History'),
+    ('horticulture', 'Horticulture'),
+    ('humanscience', 'Human Sciences'),
+    ('industrialengineering', 'Industrial Engineering'),
+    ('industrialtech', 'Industrial Technology'),
+    ('informationtech', 'Information Technology Services'),
     ('interdisciplinary', 'Interdisciplinary Studies'),
-    ('interiordesign', 'Interior Design Major'),
-    ('kinesiology', 'Kinesiology Major'),
-    ('landscapearchitecture', 'Landscape Architecture Major'),
-    ('landscapecontracting', 'Landscape Contracting Major'),
-    ('management', 'Management Major'),
-    ('marketing', 'Marketing Major'),
-    ('mathematics', 'Mathematics Major'),
-    ('mechanicalengineering', 'Mechanical Engineering Major'),
-    ('medicaltech', 'Medical Technology Major'),
-    ('microbiology', 'Microbiology Major'),
-    ('musiceducation', 'Music Education Major'),
-    ('music', 'Music Major'),
-    ('philosophy', 'Philosophy Major'),
-    ('physics', 'Physics Major'),
-    ('polyscience', 'Political Science Major'),
-    ('pultryscience', 'Poultry Science Major'),
-    ('psychology', 'Psychology Major'),
-    ('secondaryeducation', 'Secondary Education Major'),
-    ('socialwork', 'Social Work Major'),
-    ('sociology', 'Sociology Major'),
-    ('softwareengineering', 'Software Engineering Major'),
-    ('specialeducation', 'Special Education Major'),
-    ('techteachereducation', 'Technology Teacher Education Major'),
+    ('interiordesign', 'Interior Design'),
+    ('kinesiology', 'Kinesiology'),
+    ('landscapearchitecture', 'Landscape Architecture'),
+    ('landscapecontracting', 'Landscape Contracting'),
+    ('management', 'Management'),
+    ('marketing', 'Marketing'),
+    ('mathematics', 'Mathematics'),
+    ('mechanicalengineering', 'Mechanical Engineering'),
+    ('medicaltech', 'Medical Technology'),
+    ('microbiology', 'Microbiology'),
+    ('musiceducation', 'Music Education'),
+    ('music', 'Music'),
+    ('philosophy', 'Philosophy'),
+    ('physics', 'Physics'),
+    ('polyscience', 'Political Science'),
+    ('pultryscience', 'Poultry Science'),
+    ('psychology', 'Psychology'),
+    ('secondaryeducation', 'Secondary Education'),
+    ('socialwork', 'Social Work'),
+    ('sociology', 'Sociology'),
+    ('softwareengineering', 'Software Engineering'),
+    ('specialeducation', 'Special Education'),
+    ('techteachereducation', 'Technology Teacher Education'),
     ('veterinarymedical', 'Veterinary Medical Technology'),
-    ('wildlife', 'Wildlife, Fisheries and Aquaculture Major'),
+    ('wildlife', 'Wildlife, Fisheries and Aquaculture'),
     ('other', 'Something Else'),
   ),
   'q3': (
@@ -175,6 +178,19 @@ choices = {
   )
 }
 
+skips = {
+  'p1q3': {
+    'hide_conditions': [ if_not_grad ]
+  },
+  'p1q5': {
+    'hide_conditions': [ if_distance ]
+  },
+  'p1q7': {
+    'hide_conditions': [ if_not_grad ]
+  }
+}
+
+
 class QuestionsPage1Form(forms.Form):
   q1 = forms.ChoiceField(choices=choices['q1'], label=questions['q1'], widget=forms.RadioSelect)
   q2 = forms.ChoiceField(choices=choices['q2'], label=questions['q2'])
@@ -187,3 +203,16 @@ class QuestionsPage1Form(forms.Form):
   q9 = forms.ChoiceField(choices=choices['q9'], label=questions['q9'], widget=forms.RadioSelect)
   q10 = forms.ChoiceField(choices=choices['q10'], label=questions['q10'], widget=forms.RadioSelect)
   q11 = forms.ChoiceField(choices=choices['q11'], label=questions['q11'], widget=forms.RadioSelect)
+
+  def __init__(self, post_data=None):
+    super(forms.Form, self).__init__(post_data)
+    answers = {}
+    if post_data:
+      print "Post data: ", post_data
+      answers['p1q1'] = post_data['q1']
+
+    print '************************'
+    self.fields['q1'].widget.attrs['class'] = 'q_debug'
+    print '************************'
+    # print getattr(self, 'p1')
+

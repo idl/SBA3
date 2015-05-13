@@ -75,6 +75,24 @@ choices = {
   ),
 }
 
+skips = {
+  # 'p3q2': {
+  #   'conditions': [ if_tutoring ]
+  # },
+  # 'p3q3': {
+  #   'conditions': [ if_not_tutoring ]
+  # },
+  # 'p3q4': {
+  #   'conditions': [ if_not_tutoring ]
+  # },
+  # 'p3q5': {
+  #   'conditions': [ if_not_grad ]
+  # },
+  # 'p3q6': {
+  #   'conditions': [ if_on_campus_class ]
+  # }
+}
+
 class QuestionsPage3Form(forms.Form):
   q1 = forms.ChoiceField(choices=choices['q1'], label=questions['q1'], widget=forms.RadioSelect)
   q2 = forms.IntegerField(label=questions['q2'], min_value=0, max_value=168)
