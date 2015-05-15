@@ -72,21 +72,20 @@ def questions(request, school_id, student_uid, page_num):
     return redirect('public_survey_begin')
 
   if request.POST:
-    form = forms[page_num](request.POST)
-    if form.is_valid():
-      request.session['next_page_num'] = int(page_num) + 1
-    else:
-      messages.error(request, 'You must answer all of the questions on the page before continuing.')
-      request.session['next_page_num'] = page_num
+    form = forms[page_num](post_data=request.POST)
+    request.session['next_page_num'] = int(page_num) + 1
+    # form validation handled in the clean() method of the forms
+    # if form.is_valid():
+    #   print 'Form is valid'
     for q_num in range(1, num_questions_on_page[page_num]+1):
       request.session['page_results_q'+str(q_num)] = request.POST.get('q'+str(q_num))
     return redirect('survey_next')
   if rs.all_questions_answered(page_num):
     res_set = json.loads(getattr(rs, 'p'+str(page_num)))
-    form = forms[page_num](res_set, session=request.session)
-    context['questions_page_form'] = form
+    context['questions_page_form'] = forms[page_num](post_data=res_set, session=request.session)
   else:
-    context['questions_page_form'] = forms[page_num]()
+    res_set = json.loads(getattr(rs, 'p'+str(page_num)))
+    context['questions_page_form'] = forms[page_num](session=request.session)
   context['student_uid'] = student_uid
   context['school_id'] = school_id
   context['page_num'] = int(page_num)
@@ -113,11 +112,14 @@ def next(request):
   ).get()
   rs = student.result_set
   res_set_tmp = {}
+  print '\n Ans From Session:'
   for q_num in range(1, num_questions_on_page[str(next_page_num-1)]+1):
     ans = request.session.get('page_results_q'+str(q_num))
     res_set_tmp['q'+str(q_num)] = ans
+    print q_num, " ANS:", ans
   json_res_set = json.dumps(res_set_tmp)
   add_condition_questions_to_session(res_set_tmp, next_page_num-1, request.session)
+  print "Setting p"+str(next_page_num-1)+" to:", json_res_set
   setattr(rs, 'p'+str(next_page_num-1), json_res_set)
   rs.save()
   return redirect('survey_questions', school_id, student_uid, next_page_num)
@@ -128,7 +130,11 @@ def submit(request):
 
 def clear(request):
   request.session.flush()
-  return HttpResponse("session cleared")
+  return HttpResponse("""
+    <html><head>
+    <meta http-equiv=\"refresh\" content=\"0.5;URL='/survey/begin'\" />
+    </head><body>session cleared</body></html>
+    """)
 
 def public_begin(request):
   context = {}

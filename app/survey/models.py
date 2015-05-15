@@ -5,6 +5,7 @@ from django.db import models
 from jsonfield import JSONField
 from .constants import num_questions_on_page, num_questions_so_far
 
+
 class SchoolManager(models.Manager):
   def has_uid(self, uid):
     students = Student.objects.filter(school=self.model)
@@ -204,11 +205,50 @@ class ResultSet(models.Model):
 
   # returns Boolean - true if all answers on page are NOT None
   def all_questions_answered(self, page_num):
+    from .forms.questions_page_1 import skips as Page1Skips
+    from .forms.questions_page_2 import skips as Page2Skips
+    from .forms.questions_page_3 import skips as Page3Skips
+    from .forms.questions_page_4 import skips as Page4Skips
+    from .forms.questions_page_5 import skips as Page5Skips
+    from .forms.questions_page_6 import skips as Page6Skips
+    from .forms.questions_page_7 import skips as Page7Skips
+    from .forms.questions_page_8 import skips as Page8Skips
+    from .forms.questions_page_9 import skips as Page9Skips
+    from .forms.questions_page_10 import skips as Page10Skips
+    from .forms.questions_page_11 import skips as Page11Skips
+
+    skips = {
+      '1': Page1Skips,
+      '2': Page2Skips,
+      '3': Page3Skips,
+      '4': Page4Skips,
+      '5': Page5Skips,
+      '6': Page6Skips,
+      '7': Page7Skips,
+      '8': Page8Skips,
+      '9': Page9Skips,
+      '10': Page10Skips,
+      '11': Page11Skips
+    }
+
     page_res_set = json.loads(getattr(self, 'p'+str(page_num)))
     all_questions_answered = True
+    print "\n***************\nPAGE RESULTS:", page_res_set, '\n'
+    actual_skipped_questions = []
+    skipped_questions_possible = []
+    for cond in skips[str(page_num)].keys():
+      for q in skips[str(page_num)][cond]:
+        if q not in skipped_questions_possible:
+          skipped_questions_possible.append(q)
     for q_num in range(1, num_questions_on_page[str(page_num)]+1):
-      if page_res_set['q'+str(q_num)] is None:
+      if page_res_set['q'+str(q_num)] == None or page_res_set['q'+str(q_num)] == '':
+        actual_skipped_questions.append('p'+str(page_num)+'q'+str(q_num))
+    for q in actual_skipped_questions:
+      if q not in skipped_questions_possible:
         all_questions_answered = False
+    print 'skipped:', actual_skipped_questions
+    print 'possible:', skipped_questions_possible
+    print 'all qs ans?', all_questions_answered,"\n*******************\n"
     return all_questions_answered
 
   def __unicode__(self):
