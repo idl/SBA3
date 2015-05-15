@@ -40,6 +40,7 @@ INSTALLED_APPS = (
   'django.contrib.sessions',
   'django.contrib.messages',
   'django.contrib.staticfiles',
+  'django_extensions',
   'bootstrap3',
   'bootstrapform',
   'sba3',
@@ -96,6 +97,11 @@ DATABASES = {
   }
 }
 
+# django-extensions
+GRAPH_MODELS = {
+  'all_applications': True,
+  'group_models': True,
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/

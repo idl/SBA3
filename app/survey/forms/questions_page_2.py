@@ -73,7 +73,7 @@ choices = {
 }
 
 skips = {
-  # if_on_campus_class: [ 'p2q3', 'p2q6', 'p2q11' ]
+  if_on_campus_class: [ 'p2q3', 'p2q6', 'p2q11' ]
 }
 
 class QuestionsPage2Form(forms.Form):
@@ -90,12 +90,28 @@ class QuestionsPage2Form(forms.Form):
   q11 = forms.IntegerField(label=questions['q11'], min_value=-2, max_value=24)
 
   def __init__(self, post_data=None, session=None):
-    super(forms.Form, self).__init__(post_data)
-    if post_data and session:
-      result_set = {}
+    if post_data:
+      super(forms.Form, self).__init__(post_data)
+    else:
+      super(forms.Form, self).__init__()
+    if session:
       for cond in skips.keys():
         if cond(session):
+          print 'cond true: ', cond
           for q in skips[cond]:
-            print "cond true:", cond, "      hiding", q
             q_num = re.compile('^p\d{1,2}(q\d{1,2})$').match(q).group(1)
-            self.fields[q_num].widget.attrs['class'] = 'q_debug'
+            print 'for q\'s:\n -', q_num
+            self.fields[q_num].widget.attrs['class'] = 'q_hidden'
+
+  def clean(self):
+    # get all questions that can possibly be skipped for this page
+    skipped_questions_possible = []
+    actual_skipped_questions = []
+    for cond in skips.keys():
+      for q in skips[cond]:
+        if q not in skipped_questions_possible:
+          skipped_questions_possible.append(q)
+    print skipped_questions_possible
+    for q in self.cleaned_data:
+      print q, self.cleaned_data[q]
+    # return True
