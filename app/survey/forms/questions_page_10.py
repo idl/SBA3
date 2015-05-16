@@ -3,7 +3,6 @@ import re
 from django import forms
 from django.template.defaultfilters import safe
 from ..models import School
-from ..conditions import if_grad
 
 questions = {
   'q1': safe('<span style="font-size:24px;font-weight: 300;">For the next three items, please indicate, on average, how much time you spend per day engaged in the following activities:</span><br><br>Social Media (Facebook, Twitter, Instagram…)<br><br>Hours:'),
@@ -48,16 +47,21 @@ class QuestionsPage10Form(forms.Form):
             q_num = re.compile('^p\d{1,2}(q\d{1,2})$').match(q).group(1)
             print 'for q\'s:\n -', q_num
             self.fields[q_num].widget.attrs['class'] = 'q_hidden'
+            self.fields[q_num].widget.attrs['data-condition-class'] = cond.__name__
 
   def clean(self):
     # get all questions that can possibly be skipped for this page
     skipped_questions_possible = []
     actual_skipped_questions = []
+    is_clean = True
     for cond in skips.keys():
       for q in skips[cond]:
         if q not in skipped_questions_possible:
           skipped_questions_possible.append(q)
-    print skipped_questions_possible
     for q in self.cleaned_data:
-      print q, self.cleaned_data[q]
-    # return True
+      if q not in skipped_questions_possible:
+        actual_skipped_questions.append('p10'+str(q))
+    for q in actual_skipped_questions:
+      if q not in skipped_questions_possible:
+        is_clean = False
+    return is_clean

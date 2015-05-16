@@ -7489,3 +7489,7 @@ a.list-group-item-danger.active:hover, a.list-group-item-danger.active:focus {
   font-size: 18px;
   font-weight: 700;
 }
+
+.survey-container .radio-inline, .survey-container .form-control {
+  display:none;
+}

@@ -72,11 +72,15 @@ def questions(request, school_id, student_uid, page_num):
     return redirect('public_survey_begin')
 
   if request.POST:
+    if request.POST.get('survey-submit') != None:
+      print "SURVEY SUBMIT"
     form = forms[page_num](post_data=request.POST)
     request.session['next_page_num'] = int(page_num) + 1
-    # form validation handled in the clean() method of the forms
-    # if form.is_valid():
-    #   print 'Form is valid'
+
+    # if student didnt answer all of the questions, not counting the ones that
+    # arent visible because they are skipped
+    if not form.is_valid():
+      messages.error(request, 'You must answer all of the questions on the page before continuing.')
     for q_num in range(1, num_questions_on_page[page_num]+1):
       request.session['page_results_q'+str(q_num)] = request.POST.get('q'+str(q_num))
     return redirect('survey_next')
@@ -88,6 +92,7 @@ def questions(request, school_id, student_uid, page_num):
     context['questions_page_form'] = forms[page_num](session=request.session)
   context['student_uid'] = student_uid
   context['school_id'] = school_id
+  context['num_questions_on_page'] = num_questions_on_page[page_num]
   context['page_num'] = int(page_num)
   context['previous_page_num'] = int(page_num)-1
   if request.session.get('show_modal') and int(page_num) is 1:
@@ -112,14 +117,11 @@ def next(request):
   ).get()
   rs = student.result_set
   res_set_tmp = {}
-  print '\n Ans From Session:'
   for q_num in range(1, num_questions_on_page[str(next_page_num-1)]+1):
     ans = request.session.get('page_results_q'+str(q_num))
     res_set_tmp['q'+str(q_num)] = ans
-    print q_num, " ANS:", ans
   json_res_set = json.dumps(res_set_tmp)
   add_condition_questions_to_session(res_set_tmp, next_page_num-1, request.session)
-  print "Setting p"+str(next_page_num-1)+" to:", json_res_set
   setattr(rs, 'p'+str(next_page_num-1), json_res_set)
   rs.save()
   return redirect('survey_questions', school_id, student_uid, next_page_num)

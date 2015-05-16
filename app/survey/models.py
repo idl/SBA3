@@ -233,7 +233,6 @@ class ResultSet(models.Model):
 
     page_res_set = json.loads(getattr(self, 'p'+str(page_num)))
     all_questions_answered = True
-    print "\n***************\nPAGE RESULTS:", page_res_set, '\n'
     actual_skipped_questions = []
     skipped_questions_possible = []
     for cond in skips[str(page_num)].keys():
@@ -246,9 +245,6 @@ class ResultSet(models.Model):
     for q in actual_skipped_questions:
       if q not in skipped_questions_possible:
         all_questions_answered = False
-    print 'skipped:', actual_skipped_questions
-    print 'possible:', skipped_questions_possible
-    print 'all qs ans?', all_questions_answered,"\n*******************\n"
     return all_questions_answered
 
   def __unicode__(self):
@@ -256,8 +252,6 @@ class ResultSet(models.Model):
 
   class Meta:
     db_table = 'ResultSet'
-
-
 
 
 

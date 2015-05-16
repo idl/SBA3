@@ -3,7 +3,7 @@ import re
 from django import forms
 from django.template.defaultfilters import safe
 from ..models import School
-from ..conditions import if_grad
+from ..conditions import if_grad, if_grad_and_not_orientation
 
 questions = {
   'q1': 'Did you attend a Student Orientation session before starting college?',
@@ -117,14 +117,15 @@ choices = {
 }
 
 skips = {
-  if_grad: [ 'p8q2', 'p8q3', 'p8q4' ]
+  if_grad: [ 'p8q3', 'p8q4' ],
+  if_grad_and_not_orientation: [ 'p8q2' ]
 }
 
 class QuestionsPage8Form(forms.Form):
   q1 = forms.ChoiceField(choices=choices['q1'], label=questions['q1'], widget=forms.RadioSelect)
-  q2 = forms.ChoiceField(choices=choices['q2'], label=questions['q2'], widget=forms.RadioSelect)
-  q3 = forms.ChoiceField(choices=choices['q3'], label=questions['q3'], widget=forms.RadioSelect)
-  q4 = forms.ChoiceField(choices=choices['q4'], label=questions['q4'], widget=forms.RadioSelect)
+  q2 = forms.ChoiceField(choices=choices['q2'], label=questions['q2'], widget=forms.RadioSelect, required=False)
+  q3 = forms.ChoiceField(choices=choices['q3'], label=questions['q3'], widget=forms.RadioSelect, required=False)
+  q4 = forms.ChoiceField(choices=choices['q4'], label=questions['q4'], widget=forms.RadioSelect, required=False)
   q5 = forms.ChoiceField(choices=choices['q5'], label=questions['q5'], widget=forms.RadioSelect)
   q6 = forms.ChoiceField(choices=choices['q6'], label=safe(questions['q6']), widget=forms.RadioSelect)
   q7 = forms.ChoiceField(choices=choices['q7'], label=questions['q7'], widget=forms.RadioSelect)
@@ -147,16 +148,21 @@ class QuestionsPage8Form(forms.Form):
             q_num = re.compile('^p\d{1,2}(q\d{1,2})$').match(q).group(1)
             print 'for q\'s:\n -', q_num
             self.fields[q_num].widget.attrs['class'] = 'q_hidden'
+            self.fields[q_num].widget.attrs['data-condition-class'] = cond.__name__
 
   def clean(self):
     # get all questions that can possibly be skipped for this page
     skipped_questions_possible = []
     actual_skipped_questions = []
+    is_clean = True
     for cond in skips.keys():
       for q in skips[cond]:
         if q not in skipped_questions_possible:
           skipped_questions_possible.append(q)
-    print skipped_questions_possible
     for q in self.cleaned_data:
-      print q, self.cleaned_data[q]
-    # return True
+      if q not in skipped_questions_possible:
+        actual_skipped_questions.append('p8'+str(q))
+    for q in actual_skipped_questions:
+      if q not in skipped_questions_possible:
+        is_clean = False
+    return is_clean
