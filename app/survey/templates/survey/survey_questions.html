@@ -25,7 +25,8 @@
         </div>
       </div>
       {% bootstrap_messages %}
-      <form action="#" method="post" class="form" role="form" id="survey-form">
+      <!--** blank action attr -> submit to current page **-->
+      <form action="" method="post" class="form" role="form" id="survey-form">
         {% csrf_token %}
         {{ questions_page_form|bootstrap }}
         <hr>
@@ -90,6 +91,196 @@
     </div><!-- /.modal -->
   {% endif %}
 {% endblock %}
+
+
+{% block survey_main_content_js %}
+  <script>
+    $(window).resize(function(e) {
+      if($('body').width() > 768) {
+        $('.radio').removeClass('radio').addClass('radio-inline');
+      } else {
+        $('.radio-inline').removeClass('radio-inline').addClass('radio')
+      }
+    }).resize();
+
+    $(document).ready(function() {
+      var session, fn_condition_false, fn_condition_true, fn_condition_true,
+          check_conditions, page_num;
+      $('.survey-container .radio-inline').css('display', 'inline-block');
+      $('.survey-container .form-control').css('display', 'block');
+      $('.form-group:has([data-condition-class])').each(function(i, elem) {
+        var cond_class = 'hide_'+$($(elem).find('[data-condition-class]')[0]).attr('data-condition-class');
+        $elem = $(elem);
+        $elem.addClass('q_debug_hidden').addClass(cond_class);
+      });
+      page_num = parseInt({{page_num}});
+      session = {
+        'ans_p1q1': '{{request.session.ans_p1q1}}',
+        'ans_p1q4': '{{request.session.ans_p1q4}}',
+        'ans_p1q5': '{{request.session.ans_p1q5}}',
+        'ans_p3q1': '{{request.session.ans_p3q1}}',
+        'ans_p8q1': '{{request.session.ans_p8q1}}',
+        'ans_p9q1': '{{request.session.ans_p9q1}}',
+        'ans_p9q3': '{{request.session.ans_p9q3}}',
+        'ans_p9q4': '{{request.session.ans_p9q4}}',
+        'ans_p9q7': '{{request.session.ans_p9q7}}',
+        'ans_p11q3': '{{request.session.ans_p11q3}}'
+      }
+      fn_condition_false = function(cond_name) {
+        var $skip_elems = $('.hide_'+cond_name);
+        $skip_elems.each(function(i, q_elem) {
+          $q_elem = $(q_elem);
+          $q_elem.find('[data-condition-class]').each(function(i, input_elem) {
+            $input_elem = $(input_elem);
+            $input_elem.attr('disabled', '');
+          });
+          $q_elem.animate({'opacity': 1.0}, 500);
+        });
+      };
+      fn_condition_true = function(cond_name) {
+        var $skip_elems = $('.hide_'+cond_name);
+        $skip_elems.each(function(i, q_elem) {
+          $q_elem = $(q_elem);
+          $q_elem.find('[data-condition-class]').each(function(i, input_elem) {
+            $input_elem = $(input_elem);
+            $input_elem.attr('disabled', '');
+          });
+          $q_elem.animate({'opacity': 0.33}, 500);
+        });
+      };
+      fn_on_change = function($input_elem) {
+        $input_elem.change(function() {
+          check_conditions();
+        });
+      };
+      for(ans in session) {
+        if(session[ans] == 'None' || session[ans] == '') {
+          session[ans] = null;
+        }
+      }
+      conditions = {
+        'if_grad': {
+          'condition': (function() {
+            return false;
+            return (session['ans_p1q1'] == 'master' || session['ans_p1q1'] == 'doctorate');
+          }),
+          'cond_q_inputs': [ {'p':1, 'q':'q1'} ],
+          'fn_condition_true': fn_condition_true,
+          'fn_condition_false': fn_condition_false,
+          'fn_on_change': fn_on_change
+        },
+        'if_not_distance': {
+          'condition': (function() {
+            return (session['ans_p1q4'] != 'yes');
+          }),
+          'cond_q_inputs': [ {'p':1, 'q':'q4'} ],
+          'fn_condition_true': fn_condition_true,
+          'fn_condition_false': fn_condition_false,
+          'fn_on_change': fn_on_change
+        },
+        'if_not_on_campus_class': {
+          'condition': (function() {
+            return (session['ans_p1q5'] != 'yes');
+          }),
+          'cond_q_inputs': [ {'p':1, 'q':'q5'} ],
+          'fn_condition_true': fn_condition_true,
+          'fn_condition_false': fn_condition_false,
+          'fn_on_change': fn_on_change
+        },
+        'if_not_tutoring': {
+          'condition': (function() {
+            return (session['ans_p3q1'] != 'yes');
+          }),
+          'cond_q_inputs': [ {'p':3, 'q':'q1'} ],
+          'fn_condition_true': fn_condition_true,
+          'fn_condition_false': fn_condition_false,
+          'fn_on_change': fn_on_change
+        },
+        'if_tutoring': {
+          'condition': (function() {
+            return (session['ans_p3q1'] == 'yes');
+          }),
+          'cond_q_inputs': [ {'p':3, 'q':'q1'} ],
+          'fn_condition_true': fn_condition_true,
+          'fn_condition_false': fn_condition_false,
+          'fn_on_change': fn_on_change
+        },
+        'if_grad_and_not_orientation': {
+          'condition': (function() {
+            return ((session['ans_p8q1'] != 'yes') && ((session['ans_p1q1'] == 'master' || session['ans_p1q1'] == 'doctorate')));
+          }),
+          'cond_q_inputs': [ {'p':8, 'q':'q1'} ],
+          'fn_condition_true': fn_condition_true,
+          'fn_condition_false': fn_condition_false,
+          'fn_on_change': fn_on_change
+        },
+        'if_not_organization_member': {
+          'condition': (function() {
+            return (session['ans_p9q1'] == 'yes');
+          }),
+          'cond_q_inputs': [ {'p':9, 'q':'q1'} ],
+          'fn_condition_true': fn_condition_true,
+          'fn_condition_false': fn_condition_false,
+          'fn_on_change': fn_on_change
+        },
+        'if_live_on_campus': {
+          'condition': (function() {
+            return (session['ans_p9q3'] == 'oncampus');
+          }),
+          'cond_q_inputs': [ {'p':9, 'q':'q3'} ],
+          'fn_condition_true': fn_condition_true,
+          'fn_condition_false': fn_condition_false,
+          'fn_on_change': fn_on_change
+        },
+        'if_not_away_from_home_or_not_live_on_campus': {
+          'condition': (function() {
+            return ((session['ans_p9q4'] != 'yes') || (session['ans_p9q3'] != 'oncampus'));
+          }),
+          'cond_q_inputs': [ {'p':9, 'q':'q3'}, {'p':9, 'q':'q4'} ],
+          'fn_condition_true': fn_condition_true,
+          'fn_condition_false': fn_condition_false,
+          'fn_on_change': fn_on_change
+        },
+        'if_not_drink_alcohol': {
+          'condition': (function() {
+            return (session['ans_p9q7'] != 'yes');
+          }),
+          'cond_q_inputs': [ {'p':9, 'q':'q7'} ],
+          'fn_condition_true': fn_condition_true,
+          'fn_condition_false': fn_condition_false,
+          'fn_on_change': fn_on_change
+        },
+        'if_not_employed': {
+          'condition': (function() {
+            return (session['ans_p11q3'] != 'yes');
+          }),
+          'cond_q_inputs': [ {'p':11, 'q':'q3'} ],
+          'fn_condition_true': fn_condition_true,
+          'fn_condition_false': fn_condition_false,
+          'fn_on_change': fn_on_change
+        }
+      };
+      check_conditions = function() {
+        for(cond in conditions) {
+          if(conditions[cond]['condition']) {
+            conditions[cond]['fn_condition_true'](cond);
+          } else {
+            conditions[cond]['fn_condition_false'](cond);
+          }
+          for(var i=0; i<conditions[cond]['cond_q_inputs'].length; i++) {
+            var input_page = conditions[cond]['cond_q_inputs'][i]['p'];
+            if(input_page == page_num) {
+              var input_q = conditions[cond]['cond_q_inputs'][i]['q'];
+              conditions[cond]['fn_on_change']($('[name="'+input_q+'"]'));
+            }
+          }
+        }
+      };
+      check_conditions();
+    });
+  </script>
+{% endblock %}
+
 
 {% block begin_survey_modal_js %}
   {% if show_modal %}

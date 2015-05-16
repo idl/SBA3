@@ -3,7 +3,7 @@ import re
 from django import forms
 from django.template.defaultfilters import safe
 from ..models import School
-from ..conditions import if_grad
+from ..conditions import if_grad, if_not_employed
 
 questions = {
   'q1': safe('What is your age?<br>(<code>-1</code> for Not Sure, <code>-2</code> for No Comment)'),
@@ -116,22 +116,23 @@ choices = {
 }
 
 skips = {
-  if_grad: [ 'p11q12' ]
+  if_grad: [ 'p11q12' ],
+  if_not_employed: [ 'p11q4', 'p11q5', 'p11q6' ]
 }
 
 class QuestionsPage11Form(forms.Form):
   q1 = forms.IntegerField(label=questions['q1'], min_value=-2, max_value=100)
   q2 = forms.ChoiceField(choices=choices['q2'], label=questions['q2'], widget=forms.RadioSelect)
   q3 = forms.ChoiceField(choices=choices['q3'], label=questions['q3'], widget=forms.RadioSelect)
-  q4 = forms.ChoiceField(choices=choices['q4'], label=questions['q4'], widget=forms.RadioSelect)
-  q5 = forms.IntegerField(label=questions['q5'], min_value=-2, max_value=80)
-  q6 = forms.ChoiceField(choices=choices['q6'], label=questions['q6'], widget=forms.RadioSelect)
+  q4 = forms.ChoiceField(choices=choices['q4'], label=questions['q4'], widget=forms.RadioSelect, required=False)
+  q5 = forms.IntegerField(label=questions['q5'], min_value=-2, max_value=80, required=False)
+  q6 = forms.ChoiceField(choices=choices['q6'], label=questions['q6'], widget=forms.RadioSelect, required=False)
   q7 = forms.ChoiceField(choices=choices['q7'], label=questions['q7'], widget=forms.RadioSelect)
   q8 = forms.ChoiceField(choices=choices['q8'], label=questions['q8'], widget=forms.RadioSelect)
   q9 = forms.ChoiceField(choices=choices['q9'], label=questions['q9'], widget=forms.RadioSelect)
   q10 = forms.ChoiceField(choices=choices['q10'], label=questions['q10'], widget=forms.RadioSelect)
   q11 = forms.ChoiceField(choices=choices['q11'], label=questions['q11'], widget=forms.RadioSelect)
-  q12 = forms.ChoiceField(choices=choices['q12'], label=questions['q12'], widget=forms.RadioSelect)
+  q12 = forms.ChoiceField(choices=choices['q12'], label=questions['q12'], widget=forms.RadioSelect, required=False)
   q13 = forms.ChoiceField(choices=choices['q13'], label=questions['q13'], widget=forms.RadioSelect)
   q14 = forms.ChoiceField(choices=choices['q14'], label=questions['q14'], widget=forms.RadioSelect)
 
@@ -148,16 +149,21 @@ class QuestionsPage11Form(forms.Form):
             q_num = re.compile('^p\d{1,2}(q\d{1,2})$').match(q).group(1)
             print 'for q\'s:\n -', q_num
             self.fields[q_num].widget.attrs['class'] = 'q_hidden'
+            self.fields[q_num].widget.attrs['data-condition-class'] = cond.__name__
 
   def clean(self):
     # get all questions that can possibly be skipped for this page
     skipped_questions_possible = []
     actual_skipped_questions = []
+    is_clean = True
     for cond in skips.keys():
       for q in skips[cond]:
         if q not in skipped_questions_possible:
           skipped_questions_possible.append(q)
-    print skipped_questions_possible
     for q in self.cleaned_data:
-      print q, self.cleaned_data[q]
-    # return True
+      if q not in skipped_questions_possible:
+        actual_skipped_questions.append('p11'+str(q))
+    for q in actual_skipped_questions:
+      if q not in skipped_questions_possible:
+        is_clean = False
+    return is_clean
