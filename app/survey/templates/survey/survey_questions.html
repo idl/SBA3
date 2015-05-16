@@ -148,9 +148,12 @@
           $q_elem.animate({'opacity': 0.33}, 500);
         });
       };
-      fn_on_change = function($input_elem) {
-        $input_elem.change(function() {
-          check_conditions();
+      fn_on_change = function(cond_name, $input_elem) {
+        $input_elem.each(function(i, elem) {
+          $(elem).change(function() {
+            console.log("ON CHANGE:", elem);
+            check_conditions(cond_name);
+          });
         });
       };
       for(ans in session) {
@@ -161,117 +164,83 @@
       conditions = {
         'if_grad': {
           'condition': (function() {
-            return false;
             return (session['ans_p1q1'] == 'master' || session['ans_p1q1'] == 'doctorate');
           }),
-          'cond_q_inputs': [ {'p':1, 'q':'q1'} ],
-          'fn_condition_true': fn_condition_true,
-          'fn_condition_false': fn_condition_false,
-          'fn_on_change': fn_on_change
+          'cond_q_inputs': [ {'p':1, 'q':'q1'} ]
         },
         'if_not_distance': {
           'condition': (function() {
             return (session['ans_p1q4'] != 'yes');
           }),
-          'cond_q_inputs': [ {'p':1, 'q':'q4'} ],
-          'fn_condition_true': fn_condition_true,
-          'fn_condition_false': fn_condition_false,
-          'fn_on_change': fn_on_change
+          'cond_q_inputs': [ {'p':1, 'q':'q4'} ]
         },
         'if_not_on_campus_class': {
           'condition': (function() {
             return (session['ans_p1q5'] != 'yes');
           }),
-          'cond_q_inputs': [ {'p':1, 'q':'q5'} ],
-          'fn_condition_true': fn_condition_true,
-          'fn_condition_false': fn_condition_false,
-          'fn_on_change': fn_on_change
+          'cond_q_inputs': [ {'p':1, 'q':'q5'} ]
         },
         'if_not_tutoring': {
           'condition': (function() {
             return (session['ans_p3q1'] != 'yes');
           }),
-          'cond_q_inputs': [ {'p':3, 'q':'q1'} ],
-          'fn_condition_true': fn_condition_true,
-          'fn_condition_false': fn_condition_false,
-          'fn_on_change': fn_on_change
+          'cond_q_inputs': [ {'p':3, 'q':'q1'} ]
         },
         'if_tutoring': {
           'condition': (function() {
             return (session['ans_p3q1'] == 'yes');
           }),
-          'cond_q_inputs': [ {'p':3, 'q':'q1'} ],
-          'fn_condition_true': fn_condition_true,
-          'fn_condition_false': fn_condition_false,
-          'fn_on_change': fn_on_change
+          'cond_q_inputs': [ {'p':3, 'q':'q1'} ]
         },
         'if_grad_and_not_orientation': {
           'condition': (function() {
             return ((session['ans_p8q1'] != 'yes') && ((session['ans_p1q1'] == 'master' || session['ans_p1q1'] == 'doctorate')));
           }),
-          'cond_q_inputs': [ {'p':8, 'q':'q1'} ],
-          'fn_condition_true': fn_condition_true,
-          'fn_condition_false': fn_condition_false,
-          'fn_on_change': fn_on_change
+          'cond_q_inputs': [ {'p':8, 'q':'q1'} ]
         },
         'if_not_organization_member': {
           'condition': (function() {
             return (session['ans_p9q1'] == 'yes');
           }),
-          'cond_q_inputs': [ {'p':9, 'q':'q1'} ],
-          'fn_condition_true': fn_condition_true,
-          'fn_condition_false': fn_condition_false,
-          'fn_on_change': fn_on_change
+          'cond_q_inputs': [ {'p':9, 'q':'q1'} ]
         },
         'if_live_on_campus': {
           'condition': (function() {
             return (session['ans_p9q3'] == 'oncampus');
           }),
-          'cond_q_inputs': [ {'p':9, 'q':'q3'} ],
-          'fn_condition_true': fn_condition_true,
-          'fn_condition_false': fn_condition_false,
-          'fn_on_change': fn_on_change
+          'cond_q_inputs': [ {'p':9, 'q':'q3'} ]
         },
         'if_not_away_from_home_or_not_live_on_campus': {
           'condition': (function() {
             return ((session['ans_p9q4'] != 'yes') || (session['ans_p9q3'] != 'oncampus'));
           }),
-          'cond_q_inputs': [ {'p':9, 'q':'q3'}, {'p':9, 'q':'q4'} ],
-          'fn_condition_true': fn_condition_true,
-          'fn_condition_false': fn_condition_false,
-          'fn_on_change': fn_on_change
+          'cond_q_inputs': [ {'p':9, 'q':'q3'}, {'p':9, 'q':'q4'} ]
         },
         'if_not_drink_alcohol': {
           'condition': (function() {
             return (session['ans_p9q7'] != 'yes');
           }),
-          'cond_q_inputs': [ {'p':9, 'q':'q7'} ],
-          'fn_condition_true': fn_condition_true,
-          'fn_condition_false': fn_condition_false,
-          'fn_on_change': fn_on_change
+          'cond_q_inputs': [ {'p':9, 'q':'q7'} ]
         },
         'if_not_employed': {
           'condition': (function() {
             return (session['ans_p11q3'] != 'yes');
           }),
-          'cond_q_inputs': [ {'p':11, 'q':'q3'} ],
-          'fn_condition_true': fn_condition_true,
-          'fn_condition_false': fn_condition_false,
-          'fn_on_change': fn_on_change
+          'cond_q_inputs': [ {'p':11, 'q':'q3'} ]
         }
       };
       check_conditions = function() {
         for(cond in conditions) {
           if(conditions[cond]['condition']) {
-            conditions[cond]['fn_condition_true'](cond);
+            fn_condition_true(cond);
           } else {
-            conditions[cond]['fn_condition_false'](cond);
+            fn_condition_false(cond);
           }
           for(var i=0; i<conditions[cond]['cond_q_inputs'].length; i++) {
             var input_page = conditions[cond]['cond_q_inputs'][i]['p'];
             if(input_page == page_num) {
               var input_q = conditions[cond]['cond_q_inputs'][i]['q'];
-              conditions[cond]['fn_on_change']($('[name="'+input_q+'"]'));
+              fn_on_change(cond, $('[name="'+input_q+'"]'));
             }
           }
         }
