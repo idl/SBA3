@@ -1,5 +1,3 @@
-import re
-
 def if_grad(session):
   p1q1 = session.get('ans_p1q1')
   if p1q1 == None:
