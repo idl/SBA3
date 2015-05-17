@@ -165,13 +165,10 @@ class QuestionsPage5Form(forms.Form):
       super(forms.Form, self).__init__()
     if session:
       for cond in skips.keys():
-        if cond(session):
-          print 'cond true: ', cond
-          for q in skips[cond]:
-            q_num = re.compile('^p\d{1,2}(q\d{1,2})$').match(q).group(1)
-            print 'for q\'s:\n -', q_num
-            self.fields[q_num].widget.attrs['class'] = 'q_hidden'
-            self.fields[q_num].widget.attrs['data-condition-class'] = cond.__name__
+        for q in skips[cond]:
+          q_num = re.compile('^p\d{1,2}(q\d{1,2})$').match(q).group(1)
+          print 'for q\'s:\n -', q_num
+          self.fields[q_num].widget.attrs['data-condition-class'] = cond.__name__
 
   def clean(self):
     # get all questions that can possibly be skipped for this page

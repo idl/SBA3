@@ -11,6 +11,10 @@
 {########################################}
   {% load bootstrap3 %}
 
+{% block container_elem %}
+  <div class="container survey-container">
+{% endblock %}
+
 {% block survey_header_title %}
   <small><span class="text-muted">SBA<sup>3</sup>-1</span></small>
   {{ student_uid }}
@@ -104,7 +108,7 @@
     }).resize();
 
     $(document).ready(function() {
-      var session, fn_condition_false, fn_condition_true, fn_condition_true,
+      var session, fn_condition_false, fn_condition_true, add_change_event,
           check_conditions, page_num;
       $('.survey-container .radio-inline').css('display', 'inline-block');
       $('.survey-container .form-control').css('display', 'block');
@@ -115,47 +119,17 @@
       });
       page_num = parseInt({{page_num}});
       session = {
-        'ans_p1q1': '{{request.session.ans_p1q1}}',
-        'ans_p1q4': '{{request.session.ans_p1q4}}',
-        'ans_p1q5': '{{request.session.ans_p1q5}}',
-        'ans_p3q1': '{{request.session.ans_p3q1}}',
-        'ans_p8q1': '{{request.session.ans_p8q1}}',
-        'ans_p9q1': '{{request.session.ans_p9q1}}',
-        'ans_p9q3': '{{request.session.ans_p9q3}}',
-        'ans_p9q4': '{{request.session.ans_p9q4}}',
-        'ans_p9q7': '{{request.session.ans_p9q7}}',
-        'ans_p11q3': '{{request.session.ans_p11q3}}'
+        'ans_p1q1': '{{request.session.ans_p1q1|default_if_none:""}}',
+        'ans_p1q4': '{{request.session.ans_p1q4|default_if_none:""}}',
+        'ans_p1q5': '{{request.session.ans_p1q5|default_if_none:""}}',
+        'ans_p3q1': '{{request.session.ans_p3q1|default_if_none:""}}',
+        'ans_p8q1': '{{request.session.ans_p8q1|default_if_none:""}}',
+        'ans_p9q1': '{{request.session.ans_p9q1|default_if_none:""}}',
+        'ans_p9q3': '{{request.session.ans_p9q3|default_if_none:""}}',
+        'ans_p9q4': '{{request.session.ans_p9q4|default_if_none:""}}',
+        'ans_p9q7': '{{request.session.ans_p9q7|default_if_none:""}}',
+        'ans_p11q3': '{{request.session.ans_p11q3|default_if_none:""}}'
       }
-      fn_condition_false = function(cond_name) {
-        var $skip_elems = $('.hide_'+cond_name);
-        $skip_elems.each(function(i, q_elem) {
-          $q_elem = $(q_elem);
-          $q_elem.find('[data-condition-class]').each(function(i, input_elem) {
-            $input_elem = $(input_elem);
-            $input_elem.attr('disabled', '');
-          });
-          $q_elem.animate({'opacity': 1.0}, 500);
-        });
-      };
-      fn_condition_true = function(cond_name) {
-        var $skip_elems = $('.hide_'+cond_name);
-        $skip_elems.each(function(i, q_elem) {
-          $q_elem = $(q_elem);
-          $q_elem.find('[data-condition-class]').each(function(i, input_elem) {
-            $input_elem = $(input_elem);
-            $input_elem.attr('disabled', '');
-          });
-          $q_elem.animate({'opacity': 0.33}, 500);
-        });
-      };
-      fn_on_change = function(cond_name, $input_elem) {
-        $input_elem.each(function(i, elem) {
-          $(elem).change(function() {
-            console.log("ON CHANGE:", elem);
-            check_conditions(cond_name);
-          });
-        });
-      };
       for(ans in session) {
         if(session[ans] == 'None' || session[ans] == '') {
           session[ans] = null;
@@ -164,88 +138,148 @@
       conditions = {
         'if_grad': {
           'condition': (function() {
+            if(session['ans_p1q1'] == null) { return false; }
             return (session['ans_p1q1'] == 'master' || session['ans_p1q1'] == 'doctorate');
           }),
           'cond_q_inputs': [ {'p':1, 'q':'q1'} ]
         },
         'if_not_distance': {
           'condition': (function() {
+            if(session['ans_p1q4'] == null) { return false; }
             return (session['ans_p1q4'] != 'yes');
           }),
           'cond_q_inputs': [ {'p':1, 'q':'q4'} ]
         },
         'if_not_on_campus_class': {
           'condition': (function() {
-            return (session['ans_p1q5'] != 'yes');
+            if(session['ans_p1q5'] == null) { return false; }
+            return (session['ans_p1q5'] == 'no');
           }),
           'cond_q_inputs': [ {'p':1, 'q':'q5'} ]
         },
         'if_not_tutoring': {
           'condition': (function() {
+            if(session['ans_p3q1'] == null) { return false; }
             return (session['ans_p3q1'] != 'yes');
           }),
           'cond_q_inputs': [ {'p':3, 'q':'q1'} ]
         },
         'if_tutoring': {
           'condition': (function() {
+            if(session['ans_p3q1'] == null) { return false; }
             return (session['ans_p3q1'] == 'yes');
           }),
           'cond_q_inputs': [ {'p':3, 'q':'q1'} ]
         },
         'if_grad_and_not_orientation': {
           'condition': (function() {
+            if(session['ans_p8q1'] == null || session['ans_p1q1'] == null) { return false; }
             return ((session['ans_p8q1'] != 'yes') && ((session['ans_p1q1'] == 'master' || session['ans_p1q1'] == 'doctorate')));
           }),
           'cond_q_inputs': [ {'p':8, 'q':'q1'} ]
         },
         'if_not_organization_member': {
           'condition': (function() {
-            return (session['ans_p9q1'] == 'yes');
+            if(session['ans_p9q1'] == null) { return false; }
+            return (session['ans_p9q1'] != 'yes');
           }),
           'cond_q_inputs': [ {'p':9, 'q':'q1'} ]
         },
         'if_live_on_campus': {
           'condition': (function() {
+            if(session['ans_p9q3'] == null) { return false; }
             return (session['ans_p9q3'] == 'oncampus');
           }),
           'cond_q_inputs': [ {'p':9, 'q':'q3'} ]
         },
         'if_not_away_from_home_or_not_live_on_campus': {
           'condition': (function() {
+            if(session['ans_p9q4'] == null || session['ans_p9q3'] == null) { return false; }
             return ((session['ans_p9q4'] != 'yes') || (session['ans_p9q3'] != 'oncampus'));
           }),
           'cond_q_inputs': [ {'p':9, 'q':'q3'}, {'p':9, 'q':'q4'} ]
         },
         'if_not_drink_alcohol': {
           'condition': (function() {
+            if(session['ans_p9q7'] == null) { return false; }
             return (session['ans_p9q7'] != 'yes');
           }),
           'cond_q_inputs': [ {'p':9, 'q':'q7'} ]
         },
         'if_not_employed': {
           'condition': (function() {
+            if(session['ans_p11q3'] == null) { return false; }
             return (session['ans_p11q3'] != 'yes');
           }),
           'cond_q_inputs': [ {'p':11, 'q':'q3'} ]
         }
       };
+      fn_condition_true = function(cond_name) {
+        var $skip_elems = $('.hide_'+cond_name);
+        $skip_elems.each(function(i, q_elem) {
+          $q_elem = $(q_elem);
+          $q_elem.find('[data-condition-class]').each(function(i, input_elem) {
+            $input_elem = $(input_elem);
+            if($input_elem.is('input[type="radio"]')) {
+              $input_elem.prop('checked', false);
+            } else {
+              $input_elem.val(null);
+            }
+            $input_elem.attr('disabled', '');
+            $input_elem.prop('required', false);
+          });
+          $q_elem.animate({'opacity': 0.25}, 500);
+        });
+      };
+      fn_condition_false = function(cond_name) {
+        var $skip_elems = $('.hide_'+cond_name);
+        // console.log("SHOWING: ", $skip_elems);
+        $skip_elems.each(function(i, q_elem) {
+          $q_elem = $(q_elem);
+          $q_elem.find('[data-condition-class]').each(function(i, input_elem) {
+            $input_elem = $(input_elem);
+            $input_elem.prop('disabled', false);
+            $input_elem.attr('required', 'required');
+          });
+          $q_elem.animate({'opacity': 1.0}, 500);
+        });
+      };
       check_conditions = function() {
         for(cond in conditions) {
-          if(conditions[cond]['condition']) {
+          if(conditions[cond]['condition']()) {
             fn_condition_true(cond);
           } else {
             fn_condition_false(cond);
           }
+        }
+      };
+      add_change_event = function() {
+        for(cond in conditions) {
           for(var i=0; i<conditions[cond]['cond_q_inputs'].length; i++) {
             var input_page = conditions[cond]['cond_q_inputs'][i]['p'];
             if(input_page == page_num) {
+              // fn_on_change(cond, $('[name="'+input_q+'"]'));
               var input_q = conditions[cond]['cond_q_inputs'][i]['q'];
-              fn_on_change(cond, $('[name="'+input_q+'"]'));
+              $('[name="'+input_q+'"]').change(function(e) {
+                var $tgt = $(e.currentTarget);
+                var q_num = $tgt.attr('name');
+                session['ans_p'+page_num+q_num] = $tgt.val();
+                console.log("CHANGING session['ans_p"+page_num+q_num+"'] TO:", $tgt.val());
+                if(page_num==9 && q_num=='q3') {
+                  session['ans_p9q4'] = null;
+                  console.log("CHANGING session['ans_p9q4'] TO: NULL");
+                  console.log(session);
+                }
+                check_conditions();
+              });
             }
           }
         }
       };
       check_conditions();
+      add_change_event();
+      window.check_conditions = check_conditions;
+      window.fn_condition_true = fn_condition_true;
     });
   </script>
 {% endblock %}

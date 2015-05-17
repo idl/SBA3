@@ -1,6 +1,10 @@
 {% extends "survey/survey_base.html" %}
 {% load bootstrap3 %}
 
+{% block container_elem %}
+  <div class="container {{survey_container_class}}">
+{% endblock %}
+
 {% block survey_main_content %}
   <div class="row">
     <div class="col-xs-12">

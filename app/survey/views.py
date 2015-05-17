@@ -44,6 +44,12 @@ def questions(request, school_id, student_uid, page_num):
   if int(page_num) > 11 or int(page_num) < 1:
     return redirect('survey_questions', school_id, student_uid, 11)
 
+  # student can only access the survey with their own credentials which are set
+  # in the session when they begin survey
+  if request.session.get('student_uid') != student_uid or request.session.get('school_id') != int(school_id):
+    messages.error(request, 'Could not process your request.')
+    return redirect('public_survey_begin')
+
   student = Student.objects.filter(
     school__id=school_id,
     uid=Uid.objects.get(uid=student_uid)
@@ -56,12 +62,6 @@ def questions(request, school_id, student_uid, page_num):
   if int(page_num) > 1 and not rs.all_questions_answered(page_num):
     if not rs.all_questions_answered(int(page_num)-1):
       return redirect('survey_questions', school_id, student_uid, int(page_num)-1)
-
-  # student can only access the survey with their own credentials which are set
-  # in the session when they begin survey
-  if request.session.get('student_uid') != student_uid or request.session.get('school_id') != int(school_id):
-    messages.error(request, 'Could not process your request.')
-    return redirect('public_survey_begin')
 
   try:
     school = School.objects.get(id=school_id)
@@ -78,11 +78,13 @@ def questions(request, school_id, student_uid, page_num):
     request.session['next_page_num'] = int(page_num) + 1
 
     # if student didnt answer all of the questions, not counting the ones that
-    # arent visible because they are skipped
-    if not form.is_valid():
-      messages.error(request, 'You must answer all of the questions on the page before continuing.')
+    # arent visible because they are skipped, show err msg
     for q_num in range(1, num_questions_on_page[page_num]+1):
       request.session['page_results_q'+str(q_num)] = request.POST.get('q'+str(q_num))
+    if not form.is_valid():
+      messages.error(request, 'You must answer all of the questions on the page before continuing.')
+      for q_num in range(1, num_questions_on_page[page_num]+1):
+        request.session['page_results_q'+str(q_num)] = None
     return redirect('survey_next')
   if rs.all_questions_answered(page_num):
     res_set = json.loads(getattr(rs, 'p'+str(page_num)))
@@ -165,6 +167,7 @@ def public_begin(request):
     if student.has_started_survey():
       messages.error(request, 'The student "'+student_uid+'" has already started the survey. Please click the "Go Back" button and choose the "Continue Survey')
       return render(request, "survey/survey_begin.html", context)
+    request.session.flush()
     request.session['student_uid'] = student_uid
     request.session['school_id'] = school_id
     request.session['show_modal'] = True
@@ -175,6 +178,7 @@ def public_begin(request):
         res_set_outline = {}
         for q_num in range(1, num_questions_on_page[str(page_num)]+1):
           res_set_outline['q'+str(q_num)] = None
+
         # equivalent:
         # result_set.p+str(page_num) = json.dumps(res_set_outline)
         setattr(result_set, 'p'+str(page_num), json.dumps(res_set_outline))
