@@ -288,6 +288,7 @@ class Student(models.Model):
   school = models.ForeignKey(School)
   continue_pass = models.CharField(max_length=10, blank=False)
   completed = models.BooleanField()
+  date_completed = models.DateField(null=True)
   result_set = models.OneToOneField(ResultSet, null=True)
   uid = models.ForeignKey(Uid) # 1 Uid -> n Students (multiple
                                # students fromdifferent schools can have the

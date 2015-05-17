@@ -126,12 +126,29 @@ def next(request):
   setattr(rs, 'p'+str(next_page_num-1), json_res_set)
   rs.save()
   if next_page_num == 12:
+    student.completed = True
+    student.save()
     return redirect('survey_results', school_id, student_uid)
   return redirect('survey_questions', school_id, student_uid, next_page_num)
 
 
 def results(request, school_id, student_uid):
   context = {}
+
+  # student can only access the survey with their own credentials which are set
+  # in the session when they begin survey
+  if request.session.get('student_uid') != student_uid or request.session.get('school_id') != int(school_id):
+    messages.error(request, 'Could not process your request.')
+    return redirect('public_survey_begin')
+
+  try:
+    school = School.objects.get(id=school_id)
+    uid = Uid.objects.get(uid=student_uid)
+    Student.objects.get(school=school, uid=uid)
+  except:
+    messages.error(request, 'Could not process your request.')
+    return redirect('public_survey_begin')
+
   uid = Uid.objects.filter(uid=student_uid)
   rs = Student.objects.get(school_id=school_id, uid=uid).result_set
   for page_num in range(1, 11+1):
