@@ -126,11 +126,25 @@ def next(request):
   add_condition_questions_to_session(res_set_tmp, next_page_num-1, request.session)
   setattr(rs, 'p'+str(next_page_num-1), json_res_set)
   rs.save()
+  if next_page_num == 12:
+    return redirect('survey_results', school_id, student_uid)
   return redirect('survey_questions', school_id, student_uid, next_page_num)
 
 
-def submit(request):
-  return
+def results(request, school_id, student_uid):
+  context = {}
+  survey_forms = []
+  uid = Uid.objects.filter(uid=student_uid)
+  rs = Student.objects.get(school_id=school_id, uid=uid).result_set
+  for page_num in range(1, 11+1):
+    pg_rs = getattr(rs, 'p'+str(page_num))
+    print 'pg', page_num, 'result set: ', pg_rs
+    survey_forms.append(forms[str(page_num)](post_data=pg_rs))
+  print survey_forms
+  context['forms'] = survey_forms
+  context['student_uid'] = student_uid
+  context['school_id'] = school_id
+  return render(request, "survey/survey_results.html", context)
 
 def clear(request):
   request.session.flush()

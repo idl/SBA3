@@ -248,7 +248,7 @@ class ResultSet(models.Model):
     return all_questions_answered
 
   def __unicode__(self):
-    return 'ResultSet: ' + str(self.id)
+    return 'ResultSet: id: ' + str(self.id)
 
   class Meta:
     db_table = 'ResultSet'

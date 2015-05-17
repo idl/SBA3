@@ -264,11 +264,11 @@
                 var $tgt = $(e.currentTarget);
                 var q_num = $tgt.attr('name');
                 session['ans_p'+page_num+q_num] = $tgt.val();
-                console.log("CHANGING session['ans_p"+page_num+q_num+"'] TO:", $tgt.val());
+                // console.log("CHANGING session['ans_p"+page_num+q_num+"'] TO:", $tgt.val());
                 if(page_num==9 && q_num=='q3') {
-                  session['ans_p9q4'] = null;
-                  console.log("CHANGING session['ans_p9q4'] TO: NULL");
-                  console.log(session);
+                  session['ans_p9q4'] = $('[name="q4"]:checked').val() || null;
+                  // console.log("CHANGING session['ans_p9q4'] TO:", $('[name="q4"]:checked').val() || null);
+                  // console.log(session);
                 }
                 check_conditions();
               });
@@ -278,8 +278,6 @@
       };
       check_conditions();
       add_change_event();
-      window.check_conditions = check_conditions;
-      window.fn_condition_true = fn_condition_true;
     });
   </script>
 {% endblock %}
