@@ -21,18 +21,18 @@ skips = {
 
 
 class QuestionsPage10Form(forms.Form):
-  q1 = forms.IntegerField(label=questions['q1'], min_value=-2, max_value=7)
-  q2 = forms.IntegerField(label="Minutes:", min_value=-2, max_value=7)
-  q3 = forms.IntegerField(label=questions['q3'], min_value=-2, max_value=7)
-  q4 = forms.IntegerField(label="Minutes:", min_value=-2, max_value=7)
-  q5 = forms.IntegerField(label=questions['q5'], min_value=-2, max_value=7)
-  q6 = forms.IntegerField(label="Minutes:", min_value=-2, max_value=7)
-  q7 = forms.CharField(label=questions['q7'])
-  q8 = forms.CharField(label=questions['q8'])
-  q9 = forms.CharField(label=questions['q9'])
-  q10 = forms.CharField(label=questions['q10'])
-  q11 = forms.CharField(label=questions['q11'])
-  q12 = forms.CharField(label=questions['q12'])
+  q1 = forms.IntegerField(label=questions['q1'], min_value=-2, max_value=7, widget=forms.NumberInput(attrs={'data-page-num':'10'}))
+  q2 = forms.IntegerField(label="Minutes:", min_value=-2, max_value=7, widget=forms.NumberInput(attrs={'data-page-num':'10'}))
+  q3 = forms.IntegerField(label=questions['q3'], min_value=-2, max_value=7, widget=forms.NumberInput(attrs={'data-page-num':'10'}))
+  q4 = forms.IntegerField(label="Minutes:", min_value=-2, max_value=7, widget=forms.NumberInput(attrs={'data-page-num':'10'}))
+  q5 = forms.IntegerField(label=questions['q5'], min_value=-2, max_value=7, widget=forms.NumberInput(attrs={'data-page-num':'10'}))
+  q6 = forms.IntegerField(label="Minutes:", min_value=-2, max_value=7, widget=forms.NumberInput(attrs={'data-page-num':'10'}))
+  q7 = forms.CharField(label=questions['q7'], widget=forms.TextInput(attrs={'data-page-num':'10'}))
+  q8 = forms.CharField(label=questions['q8'], widget=forms.TextInput(attrs={'data-page-num':'10'}))
+  q9 = forms.CharField(label=questions['q9'], widget=forms.TextInput(attrs={'data-page-num':'10'}))
+  q10 = forms.CharField(label=questions['q10'], widget=forms.TextInput(attrs={'data-page-num':'10'}))
+  q11 = forms.CharField(label=questions['q11'], widget=forms.TextInput(attrs={'data-page-num':'10'}))
+  q12 = forms.CharField(label=questions['q12'], widget=forms.TextInput(attrs={'data-page-num':'10'}))
 
   def __init__(self, post_data=None, session=None):
     if post_data:

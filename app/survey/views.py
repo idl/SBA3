@@ -90,7 +90,6 @@ def questions(request, school_id, student_uid, page_num):
     res_set = json.loads(getattr(rs, 'p'+str(page_num)))
     context['questions_page_form'] = forms[page_num](post_data=res_set, session=request.session)
   else:
-    res_set = json.loads(getattr(rs, 'p'+str(page_num)))
     context['questions_page_form'] = forms[page_num](session=request.session)
   context['student_uid'] = student_uid
   context['school_id'] = school_id
@@ -133,15 +132,12 @@ def next(request):
 
 def results(request, school_id, student_uid):
   context = {}
-  survey_forms = []
   uid = Uid.objects.filter(uid=student_uid)
   rs = Student.objects.get(school_id=school_id, uid=uid).result_set
   for page_num in range(1, 11+1):
-    pg_rs = getattr(rs, 'p'+str(page_num))
-    print 'pg', page_num, 'result set: ', pg_rs
-    survey_forms.append(forms[str(page_num)](post_data=pg_rs))
-  print survey_forms
-  context['forms'] = survey_forms
+    pg_rs = json.loads(getattr(rs, 'p'+str(page_num)))
+    context['form_page_'+str(page_num)] = forms[str(page_num)](post_data=pg_rs)
+
   context['student_uid'] = student_uid
   context['school_id'] = school_id
   return render(request, "survey/survey_results.html", context)

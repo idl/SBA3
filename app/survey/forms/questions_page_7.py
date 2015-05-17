@@ -71,15 +71,15 @@ skips = {
 }
 
 class QuestionsPage7Form(forms.Form):
-  q1 = forms.ChoiceField(choices=choices['q1'], label=questions['q1'], widget=forms.RadioSelect)
-  q2 = forms.ChoiceField(choices=choices['q2'], label=questions['q2'], widget=forms.RadioSelect, required=False)
-  q3 = forms.ChoiceField(choices=choices['q3'], label=questions['q3'], widget=forms.RadioSelect)
-  q4 = forms.ChoiceField(choices=choices['q4'], label=questions['q4'], widget=forms.RadioSelect)
-  q5 = forms.ChoiceField(choices=choices['q5'], label=questions['q5'], widget=forms.RadioSelect)
-  q6 = forms.IntegerField(label=questions['q6'], min_value=-2, max_value=36)
-  q7 = forms.FloatField(label=questions['q7'], min_value=-2, max_value=5, widget=forms.NumberInput(attrs={'step':'0.1'}))
-  q8 = forms.FloatField(label=questions['q8'], min_value=-2, max_value=5, widget=forms.NumberInput(attrs={'step':'0.1'}))
-  q9 = forms.IntegerField(label=questions['q9'], min_value=-2, max_value=50, required=False)
+  q1 = forms.ChoiceField(choices=choices['q1'], label=questions['q1'], widget=forms.RadioSelect(attrs={'data-page-num':'7'}))
+  q2 = forms.ChoiceField(choices=choices['q2'], label=questions['q2'], widget=forms.RadioSelect(attrs={'data-page-num':'7'}), required=False)
+  q3 = forms.ChoiceField(choices=choices['q3'], label=questions['q3'], widget=forms.RadioSelect(attrs={'data-page-num':'7'}))
+  q4 = forms.ChoiceField(choices=choices['q4'], label=questions['q4'], widget=forms.RadioSelect(attrs={'data-page-num':'7'}))
+  q5 = forms.ChoiceField(choices=choices['q5'], label=questions['q5'], widget=forms.RadioSelect(attrs={'data-page-num':'7'}))
+  q6 = forms.IntegerField(label=questions['q6'], min_value=-2, max_value=36, widget=forms.NumberInput(attrs={'data-page-num':'7'}))
+  q7 = forms.FloatField(label=questions['q7'], min_value=-2, max_value=5, widget=forms.NumberInput(attrs={'step':'0.1', 'data-page-num':'7'}))
+  q8 = forms.FloatField(label=questions['q8'], min_value=-2, max_value=5, widget=forms.NumberInput(attrs={'step':'0.1', 'data-page-num':'7'}))
+  q9 = forms.IntegerField(label=questions['q9'], min_value=-2, max_value=50, widget=forms.NumberInput(attrs={'data-page-num':'7'}), required=False)
 
   def __init__(self, post_data=None, session=None):
     if post_data:
