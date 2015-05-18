@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from .forms.begin_survey_form import SurveyBeginForm
+from .forms.continue_survey_form import SurveyContinueForm
 from .forms.questions_page_1 import QuestionsPage1Form
 from .forms.questions_page_2 import QuestionsPage2Form
 from .forms.questions_page_3 import QuestionsPage3Form
@@ -34,13 +35,10 @@ forms = {
   '11': QuestionsPage11Form,
 }
 
-def public_continue(request):
-  return render(request, "survey/survey_continue.html")
 
 def questions(request, school_id, student_uid, page_num):
   context = {}
 
-  #
   if int(page_num) > 11 or int(page_num) < 1:
     return redirect('survey_questions', school_id, student_uid, 11)
 
@@ -54,6 +52,10 @@ def questions(request, school_id, student_uid, page_num):
     school__id=school_id,
     uid=Uid.objects.get(uid=student_uid)
   ).get()
+
+  if student.completed:
+    print "HAS COMPLETED"
+
   rs = student.result_set
 
   # if this page has questions that haven't been answered, redirect to
@@ -93,6 +95,7 @@ def questions(request, school_id, student_uid, page_num):
     context['questions_page_form'] = forms[page_num](session=request.session)
   context['student_uid'] = student_uid
   context['school_id'] = school_id
+  context['school_name'] = student.school.name
   context['num_questions_on_page'] = num_questions_on_page[page_num]
   context['page_num'] = int(page_num)
   context['previous_page_num'] = int(page_num)-1
@@ -105,6 +108,7 @@ def questions(request, school_id, student_uid, page_num):
   except:
     context['progress_percentage'] = 0
   return render(request, "survey/survey_questions.html", context)
+
 
 def next(request):
   next_page_num = int(request.session.get('next_page_num'))
@@ -159,6 +163,7 @@ def results(request, school_id, student_uid):
   context['school_id'] = school_id
   return render(request, "survey/survey_results.html", context)
 
+
 def clear(request):
   request.session.flush()
   return HttpResponse("""
@@ -166,6 +171,7 @@ def clear(request):
     <meta http-equiv=\"refresh\" content=\"0.5;URL='/survey/begin'\" />
     </head><body>session cleared</body></html>
     """)
+
 
 def public_begin(request):
   context = {}
@@ -192,7 +198,7 @@ def public_begin(request):
       messages.error(request, 'The student "'+student_uid+'" has already completed the survey.')
       return render(request, "survey/survey_begin.html", context)
     if student.has_started_survey():
-      messages.error(request, 'The student "'+student_uid+'" has already started the survey. Please click the "Go Back" button and choose the "Continue Survey')
+      messages.error(request, 'The student "'+student_uid+'" has already started the survey. <a href="/survey/continue" style="color:white;text-decoration:underline;font-weight:700;">Click here to continue the survey</a>.')
       return render(request, "survey/survey_begin.html", context)
     request.session.flush()
     request.session['student_uid'] = student_uid
@@ -214,4 +220,43 @@ def public_begin(request):
     student.save()
     return redirect('survey_questions', school_id, student_uid, 1)
   return render(request, "survey/survey_begin.html", context)
+
+
+def public_continue(request):
+  context = {}
+  continue_form = SurveyContinueForm()
+  continue_pass = ""
+  if request.GET:
+    if request.GET.get('continue_pass'):
+      continue_pass = request.GET.get('continue_pass')
+  if request.POST:
+    continue_form = SurveyContinueForm(request.POST)
+    if form.is_valid():
+      print request.POST
+    else:
+      messages.error(request, "Please enter all fields.")
+      return redirect('public_survey_continue')
+    school_id = int(request.POST.get('school'))
+    student_uid = request.POST.get('student_uid')
+    context['school_id'] = school_id
+    context['survey_continue_form'] = continue_form
+    student = None
+    try:
+      student = Student.objects.get(
+      uid=Uid.objects.get(uid=student_uid),
+      school=School.objects.get(id=school_id))
+    except:
+      messages.error(request,
+        'The user ID "'+student_uid+'" is not registered with this school.')
+      return render(request, "survey/survey_begin.html", context)
+    if student.completed:
+      messages.error(request, 'The student "'+student_uid+'" has already completed the survey.')
+      return render(request, "survey/survey_begin.html", context)
+    if not student.has_started_survey():
+      messages.error(request, 'The student "'+student_uid+'" has not started the survey. <a href="/survey/begin" style="color:white;text-decoration:underline;font-weight:700;">Click here to begin the survey</a>.')
+      return render(request, "survey/survey_begin.html", context)
+    request.session.flush()
+    request.session['student_uid'] = student_uid
+    request.session['school_id'] = school_id
+  return render(request, "survey/survey_continue.html", context)
 

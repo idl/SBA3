@@ -71,13 +71,19 @@
       $('[checked]').parent().css({
         'background': '#bfbfbf',
         'font-weight': 700,
-        'cursor':'not-allowed',
         'font-size': '1.25em'
+      });
+      $('input[type="radio"]').parent().css({
+        'cursor':'not-allowed'
+      });
+      $('input[type="radio"]').css({
+        'cursor':'not-allowed'
       });
       $('input[type="text"], input[type="number"], select').css({
         'background': '#bfbfbf',
         'font-weight': 700,
-        'font-size': '1.125em'
+        'font-size': '1.125em',
+        'cursor':'not-allowed'
       });
       $('.form-group input[name], .form-group select').each(function(i, elem) {
         var page_num = $(elem).attr('data-page-num');
@@ -90,7 +96,7 @@
       $('.form-group input:not([type="radio"])').each(function(i, elem) {
         $elem = $(elem);
         if($elem.val() == '') {
-          $elem.animate({'opacity': 0.25}, 500);
+          $elem.closest('.form-group').animate({'opacity': 0.25}, 500);
         }
       });
     });
