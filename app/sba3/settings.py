@@ -1,5 +1,5 @@
 from django.contrib.messages import constants as messages
-from .secret import pwd
+from .secret import pwd, mailpwd
 
 """
 Django settings for sba3 project.
@@ -96,6 +96,12 @@ DATABASES = {
     'PORT': '',
   }
 }
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'john.g.buffington@gmail.com'
+EMAIL_HOST_PASSWORD = mailpwd
+EMAIL_USE_TLS = True
 
 # django-extensions
 GRAPH_MODELS = {

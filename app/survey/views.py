@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
+from django.core.mail import send_mail
 from .forms.begin_survey_form import SurveyBeginForm
 from .forms.continue_survey_form import SurveyContinueForm
 from .forms.questions_page_1 import QuestionsPage1Form
@@ -45,6 +46,7 @@ def questions(request, school_id, student_uid, page_num):
   # student can only access the survey with their own credentials which are set
   # in the session when they begin survey
   if request.session.get('student_uid') != student_uid or request.session.get('school_id') != int(school_id):
+    print "SESSION DOESNT MATCH STUDENT"
     messages.error(request, 'Could not process your request.')
     return redirect('public_survey_begin')
 
@@ -54,7 +56,8 @@ def questions(request, school_id, student_uid, page_num):
   ).get()
 
   if student.completed:
-    print "HAS COMPLETED"
+    messages.error(request, 'The student "'+student_uid+'" has already completed the survey.')
+    return redirect('public_survey_begin')
 
   rs = student.result_set
 
@@ -99,9 +102,9 @@ def questions(request, school_id, student_uid, page_num):
   context['num_questions_on_page'] = num_questions_on_page[page_num]
   context['page_num'] = int(page_num)
   context['previous_page_num'] = int(page_num)-1
+  context['continue_pass'] = student.continue_pass
   if request.session.get('show_modal') and int(page_num) is 1:
     context['show_modal'] = True
-    context['continue_pass'] = student.continue_pass
     del request.session['show_modal']
   try:
     context['progress_percentage'] = "%0.0f" % (float(num_questions_so_far[page_num])/num_questions_on_page['total'] * 100)
@@ -223,40 +226,85 @@ def public_begin(request):
 
 
 def public_continue(request):
+  # form.is_valid() is false only when it contains a blank field
+  #   - more processing required to determine if the CREDENTIALS are valid
+  try:
+    send_mail('SBA3 TEST', 'TAKE YO SURVEY.', 'sba3survey@sba3survey.com',
+      ['john@johnbuffington.com'], fail_silently=False)
+    print "SENT MAIL"
+  except Exception as e:
+    print "DID NOT SEND MAIL"
+    print e
   context = {}
-  continue_form = SurveyContinueForm()
-  continue_pass = ""
+  context['survey_continue_form'] = SurveyContinueForm()
   if request.GET:
-    if request.GET.get('continue_pass'):
-      continue_pass = request.GET.get('continue_pass')
+    continue_pass = request.GET.get('continue_pass')
+    student_uid = request.GET.get('student_uid')
+    school_id = int(request.GET.get('school'))
+    if continue_pass and student_uid and school_id:
+      form = SurveyContinueForm({
+          'school': school_id,
+          'continue_pass': continue_pass,
+          'student_uid': student_uid
+        })
+      if form.is_valid():
+        student = None
+        try:
+          student = Student.objects.get(
+          uid=Uid.objects.get(uid=student_uid),
+          school=School.objects.get(id=school_id))
+        except:
+          messages.error(request,
+            'The user ID "'+student_uid+'" is not registered with this school.')
+          return render(request, "survey/survey_continue.html", context)
+        if student.completed:
+          messages.error(request,
+            'The student "'+student_uid+'" has already completed the survey.')
+          return render(request, "survey/survey_continue.html", context)
+        if not student.has_started_survey():
+          messages.error(request,
+            'The student "'+student_uid+'" has not started the survey. <a href="/survey/begin" style="color:white;text-decoration:underline;font-weight:700;">Click here to begin the survey</a>.')
+          return render(request, "survey/survey_continue.html", context)
+        if continue_pass != student.continue_pass:
+          messages.error(request,
+            'The continuation passkey does not match the student "<span style="text-decoration:underline;font-weight:700;">'+student_uid+'</span>" at <span style="text-decoration:underline;font-weight:700;">'+student.school.name+'</span>.')
+          return render(request, "survey/survey_continue.html", context)
+        request.session.flush()
+        request.session['student_uid'] = student_uid
+        request.session['school_id'] = school_id
+        return redirect('survey_questions', school_id, student_uid, 11)
   if request.POST:
-    continue_form = SurveyContinueForm(request.POST)
+    continue_pass = request.POST.get('continue_pass')
+    student_uid = request.POST.get('student_uid')
+    school_id = int(request.POST.get('school'))
+    form = SurveyContinueForm(request.POST)
     if form.is_valid():
-      print request.POST
+      student = None
+      try:
+        student = Student.objects.get(
+        uid=Uid.objects.get(uid=student_uid),
+        school=School.objects.get(id=school_id))
+      except:
+        messages.error(request,
+          'The user ID "'+student_uid+'" is not registered with this school.')
+        return render(request, "survey/survey_continue.html", context)
+      if student.completed:
+        messages.error(request,
+          'The student "'+student_uid+'" has already completed the survey.')
+        return render(request, "survey/survey_continue.html", context)
+      if not student.has_started_survey():
+        messages.error(request,
+          'The student "'+student_uid+'" has not started the survey. <a href="/survey/begin" style="color:white;text-decoration:underline;font-weight:700;">Click here to begin the survey</a>.')
+        return render(request, "survey/survey_continue.html", context)
+      if continue_pass != student.continue_pass:
+        messages.error(request,
+          'The continuation passkey does not match the student "<span style="text-decoration:underline;font-weight:700;">'+student_uid+'</span>" at <span style="text-decoration:underline;font-weight:700;">'+student.school.name+'</span>.')
+        return render(request, "survey/survey_continue.html", context)
+      request.session.flush()
+      request.session['student_uid'] = student_uid
+      request.session['school_id'] = school_id
+      return redirect('survey_questions', school_id, student_uid, 11)
     else:
       messages.error(request, "Please enter all fields.")
-      return redirect('public_survey_continue')
-    school_id = int(request.POST.get('school'))
-    student_uid = request.POST.get('student_uid')
-    context['school_id'] = school_id
-    context['survey_continue_form'] = continue_form
-    student = None
-    try:
-      student = Student.objects.get(
-      uid=Uid.objects.get(uid=student_uid),
-      school=School.objects.get(id=school_id))
-    except:
-      messages.error(request,
-        'The user ID "'+student_uid+'" is not registered with this school.')
-      return render(request, "survey/survey_begin.html", context)
-    if student.completed:
-      messages.error(request, 'The student "'+student_uid+'" has already completed the survey.')
-      return render(request, "survey/survey_begin.html", context)
-    if not student.has_started_survey():
-      messages.error(request, 'The student "'+student_uid+'" has not started the survey. <a href="/survey/begin" style="color:white;text-decoration:underline;font-weight:700;">Click here to begin the survey</a>.')
-      return render(request, "survey/survey_begin.html", context)
-    request.session.flush()
-    request.session['student_uid'] = student_uid
-    request.session['school_id'] = school_id
   return render(request, "survey/survey_continue.html", context)
 

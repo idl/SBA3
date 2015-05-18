@@ -6,4 +6,3 @@ class SurveyContinueForm(forms.Form):
   student_uid = forms.CharField(label="Student Identifier", max_length=24, widget=forms.TextInput(attrs={'placeholder':''}))
   continue_pass = forms.CharField(label="Continuation Passkey", max_length=24, widget=forms.TextInput(attrs={'placeholder':''}))
 
-
