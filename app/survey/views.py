@@ -1,6 +1,7 @@
 import json
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.utils.http import urlencode
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from django.core.mail import send_mail
@@ -20,7 +21,6 @@ from .forms.questions_page_11 import QuestionsPage11Form
 from .models import Student, School, Uid, ResultSet
 from .constants import num_questions_on_page, num_questions_so_far
 from .conditions import add_condition_questions_to_session
-from . import email
 
 
 forms = {
@@ -222,14 +222,19 @@ def public_begin(request):
       result_set.save()
       student.result_set = result_set
     student.save()
-    try:
-      send_mail(email.subject, email.message(student.uid, student.school.name,
-        student.school.id, student.continue_pass), email.from_email, [student.email],
-        fail_silently=False)
-      print "SENT MAIL"
-    except Exception as e:
-      print "DID NOT SEND MAIL"
-      print e
+    # try:
+    url = "localhost:8000/survey/continue?continue_pass="+student.continue_pass+"&school="+str(student.school.id)+"&student_uid="+student.uid.uid
+    msg = str("You have begun the SBA<sup>3</sup>-1 Survey. Please click the following link to continue the survey where you left off:<br> "+
+      "<a href='" + url + "'>" + url + "</a>" +
+      "<br><br>Your information is as follows:<br><ul>" +
+      "<li><b>Student Identifier</b>: " + student.uid.uid + "</li>" +
+      "<li><b>School</b>: " + student.school.name + "</li>" +
+      "<li><b>Continuation Passkey</b>: " + student.continue_pass + "</li></ul>")
+    send_mail("SBA3-1 Survey - Continuation Key",
+      "",
+      'sba3survey@msussrc.com', [student.email],
+      fail_silently=False, html_message=msg)
+    print "SENT MAIL"
     return redirect('survey_questions', school_id, student_uid, 1)
   return render(request, "survey/survey_begin.html", context)
 
@@ -289,19 +294,19 @@ def public_continue(request):
       except:
         messages.error(request,
           'The user ID "'+student_uid+'" is not registered with this school.')
-        return render(request, "survey/survey_continue.html")
+        return render(request, "survey/survey_continue.html", context)
       if student.completed:
         messages.error(request,
           'The student "'+student_uid+'" has already completed the survey.')
-        return render(request, "survey/survey_continue.html")
+        return render(request, "survey/survey_continue.html", context)
       if not student.has_started_survey():
         messages.error(request,
           'The student "'+student_uid+'" has not started the survey. <a href="/survey/begin" style="color:white;text-decoration:underline;font-weight:700;">Click here to begin the survey</a>.')
-        return render(request, "survey/survey_continue.html")
+        return render(request, "survey/survey_continue.html", context)
       if continue_pass != student.continue_pass:
         messages.error(request,
           'The continuation passkey does not match the student "<span style="text-decoration:underline;font-weight:700;">'+student_uid+'</span>" at <span style="text-decoration:underline;font-weight:700;">'+student.school.name+'</span>.')
-        return render(request, "survey/survey_continue.html")
+        return render(request, "survey/survey_continue.html", context)
       request.session.flush()
       request.session['student_uid'] = student_uid
       request.session['school_id'] = school_id
