@@ -286,6 +286,7 @@ class StudentManager(models.Manager):
 
 class Student(models.Model):
   school = models.ForeignKey(School)
+  email = models.EmailField(default="", blank=False)
   continue_pass = models.CharField(max_length=10, blank=False)
   completed = models.BooleanField()
   date_completed = models.DateField(null=True)
