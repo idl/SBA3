@@ -1,0 +1,61 @@
+{% load staticfiles %}
+{% load bootstrap3 %}
+
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>SBA&#xb3;-1 - </title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+  {% bootstrap_css %}
+</head>
+<body>
+<!--[if lt IE 8]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+
+<div class="container">
+  <header>
+    <div class="row">
+      <div class="col-xs-6">
+        <h1 class="h2">
+          {% block admin_header_title %}
+            SBA<sup>3</sup>-1
+          {% endblock %}
+        </h1>
+      </div>
+      <div class="col-xs-6 text-right">
+        <span class="admin-email hidden-xs">
+          {{ admin_email }}
+        </span>
+        <span class="btn-log-out">
+          <a class="btn btn-default btn-sm" href="/admin/logout">
+            LOG OUT&emsp;{% bootstrap_icon "log-out" %}
+          </a>
+        </span>
+      </div>
+    </div>
+    <div class="row visible-xs-inline-block">
+      <div class="col-xs-12">
+        <span class="admin-email">{{ admin_email }}</span>
+      </div>
+    </div>
+  </header>
+  <hr class="admin-header-sep">
+  <main>
+    {% bootstrap_messages %}
+    {% block admin_main_content %}
+    {% endblock %}
+  </main>
+</div>
+
+{% bootstrap_javascript jquery=1 %}
+<script>window.jQuery || document.write('jQuery FAILED TO LOAD.')</script>
+<script src="{% static 'js/main.js' %}"></script>
+
+{% block admin_main_content_js %}
+{% endblock %}
+</body>
+</html>

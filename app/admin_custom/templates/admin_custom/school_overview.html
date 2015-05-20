@@ -1,0 +1,18 @@
+{% extends "admin_custom/admin_custom_base.html" %}
+{% load bootstrap3 %}
+
+{% block admin_main_content %}
+  <div class="row">
+    <div class="col-xs-12">
+      <h2 class="admin-main-title pull-left">Mississippi State University</h2>
+      <form action="{# ## url 'admin_select_survey_year' ## #}" class="form-inline pull-right">
+        {% bootstrap_form select_survey_year_form %}
+        {% buttons %}
+          <button class="btn btn-primary btn-block btn-xs" type="submit">
+            Change Survey Year
+          </button>
+        {% endbuttons %}
+      </form>
+    </div>
+  </div>
+{% endblock %}

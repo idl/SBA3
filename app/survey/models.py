@@ -2,6 +2,7 @@ import hashlib
 import collections
 import json
 from django.db import models
+from django.utils import timezone as tz
 from jsonfield import JSONField
 from .constants import num_questions_on_page, num_questions_so_far
 
@@ -20,7 +21,9 @@ class School(models.Model):
   objects = SchoolManager()
 
   def get_survey_years(self):
-    print 'THIS SURVEY: ', self.name
+    years = []
+    for student in self.student_set.all():
+      print student.resultset_set
 
   def __unicode__(self):
     return self.name
@@ -30,19 +33,103 @@ class School(models.Model):
 
 
 
-# class UidManager(models.Manager):
-#   def has_uid(self, uid):
-#     students = Student.obj
 
-# 1 Uid can have many Students
-class Uid(models.Model):
-  uid = models.CharField(max_length=20)
+
+
+
+
+
+
+
+
+
+
+class StudentManager(models.Manager):
+  def create_student(self, uid, school):
+    error = ''
+    if not uid:
+      error = 'Student must have a uid'
+    elif not school:
+      error = 'Student must have a school'
+
+    if Student.objects.filter(uid__iexact=uid, school=school).count() > 0:
+      error = 'Student - School association already exists'
+    else:
+      continue_hash = hashlib.sha256(uid + school.name).hexdigest()
+      continue_pass = continue_hash[:10]
+
+      student = self.model(
+        uid=uid,
+        school=school,
+        continue_pass=continue_pass,
+        completed=False
+      ).save()
+
+      return student
+    if error == '':
+      error = 'Unknown Error'
+    return error
+
+
+class Student(models.Model):
+  school = models.ForeignKey(School)
+  email = models.EmailField(default="", blank=False)
+  continue_pass = models.CharField(max_length=10, blank=False)
+  uid = models.CharField(max_length=25, blank=False)
+  objects = StudentManager()
+
+  def has_started_survey(self):
+    return False
+
+  def has_completed_survey_for_current_year(self):
+    if self.get_result_set_for_current_year() == None:
+      return False
+    else:
+      if self.get_result_set_for_current_year().completed:
+        return True
+    return False
+
+  def get_result_set_for_year(self, year):
+    try:
+      return self.resultset_set.get(year=year)
+    except:
+      return None
+    return None
+
+  def get_result_set_for_current_year(self):
+    return self.get_result_set_for_year(tz.now().year)
+
+  # def get_survey_years(self):
+  #   years = []
+  #   for rs in self.resultset_set.all():
+  #      years.append(rs.year)
+  #   return years
 
   def __unicode__(self):
-    return self.uid
+    return str(self.uid) + ", " + str(self.school)
 
   class Meta:
-    db_table = u'Uid'
+    db_table = u'Student'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -189,6 +276,9 @@ class Uid(models.Model):
 
 class ResultSet(models.Model):
   load_kwargs = {'object_pairs_hook': collections.OrderedDict}
+  student = models.ForeignKey(Student, default=None)
+  year = models.PositiveSmallIntegerField(default=tz.now().year)
+  completed = models.BooleanField(default=False)
   p1 = JSONField(load_kwargs=load_kwargs)
   p2 = JSONField(load_kwargs=load_kwargs)
   p3 = JSONField(load_kwargs=load_kwargs)
@@ -252,63 +342,4 @@ class ResultSet(models.Model):
 
   class Meta:
     db_table = 'ResultSet'
-
-
-
-
-
-class StudentManager(models.Manager):
-  def create_student(self, uid, school):
-    error = ''
-    if not uid:
-      error = 'Student must have a uid'
-    elif not school:
-      error = 'Student must have a school'
-
-    if Student.objects.filter(uid__iexact=uid, school=school).count() > 0:
-      error = 'Student - School association already exists'
-    else:
-      continue_hash = hashlib.sha256(uid + school.name).hexdigest()
-      continue_pass = continue_hash[:10]
-
-      student = self.model(
-        uid=uid,
-        school=school,
-        continue_pass=continue_pass,
-        completed=False
-      ).save()
-
-      return student
-    if error == '':
-      error = 'Unknown Error'
-    return error
-
-
-class Student(models.Model):
-  school = models.ForeignKey(School)
-  email = models.EmailField(default="", blank=False)
-  continue_pass = models.CharField(max_length=10, blank=False)
-  completed = models.BooleanField()
-  date_completed = models.DateField(null=True)
-  result_set = models.OneToOneField(ResultSet, null=True)
-  uid = models.ForeignKey(Uid) # 1 Uid -> n Students (multiple
-                               # students fromdifferent schools can have the
-                               #  same school Uid)
-  objects = StudentManager()
-
-  def has_started_survey(self):
-    if self.result_set_id is None or self.result_set is None or self.result_set.p1 is None:
-      return False
-    else:
-      return True
-
-  def __unicode__(self):
-    return str(self.uid) + ", " + str(self.school)
-
-  class Meta:
-    db_table = u'Student'
-
-
-
-
 

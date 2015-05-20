@@ -8,7 +8,8 @@ from django.template import RequestContext
 from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from .forms import AdminLoginForm
+from .forms import AdminLoginForm, SelectSurveyYearForm
+from survey.models import Student, School
 
 User = get_user_model()
 
@@ -36,6 +37,17 @@ def superadmin_select_school(request):
 
 def admin_school_overview(request, school_id, survey_year):
   context = {}
+  context['admin_email'] = request.user.email
+
+  school = None
+  try:
+    school = School.objects.filter(id=school_id).get()
+  except:
+    messages.error(request, "Could not process your request.")
+  school.get_survey_years()
+  context['select_survey_year_form'] = SelectSurveyYearForm(initial_year=survey_year)
+
+
   return render(request, "admin_custom/school_overview.html", context)
 
 # @login_required(redirect_field_name='')

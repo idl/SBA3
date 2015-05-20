@@ -18,7 +18,7 @@ from .forms.questions_page_8 import QuestionsPage8Form
 from .forms.questions_page_9 import QuestionsPage9Form
 from .forms.questions_page_10 import QuestionsPage10Form
 from .forms.questions_page_11 import QuestionsPage11Form
-from .models import Student, School, Uid, ResultSet
+from .models import Student, School, ResultSet
 from .constants import num_questions_on_page, num_questions_so_far
 from .conditions import add_condition_questions_to_session
 
@@ -51,16 +51,13 @@ def questions(request, school_id, student_uid, page_num):
     messages.error(request, 'Could not process your request.')
     return redirect('public_survey_begin')
 
-  student = Student.objects.filter(
-    school__id=school_id,
-    uid=Uid.objects.get(uid=student_uid)
-  ).get()
+  student = Student.objects.filter(school__id=school_id,uid=student_uid).get()
 
-  if student.completed:
+  if student.has_completed_survey_for_current_year():
     messages.error(request, 'The student "'+student_uid+'" has already completed the survey.')
     return redirect('public_survey_begin')
 
-  rs = student.result_set
+  rs = student.get_result_set_for_current_year()
 
   # if this page has questions that haven't been answered, redirect to
   # the previous page (unless the previous page's questions ALL have
@@ -71,8 +68,7 @@ def questions(request, school_id, student_uid, page_num):
 
   try:
     school = School.objects.get(id=school_id)
-    uid = Uid.objects.get(uid=student_uid)
-    Student.objects.get(school=school, uid=uid)
+    Student.objects.get(school=school, uid=student_uid)
   except:
     messages.error(request, 'Could not process your request.')
     return redirect('public_survey_begin')
@@ -120,11 +116,8 @@ def next(request):
   student_uid = request.session.get('student_uid')
   if next_page_num is 1:
     return redirect('survey_questions', school_id, student_uid, next_page_num)
-  student = Student.objects.filter(
-    school__id=school_id,
-    uid=Uid.objects.get(uid=student_uid)
-  ).get()
-  rs = student.result_set
+  student = Student.objects.filter(school__id=school_id,uid=student_uid).get()
+  rs = student.get_result_set_for_current_year()
   res_set_tmp = {}
   for q_num in range(1, num_questions_on_page[str(next_page_num-1)]+1):
     ans = request.session.get('page_results_q'+str(q_num))
@@ -134,7 +127,8 @@ def next(request):
   setattr(rs, 'p'+str(next_page_num-1), json_res_set)
   rs.save()
   if next_page_num == 12:
-    student.completed = True
+    rs.completed = True
+    rs.save()
     student.save()
     return redirect('survey_results', school_id, student_uid)
   return redirect('survey_questions', school_id, student_uid, next_page_num)
@@ -151,14 +145,12 @@ def results(request, school_id, student_uid):
 
   try:
     school = School.objects.get(id=school_id)
-    uid = Uid.objects.get(uid=student_uid)
-    Student.objects.get(school=school, uid=uid)
+    Student.objects.get(school=school, uid=student_uid)
   except:
     messages.error(request, 'Could not process your request.')
     return redirect('public_survey_begin')
 
-  uid = Uid.objects.filter(uid=student_uid)
-  rs = Student.objects.get(school_id=school_id, uid=uid).result_set
+  rs = Student.objects.get(school_id=school_id, uid=student_uid).get_result_set_for_current_year()
   for page_num in range(1, 11+1):
     pg_rs = json.loads(getattr(rs, 'p'+str(page_num)))
     context['form_page_'+str(page_num)] = forms[str(page_num)](post_data=pg_rs)
@@ -190,15 +182,12 @@ def public_begin(request):
     context['school_id'] = school_id
     context['survey_begin_form'] = form
     student = None
-    try:
-      student = Student.objects.get(
-        uid=Uid.objects.get(uid=student_uid),
-        school=School.objects.get(id=school_id))
+    try:student = Student.objects.get(uid=student_uid,school=School.objects.get(id=school_id))
     except:
       messages.error(request,
         'The user ID "'+student_uid+'" is not registered with this school.')
       return render(request, "survey/survey_begin.html", context)
-    if student.completed:
+    if student.has_completed_survey_for_current_year():
       messages.error(request, 'The student "'+student_uid+'" has already completed the survey.')
       return render(request, "survey/survey_begin.html", context)
     if student.has_started_survey():
@@ -209,8 +198,8 @@ def public_begin(request):
     request.session['school_id'] = school_id
     request.session['show_modal'] = True
     result_set = None
-    if student.result_set is None:
-      result_set = ResultSet()
+    if student.get_result_set_for_current_year() is None:
+      result_set = ResultSet(student=student)
       for page_num in range(1, 12):
         res_set_outline = {}
         for q_num in range(1, num_questions_on_page[str(page_num)]+1):
@@ -223,11 +212,11 @@ def public_begin(request):
       student.result_set = result_set
     student.save()
     # try:
-    url = "localhost:8000/survey/continue?continue_pass="+student.continue_pass+"&school="+str(student.school.id)+"&student_uid="+student.uid.uid
+    url = "localhost:8000/survey/continue?continue_pass="+student.continue_pass+"&school="+str(student.school.id)+"&student_uid="+student.uid
     msg = str("You have begun the SBA<sup>3</sup>-1 Survey. Please click the following link to continue the survey where you left off:<br> "+
       "<a href='" + url + "'>" + url + "</a>" +
       "<br><br>Your information is as follows:<br><ul>" +
-      "<li><b>Student Identifier</b>: " + student.uid.uid + "</li>" +
+      "<li><b>Student Identifier</b>: " + student.uid + "</li>" +
       "<li><b>School</b>: " + student.school.name + "</li>" +
       "<li><b>Continuation Passkey</b>: " + student.continue_pass + "</li></ul>")
     send_mail("SBA3-1 Survey - Continuation Key",
@@ -255,15 +244,12 @@ def public_continue(request):
         })
       if form.is_valid():
         student = None
-        try:
-          student = Student.objects.get(
-          uid=Uid.objects.get(uid=student_uid),
-          school=School.objects.get(id=school_id))
+        try:student = Student.objects.get(uid=student_uid,school=School.objects.get(id=school_id))
         except:
           messages.error(request,
             'The user ID "'+student_uid+'" is not registered with this school.')
           return render(request, "survey/survey_continue.html", context)
-        if student.completed:
+        if student.has_completed_survey_for_current_year():
           messages.error(request,
             'The student "'+student_uid+'" has already completed the survey.')
           return render(request, "survey/survey_continue.html", context)
@@ -287,14 +273,12 @@ def public_continue(request):
     if form.is_valid():
       student = None
       try:
-        student = Student.objects.get(
-        uid=Uid.objects.get(uid=student_uid),
-        school=School.objects.get(id=school_id))
+        student = Student.objects.get(uid=student_uid,school=School.objects.get(id=school_id))
       except:
         messages.error(request,
           'The user ID "'+student_uid+'" is not registered with this school.')
         return render(request, "survey/survey_continue.html", context)
-      if student.completed:
+      if student.has_completed_survey_for_current_year():
         messages.error(request,
           'The student "'+student_uid+'" has already completed the survey.')
         return render(request, "survey/survey_continue.html", context)

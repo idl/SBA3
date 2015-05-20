@@ -7491,5 +7491,28 @@ a.list-group-item-danger.active:hover, a.list-group-item-danger.active:focus {
 }
 
 .survey-container .radio-inline, .survey-container .form-control {
-  display:none;
+  display: none;
+}
+
+/******************************
+****  ADMIN CUSTOM STYLING ****
+******************************/
+.btn-log-out,
+.admin-email {
+  margin-top: 20px;
+  display: inline-block;
+}
+
+.admin-email {
+  margin-top: 0;
+  margin-right: 25px;
+  color: #999999;
+}
+
+.admin-header-sep {
+  margin-top: 5px;
+}
+
+.admin-main-title {
+  margin-top: 0;
 }

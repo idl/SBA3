@@ -67,7 +67,7 @@ ROOT_URLCONF = 'sba3.urls'
 TEMPLATES = [
   {
     'BACKEND': 'django.template.backends.django.DjangoTemplates',
-    'DIRS': [ 'sba3/templates/' ],
+    'DIRS': [ 'sba3/templates/', 'survey/templates/', 'admin_custom/templates/' ],
     'APP_DIRS': True,
     'OPTIONS': {
       'context_processors': [
