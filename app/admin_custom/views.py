@@ -1,23 +1,42 @@
 import datetime
+from django.contrib import messages
 from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.validators import EmailValidator
 from django.core.mail import send_mail
 from django.template import RequestContext
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from .forms import AdminLoginForm
-# from .models import User
 
+User = get_user_model()
 
 def public_login(request):
-  context = {
-    'admin_login_form': AdminLoginForm(),
-  }
+  context = {}
+  context['admin_login_form'] = AdminLoginForm()
+  if request.POST:
+    form = AdminLoginForm(request.POST)
+    if form.is_valid():
+      user = authenticate(
+        username=request.POST.get('email'), password=request.POST.get('password'))
+      if user:
+        if user.is_superuser:
+          login(request, user)
+          return redirect('superadmin_select_school')
+        else:
+          print "NOT SUPER"
+    else:
+      messages.error(request, 'Email address or password was not valid.')
+      context['admin_login_form'] = form
   return render(request, "admin_custom/public_login.html", context)
 
+def superadmin_select_school(request):
+  return
 
+def admin_school_overview(request, school_id, survey_year):
+  context = {}
+  return render(request, "admin_custom/school_overview.html", context)
 
 # @login_required(redirect_field_name='')
 # def admin(request, school_id=None, student_id=None):
@@ -494,7 +513,7 @@ def public_login(request):
 # def survey_data_school_individual(request, school_id, student_id):
 #   ctx = {}
 #   ctx['school_id'] = school_id
-#   try: 
+#   try:
 #     ctx['user_id'] = Student.objects.get(id=student_id).user_id
 #     ctx['results'] = AnswerSet.objects.values().get(student_id_id=student_id)
 #     return render(request, "school_student_data.html", ctx)

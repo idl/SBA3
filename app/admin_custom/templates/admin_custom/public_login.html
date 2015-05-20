@@ -1,24 +1,33 @@
 {% extends "public/public_base.html" %}
 {% load bootstrap3 %}
 
+{% block public_base_title %}
+  <h1>SBA<sup>3</sup>-1 Survey&emsp;<small>Administrator Login</small></h1>
+{% endblock %}
+
 {% block public_main_content %}
-  <form action="/url/to/submit/" method="post" class="form" role="form">
-    {% csrf_token %}
-    {% bootstrap_form admin_login_form %}
-    {% buttons %}
-      <div class="row">
-        <div class="col-xs-6">
-          <a href="{% url 'public_index' %}" class="btn btn-default btn-block" role="button">
-            <small>{% bootstrap_icon "menu-left" %}&ensp;</small>
-            Go Back
-          </a>
-        </div>
-        <div class="col-xs-6">
-          <button type="submit" class="btn btn-primary btn-block">
-            Log In
-          </button>
-        </div>
-      </div>
-    {% endbuttons %}
-  </form>
+  <div class="row">
+    <div class="col-xs-12">
+      {% bootstrap_messages %}
+      <form action="{% url 'public_admin_login' %}" method="post" class="form" role="form">
+        {% csrf_token %}
+        {% bootstrap_form admin_login_form %}
+        {% buttons %}
+          <div class="row">
+            <div class="col-xs-6">
+              <a href="{% url 'public_index' %}" class="btn btn-default btn-block" role="button">
+                <small>{% bootstrap_icon "menu-left" %}&ensp;</small>
+                Go Back
+              </a>
+            </div>
+            <div class="col-xs-6">
+              <button type="submit" class="btn btn-primary btn-block">
+                Log In
+              </button>
+            </div>
+          </div>
+        {% endbuttons %}
+      </form>
+    </div>
+  </div>
 {% endblock %}

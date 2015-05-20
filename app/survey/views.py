@@ -234,7 +234,6 @@ def public_begin(request):
       "",
       'sba3survey@msussrc.com', [student.email],
       fail_silently=False, html_message=msg)
-    print "SENT MAIL"
     return redirect('survey_questions', school_id, student_uid, 1)
   return render(request, "survey/survey_begin.html", context)
 

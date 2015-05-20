@@ -97,6 +97,8 @@ DATABASES = {
   }
 }
 
+AUTH_USER_MODEL = 'admin_custom.User'
+
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'john.g.buffington@gmail.com'
