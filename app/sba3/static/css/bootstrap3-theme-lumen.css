@@ -7513,8 +7513,27 @@ a.list-group-item-danger.active:hover, a.list-group-item-danger.active:focus {
   margin-top: 5px;
 }
 
+.select-survey-year-form {
+  width: 100%;
+  max-width: 250px;
+  display: table;
+}
+
 .select-survey-year-form .form-group {
-  margin-bottom: 0;
+  display: table-cell;
+}
+
+.select-survey-year-form .form-group:first-child {
+  width: 25%;
+  min-width: 75px;
+  padding: 0 10px;
+}
+
+@media (max-width: 767px) {}
+
+.select-survey-year-form .form-group:last-child {
+  width: 50%;
+  max-width: 80px;
 }
 
 .admin-main-title {
