@@ -7513,6 +7513,10 @@ a.list-group-item-danger.active:hover, a.list-group-item-danger.active:focus {
   margin-top: 5px;
 }
 
+.select-survey-year-form .form-group {
+  margin-bottom: 0;
+}
+
 .admin-main-title {
   margin-top: 0;
 }

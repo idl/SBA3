@@ -36,9 +36,9 @@ class SelectSurveyYearForm(forms.Form):
     if available_years:
       choices = []
       for year in YEAR_CHOICES:
-        choices.append((year, year))
-      print choices
-      # self.fields['survey_year'].choices
+        if int(year[0]) in available_years:
+          choices.append((year[0], year[0]))
+      self.fields['survey_year'].choices = choices
     else:
       self.fields['survey_year'].choices = YEAR_CHOICES
 
