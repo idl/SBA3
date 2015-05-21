@@ -8,6 +8,7 @@ from django.template import RequestContext
 from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
+from django.utils import timezone as tz
 from .forms import AdminLoginForm, SelectSurveyYearForm
 from survey.models import Student, School
 
@@ -22,11 +23,11 @@ def public_login(request):
       user = authenticate(
         username=request.POST.get('email'), password=request.POST.get('password'))
       if user:
+        login(request, user)
         if user.is_superuser:
-          login(request, user)
           return redirect('superadmin_select_school')
         else:
-          print "NOT SUPER"
+          return redirect('admin_school_overview', user.school.id, tz.now().year)
     else:
       messages.error(request, 'Email address or password was not valid.')
       context['admin_login_form'] = form
@@ -39,13 +40,29 @@ def admin_school_overview(request, school_id, survey_year):
   context = {}
   context['admin_email'] = request.user.email
 
+  survey_year = int(survey_year)
+
+  if survey_year <= 2014 or survey_year > 2030:
+    messages.error(request, "Year out of range.")
+    return redirect('admin_school_overview', school_id, tz.now().year)
+
   school = None
   try:
     school = School.objects.filter(id=school_id).get()
   except:
     messages.error(request, "Could not process your request.")
-  school.get_survey_years()
-  context['select_survey_year_form'] = SelectSurveyYearForm(initial_year=survey_year)
+    print request.user
+    if request.user.is_superuser:
+      return redirect('superadmin_select_school')
+    else:
+      return redirect('admin_school_overview', school_id=request.user.school.id, survey_year=survey_year)
+
+  if survey_year not in school.get_survey_years():
+    messages.error(request, "There are no surveys for the year "+str(survey_year)+".")
+    return redirect('admin_school_overview',
+      school_id=school_id, survey_year=max(school.get_survey_years()))
+  context['select_survey_year_form'] = SelectSurveyYearForm(
+    initial_year=survey_year, available_years=school.get_survey_years())
 
 
   return render(request, "admin_custom/school_overview.html", context)

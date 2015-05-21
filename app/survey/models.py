@@ -23,7 +23,10 @@ class School(models.Model):
   def get_survey_years(self):
     years = []
     for student in self.student_set.all():
-      print student.resultset_set
+      for rs in student.resultset_set.all():
+        if rs.year not in years:
+          years.append(rs.year)
+    return years
 
   def __unicode__(self):
     return self.name

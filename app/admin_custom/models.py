@@ -23,11 +23,16 @@ class UserManager(BaseUserManager):
         last_login=tz.now(),
         date_joined=tz.now()
         )
+    if school:
+      user.school = school
     user.set_password(password)
     user.save(using=self._db)
     return user
 
   def create_user(self, email, password, school):
+    if school is None:
+      print "ERR: MUST HAVE SCHOOL"
+      return
     return self._create_user(email, password, school=school)
 
   def create_superuser(self, email, password):
