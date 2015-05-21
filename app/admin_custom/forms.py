@@ -1,4 +1,5 @@
 from django import forms
+from survey.models import School
 from django.utils import timezone as tz
 
 YEAR_CHOICES = (
@@ -25,6 +26,13 @@ class AdminLoginForm(forms.Form):
   email = forms.EmailField(label="Email")
   password = forms.CharField(label="Password", max_length=254, widget=forms.PasswordInput)
 
+class SuperadminSelectSchoolForm(forms.Form):
+  school = forms.ModelChoiceField(queryset=School.objects.all(), label="")
+
+class SuperadminCreateSchoolForm(forms.ModelForm):
+  class Meta:
+    model = School
+    fields = ['name', 'location', 'survey_title']
 
 class SelectSurveyYearForm(forms.Form):
   survey_year = forms.ChoiceField(label="", widget=forms.Select, choices=[])

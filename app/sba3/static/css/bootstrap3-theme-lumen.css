@@ -1622,44 +1622,64 @@ a.text-danger:hover {
 }
 
 .bg-primary {
+  padding: 4px;
   color: #fff;
+  color: #ffffff;
   background-color: #158cba;
 }
 
 a.bg-primary:hover {
+  padding: 4px;
   background-color: #106a8c;
+  color: #ffffff;
 }
 
 .bg-success {
+  padding: 4px;
   background-color: #28b62c;
+  color: #ffffff;
 }
 
 a.bg-success:hover {
+  padding: 4px;
   background-color: #1f8c22;
+  color: #ffffff;
 }
 
 .bg-info {
+  padding: 4px;
   background-color: #75caeb;
+  color: #ffffff;
 }
 
 a.bg-info:hover {
+  padding: 4px;
   background-color: #48b9e5;
+  color: #ffffff;
 }
 
 .bg-warning {
+  padding: 4px;
   background-color: #ff851b;
+  color: #ffffff;
 }
 
 a.bg-warning:hover {
+  padding: 4px;
   background-color: #e76b00;
+  color: #ffffff;
 }
 
 .bg-danger {
+  padding: 4px;
   background-color: #ff4136;
+  color: #ffffff;
 }
 
 a.bg-danger:hover {
+  padding: 4px;
   background-color: #ff1103;
+  color: #ffffff;
 }
 
 .page-header {
@@ -7523,16 +7543,18 @@ a.list-group-item-danger.active:hover, a.list-group-item-danger.active:focus {
   display: table-cell;
 }
 
-.select-survey-year-form .form-group:first-child {
+.select-survey-year-form .form-group:first-of-type {
   width: 25%;
-  min-width: 75px;
   padding: 0 10px;
+  padding-right: 8px;
+  min-width: 75px;
+  text-align: right;
 }
 
 @media (max-width: 767px) {}
 
-.select-survey-year-form .form-group:last-child {
-  width: 50%;
+.select-survey-year-form .form-group:last-of-type {
+  width: 55%;
   max-width: 80px;
 }
 
