@@ -2,20 +2,26 @@
 {% load bootstrap3 %}
 
 {% block admin_main_content %}
+  {% bootstrap_messages %}
   <div class="row">
     <div class="col-xs-12">
-      <h2 class="admin-main-title">{{school_name}}</h2>
-      <form action="{# ## url 'admin_select_survey_year' ## #}"
-        class="form-inline select-survey-year-form">
-        <div class="wrap">
-          {% bootstrap_form select_survey_year_form %}
-          {% buttons %}
-            <button class="btn btn-primary btn-block btn-xs" type="submit">
-              Change Survey Year
-            </button>
-          {% endbuttons %}
-        </div>
-      </form>
+      <h2 class="admin-main-title pull-left">{{ admin_main_title }}</h2>
+      {% if select_survey_year_form %}
+        <form action="{% url 'admin_select_survey_year' school_id %}" method="POST"
+          class="form-inline pull-right select-survey-year-form">
+          <div class="wrap">
+            {% csrf_token %}
+            {% bootstrap_form select_survey_year_form %}
+            {% buttons %}
+              <button class="btn btn-primary btn-block btn-xs" type="submit">
+                Change Survey Year
+              </button>
+            {% endbuttons %}
+          </div>
+      {% endif %}
+      {% if no_surveys_error %}
+        <p class="bg-warning pull-right">{{ no_surveys_error }}</p>
+      {% endif %}
     </div>
   </div>
 {% endblock %}

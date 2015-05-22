@@ -16,7 +16,7 @@ class School(models.Model):
   name = models.CharField(max_length=75, blank=False)
   location = models.CharField(max_length=125, help_text='Please enter the city and state of your school.')
   survey_title = models.CharField(max_length=50, null=True)
-  date_created = models.DateField()
+  date_created = models.DateField(default=tz.now().today())
 
   objects = SchoolManager()
 
