@@ -28,6 +28,9 @@ class School(models.Model):
           years.append(rs.year)
     return years
 
+  def has_surveys(self):
+    return len(self.get_survey_years()) > 0
+
   def __unicode__(self):
     return self.name
 

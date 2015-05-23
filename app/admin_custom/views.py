@@ -2,7 +2,7 @@ import datetime
 from django.contrib import messages
 from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
-from django.core.validators import EmailValidator
+from django.views.decorators.http import require_http_methods
 from django.core.mail import send_mail
 from django.template import RequestContext
 from django.contrib.auth import login, logout, authenticate, get_user_model
@@ -20,7 +20,7 @@ User = get_user_model()
 def public_login(request):
   context = {}
   context['admin_login_form'] = AdminLoginForm()
-  if request.POST:
+  if request.method == 'POST':
     form = AdminLoginForm(request.POST)
     if form.is_valid():
       user = authenticate(
@@ -43,45 +43,53 @@ def admin_school_overview(request, school_id, survey_year=None):
   context['school_id'] = school_id
   context['add_students_bulk_form'] = AddStudentsBulkForm()
 
-  if not request.user.is_superuser:
-    if int(school_id) != request.user.school.id:
-      return redirect('admin_school_overview', request.user.school.id, tz.now().year)
-
   school = None
   try:
     school = School.objects.filter(id=school_id).get()
     context['admin_main_title'] = school.name
   except:
-    print "WRONG SCHOOL ID"
     messages.error(request, "Could not process your request.")
     if request.user.is_superuser:
       return redirect('superadmin_select_school')
     else:
       return redirect('admin_school_overview', school_id=request.user.school.id, survey_year=survey_year)
 
+  if not request.user.is_superuser:
+    if int(school_id) != request.user.school.id:
+      print "SCHOO:", school
+      return redirect('admin_school_overview', request.user.school.id, tz.now().year)
+
+  # if year param in url
   if survey_year:
     survey_year = int(survey_year)
+    request.session['survey_year'] = survey_year
+    year = 0
     if survey_year <= 2014 or survey_year > 2030:
       messages.error(request, "Year out of range.")
-      return redirect('admin_school_overview', school_id, tz.now().year)
-
-    if survey_year not in school.get_survey_years():
-      year = 0
-      if len(school.get_survey_years()) > 0:
+      if school.has_surveys():
         year = max(school.get_survey_years())
+        return redirect('admin_school_overview', school_id=school.id, survey_year=year)
       else:
+        # if no surveys exist for a school for ANY year, then redirect to
+        # admin_school_overview without the year url param
         return redirect('admin_school_overview', school_id=school.id)
-      messages.error(request, "There are no surveys for the year "+str(survey_year)+".")
-      return redirect('admin_school_overview', school_id=school.id, survey_year=year)
-
-  if len(school.get_survey_years()) > 0:
-    print "HAS SURVEYS"
-    context['select_survey_year_form'] = SelectSurveyYearForm(
-        initial_year=survey_year, available_years=school.get_survey_years())
+    elif survey_year not in school.get_survey_years():
+      if school.has_surveys():
+        year = max(school.get_survey_years())
+        messages.error(request, "There are no surveys for the year "+str(survey_year)+". The most current year in which students at "+school.name+" have taken the survey is "+str(year)+".")
+        return redirect('admin_school_overview', school_id=school.id, survey_year=year)
+      else:
+        # if no surveys exist for a school for ANY year, then redirect to
+        # admin_school_overview without the year url param
+        return redirect('admin_school_overview', school_id=school.id)
   else:
-    print "NO SURVEYS"
-    context['no_surveys_error'] = "No surveys exist for this school."
+    if school.has_surveys():
+      year = max(school.get_survey_years())
+      return redirect('admin_school_overview', school_id=school.id, survey_year=year)
+    return render(request, "admin_custom/school_overview.html", context)
 
+  context['select_survey_year_form'] = SelectSurveyYearForm(
+      initial_year=survey_year, available_years=school.get_survey_years())
   return render(request, "admin_custom/school_overview.html", context)
 
 
@@ -93,14 +101,26 @@ def superadmin_overview(request):
 
 
 def admin_select_survey_year(request, school_id):
-  if request.POST:
+  if request.method == 'POST':
     return redirect('admin_school_overview', int(school_id), int(request.POST.get('survey_year')))
   return redirect('admin_school_overview', int(school_id))
 
 
+@require_http_methods(["POST"])
+def admin_add_students_bulk(request, school_id):
+  roster_form = AddStudentsBulkForm(request.POST, request.FILES)
+  if (len(request.FILES.keys()) is 0) or (not roster_form.is_valid()):
+    messages.error(request, "Please select a .csv file in the correct format.")
+    return redirect('admin_school_overview', school_id, request.session.get('survey_year'))
 
-def admin_add_students_bulk(request):
-  return
+  if roster_form.is_valid():
+    for chunk in request.FILES['roster_file'].chunks():
+      for line in chunk.strip().split('\n'):
+        print "::", line
+    return redirect('admin_school_overview', school_id, request.session.get('survey_year'))
+
+  messages.error(request, "An error has occured. Please try uploading again.")
+  return redirect('admin_school_overview', school_id, request.session.get('survey_year'))
 
 
 def admin_add_student_single(request):

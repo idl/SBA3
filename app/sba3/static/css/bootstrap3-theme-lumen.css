@@ -7534,6 +7534,10 @@ a.list-group-item-danger.active:hover, a.list-group-item-danger.active:focus {
   color: #666666;
 }
 
+.admin-email.no-margin {
+  margin-right: 0;
+}
+
 .admin-header-sep {
   margin-top: 5px;
 }

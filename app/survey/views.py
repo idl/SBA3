@@ -5,6 +5,7 @@ from django.utils.http import urlencode
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from django.core.mail import send_mail
+from django.views.decorators.http import require_http_methods
 from .forms.begin_survey_form import SurveyBeginForm
 from .forms.continue_survey_form import SurveyContinueForm
 from .forms.questions_page_1 import QuestionsPage1Form
@@ -73,7 +74,7 @@ def questions(request, school_id, student_uid, page_num):
     messages.error(request, 'Could not process your request.')
     return redirect('public_survey_begin')
 
-  if request.POST:
+  if request.method == 'POST':
     if request.POST.get('survey-submit') != None:
       print "SURVEY SUBMIT"
     form = forms[page_num](post_data=request.POST)
@@ -110,6 +111,7 @@ def questions(request, school_id, student_uid, page_num):
   return render(request, "survey/survey_questions.html", context)
 
 
+@require_http_methods(["POST"])
 def next(request):
   next_page_num = int(request.session.get('next_page_num'))
   school_id = request.session.get('school_id')
@@ -172,7 +174,7 @@ def clear(request):
 def public_begin(request):
   context = {}
   context['survey_begin_form'] = SurveyBeginForm()
-  if request.POST:
+  if request.method == 'POST':
     form = SurveyBeginForm(request.POST)
     if not form.is_valid():
       messages.error(request, 'You must pick a school and enter your student identifier to take the survey.')
@@ -265,7 +267,7 @@ def public_continue(request):
         request.session['student_uid'] = student_uid
         request.session['school_id'] = school_id
         return redirect('survey_questions', school_id, student_uid, 11)
-  if request.POST:
+  if request.method == 'POST':
     continue_pass = request.POST.get('continue_pass')
     student_uid = request.POST.get('student_uid')
     school_id = int(request.POST.get('school'))

@@ -45,9 +45,10 @@ xyz987,xyz987@school.edu
 ...
 </code>
 </pre>
+            <p><a href="/static/example.csv">Download sample .csv file</a></p>
           </div>
           <div class="col-xs-4">
-            <form action="{% url 'admin_add_students_bulk' %}" method="POST"
+            <form action="{% url 'admin_add_students_bulk' school_id %}" method="POST"
               class="form-inline" enctype="multipart/form-data">
               {% csrf_token %}
               {% bootstrap_form add_students_bulk_form %}
