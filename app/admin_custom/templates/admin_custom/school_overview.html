@@ -5,10 +5,10 @@
   {% bootstrap_messages %}
   <div class="row">
     <div class="col-xs-12">
-      <h2 class="admin-main-title pull-left">{{ admin_main_title }}</h2>
+      <h2 class="admin-main-title">{{ admin_main_title }}</h2>
       {% if select_survey_year_form %}
         <form action="{% url 'admin_select_survey_year' school_id %}" method="POST"
-          class="form-inline pull-right select-survey-year-form">
+          class="form-inline select-survey-year-form">
           <div class="wrap">
             {% csrf_token %}
             {% bootstrap_form select_survey_year_form %}
@@ -18,10 +18,51 @@
               </button>
             {% endbuttons %}
           </div>
+        </form>
       {% endif %}
       {% if no_surveys_error %}
         <p class="bg-warning pull-right">{{ no_surveys_error }}</p>
       {% endif %}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <h3>Upload Student Roster</h3>
+      <div class="upload-student-roster-form bg-gray">
+        <div class="row">
+          <div class="col-xs-8">
+            <h4>File Format</h4>
+            <p>Please upload a <code>.csv</code> file. Please include the following information for each student in the given order:</p>
+            <ul>
+              <li>Student Identifier/Username</li>
+              <li>Student Email Address</li>
+            </ul>
+            <p>Example file format:</p>
+<pre>
+<code>
+abc123,abc123@school.edu
+xyz987,xyz987@school.edu
+...
+</code>
+</pre>
+          </div>
+          <div class="col-xs-4">
+            <form action="{% url 'admin_add_students_bulk' %}" method="POST"
+              class="form-inline" enctype="multipart/form-data">
+              {% csrf_token %}
+              {% bootstrap_form add_students_bulk_form %}
+              {% buttons %}
+                <button class="btn btn-primary btn-block btn-xs" type="submit">
+                  UPLOAD
+                </button>
+              {% endbuttons %}
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12">
+
     </div>
   </div>
 {% endblock %}

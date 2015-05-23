@@ -7517,6 +7517,11 @@ a.list-group-item-danger.active:hover, a.list-group-item-danger.active:focus {
 /******************************
 ****  ADMIN CUSTOM STYLING ****
 ******************************/
+.bg-gray {
+  background: #dddddd;
+  border-radius: 4px;
+}
+
 .btn-log-out,
 .admin-email {
   margin-top: 20px;
@@ -7536,7 +7541,8 @@ a.list-group-item-danger.active:hover, a.list-group-item-danger.active:focus {
 .select-survey-year-form {
   width: 100%;
   max-width: 250px;
-  display: table;
+  margin-left: 25px;
+  display: inline-block;
 }
 
 .select-survey-year-form .wrap {
@@ -7555,12 +7561,6 @@ a.list-group-item-danger.active:hover, a.list-group-item-danger.active:focus {
   text-align: right;
 }
 
-@media (max-width: 767px) {
-  .select-survey-year-form {
-    display: block;
-  }
-}
-
 .select-survey-year-form .form-group:last-of-type {
   width: 55%;
   max-width: 80px;
@@ -7568,4 +7568,21 @@ a.list-group-item-danger.active:hover, a.list-group-item-danger.active:focus {
 
 .admin-main-title {
   margin-top: 0;
+  float: left;
+}
+
+@media (max-width: 767px) {
+  .select-survey-year-form {
+    margin-left: 0;
+    display: block;
+    float: left;
+  }
+
+  .admin-main-title {
+    float: none;
+  }
+}
+
+.upload-student-roster-form {
+  padding: 10px;
 }
