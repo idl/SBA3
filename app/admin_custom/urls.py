@@ -4,6 +4,7 @@ from . import views as AdminViews
 urlpatterns = [
   url(r'^login$', AdminViews.public_login, name='public_admin_login'),
   url(r'^overview$', AdminViews.superadmin_overview, name='superadmin_overview'),
+  url(r'^create-school$', AdminViews.superadmin_create_school, name='superadmin_create_school'),
   url(r'^(?P<school_id>[0-9]{1,3})$', AdminViews.admin_school_overview, name='admin_school_overview'),
   url(r'^(?P<school_id>[0-9]{1,3})/(?P<survey_year>[0-9]{4})$', AdminViews.admin_school_overview, name='admin_school_overview'),
   url(r'^(?P<school_id>[0-9]{1,3})/change-year$', AdminViews.admin_select_survey_year, name='admin_select_survey_year'),

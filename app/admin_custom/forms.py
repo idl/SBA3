@@ -1,5 +1,5 @@
 from django import forms
-from survey.models import School
+from survey.models import School, Student
 from django.utils import timezone as tz
 
 YEAR_CHOICES = (
@@ -34,7 +34,7 @@ class SuperadminSelectSchoolForm(forms.Form):
 class SuperadminCreateSchoolForm(forms.ModelForm):
   class Meta:
     model = School
-    fields = ['name', 'location', 'survey_title']
+    fields = ['name', 'location']
 
 
 class SelectSurveyYearForm(forms.Form):
@@ -56,3 +56,9 @@ class SelectSurveyYearForm(forms.Form):
 
 class AddStudentsBulkForm(forms.Form):
   roster_file = forms.FileField(label="Select Roster File (.csv)")
+
+
+class AddSingleStudentForm(forms.ModelForm):
+  class Meta:
+    model = Student
+    fields = ['uid', 'email']

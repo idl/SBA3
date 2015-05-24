@@ -2,6 +2,16 @@
 {% load bootstrap3 %}
 
 {% block admin_main_content %}
+  {% if request.user.is_superuser %}
+    <div class="row">
+      <div class="col-xs-12">
+        <a href="{% url 'superadmin_overview' %}" class="btn btn-default btn-sm">
+          {% bootstrap_icon 'arrow-left' %} BACK TO SELECT SCHOOL
+        </a>
+      </div>
+    </div>
+    <hr>
+  {% endif %}
   {% bootstrap_messages %}
   <div class="row">
     <div class="col-xs-12">
@@ -27,11 +37,12 @@
   </div>
   <div class="row">
     <div class="col-xs-12">
-      <h3>Upload Student Roster</h3>
-      <div class="upload-student-roster-form bg-gray">
+      <h3>Add Students</h3>
+      <div class="add-students-forms bg-gray">
         <div class="row">
-          <div class="col-xs-8">
-            <h4>File Format</h4>
+          <div class="col-xs-6">
+            <h4><strong>Upload .csv File</strong> <span class="text-muted">(bulk add students)</span></h4>
+            <h5>File Format</h5>
             <p>Please upload a <code>.csv</code> file. Please include the following information for each student in the given order:</p>
             <ul>
               <li>Student Identifier/Username</li>
@@ -46,24 +57,33 @@ xyz987,xyz987@school.edu
 </code>
 </pre>
             <p><a href="/static/example.csv">Download sample .csv file</a></p>
-          </div>
-          <div class="col-xs-4">
+            <hr>
             <form action="{% url 'admin_add_students_bulk' school_id %}" method="POST"
               class="form-inline" enctype="multipart/form-data">
               {% csrf_token %}
               {% bootstrap_form add_students_bulk_form %}
               {% buttons %}
                 <button class="btn btn-primary btn-block btn-xs" type="submit">
-                  UPLOAD
+                  {% bootstrap_icon 'upload' %} UPLOAD
+                </button>
+              {% endbuttons %}
+            </form>
+          </div>
+          <div class="col-xs-6">
+            <h4><strong>Add Single Student</strong></span></h4>
+            <form action="{% url 'admin_add_student_single' school_id %}" method="POST"
+              class="form" enctype="multipart/form-data">
+              {% csrf_token %}
+              {% bootstrap_form add_student_single_form %}
+              {% buttons %}
+                <button class="btn btn-primary btn-block btn-xs" type="submit">
+                  {% bootstrap_icon 'plus' %} ADD
                 </button>
               {% endbuttons %}
             </form>
           </div>
         </div>
       </div>
-    </div>
-    <div class="col-xs-12">
-
     </div>
   </div>
 {% endblock %}

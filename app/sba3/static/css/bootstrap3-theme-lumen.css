@@ -7517,8 +7517,17 @@ a.list-group-item-danger.active:hover, a.list-group-item-danger.active:focus {
 /******************************
 ****  ADMIN CUSTOM STYLING ****
 ******************************/
+h1.no-margin-top,
+h2.no-margin-top,
+h3.no-margin-top,
+h4.no-margin-top,
+h5.no-margin-top,
+h6.no-margin-top {
+  margin-top: 0;
+}
+
 .bg-gray {
-  background: #dddddd;
+  background: #dfdfdf;
   border-radius: 4px;
 }
 
@@ -7587,6 +7596,17 @@ a.list-group-item-danger.active:hover, a.list-group-item-danger.active:focus {
   }
 }
 
-.upload-student-roster-form {
+.create-school-form-wrapper {
+  padding: 10px;
+  background: #eeeeee;
+  border-radius: 4px;
+}
+
+.create-school-form-wrapper .form-group:last-child {
+  margin-bottom: 0;
+}
+
+.add-students-forms {
+  margin-bottom: 25px;
   padding: 10px;
 }

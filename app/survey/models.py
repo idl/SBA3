@@ -14,8 +14,9 @@ class SchoolManager(models.Manager):
 
 class School(models.Model):
   name = models.CharField(max_length=75, blank=False)
-  location = models.CharField(max_length=125, help_text='Please enter the city and state of your school.')
-  survey_title = models.CharField(max_length=50, null=True)
+  location = models.CharField(max_length=125,
+    help_text='Please enter the city and state of the school.')
+  survey_title = models.CharField(max_length=50, blank=True, default="")
   date_created = models.DateField(default=tz.now().today())
 
   objects = SchoolManager()
@@ -82,6 +83,7 @@ class Student(models.Model):
   email = models.EmailField(default="", blank=False)
   continue_pass = models.CharField(max_length=10, blank=False)
   uid = models.CharField(max_length=25, blank=False)
+
   objects = StudentManager()
 
   def has_started_survey(self):
