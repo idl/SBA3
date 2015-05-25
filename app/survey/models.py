@@ -52,30 +52,19 @@ class School(models.Model):
 
 
 class StudentManager(models.Manager):
-  def create_student(self, uid, school):
-    error = ''
-    if not uid:
-      error = 'Student must have a uid'
-    elif not school:
-      error = 'Student must have a school'
+  def create_student(self, uid, email, school):
+    print school.student_set
+    continue_hash = hashlib.sha256(uid + school.name + email).hexdigest()
+    continue_pass = continue_hash[:10]
 
-    if Student.objects.filter(uid__iexact=uid, school=school).count() > 0:
-      error = 'Student - School association already exists'
-    else:
-      continue_hash = hashlib.sha256(uid + school.name).hexdigest()
-      continue_pass = continue_hash[:10]
+    student = self.model(
+      uid=uid,
+      school=school,
+      email=email,
+      continue_pass=continue_pass
+    ).save()
 
-      student = self.model(
-        uid=uid,
-        school=school,
-        continue_pass=continue_pass,
-        completed=False
-      ).save()
-
-      return student
-    if error == '':
-      error = 'Unknown Error'
-    return error
+    return student
 
 
 class Student(models.Model):
