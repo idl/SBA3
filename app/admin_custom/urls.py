@@ -8,6 +8,8 @@ urlpatterns = [
   url(r'^create-school$', AdminViews.superadmin_create_school, name='superadmin_create_school'),
   url(r'^(?P<school_id>[0-9]{1,3})$', AdminViews.admin_school_overview, name='admin_school_overview'),
   url(r'^create-admin$', AdminViews.superadmin_create_admin, name='superadmin_create_admin'),
+  url(r'^edit-admin/(?P<admin_id>[0-9]{1,3})$', AdminViews.superadmin_edit_admin, name='superadmin_edit_admin'),
+  url(r'^delete-admin/(?P<admin_id>[0-9]{1,3})$', AdminViews.superadmin_delete_admin, name='superadmin_delete_admin'),
 
   url(r'^(?P<school_id>[0-9]{1,3})/(?P<survey_year>[0-9]{4})$', AdminViews.admin_school_overview, name='admin_school_overview'),
   url(r'^(?P<school_id>[0-9]{1,3})/change-year$', AdminViews.admin_select_survey_year, name='admin_select_survey_year'),

@@ -200,7 +200,7 @@ def public_begin(request):
     request.session['school_id'] = school_id
     request.session['show_modal'] = True
     result_set = None
-    if student.get_result_set_for_current_year() is None:
+    if student.get_result_set_for_current_year() == None:
       result_set = ResultSet(student=student)
       for page_num in range(1, 12):
         res_set_outline = {}

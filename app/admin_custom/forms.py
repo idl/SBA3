@@ -46,6 +46,7 @@ class SuperadminCreateAdminForm(forms.ModelForm):
       'password': forms.PasswordInput(),
       'school': forms.Select(attrs=({'id':'id_admin_school'}))
     }
+    labels = { 'is_superuser': 'Is Superuser?'}
 
 
 class SelectSurveyYearForm(forms.Form):

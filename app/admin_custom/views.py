@@ -44,24 +44,49 @@ def public_login(request):
 @require_http_methods(['POST'])
 def superadmin_create_admin(request):
   form = SuperadminCreateAdminForm(request.POST)
-  if form.is_valid():
-    # is school admin - school select didn't return None causing is_valid() to
-    # be be True -- therefore create school admin
-    email = request.POST.get('email')
-    password = request.POST.get('password')
-    school = None
-    try:
-      school = School.objects.get(id=request.POST.get('school'))
-    except:
+  # is school admin - school select didn't return None causing is_valid() to
+  # be be True -- therefore create school admin
+  email = request.POST.get('email')
+  password = request.POST.get('password')
+  is_superuser = request.POST.get('is_superuser')
+  school = None
+  try:
+    print request.POST.get('school')
+    school = School.objects.get(id=request.POST.get('school'))
+    print school
+  except:
+    if not is_superuser:
       messages.error(request, 'An error has occured. Please try creating the user again.')
       return redirect('superadmin_overview')
-    User.objects.create_user(email, password, school)
-  else:
-    email = request.POST.get('email')
-    password = request.POST.get('password')
+
+  if User.objects.filter(email=email).count() > 0:
+    messages.error(request, 'That email address is already in use. Please use a different email.')
+    return redirect('superadmin_overview')
+
+  if is_superuser:
     User.objects.create_superuser(email, password)
+  else:
+    User.objects.create_user(email, password, school)
+  messages.success(request, 'Successfully created administrator '+email+'.')
   return redirect('superadmin_overview')
 
+
+def superadmin_delete_admin(request, admin_id):
+  email = ""
+  if not request.user.is_superuser:
+    return redirect('superadmin_overview')
+  try:
+    user = User.objects.get(id=admin_id)
+    email = user.email
+    user.delete()
+  except:
+    return redirect('superadmin_overview')
+  messages.success(request, 'Successfully deleted administrator '+user.email+'.')
+  return redirect('superadmin_overview')
+
+
+def superadmin_edit_admin(request, admin_id):
+  return
 
 
 
@@ -75,7 +100,8 @@ def superadmin_overview(request):
   context['superadmin_select_school_form'] = SuperadminSelectSchoolForm()
   context['superadmin_create_school_form'] = SuperadminCreateSchoolForm()
   context['superadmin_add_admin_form'] = SuperadminCreateAdminForm()
-  context['schools_list'] = School.objects.all()
+  # .extra() does case-insensitive ordering by name
+  context['schools_list'] = School.objects.all().order_by('name_lower').extra(select={'name_lower': 'lower(name)'})
   context['admins_list'] = User.objects.all().order_by('-is_superuser', 'school')
   context['admin_email'] = request.user.email
   if request.method == 'POST':

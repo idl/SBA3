@@ -30,7 +30,7 @@ class UserManager(BaseUserManager):
     return user
 
   def create_user(self, email, password, school):
-    if school is None:
+    if school == None:
       print "ERR: MUST HAVE SCHOOL"
       return
     return self._create_user(email, password, school=school)

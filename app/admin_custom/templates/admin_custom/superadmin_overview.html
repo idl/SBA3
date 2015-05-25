@@ -12,7 +12,7 @@
   {% bootstrap_messages %}
   <div class="row">
     <div class="col-xs-12 col-sm-3">
-      <h2 class="h4 no-margin-top">Create a new administrator</h2>
+      <h2 class="h4 no-margin-top">Create a New Administrator</h2>
       <div class="side-form-wrapper">
         <form action="{% url 'superadmin_create_admin' %}" method="post" class="form" role="form">
           {% csrf_token %}
@@ -24,7 +24,7 @@
           {% endbuttons %}
         </form>
       </div>
-      <h2 class="h4 no-margin-top">Create a new school</h2>
+      <h2 class="h4 no-margin-top">Create a New School</h2>
       <div class="side-form-wrapper">
         <form action="{% url 'superadmin_create_school' %}" method="post" class="form" role="form">
           {% csrf_token %}
@@ -76,21 +76,18 @@
               <td>{{admin.date_joined}}</td>
               <td>{{admin.last_login}}</td>
               <td style="min-width:75px;">
-                <a href="{# url 'superadmin_edit_school' school_id #}"
-                   class="btn btn-primary btn-xs" data-toggle="tooltip"
-                   data-placement="top" title="Edit Admin Info">
+                <span data-placement="top" title="Edit Admin Info" data-toggle="tooltip">
+                  <button class="btn btn-primary btn-xs edit-admin-modal-btn"
+                    data-toggle="modal" data-target="#edit-admin-modal">
                     {% bootstrap_icon 'pencil' %}
-                </a>
-                <a href="{# url 'superadmin_delete_school' school_id #}"
+                  </button>
+                </span>
+                <a href="{% url 'superadmin_delete_admin' admin.id %}"
                    class="btn btn-danger btn-xs" data-toggle="tooltip"
                    data-placement="top" title="Delete Admin">
                     {% bootstrap_icon 'remove' %}
                 </a>
               </td>
-            </tr>
-          {% empty %}
-            <tr>
-              <td colspan="4">There aren't any schools. Please add one by using the form to the left.</td>
             </tr>
           {% endfor %}
         </tbody>
@@ -125,11 +122,12 @@
                    data-placement="top" title="View School Results">
                     {% bootstrap_icon 'eye-open' %}
                 </a>
-                <a href="{# url 'superadmin_edit_school' school_id #}"
-                   class="btn btn-primary btn-xs" data-toggle="tooltip"
-                   data-placement="top" title="Edit School Info">
+                <span data-placement="top" title="Edit School Info" data-toggle="tooltip">
+                  <button class="btn btn-primary btn-xs edit-school-modal-btn"
+                    data-toggle="modal" data-target="#edit-school-modal">
                     {% bootstrap_icon 'pencil' %}
-                </a>
+                  </button>
+                </span>
                 <a href="{# url 'superadmin_delete_school' school_id #}"
                    class="btn btn-danger btn-xs" data-toggle="tooltip"
                    data-placement="top" title="Delete School">
@@ -139,7 +137,7 @@
             </tr>
           {% empty %}
             <tr>
-              <td colspan="4">There aren't any schools. Please add one by using the form to the left.</td>
+              <td colspan="5">There aren't any schools. Please add one by using the form to the left.</td>
             </tr>
           {% endfor %}
         </tbody>
@@ -169,11 +167,39 @@
         }, 300);
       }
     });
+    $('.edit-admin-modal-btn').click(function(e) {
+      $row = $(e.currentTarget).closest('tr');
+      email = $row.find('td')[0].innerHTML;
+      $('.modal-title-admin-name').text();
+    });
   });
 </script>
 {% endblock %}
 
 {% block admin_modals_content %}
+  <div class="modal fade" id="edit-admin-modal" tabindex="-1" role="dialog"
+    aria-labelledby="Edit Administrator Information" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <form action="superadmin_overview_submit" method="post">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Edit Admin: <span class="modal-title-admin-name"></span></h4>
+          </div>
+          <div class="modal-body">
+            <p>One fine body&hellip;</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </form>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+{% endblock %}
+
+{% block admin_modals_js %}
   <div class="modal fade">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -191,7 +217,4 @@
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
-{% endblock %}
-
-{% block admin_modals_js %}
 {% endblock %}
