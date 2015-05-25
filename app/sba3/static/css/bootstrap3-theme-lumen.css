@@ -7551,6 +7551,10 @@ h6.no-margin-top {
   margin-top: 5px;
 }
 
+.back-btn {
+  margin-right: 20px;
+}
+
 .select-survey-year-form {
   width: 100%;
   max-width: 250px;

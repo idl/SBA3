@@ -75,8 +75,10 @@ class Student(models.Model):
 
   objects = StudentManager()
 
-  def has_started_survey(self):
-    return False
+  def has_started_survey_for_year(self, year):
+    if self.get_result_set_for_year(year) == None:
+      return False
+    return True
 
   def has_completed_survey_for_current_year(self):
     if self.get_result_set_for_current_year() == None:

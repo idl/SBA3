@@ -41,7 +41,11 @@ class SuperadminCreateSchoolForm(forms.ModelForm):
 class SuperadminCreateAdminForm(forms.ModelForm):
   class Meta:
     model = User
-    fields = [ 'email', 'password', 'is_superuser' ]
+    fields = [ 'email', 'password', 'is_superuser', 'school' ]
+    widgets = {
+      'password': forms.PasswordInput(),
+      'school': forms.Select(attrs=({'id':'id_admin_school'}))
+    }
 
 
 class SelectSurveyYearForm(forms.Form):

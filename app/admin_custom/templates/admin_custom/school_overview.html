@@ -48,14 +48,7 @@
               <li>Student Identifier/Username</li>
               <li>Student Email Address</li>
             </ul>
-            <p>Example file format:</p>
-<pre>
-<code>
-abc123,abc123@school.edu
-xyz987,xyz987@school.edu
-...
-</code>
-</pre>
+            <p>Please submit the file using the same format as the sample file:</p>
             <p><a href="/static/example.csv">Download sample .csv file</a></p>
             <hr>
             <form action="{% url 'admin_add_students_bulk' school_id %}" method="POST"
@@ -96,19 +89,25 @@ xyz987,xyz987@school.edu
             <td><b>Student Identifier (UID)</b></td>
             <td><b>Student Email</b></td>
             <td><b>Continuation Passkey</b></td>
+            <td><b>Started Survey?</b></td>
             <td><b>Completed Survey?</b></td>
-            <td><b>Actions</b></td>
+            <td style="min-width: 100px;"><b>Actions</b></td>
           </tr>
         </thead>
         <tbody>
           {% for student in students_list %}
             <tr>
-              <td>{{student.index}}</td>
+              <td><small><em>{{student.index}}</em></small></td>
               <td>{{student.uid}}</td>
               <td>{{student.email}}</td>
               <td>{{student.continue_pass}}</td>
-              <td>{{student.completed}}</td>
-              <td>
+              <td class={% if student.started %}"success"{% else %}"danger"{% endif %}>
+                {{student.started}}
+              </td>
+              <td class={% if student.completed %}"success"{% else %}"danger"{% endif %}>
+                {{student.completed}}
+              </td>
+              <td style="min-width: 100px;">
                 <a href="{# url 'admin_delete_student' school_id student.id #}"
                    class="btn btn-default btn-xs" data-toggle="tooltip"
                    data-placement="top" title="View Student Results">
