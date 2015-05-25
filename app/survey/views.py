@@ -111,7 +111,7 @@ def questions(request, school_id, student_uid, page_num):
   return render(request, "survey/survey_questions.html", context)
 
 
-@require_http_methods(["POST"])
+
 def next(request):
   next_page_num = int(request.session.get('next_page_num'))
   school_id = request.session.get('school_id')

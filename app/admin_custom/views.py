@@ -10,7 +10,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.utils import timezone as tz
 from .forms import (AdminLoginForm, SelectSurveyYearForm, SuperadminSelectSchoolForm,
-  SuperadminCreateSchoolForm, AddStudentsBulkForm, AddSingleStudentForm)
+  SuperadminCreateSchoolForm, AddStudentsBulkForm, AddSingleStudentForm,
+  SuperadminCreateAdminForm)
 from survey.models import Student, School
 
 
@@ -47,13 +48,20 @@ def admin_school_overview(request, school_id, survey_year=None):
   context['add_students_bulk_form'] = AddStudentsBulkForm()
   context['add_student_single_form'] = AddSingleStudentForm()
 
-  students_list = []
-  for student in enumerate(Student.objects.filter(school__id=int(school_id)).values()):
-    student[1]['index'] = student[0] + 1
-    students_list.append(student[1])
-  context['students_list'] = students_list
+  school_id = int(school_id)
 
-  request.session['school_id'] = int(school_id)
+  students_list = []
+  for student in enumerate(Student.objects.filter(school__id=school_id).values()):
+    student[1]['index'] = student[0] + 1
+    completed = False
+    s = Student.objects.get(id=student[1]['id'], school__id=school_id)
+    student[1]['completed'] = s.has_completed_survey_for_year(survey_year)
+
+    students_list.append(student[1])
+  if len(students_list) > 0:
+    context['students_list'] = students_list
+
+  request.session['school_id'] = school_id
   school = None
   try:
     school = School.objects.filter(id=school_id).get()
@@ -80,6 +88,7 @@ def admin_school_overview(request, school_id, survey_year=None):
   if survey_year:
     survey_year = int(survey_year)
     request.session['survey_year'] = survey_year
+    context['survey_year'] = survey_year
     year = None
     if survey_year <= 2014 or survey_year > 2030:
       messages.error(request, "Year out of range.")
@@ -117,7 +126,9 @@ def superadmin_overview(request):
   context = {}
   context['superadmin_select_school_form'] = SuperadminSelectSchoolForm()
   context['superadmin_create_school_form'] = SuperadminCreateSchoolForm()
+  context['superadmin_add_admin_form'] = SuperadminCreateAdminForm()
   context['schools_list'] = School.objects.all()
+  context['admins_list'] = User.objects.all()
   if request.method == 'POST':
     select_school_form = SuperadminSelectSchoolForm(request.POST)
     if select_school_form.is_valid():
@@ -143,6 +154,7 @@ def superadmin_create_school(request):
 
 
 def admin_select_survey_year(request, school_id):
+  school_id = int(school_id)
   if request.method == 'POST':
     return redirect('admin_school_overview', school_id=int(school_id), survey_year=int(request.POST.get('survey_year')))
   return redirect('admin_school_overview', school_id=int(school_id))
@@ -150,16 +162,21 @@ def admin_select_survey_year(request, school_id):
 
 @require_http_methods(["POST"])
 def admin_add_students_bulk(request, school_id):
+  school_id = int(school_id)
   if not request.user.is_superuser:
     if int(school_id) != request.session.get('school_id'):
       print "wrong session"
-      return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
+      if request.session.get('survey_year'):
+        return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
+      return redirect('admin_school_overview', school_id=school_id)
 
   roster_form = AddStudentsBulkForm(request.POST, request.FILES)
   if (len(request.FILES.keys()) is 0) or (not roster_form.is_valid()):
     print "not valid"
     messages.error(request, "Please select a .csv file to upload.")
-    return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
+    if request.session.get('survey_year'):
+      return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
+    return redirect('admin_school_overview', school_id=school_id)
 
   if roster_form.is_valid():
     roster = []
@@ -168,29 +185,40 @@ def admin_add_students_bulk(request, school_id):
       for line in chunk.strip().split('\n'):
         if len(line.split(',')) == 1:
           messages.error(request, "The file is not in the correct format.")
-          return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
+          if request.session.get('survey_year'):
+            return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
+          return redirect('admin_school_overview', school_id=school_id)
         uid = line.split(',')[0].strip()
         email = line.split(',')[1].strip()
         if uid == '' or email == '':
           messages.error(request, "The file is not in the correct format.")
-          return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
+          if request.session.get('survey_year'):
+            return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
+          return redirect('admin_school_overview', school_id=school_id)
         roster.append([uid, email])
 
     for student in roster:
       print "::", student
 
-    return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
+    if request.session.get('survey_year'):
+      return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
+    return redirect('admin_school_overview', school_id=school_id)
 
   messages.error(request, "An error has occurred. Please try uploading again.")
-  return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
+  if request.session.get('survey_year'):
+    return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
+  return redirect('admin_school_overview', school_id=school_id)
 
 
 @require_http_methods(["POST"])
 def admin_add_student_single(request, school_id):
+  school_id = int(school_id)
   if not request.user.is_superuser:
     if int(school_id) != request.session.get('school_id'):
       print "wrong session"
-      return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
+      if request.session.get('survey_year'):
+        return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
+      return redirect('admin_school_overview', school_id=school_id)
 
   add_student_single_form = AddSingleStudentForm(request.POST)
   if add_student_single_form.is_valid():
@@ -199,24 +227,34 @@ def admin_add_student_single(request, school_id):
     school = School.objects.get(id=school_id)
     student = Student.objects.create_student(uid, email, school)
     messages.success(request, 'Successfully added '+uid+' to '+school.name+'.')
-  return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
+  if request.session.get('survey_year'):
+    return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
+  return redirect('admin_school_overview', school_id=school_id)
 
 
 def admin_delete_student(request, school_id, student_id):
+  school_id = int(school_id)
   if not request.user.is_superuser:
     if int(school_id) != request.session.get('school_id'):
       print "wrong session"
-      return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
+      if request.session.get('survey_year'):
+        return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
+      return redirect('admin_school_overview', school_id=school_id)
   student = Student.objects.get(id=student_id, school__id=school_id)
   student.delete()
   messages.success(request, "Successfully deleted "+student.uid+".")
-  return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
+  if request.session.get('survey_year'):
+    return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
+  return redirect('admin_school_overview', school_id=school_id)
 
 
 @require_http_methods(["POST"])
 def admin_edit_student(request, school_id, student_id):
+  school_id = int(school_id)
   if not request.user.is_superuser:
     if int(school_id) != request.session.get('school_id'):
       print "wrong session"
-      return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
+      if request.session.get('survey_year'):
+        return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
+      return redirect('admin_school_overview', school_id=school_id)
 

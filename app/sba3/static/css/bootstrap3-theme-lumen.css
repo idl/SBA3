@@ -7596,13 +7596,14 @@ h6.no-margin-top {
   }
 }
 
-.create-school-form-wrapper {
+.side-form-wrapper {
+  margin-bottom: 20px;
   padding: 10px;
   background: #eeeeee;
   border-radius: 4px;
 }
 
-.create-school-form-wrapper .form-group:last-child {
+.side-form-wrapper .form-group:last-child {
   margin-bottom: 0;
 }
 

@@ -86,6 +86,14 @@ class Student(models.Model):
         return True
     return False
 
+  def has_completed_survey_for_year(self, year):
+    if self.get_result_set_for_year(year) == None:
+      return False
+    else:
+      if self.get_result_set_for_year(year).completed:
+        return True
+    return False
+
   def get_result_set_for_year(self, year):
     try:
       return self.resultset_set.get(year=year)

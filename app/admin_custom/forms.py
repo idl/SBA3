@@ -1,5 +1,6 @@
 from django import forms
 from survey.models import School, Student
+from admin_custom.models import User
 from django.utils import timezone as tz
 
 YEAR_CHOICES = (
@@ -37,6 +38,12 @@ class SuperadminCreateSchoolForm(forms.ModelForm):
     fields = ['name', 'location']
 
 
+class SuperadminCreateAdminForm(forms.ModelForm):
+  class Meta:
+    model = User
+    fields = [ 'email', 'password', 'is_superuser' ]
+
+
 class SelectSurveyYearForm(forms.Form):
   survey_year = forms.ChoiceField(label="", widget=forms.Select, choices=[])
 
@@ -62,3 +69,4 @@ class AddSingleStudentForm(forms.ModelForm):
   class Meta:
     model = Student
     fields = ['uid', 'email']
+    labels = { 'uid': 'User Identifier' }
