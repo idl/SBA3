@@ -16,8 +16,8 @@ urlpatterns = [
 
   url(r'^(?P<school_id>[0-9]{1,3})/(?P<survey_year>[0-9]{4})$', AdminViews.admin_school_overview, name='admin_school_overview'),
   url(r'^(?P<school_id>[0-9]{1,3})/change-year$', AdminViews.admin_select_survey_year, name='admin_select_survey_year'),
-  url(r'^(?P<school_id>[0-9]{1,3})/add-students-bulk$', AdminViews.admin_add_students_bulk, name='admin_add_students_bulk'),
-  url(r'^(?P<school_id>[0-9]{1,3})/add-student-single$', AdminViews.admin_add_student_single, name='admin_add_student_single'),
+  url(r'^(?P<school_id>[0-9]{1,3})/create-students-bulk$', AdminViews.admin_create_students_bulk, name='admin_create_students_bulk'),
+  url(r'^(?P<school_id>[0-9]{1,3})/create-student-single$', AdminViews.admin_create_student_single, name='admin_create_student_single'),
   url(r'^(?P<school_id>[0-9]{1,3})/delete-student/(?P<student_id>[0-9]{1,4})$', AdminViews.admin_delete_student, name='admin_delete_student'),
   url(r'^(?P<school_id>[0-9]{1,3})/edit-student/(?P<student_id>[0-9]{1,4})$', AdminViews.admin_edit_student, name='admin_edit_student'),
   # url(r'^/logout$', 'logout_view', name='logout_view'),

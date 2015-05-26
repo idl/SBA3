@@ -38,7 +38,7 @@
   <div class="row">
     <div class="col-xs-12">
       <h3>Add Students</h3>
-      <div class="add-students-forms bg-gray">
+      <div class="create-students-forms bg-gray">
         <div class="row">
           <div class="col-xs-6">
             <h4><strong>Upload .csv File</strong> <span class="text-muted">(bulk add students)</span></h4>
@@ -51,10 +51,10 @@
             <p>Please submit the file using the same format as the sample file:</p>
             <p><a href="/static/example.csv">Download sample .csv file</a></p>
             <hr>
-            <form action="{% url 'admin_add_students_bulk' school_id %}" method="POST"
+            <form action="{% url 'admin_create_students_bulk' school_id %}" method="POST"
               class="form-inline" enctype="multipart/form-data">
               {% csrf_token %}
-              {% bootstrap_form add_students_bulk_form %}
+              {% bootstrap_form create_students_bulk_form %}
               {% buttons %}
                 <button class="btn btn-primary btn-block btn-xs" type="submit">
                   {% bootstrap_icon 'upload' %} UPLOAD
@@ -64,13 +64,13 @@
           </div>
           <div class="col-xs-6">
             <h4><strong>Add Single Student</strong></h4>
-            <form action="{% url 'admin_add_student_single' school_id %}" method="POST"
+            <form action="{% url 'admin_create_student_single' school_id %}" method="POST"
               class="form" enctype="multipart/form-data">
               {% csrf_token %}
-              {% bootstrap_form add_student_single_form %}
+              {% bootstrap_form create_student_single_form %}
               {% buttons %}
                 <button class="btn btn-primary btn-block btn-xs" type="submit">
-                  {% bootstrap_icon 'plus' %} ADD
+                  {% bootstrap_icon 'plus' %} ADD STUDENT
                 </button>
               {% endbuttons %}
             </form>
@@ -96,7 +96,7 @@
         </thead>
         <tbody>
           {% for student in students_list %}
-            <tr>
+            <tr data-student-id='{{student.id}}' data-school-id='{{school_id}}'>
               <td><small><em>{{student.index}}</em></small></td>
               <td>{{student.uid}}</td>
               <td>{{student.email}}</td>
@@ -113,11 +113,12 @@
                    data-placement="top" title="View Student Results">
                     {% bootstrap_icon 'eye-open' %}
                 </a>
-                <a href="{% url 'admin_edit_student' school_id student.id %}"
-                   class="btn btn-primary btn-xs" data-toggle="tooltip"
-                   data-placement="top" title="Edit Student">
+                <span data-placement="top" title="Edit Student Info" data-toggle="tooltip">
+                  <button class="btn btn-primary btn-xs edit-student-modal-btn"
+                    data-toggle="modal" data-target="#edit-student-modal">
                     {% bootstrap_icon 'pencil' %}
-                </a>
+                  </button>
+                </span>
                 <a href="{% url 'admin_delete_student' school_id student.id %}"
                    class="btn btn-danger btn-xs" data-toggle="tooltip"
                    data-placement="top" title="Delete Student">
@@ -146,7 +147,57 @@
 {% endblock %}
 
 {% block admin_modals_content %}
+  <div class="modal fade" id="edit-student-modal" tabindex="-1" role="dialog"
+    aria-labelledby="Edit Student Information" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <form action="{% url 'admin_edit_student' school_id 0 %}" method="post"
+          id="admin_edit_student_form">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">
+              <strong>Edit Student:</strong> <span class="modal-title-student-uid"></span>
+            </h4>
+          </div>
+          <div class="modal-body">
+            {% csrf_token %}
+            {% if update_student_error %}
+              {% bootstrap_messages %}
+            {% endif %}
+            {% bootstrap_form admin_edit_student_form %}
+          </div>
+          <div class="modal-footer">
+            {% buttons %}
+              <div class="text-center">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                  Close
+                </button>
+                <button type="submit" class="btn btn-success">
+                  UPDATE STUDENT
+                </button>
+              </div>
+            {% endbuttons %}
+          </div>
+        </form>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
 {% endblock %}
 
 {% block admin_modals_js %}
+  <script>
+    $('.edit-student-modal-btn').click(function(e) {
+      var $row, student_id, school_id, uid, email;
+      $row = $(e.currentTarget).closest('tr');
+      student_id = $row.attr('data-student-id');
+      school_id = $row.attr('data-school-id');
+      uid = $row.find('td')[1].innerText;
+      email = $row.find('td')[2].innerText;
+      console.log(uid, email);
+      $('#admin_edit_student_form').attr('action', '/admin/'+school_id+'/edit-student/'+student_id);
+      $('.modal-title-student-uid').text(email);
+      $('#edit-student-modal #id_email_modal').val(email);
+      $('#edit-student-modal #id_uid_modal').val(uid);
+    });
+  </script>
 {% endblock %}

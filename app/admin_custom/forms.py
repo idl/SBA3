@@ -103,12 +103,18 @@ class SelectSurveyYearForm(forms.Form):
       self.fields['survey_year'].choices = YEAR_CHOICES
 
 
-class AddStudentsBulkForm(forms.Form):
+class CreateStudentsBulkForm(forms.Form):
   roster_file = forms.FileField(label="Select Roster File (.csv)")
 
 
-class AddSingleStudentForm(forms.ModelForm):
+class CreateEditStudentForm(forms.ModelForm):
   class Meta:
     model = Student
     fields = ['uid', 'email']
     labels = { 'uid': 'User Identifier' }
+
+  def __init__(self, is_modal=False):
+    super(forms.ModelForm, self).__init__()
+    if is_modal:
+      self.fields['uid'].widget.attrs['id'] = 'id_uid_modal'
+      self.fields['email'].widget.attrs['id'] = 'id_email_modal'

@@ -11,7 +11,7 @@ from django.core.urlresolvers import reverse
 from django.core.validators import validate_email
 from django.utils import timezone as tz
 from .forms import (AdminLoginForm, SelectSurveyYearForm, SuperadminSelectSchoolForm,
-  SuperadminCreateEditSchoolForm, AddStudentsBulkForm, AddSingleStudentForm,
+  SuperadminCreateEditSchoolForm, CreateStudentsBulkForm, CreateEditStudentForm,
   SuperadminCreateEditAdminForm)
 from survey.models import Student, School
 
@@ -297,8 +297,9 @@ def admin_school_overview(request, school_id, survey_year=None):
   context = {}
   context['admin_email'] = request.user.email
   context['school_id'] = int(school_id)
-  context['add_students_bulk_form'] = AddStudentsBulkForm()
-  context['add_student_single_form'] = AddSingleStudentForm()
+  context['create_students_bulk_form'] = CreateStudentsBulkForm()
+  context['create_student_single_form'] = CreateEditStudentForm()
+  context['admin_edit_student_form'] = CreateEditStudentForm(is_modal=True)
 
   school_id = int(school_id)
   students = Student.objects.filter(school__id=school_id)
@@ -382,7 +383,7 @@ def admin_select_survey_year(request, school_id):
 
 
 @require_http_methods(["POST"])
-def admin_add_students_bulk(request, school_id):
+def admin_create_students_bulk(request, school_id):
   school_id = int(school_id)
   if not request.user.is_superuser:
     if int(school_id) != request.session.get('school_id'):
@@ -391,7 +392,7 @@ def admin_add_students_bulk(request, school_id):
         return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
       return redirect('admin_school_overview', school_id=school_id)
 
-  roster_form = AddStudentsBulkForm(request.POST, request.FILES)
+  roster_form = CreateStudentsBulkForm(request.POST, request.FILES)
   if (len(request.FILES.keys()) is 0) or (not roster_form.is_valid()):
     print "not valid"
     messages.error(request, "Please select a .csv file to upload.")
@@ -407,23 +408,23 @@ def admin_add_students_bulk(request, school_id):
     for chunk in request.FILES['roster_file'].chunks():
       for line in chunk.strip().split('\n'):
         if len(line.split(',')) == 1:
-          messages.error(request, "The file is not in the correct format.")
+          messages.error(request, "The file is not in the correct format. Please try reuploading the file.")
           if request.session.get('survey_year'):
             return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
           return redirect('admin_school_overview', school_id=school_id)
         uid = line.split(',')[0].strip()
         email = line.split(',')[1].strip()
         if uid == '' or email == '':
-          messages.error(request, "The file is not in the correct format.")
+          messages.error(request, "The file is not in the correct format. Please try reuploading the file.")
           if request.session.get('survey_year'):
             return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
           return redirect('admin_school_overview', school_id=school_id)
         roster.append([uid, email])
         if email in emails:
-          messages.error(request, "Students cannot have duplicate email addresses.")
+          messages.error(request, "Students cannot have duplicate email addresses. Please try reuploading the file.")
           return redirect('admin_school_overview', school_id=school_id)
         if uid in uids:
-          messages.error(request, "Students cannot have duplicate Identifiers.")
+          messages.error(request, "Students cannot have duplicate Identifiers. Please try reuploading the file.")
           return redirect('admin_school_overview', school_id=school_id)
         emails.append(email)
 
@@ -448,7 +449,7 @@ def admin_add_students_bulk(request, school_id):
 
 
 @require_http_methods(["POST"])
-def admin_add_student_single(request, school_id):
+def admin_create_student_single(request, school_id):
   school_id = int(school_id)
   if not request.user.is_superuser:
     if int(school_id) != request.session.get('school_id'):
@@ -465,8 +466,8 @@ def admin_add_student_single(request, school_id):
     messages.error(request, "Students cannot have duplicate Email Addresses. A student with the email "+request.POST.get('email')+" already exists.")
     return redirect('admin_school_overview', school_id=school_id)
 
-  add_student_single_form = AddSingleStudentForm(request.POST)
-  if add_student_single_form.is_valid():
+  create_student_single_form = CreateEditStudentForm(request.POST)
+  if create_student_single_form.is_valid():
     uid = request.POST.get('uid')
     email = request.POST.get('email')
     school = School.objects.get(id=school_id)
@@ -508,3 +509,21 @@ def admin_edit_student(request, school_id, student_id):
         return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
       return redirect('admin_school_overview', school_id=school_id)
 
+  uid = request.POST.get('uid')
+  email = request.POST.get('email')
+
+  def set_session_err(request):
+    request.session['update_student_error'] = True
+    request.session['update_student_error_uid'] = uid
+    request.session['update_student_error_email'] = email
+    request.session['update_student_error_student_id'] = admin_id
+    request.session['update_student_error_school'] = school
+
+  if uid.strip() is '' or email.strip() is '':
+    messages.error(request, 'Please fill out both fields and ensure email is in the correct format.')
+
+  try:
+    validate_email(email)
+  except:
+    messages.error(request, 'Please enter a valid email when updating admin.')
+  return redirect('admin_school_overview', school_id=school_id)
