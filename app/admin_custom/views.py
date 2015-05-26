@@ -169,13 +169,56 @@ def superadmin_edit_admin(request, admin_id):
   return redirect('superadmin_overview')
 
 
+@require_http_methods(['POST'])
+def superadmin_edit_school(request, school_id):
+  name = request.POST.get('name')
+  location = request.POST.get('location')
+  survey_title = request.POST.get('survey_title')
+  error = False
+  school = None
+
+  def set_session_err(request):
+    request.session['update_school_error'] = True
+    request.session['update_school_error_name'] = name
+    request.session['update_school_error_location'] = location
+    request.session['update_school_error_school_id'] = school_id
+    request.session['update_school_error_survey_title'] = survey_title
+
+  try:
+    school = School.objects.get(id=school_id)
+  except:
+    messages.error(request, 'An unknown error occurred. Please try updating the school again.')
+    return render('superadmin_overview')
+
+  if name.strip() == '':
+    messages.error(request, 'Please enter a school name.')
+    error = True
+  if location.strip() == '':
+    messages.error(request, 'Please enter a location.')
+    error = True
+  if location.strip() == '':
+    messages.error(request, 'Please enter a location.')
+    error = True
+  if error:
+    set_session_err(request)
+    return redirect('superadmin_overview')
+
+  school.name = name
+  school.location = location
+  if survey_title != None:
+    school.survey_title = survey_title
+  school.save()
+  messages.success(request, 'Successfully updated school '+school.name+'.')
+  return redirect('superadmin_overview')
+
 
 def superadmin_overview(request):
   context = {}
   context['superadmin_select_school_form'] = SuperadminSelectSchoolForm()
-  context['superadmin_create_school_form'] = SuperadminCreateEditSchoolForm()
   context['superadmin_create_admin_form'] = SuperadminCreateEditAdminForm()
+  context['superadmin_create_school_form'] = SuperadminCreateEditSchoolForm()
   context['superadmin_edit_admin_form'] = SuperadminCreateEditAdminForm(is_modal=True)
+  context['superadmin_edit_school_form'] = SuperadminCreateEditSchoolForm(is_modal=True)
   # .extra() does case-insensitive ordering by name
   context['schools_list'] = School.objects.all().order_by('name_lower').extra(select={'name_lower': 'lower(name)'})
   context['admins_list'] = User.objects.all().order_by('-is_superuser', 'school')
@@ -207,6 +250,18 @@ def superadmin_overview(request):
     del request.session['update_admin_error_admin_id']
     del request.session['update_admin_error_school']
     del request.session['update_admin_error_is_superuser']
+
+  if request.session.get('update_school_error'):
+    context['update_school_error'] = True
+    context['update_school_error_name'] = request.session['update_school_error_name']
+    context['update_school_error_location'] = request.session['update_school_error_location']
+    context['update_school_error_school_id'] = request.session['update_school_error_school_id']
+    context['update_school_error_survey_title'] = request.session['update_school_error_survey_title']
+    del request.session['update_school_error']
+    del request.session['update_school_error_name']
+    del request.session['update_school_error_location']
+    del request.session['update_school_error_school_id']
+    del request.session['update_school_error_survey_title']
 
   return render(request, "admin_custom/superadmin_overview.html", context)
 

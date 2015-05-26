@@ -20,7 +20,6 @@ class UserManager(BaseUserManager):
         email=email,
         is_active=True,
         is_superuser=is_superuser,
-        last_login=tz.now(),
         date_joined=tz.now()
         )
     if school:

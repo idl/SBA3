@@ -38,6 +38,15 @@ class SuperadminCreateEditSchoolForm(forms.ModelForm):
     model = School
     fields = ['name', 'location']
 
+  def __init__(self, is_modal=False):
+    super(forms.ModelForm, self).__init__()
+    fields = OrderedDict()
+    if is_modal:
+      self.fields['survey_title'] = forms.CharField(label='Survey Title', required=False)
+      self.fields['name'].widget.attrs['id'] = 'id_school_name_modal'
+      self.fields['location'].widget.attrs['id'] = 'id_school_location_modal'
+      self.fields['survey_title'].widget.attrs['id'] = 'id_school_survey_title_modal'
+
 
 class SuperadminCreateEditAdminForm(forms.ModelForm):
   class Meta:
@@ -50,8 +59,8 @@ class SuperadminCreateEditAdminForm(forms.ModelForm):
     }
     labels = { 'is_superuser': 'Is Superuser?'}
 
-  def __init__(self, is_modal=False, instance=None):
-    super(forms.ModelForm, self).__init__(instance=instance)
+  def __init__(self, is_modal=False):
+    super(forms.ModelForm, self).__init__()
     fields = OrderedDict()
     if is_modal:
       for field in [ 'email', 'change_password', 'password', 'confirm_password', 'is_superuser', 'school' ]:

@@ -118,7 +118,7 @@
               <td>{{school.location}}</td>
               <td>
                 {% if school.survey_title %}
-                  {{school.survey_title}}
+                  "{{school.survey_title}}"
                 {% else %}
                   <em>Not Set</em>
                 {% endif %}</td>
@@ -234,6 +234,42 @@
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
+
+  <div class="modal fade" id="edit-school-modal" tabindex="-1" role="dialog"
+    aria-labelledby="Edit School Information" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <form action="{% url 'superadmin_edit_school' 0 %}" method="post"
+          id="superadmin_edit_school_form">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">
+              <strong>Edit School:</strong> <span class="modal-title-school-name"></span>
+            </h4>
+          </div>
+          <div class="modal-body">
+            {% csrf_token %}
+            {% if update_admin_error %}
+              {% bootstrap_messages %}
+            {% endif %}
+            {% bootstrap_form superadmin_edit_school_form %}
+          </div>
+          <div class="modal-footer">
+            {% buttons %}
+              <div class="text-center">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                  Close
+                </button>
+                <button type="submit" class="btn btn-success">
+                  UPDATE SCHOOL
+                </button>
+              </div>
+            {% endbuttons %}
+          </div>
+        </form>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
 {% endblock %}
 
 {% block admin_modals_js %}
@@ -244,9 +280,9 @@
       admin_id = $row.attr('data-admin-id');
       school_id = $row.attr('data-school-id');
       $school_select = $('#id_edit_admin_school_modal');
-      email = $row.find('td')[0].innerHTML;
+      email = $row.find('td')[0].innerText;
       $('#superadmin_edit_admin_form').attr('action', '/admin/edit-admin/'+admin_id);
-      if($row.find('td')[2].innerHTML == 'True') {
+      if($row.find('td')[2].innerText == 'True') {
         $('#id_edit_admin_is_superuser_modal').prop('checked',true);
         $school_select.attr('disabled', '');
         $school_select.closest('.form-group').css('opacity', 0.25);
@@ -294,6 +330,24 @@
         $school_select.removeAttr('disabled').removeAttr('required');
         $($school_select.find('option')[0]).attr('selected');
       }
+    });
+    $('.edit-school-modal-btn').click(function(e) {
+      var $row, name, location, survey_title, school_id;
+      $row = $(e.currentTarget).closest('tr');
+      school_id = $row.attr('data-school-id');
+      name = $row.find('td')[0].innerText;
+      location = $row.find('td')[1].innerText;
+      if($row.find('td')[2].innerText == "Not Set") {
+        survey_title = '';
+      } else {
+        survey_title = $row.find('td')[2].innerText;
+      }
+      console.log('name', name);
+      $('#superadmin_edit_school_form').attr('action', '/admin/edit-school/'+school_id);
+      $('.modal-title-school-name').text(name);
+      $('#edit-school-modal #id_school_name_modal').val(name);
+      $('#edit-school-modal #id_school_location_modal').val(location);
+      $('#edit-school-modal #id_school_survey_title_modal').val(survey_title);
     });
   </script>
 {% endblock %}
