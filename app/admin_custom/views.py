@@ -8,6 +8,7 @@ from django.template import RequestContext
 from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
+from django.core.validators import validate_email
 from django.utils import timezone as tz
 from .forms import (AdminLoginForm, SelectSurveyYearForm, SuperadminSelectSchoolForm,
   SuperadminCreateEditSchoolForm, AddStudentsBulkForm, AddSingleStudentForm,
@@ -39,6 +40,11 @@ def public_login(request):
         messages.error(request, 'Email address or password was not valid.')
         context['admin_login_form'] = form
   return render(request, "admin_custom/public_login.html", context)
+
+
+#******************************#
+#****** SuperAdmin Views ******#
+#******************************#
 
 
 @require_http_methods(['POST'])
@@ -87,13 +93,38 @@ def superadmin_delete_admin(request, admin_id):
 
 @require_http_methods(['POST'])
 def superadmin_edit_admin(request, admin_id):
+  email = request.POST.get('email')
+  change_password = request.POST.get('change_password')
+  password = request.POST.get('password')
+  confirm_password = request.POST.get('confirm_password')
+  is_superuser = request.POST.get('is_superuser')
+  school = request.POST.get('school')
+
+  user = None
+  try:
+    user = User.objects.get(id=admin_id)
+  except:
+    return redirect('superadmin_overview')
+
+  try:
+    validate_email(email)
+    user.email = email
+  except:
+    request.session['update_admin_error'] = True
+    messages.error(request, 'Please enter a valid email when updating admin.')
+    return redirect('superadmin_overview')
+
+  if change_password:
+    if password != confirm_password:
+      request.session['update_admin_error'] = True
+      messages.error(request, 'Please ensure passwords match when updating admin.')
+      return redirect('superadmin_overview')
+    if password != confirm_password:
+      request.session['update_admin_error'] = True
+      messages.error(request, 'Please ensure passwords match when updating admin.')
+      return redirect('superadmin_overview')
   return
 
-
-
-#******************************#
-#****** SuperAdmin Views ******#
-#******************************#
 
 
 def superadmin_overview(request):
@@ -117,6 +148,9 @@ def superadmin_overview(request):
         # if no surveys exist for a school for ANY year, then redirect to
         # admin_school_overview without the year url param
         return redirect('admin_school_overview', school_id=school.id)
+
+  if request.session.get('update_admin_error'):
+    context['update_admin_error'] = True
   return render(request, "admin_custom/superadmin_overview.html", context)
 
 

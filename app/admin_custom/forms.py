@@ -67,6 +67,7 @@ class SuperadminCreateEditAdminForm(forms.ModelForm):
       )
       self.fields['email'].widget.attrs['id'] = 'id_edit_admin_email_modal'
       self.fields['is_superuser'].widget.attrs['id'] = 'id_edit_admin_is_superuser_modal'
+      self.fields['school'].widget.attrs['id'] = 'id_edit_admin_school_modal'
       self.fields['password'].widget.attrs['id'] = 'id_edit_admin_password_modal'
       self.fields['password'].widget.attrs['disabled'] = ''
       self.fields['confirm_password'].widget.attrs['id'] = 'id_admin_confirm_password_modal'
@@ -74,9 +75,6 @@ class SuperadminCreateEditAdminForm(forms.ModelForm):
     else:
       self.fields['email'].widget.attrs['id'] = 'id_create_admin_email'
 
-  def clean(self):
-    print self.cleaned_data
-    return False
 
 
 class SelectSurveyYearForm(forms.Form):

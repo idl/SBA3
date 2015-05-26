@@ -9,7 +9,9 @@
     </div>
   </div>
   <hr>
-  {% bootstrap_messages %}
+  {% if not update_admin_error %}
+    {% bootstrap_messages %}
+  {% endif %}
   <div class="row">
     <div class="col-xs-12 col-sm-3">
       <h2 class="h4 no-margin-top">Create a New Administrator</h2>
@@ -38,8 +40,10 @@
       </div>
     </div>
     <div class="col-xs-12 col-sm-9">
+      <div class="clearfix">
         <h3 class="h4 text-bold pull-left"><strong>Please select a school for which view data:&emsp;</strong></h3>
-        <form action="{% url 'superadmin_overview' %}" method="post" class="form-inline" role="form">
+        <form action="{% url 'superadmin_overview' %}" method="post"
+          class="form-inline pull-left" role="form">
           {% csrf_token %}
           {% bootstrap_form superadmin_select_school_form %}
           {% buttons %}
@@ -48,6 +52,7 @@
             </button>
           {% endbuttons %}
         </form>
+      </div>
       <hr>
       <h2 class="h3 no-margin-top">Administrators</h2>
       <table class="table table-striped table-hover">
@@ -63,7 +68,7 @@
         </thead>
         <tbody>
           {% for admin in admins_list %}
-            <tr data-admin-id="{{admin.school.id}}">
+            <tr data-school-id="{{admin.school.id}}" data-admin-id="{{admin.id}}">
               <td>{{admin.email}}</td>
               <td>
                 {% if admin.school %}
@@ -172,6 +177,10 @@
         }, 300);
       }
     });
+
+    {% if update_admin_error %}
+      $('#edit-admin-modal').modal('show');
+    {% endif %}
   });
 </script>
 {% endblock %}
@@ -181,7 +190,8 @@
     aria-labelledby="Edit Administrator Information" aria-hidden="true">
     <div class="modal-dialog modal-md">
       <div class="modal-content">
-        <form action="{% url 'superadmin_edit_admin' 0 %}" method="post">
+        <form action="{% url 'superadmin_edit_admin' 0 %}" method="post"
+          id="superadmin_edit_admin_form">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title">
@@ -190,6 +200,7 @@
           </div>
           <div class="modal-body">
             {% csrf_token %}
+            {% bootstrap_messages %}
             {% bootstrap_form superadmin_edit_admin_form %}
           </div>
           <div class="modal-footer">
@@ -213,19 +224,28 @@
 {% block admin_modals_js %}
   <script>
     $('.edit-admin-modal-btn').click(function(e) {
-      var $row, email, admin_id, is_superuser, $pwd_row;
+      var $row, email, admin_id, school_id, $pwd_row, $school_select;
       $row = $(e.currentTarget).closest('tr');
       admin_id = $row.attr('data-admin-id');
+      school_id = $row.attr('data-school-id');
+      $school_select = $('#id_edit_admin_school_modal');
       email = $row.find('td')[0].innerHTML;
+      $('#superadmin_edit_admin_form').attr('action', '/admin/edit-admin/'+admin_id);
       if($row.find('td')[2].innerHTML == 'True') {
-        is_superuser = true;
+        $('#id_edit_admin_is_superuser_modal').prop('checked',true);
+        $school_select.attr('disabled', '');
+        $school_select.closest('.form-group').css('opacity', 0.25);
+        $school_select.removeAttr('required');
       } else {
-        is_superuser = false;
+        $('#id_edit_admin_is_superuser_modal').prop('checked',false);
+        $school_select.removeAttr('disabled');
+        $school_select.closest('.form-group').css('opacity', 1);
+        $school_select.attr('required', 'required');
       }
       $('.modal-title-admin-name').text(email);
       $('#edit-admin-modal #id_edit_admin_email_modal').val(email);
       $('#edit-admin-modal option[selected]').removeAttr('selected');
-      $('#edit-admin-modal option[value="'+admin_id+'"]').attr('selected', 'selected');
+      $('#edit-admin-modal option[value="'+school_id+'"]').attr('selected', 'selected');
     });
     $('#id_change_password').click(function(e) {
       var $tgt, $pwd_input, $pwd_confirm;
@@ -235,13 +255,29 @@
       if($tgt.is(':checked')) {
         $pwd_input.closest('.form-group').animate({'opacity': 1}, 300);
         $pwd_confirm.closest('.form-group').animate({'opacity': 1}, 300);
-        $pwd_input.removeAttr('disabled');
-        $pwd_confirm.removeAttr('disabled');
+        $pwd_input.removeAttr('disabled').removeAttr('required');
+        $pwd_confirm.removeAttr('disabled').removeAttr('required');
       } else {
         $pwd_input.closest('.form-group').animate({'opacity': 0.25}, 300);
         $pwd_confirm.closest('.form-group').animate({'opacity': 0.25}, 300);
-        $pwd_input.attr('disabled', '');
-        $pwd_confirm.attr('disabled', '');
+        $pwd_input.attr('disabled', '').attr('required', 'required');
+        $pwd_confirm.attr('disabled', '').attr('required', 'required');
+        $pwd_input.val('');
+        $pwd_confirm.val('');
+      }
+    });
+    $('#id_edit_admin_is_superuser_modal').click(function(e) {
+      var $tgt, $school_select;
+      $tgt = $(e.currentTarget);
+      $school_select = $('#id_edit_admin_school_modal');
+      if($tgt.is(':checked')) {
+        $school_select.closest('.form-group').animate({'opacity': 0.25}, 300);
+        $school_select.attr('disabled', '').attr('required', 'required');
+        $school_select.find('option').removeAttr('selected');
+      } else {
+        $school_select.closest('.form-group').animate({'opacity': 1}, 300);
+        $school_select.removeAttr('disabled').removeAttr('required');
+        $($school_select.find('option')[0]).attr('selected');
       }
     });
   </script>
