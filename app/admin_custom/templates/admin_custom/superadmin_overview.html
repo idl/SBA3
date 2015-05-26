@@ -135,7 +135,7 @@
                     {% bootstrap_icon 'pencil' %}
                   </button>
                 </span>
-                <a href="{# url 'superadmin_delete_school' school_id #}"
+                <a href="{% url 'superadmin_delete_school' school.id %}"
                    class="btn btn-danger btn-xs" data-toggle="tooltip"
                    data-placement="top" title="Delete School">
                     {% bootstrap_icon 'remove' %}
@@ -340,7 +340,8 @@
       if($row.find('td')[2].innerText == "Not Set") {
         survey_title = '';
       } else {
-        survey_title = $row.find('td')[2].innerText;
+        var txt = $row.find('td')[2].innerText;
+        survey_title = txt.substring(1,txt.length-1);
       }
       console.log('name', name);
       $('#superadmin_edit_school_form').attr('action', '/admin/edit-school/'+school_id);

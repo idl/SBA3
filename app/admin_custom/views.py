@@ -87,12 +87,10 @@ def superadmin_delete_admin(request, admin_id):
   if request.user.id == int(admin_id):
     messages.error(request, 'You cannot delete your own account.')
     return redirect('superadmin_overview')
-  email = ""
   if not request.user.is_superuser:
     return redirect('superadmin_overview')
   try:
     user = User.objects.get(id=admin_id)
-    email = user.email
     user.delete()
   except:
     return redirect('superadmin_overview')
@@ -212,6 +210,28 @@ def superadmin_edit_school(request, school_id):
   return redirect('superadmin_overview')
 
 
+def superadmin_delete_school(request, school_id):
+  if not request.user.is_superuser:
+    return redirect('superadmin_overview')
+  try:
+    school = School.objects.get(id=school_id)
+    school.delete()
+  except:
+    return redirect('superadmin_overview')
+  messages.success(request, 'Successfully deleted school '+school.name+'.')
+  return redirect('superadmin_overview')
+
+
+@require_http_methods(["POST"])
+def superadmin_create_school(request):
+  form = SuperadminCreateEditSchoolForm(request.POST)
+  if form.is_valid():
+    form.save()
+  else:
+    messages.error(request, "An error has occurred. Please try submitting the form again.")
+  return redirect('superadmin_overview')
+
+
 def superadmin_overview(request):
   context = {}
   context['superadmin_select_school_form'] = SuperadminSelectSchoolForm()
@@ -264,16 +284,6 @@ def superadmin_overview(request):
     del request.session['update_school_error_survey_title']
 
   return render(request, "admin_custom/superadmin_overview.html", context)
-
-
-@require_http_methods(["POST"])
-def superadmin_create_school(request):
-  form = SuperadminCreateEditSchoolForm(request.POST)
-  if form.is_valid():
-    form.save()
-  else:
-    messages.error(request, "An error has occurred. Please try submitting the form again.")
-  return redirect('superadmin_overview')
 
 
 
