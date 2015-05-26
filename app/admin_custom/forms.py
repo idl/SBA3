@@ -50,8 +50,8 @@ class SuperadminCreateEditAdminForm(forms.ModelForm):
     }
     labels = { 'is_superuser': 'Is Superuser?'}
 
-  def __init__(self, is_modal=False):
-    super(forms.ModelForm, self).__init__()
+  def __init__(self, is_modal=False, instance=None):
+    super(forms.ModelForm, self).__init__(instance=instance)
     fields = OrderedDict()
     if is_modal:
       for field in [ 'email', 'change_password', 'password', 'confirm_password', 'is_superuser', 'school' ]:

@@ -87,11 +87,13 @@
                     {% bootstrap_icon 'pencil' %}
                   </button>
                 </span>
-                <a href="{% url 'superadmin_delete_admin' admin.id %}"
-                   class="btn btn-danger btn-xs" data-toggle="tooltip"
-                   data-placement="top" title="Delete Admin">
-                    {% bootstrap_icon 'remove' %}
-                </a>
+                {% if admin.id != request.user.id %}
+                  <a href="{% url 'superadmin_delete_admin' admin.id %}"
+                     class="btn btn-danger btn-xs" data-toggle="tooltip"
+                     data-placement="top" title="Delete Admin">
+                      {% bootstrap_icon 'remove' %}
+                  </a>
+                {% endif %}
               </td>
             </tr>
           {% endfor %}
@@ -180,6 +182,17 @@
 
     {% if update_admin_error %}
       $('#edit-admin-modal').modal('show');
+      $('#id_edit_admin_email_modal').val('{{update_admin_error_email}}');
+      $('.modal-title-admin-name').text('{{update_admin_error_email}}')
+      $('#superadmin_edit_admin_form').attr('action', '/admin/edit-admin/{{update_admin_error_admin_id}}');
+      {% if update_admin_error_is_superuser %}
+        $('#id_edit_admin_is_superuser_modal').prop('checked', true);
+        $('#id_edit_admin_school_modal').closest('.form-group').css('opacity', 0.25);
+        $('#id_edit_admin_school_modal').removeAttr('required').attr('disabled','');
+      {% else %}
+        $('#id_edit_admin_school_modal option[value="{{update_admin_error_school}}"]').prop('selected', true);
+        $('#id_edit_admin_school_modal option[selected]').removeAttr('selected');
+      {% endif %}
     {% endif %}
   });
 </script>
@@ -200,7 +213,9 @@
           </div>
           <div class="modal-body">
             {% csrf_token %}
-            {% bootstrap_messages %}
+            {% if update_admin_error %}
+              {% bootstrap_messages %}
+            {% endif %}
             {% bootstrap_form superadmin_edit_admin_form %}
           </div>
           <div class="modal-footer">

@@ -78,6 +78,9 @@ def superadmin_create_admin(request):
 
 
 def superadmin_delete_admin(request, admin_id):
+  if request.user.id == int(admin_id):
+    messages.error(request, 'You cannot delete your own account.')
+    return redirect('superadmin_overview')
   email = ""
   if not request.user.is_superuser:
     return redirect('superadmin_overview')
@@ -99,6 +102,14 @@ def superadmin_edit_admin(request, admin_id):
   confirm_password = request.POST.get('confirm_password')
   is_superuser = request.POST.get('is_superuser')
   school = request.POST.get('school')
+  error = False
+
+  def set_session_err(request):
+    request.session['update_admin_error'] = True
+    request.session['update_admin_error_email'] = email
+    request.session['update_admin_error_admin_id'] = admin_id
+    request.session['update_admin_error_is_superuser'] = is_superuser
+    request.session['update_admin_error_school'] = school
 
   user = None
   try:
@@ -110,20 +121,46 @@ def superadmin_edit_admin(request, admin_id):
     validate_email(email)
     user.email = email
   except:
-    request.session['update_admin_error'] = True
     messages.error(request, 'Please enter a valid email when updating admin.')
-    return redirect('superadmin_overview')
+    error = True
+
+  if int(admin_id) == request.user.id:
+    if is_superuser == None:
+      set_session_err(request)
+      request.session['update_admin_error_is_superuser'] = True
+      messages.error(request, 'Cannot downgrade the status of your own account.')
+      return redirect('superadmin_overview')
 
   if change_password:
     if password != confirm_password:
-      request.session['update_admin_error'] = True
       messages.error(request, 'Please ensure passwords match when updating admin.')
+      set_session_err(request)
       return redirect('superadmin_overview')
-    if password != confirm_password:
-      request.session['update_admin_error'] = True
-      messages.error(request, 'Please ensure passwords match when updating admin.')
+
+    if len(password) is 0 or len(confirm_password) is 0:
+      messages.error(request, 'Please ensure you have entered a password in both fields.')
+      set_session_err(request)
       return redirect('superadmin_overview')
-  return
+
+    user.set_password(password)
+
+  if error:
+    set_session_err(request)
+    return redirect('superadmin_overview')
+
+  if is_superuser:
+    user.school = None
+    user.is_superuser = True
+  else:
+    user.is_superuser = False
+    try:
+      user.school = School.objects.get(id=int(school))
+    except:
+      messages.error(request, 'An unknown error occurred.')
+      return redirect('superadmin_overview')
+  user.save()
+  messages.success(request, 'Successfully updated user '+user.email+'.')
+  return redirect('superadmin_overview')
 
 
 
@@ -137,6 +174,10 @@ def superadmin_overview(request):
   context['schools_list'] = School.objects.all().order_by('name_lower').extra(select={'name_lower': 'lower(name)'})
   context['admins_list'] = User.objects.all().order_by('-is_superuser', 'school')
   context['admin_email'] = request.user.email
+
+  if not request.user.is_superuser:
+    return redirect('admin_school_overview', request.user.school.id)
+
   if request.method == 'POST':
     select_school_form = SuperadminSelectSchoolForm(request.POST)
     if select_school_form.is_valid():
@@ -151,6 +192,16 @@ def superadmin_overview(request):
 
   if request.session.get('update_admin_error'):
     context['update_admin_error'] = True
+    context['update_admin_error_email'] = request.session['update_admin_error_email']
+    context['update_admin_error_admin_id'] = request.session['update_admin_error_admin_id']
+    context['update_admin_error_school'] = request.session['update_admin_error_school']
+    context['update_admin_error_is_superuser'] = request.session['update_admin_error_is_superuser']
+    del request.session['update_admin_error']
+    del request.session['update_admin_error_email']
+    del request.session['update_admin_error_admin_id']
+    del request.session['update_admin_error_school']
+    del request.session['update_admin_error_is_superuser']
+
   return render(request, "admin_custom/superadmin_overview.html", context)
 
 
