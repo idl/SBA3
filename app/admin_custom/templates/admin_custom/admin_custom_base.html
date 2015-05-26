@@ -31,7 +31,7 @@
           {{ admin_email }}
         </span>
         <span class="btn-log-out">
-          <a class="btn btn-default btn-sm" href="/admin/logout">
+          <a class="btn btn-default btn-sm" href="{% url 'public_admin_logout' %}">
             LOG OUT&emsp;{% bootstrap_icon "log-out" %}
           </a>
         </span>

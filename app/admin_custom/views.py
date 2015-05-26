@@ -42,6 +42,12 @@ def public_login(request):
   return render(request, "admin_custom/public_login.html", context)
 
 
+# @login_required()
+def public_logout(request):
+  logout(request)
+  return redirect('public_admin_login')
+
+
 #******************************#
 #****** SuperAdmin Views ******#
 #******************************#

@@ -3,6 +3,7 @@ from . import views as AdminViews
 
 urlpatterns = [
   url(r'^login$', AdminViews.public_login, name='public_admin_login'),
+  url(r'^logout$', AdminViews.public_logout, name='public_admin_logout'),
 
   url(r'^overview$', AdminViews.superadmin_overview, name='superadmin_overview'),
   url(r'^create-school$', AdminViews.superadmin_create_school, name='superadmin_create_school'),
