@@ -16,7 +16,7 @@
       <div class="side-form-wrapper">
         <form action="{% url 'superadmin_create_admin' %}" method="post" class="form" role="form">
           {% csrf_token %}
-          {% bootstrap_form superadmin_add_admin_form %}
+          {% bootstrap_form superadmin_create_admin_form %}
           {% buttons %}
             <button type="submit" class="btn btn-primary btn-block">
               CREATE ADMINISTRATOR
@@ -63,7 +63,7 @@
         </thead>
         <tbody>
           {% for admin in admins_list %}
-            <tr>
+            <tr data-admin-id="{{admin.school.id}}">
               <td>{{admin.email}}</td>
               <td>
                 {% if admin.school %}
@@ -106,7 +106,7 @@
         </thead>
         <tbody>
           {% for school in schools_list %}
-            <tr>
+            <tr data-school-id="{{school.id}}">
               <td>{{school.name}}</td>
               <td>{{school.location}}</td>
               <td>
@@ -150,6 +150,11 @@
 {% block admin_main_content_js %}
 <script>
   $(document).ready(function() {
+    var $pwd_input, $pwd_confirm, $select;
+    $pwd_input = $('#id_edit_admin_password_modal');
+    $pwd_confirm = $('#id_admin_confirm_password_modal');
+    $pwd_input.closest('.form-group').css('opacity', 0.25);
+    $pwd_confirm.closest('.form-group').css('opacity', 0.25);
     $select = $('#id_admin_school');
     $('[data-toggle="tooltip"]').tooltip();
     $('#id_is_superuser').click(function(e) {
@@ -167,11 +172,6 @@
         }, 300);
       }
     });
-    $('.edit-admin-modal-btn').click(function(e) {
-      $row = $(e.currentTarget).closest('tr');
-      email = $row.find('td')[0].innerHTML;
-      $('.modal-title-admin-name').text();
-    });
   });
 </script>
 {% endblock %}
@@ -179,19 +179,30 @@
 {% block admin_modals_content %}
   <div class="modal fade" id="edit-admin-modal" tabindex="-1" role="dialog"
     aria-labelledby="Edit Administrator Information" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog modal-md">
       <div class="modal-content">
-        <form action="superadmin_overview_submit" method="post">
+        <form action="{% url 'superadmin_edit_admin' 0 %}" method="post">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">Edit Admin: <span class="modal-title-admin-name"></span></h4>
+            <h4 class="modal-title">
+              <strong>Edit Admin:</strong> <span class="modal-title-admin-name"></span>
+            </h4>
           </div>
           <div class="modal-body">
-            <p>One fine body&hellip;</p>
+            {% csrf_token %}
+            {% bootstrap_form superadmin_edit_admin_form %}
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            {% buttons %}
+              <div class="text-center">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                  Close
+                </button>
+                <button type="submit" class="btn btn-success">
+                  UPDATE ADMIN
+                </button>
+              </div>
+            {% endbuttons %}
           </div>
         </form>
       </div><!-- /.modal-content -->
@@ -200,21 +211,38 @@
 {% endblock %}
 
 {% block admin_modals_js %}
-  <div class="modal fade">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Modal title</h4>
-        </div>
-        <div class="modal-body">
-          <p>One fine body&hellip;</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
+  <script>
+    $('.edit-admin-modal-btn').click(function(e) {
+      var $row, email, admin_id, is_superuser, $pwd_row;
+      $row = $(e.currentTarget).closest('tr');
+      admin_id = $row.attr('data-admin-id');
+      email = $row.find('td')[0].innerHTML;
+      if($row.find('td')[2].innerHTML == 'True') {
+        is_superuser = true;
+      } else {
+        is_superuser = false;
+      }
+      $('.modal-title-admin-name').text(email);
+      $('#edit-admin-modal #id_edit_admin_email_modal').val(email);
+      $('#edit-admin-modal option[selected]').removeAttr('selected');
+      $('#edit-admin-modal option[value="'+admin_id+'"]').attr('selected', 'selected');
+    });
+    $('#id_change_password').click(function(e) {
+      var $tgt, $pwd_input, $pwd_confirm;
+      $tgt = $(e.currentTarget);
+      $pwd_input = $('#id_edit_admin_password_modal');
+      $pwd_confirm = $('#id_admin_confirm_password_modal');
+      if($tgt.is(':checked')) {
+        $pwd_input.closest('.form-group').animate({'opacity': 1}, 300);
+        $pwd_confirm.closest('.form-group').animate({'opacity': 1}, 300);
+        $pwd_input.removeAttr('disabled');
+        $pwd_confirm.removeAttr('disabled');
+      } else {
+        $pwd_input.closest('.form-group').animate({'opacity': 0.25}, 300);
+        $pwd_confirm.closest('.form-group').animate({'opacity': 0.25}, 300);
+        $pwd_input.attr('disabled', '');
+        $pwd_confirm.attr('disabled', '');
+      }
+    });
+  </script>
 {% endblock %}

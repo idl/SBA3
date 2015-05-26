@@ -53,14 +53,14 @@
 {% block admin_modals_content %}
 {% endblock %}
 
-{% block admin_modals_js %}
-{% endblock %}
-
 {% bootstrap_javascript jquery=1 %}
 <script>window.jQuery || document.write('jQuery FAILED TO LOAD.')</script>
 <script src="{% static 'js/main.js' %}"></script>
 
 {% block admin_main_content_js %}
+{% endblock %}
+
+{% block admin_modals_js %}
 {% endblock %}
 </body>
 </html>

@@ -10,8 +10,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.utils import timezone as tz
 from .forms import (AdminLoginForm, SelectSurveyYearForm, SuperadminSelectSchoolForm,
-  SuperadminCreateSchoolForm, AddStudentsBulkForm, AddSingleStudentForm,
-  SuperadminCreateAdminForm)
+  SuperadminCreateEditSchoolForm, AddStudentsBulkForm, AddSingleStudentForm,
+  SuperadminCreateEditAdminForm)
 from survey.models import Student, School
 
 
@@ -43,7 +43,7 @@ def public_login(request):
 
 @require_http_methods(['POST'])
 def superadmin_create_admin(request):
-  form = SuperadminCreateAdminForm(request.POST)
+  form = SuperadminCreateEditAdminForm(request.POST)
   # is school admin - school select didn't return None causing is_valid() to
   # be be True -- therefore create school admin
   email = request.POST.get('email')
@@ -85,6 +85,7 @@ def superadmin_delete_admin(request, admin_id):
   return redirect('superadmin_overview')
 
 
+@require_http_methods(['POST'])
 def superadmin_edit_admin(request, admin_id):
   return
 
@@ -98,8 +99,9 @@ def superadmin_edit_admin(request, admin_id):
 def superadmin_overview(request):
   context = {}
   context['superadmin_select_school_form'] = SuperadminSelectSchoolForm()
-  context['superadmin_create_school_form'] = SuperadminCreateSchoolForm()
-  context['superadmin_add_admin_form'] = SuperadminCreateAdminForm()
+  context['superadmin_create_school_form'] = SuperadminCreateEditSchoolForm()
+  context['superadmin_create_admin_form'] = SuperadminCreateEditAdminForm()
+  context['superadmin_edit_admin_form'] = SuperadminCreateEditAdminForm(is_modal=True)
   # .extra() does case-insensitive ordering by name
   context['schools_list'] = School.objects.all().order_by('name_lower').extra(select={'name_lower': 'lower(name)'})
   context['admins_list'] = User.objects.all().order_by('-is_superuser', 'school')
@@ -120,7 +122,7 @@ def superadmin_overview(request):
 
 @require_http_methods(["POST"])
 def superadmin_create_school(request):
-  form = SuperadminCreateSchoolForm(request.POST)
+  form = SuperadminCreateEditSchoolForm(request.POST)
   if form.is_valid():
     form.save()
   else:

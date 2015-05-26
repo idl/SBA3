@@ -2,6 +2,7 @@ from django import forms
 from survey.models import School, Student
 from admin_custom.models import User
 from django.utils import timezone as tz
+from collections import OrderedDict
 
 YEAR_CHOICES = (
   ('2015', '2015'),
@@ -32,21 +33,50 @@ class SuperadminSelectSchoolForm(forms.Form):
   school = forms.ModelChoiceField(queryset=School.objects.all(), label="")
 
 
-class SuperadminCreateSchoolForm(forms.ModelForm):
+class SuperadminCreateEditSchoolForm(forms.ModelForm):
   class Meta:
     model = School
     fields = ['name', 'location']
 
 
-class SuperadminCreateAdminForm(forms.ModelForm):
+class SuperadminCreateEditAdminForm(forms.ModelForm):
   class Meta:
     model = User
     fields = [ 'email', 'password', 'is_superuser', 'school' ]
     widgets = {
+      'email': forms.EmailInput(),
       'password': forms.PasswordInput(),
       'school': forms.Select(attrs=({'id':'id_admin_school'}))
     }
     labels = { 'is_superuser': 'Is Superuser?'}
+
+  def __init__(self, is_modal=False):
+    super(forms.ModelForm, self).__init__()
+    fields = OrderedDict()
+    if is_modal:
+      for field in [ 'email', 'change_password', 'password', 'confirm_password', 'is_superuser', 'school' ]:
+        if field == 'change_password' or field == 'confirm_password':
+          fields[field] = None
+        else:
+          fields[field] = self.fields[field]
+      self.fields = fields
+      self.fields['change_password'] = forms.BooleanField(label="Change Password?")
+      self.fields['confirm_password'] = forms.CharField(
+        label="Confirm Password",
+        widget=forms.PasswordInput(attrs=({'label': 'Confirm Password'}))
+      )
+      self.fields['email'].widget.attrs['id'] = 'id_edit_admin_email_modal'
+      self.fields['is_superuser'].widget.attrs['id'] = 'id_edit_admin_is_superuser_modal'
+      self.fields['password'].widget.attrs['id'] = 'id_edit_admin_password_modal'
+      self.fields['password'].widget.attrs['disabled'] = ''
+      self.fields['confirm_password'].widget.attrs['id'] = 'id_admin_confirm_password_modal'
+      self.fields['confirm_password'].widget.attrs['disabled'] = ''
+    else:
+      self.fields['email'].widget.attrs['id'] = 'id_create_admin_email'
+
+  def clean(self):
+    print self.cleaned_data
+    return False
 
 
 class SelectSurveyYearForm(forms.Form):
