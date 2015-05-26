@@ -144,7 +144,6 @@
     $('[data-toggle="tooltip"]').tooltip();
 
     {% if update_student_error %}
-    console.log("ERROR");
       $('#edit-student-modal').modal('show');
       $('#id_uid_modal').val('{{update_student_error_uid}}');
       $('#id_email_modal').val('{{update_student_error_email}}');

@@ -334,7 +334,7 @@ def admin_school_overview(request, school_id, survey_year=None):
     if request.user.is_superuser:
       return redirect('superadmin_overview')
     else:
-      return redirect('admin_school_overview', school_id=request.user.school.id, survey_year=survey_year)
+      return redirect('admin_school_overview', school_id=request.user.school.id)
 
   if not request.user.is_superuser:
     if int(school_id) != request.user.school.id:
@@ -430,11 +430,17 @@ def admin_create_students_bulk(request, school_id):
             return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
           return redirect('admin_school_overview', school_id=school_id)
         roster.append([uid, email])
+        if Student.objects.filter(school__id=school_id, email=email).count() > 0:
+          messages.error(request, "There is already a student that exists with the email "+email+". Please try reuploading an updated file.")
+          return redirect('admin_school_overview', school_id=school_id)
+        if Student.objects.filter(school__id=school_id, uid=uid).count() > 0:
+          messages.error(request, "There is already a student that exists with the identifier "+uid+". Please try reuploading an updated file.")
+          return redirect('admin_school_overview', school_id=school_id)
         if email in emails:
           messages.error(request, "Students cannot have duplicate email addresses. Please try reuploading the file.")
           return redirect('admin_school_overview', school_id=school_id)
         if uid in uids:
-          messages.error(request, "Students cannot have duplicate Identifiers. Please try reuploading the file.")
+          messages.error(request, "Students cannot have duplicate identifiers (UID). Please try reuploading the file.")
           return redirect('admin_school_overview', school_id=school_id)
         emails.append(email)
 
@@ -469,11 +475,11 @@ def admin_create_student_single(request, school_id):
       return redirect('admin_school_overview', school_id=school_id)
 
   if Student.objects.filter(school__id=school_id, uid=request.POST.get('uid')).count() > 0:
-    messages.error(request, "Students cannot have duplicate Identifiers (UID). A student with the UID "+request.POST.get('uid')+" already exists.")
+    messages.error(request, "Students cannot have duplicate identifiers (UID). A student with the UID "+request.POST.get('uid')+" already exists.")
     return redirect('admin_school_overview', school_id=school_id)
 
   if Student.objects.filter(school__id=school_id, email=request.POST.get('email')).count() > 0:
-    messages.error(request, "Students cannot have duplicate Email Addresses. A student with the email "+request.POST.get('email')+" already exists.")
+    messages.error(request, "Students cannot have duplicate email addresses. A student with the email "+request.POST.get('email')+" already exists.")
     return redirect('admin_school_overview', school_id=school_id)
 
   uid = request.POST.get('uid')
