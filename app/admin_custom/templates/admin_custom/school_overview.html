@@ -102,10 +102,10 @@
               <td>{{student.email}}</td>
               <td>{{student.continue_pass}}</td>
               <td class={% if student.started %}"success"{% else %}"danger"{% endif %}>
-                {{student.started}}
+                {% if student.started %}YES{% else %}NO{% endif %}
               </td>
               <td class={% if student.completed %}"success"{% else %}"danger"{% endif %}>
-                {{student.completed}}
+                {% if student.completed %}YES{% else %}NO{% endif %}
               </td>
               <td style="min-width: 100px;">
                 <a href="{# url 'admin_delete_student' school_id student.id #}"

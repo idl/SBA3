@@ -401,6 +401,8 @@ def admin_add_students_bulk(request, school_id):
 
   if roster_form.is_valid():
     roster = []
+    emails = []
+    uids = []
     print "about to write chunks"
     for chunk in request.FILES['roster_file'].chunks():
       for line in chunk.strip().split('\n'):
@@ -417,9 +419,23 @@ def admin_add_students_bulk(request, school_id):
             return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
           return redirect('admin_school_overview', school_id=school_id)
         roster.append([uid, email])
+        if email in emails:
+          messages.error(request, "Students cannot have duplicate email addresses.")
+          return redirect('admin_school_overview', school_id=school_id)
+        if uid in uids:
+          messages.error(request, "Students cannot have duplicate Identifiers.")
+          return redirect('admin_school_overview', school_id=school_id)
+        emails.append(email)
+
+    school = None
+    try:
+      school = School.objects.get(id=school_id)
+    except:
+      messages.error(request, "An error occurred. Please try reuploading the file again.")
+      return redirect('admin_school_overview', school_id=school_id)
 
     for student in roster:
-      print "::", student
+      Student.objects.create_student(student[0], student[1], school)
 
     if request.session.get('survey_year'):
       return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
@@ -441,6 +457,14 @@ def admin_add_student_single(request, school_id):
         return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
       return redirect('admin_school_overview', school_id=school_id)
 
+  if Student.objects.filter(school__id=school_id, uid=request.POST.get('uid')).count() > 0:
+    messages.error(request, "Students cannot have duplicate Identifiers (UID). A student with the UID "+request.POST.get('uid')+" already exists.")
+    return redirect('admin_school_overview', school_id=school_id)
+
+  if Student.objects.filter(school__id=school_id, email=request.POST.get('email')).count() > 0:
+    messages.error(request, "Students cannot have duplicate Email Addresses. A student with the email "+request.POST.get('email')+" already exists.")
+    return redirect('admin_school_overview', school_id=school_id)
+
   add_student_single_form = AddSingleStudentForm(request.POST)
   if add_student_single_form.is_valid():
     uid = request.POST.get('uid')
@@ -461,7 +485,12 @@ def admin_delete_student(request, school_id, student_id):
       if request.session.get('survey_year'):
         return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
       return redirect('admin_school_overview', school_id=school_id)
-  student = Student.objects.get(id=student_id, school__id=school_id)
+  student = None
+  try:
+    student = Student.objects.get(id=student_id, school__id=school_id)
+  except:
+    messages.error(request, "An error occurred. Please try again.")
+    return redirect('admin_school_overview', school_id=school_id)
   student.delete()
   messages.success(request, "Successfully deleted "+student.uid+".")
   if request.session.get('survey_year'):
