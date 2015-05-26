@@ -142,6 +142,15 @@
 <script>
   $(document).ready(function() {
     $('[data-toggle="tooltip"]').tooltip();
+
+    {% if update_student_error %}
+    console.log("ERROR");
+      $('#edit-student-modal').modal('show');
+      $('#id_uid_modal').val('{{update_student_error_uid}}');
+      $('#id_email_modal').val('{{update_student_error_email}}');
+      $('.modal-title-student-uid').text('{{update_student_error_uid}}')
+      $('#admin_edit_student_form').attr('action', '/admin/{{school_id}}/edit-admin/{{update_admin_error_admin_id}}');
+    {% endif %}
   });
 </script>
 {% endblock %}

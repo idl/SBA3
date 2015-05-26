@@ -301,6 +301,16 @@ def admin_school_overview(request, school_id, survey_year=None):
   context['create_student_single_form'] = CreateEditStudentForm()
   context['admin_edit_student_form'] = CreateEditStudentForm(is_modal=True)
 
+  if request.session.get('update_student_error'):
+    context['update_student_error'] = True
+    context['update_student_error_uid'] = request.session['update_student_error_uid']
+    context['update_student_error_email'] = request.session['update_student_error_email']
+    context['update_student_error_student_id'] = request.session['update_student_error_student_id']
+    del request.session['update_student_error']
+    del request.session['update_student_error_uid']
+    del request.session['update_student_error_email']
+    del request.session['update_student_error_student_id']
+
   school_id = int(school_id)
   students = Student.objects.filter(school__id=school_id)
   students_list = []
@@ -466,13 +476,26 @@ def admin_create_student_single(request, school_id):
     messages.error(request, "Students cannot have duplicate Email Addresses. A student with the email "+request.POST.get('email')+" already exists.")
     return redirect('admin_school_overview', school_id=school_id)
 
-  create_student_single_form = CreateEditStudentForm(request.POST)
-  if create_student_single_form.is_valid():
-    uid = request.POST.get('uid')
-    email = request.POST.get('email')
+  uid = request.POST.get('uid')
+  email = request.POST.get('email')
+  school = None
+  try:
     school = School.objects.get(id=school_id)
-    student = Student.objects.create_student(uid, email, school)
-    messages.success(request, 'Successfully added '+uid+' to '+school.name+'.')
+  except:
+    messages.error(request, "An error occurred. Please try again.")
+    return redirect('admin_school_overview', school_id=school_id)
+
+  try:
+    validate_email(email)
+  except:
+    messages.error(request, 'Please enter a valid email when creating student.')
+    return redirect('admin_school_overview', school_id=school_id)
+  if uid.strip() == '' or email.strip() == '':
+    messages.error(request, 'Please fill out both fields and ensure email is in the correct format.')
+    return redirect('admin_school_overview', school_id=school_id)
+
+  student = Student.objects.create_student(uid, email, school)
+  messages.success(request, 'Successfully added '+uid+' to '+school.name+'.')
   if request.session.get('survey_year'):
     return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
   return redirect('admin_school_overview', school_id=school_id)
@@ -516,14 +539,17 @@ def admin_edit_student(request, school_id, student_id):
     request.session['update_student_error'] = True
     request.session['update_student_error_uid'] = uid
     request.session['update_student_error_email'] = email
-    request.session['update_student_error_student_id'] = admin_id
-    request.session['update_student_error_school'] = school
+    request.session['update_student_error_student_id'] = student_id
 
-  if uid.strip() is '' or email.strip() is '':
+  if uid.strip() == '' or email.strip() == '':
+    set_session_err(request)
     messages.error(request, 'Please fill out both fields and ensure email is in the correct format.')
+    return redirect('admin_school_overview', school_id=school_id)
 
   try:
     validate_email(email)
   except:
-    messages.error(request, 'Please enter a valid email when updating admin.')
+    set_session_err(request)
+    messages.error(request, 'Please enter a valid email when updating student.')
+    return redirect('admin_school_overview', school_id=school_id)
   return redirect('admin_school_overview', school_id=school_id)

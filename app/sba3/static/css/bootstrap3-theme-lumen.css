@@ -7615,3 +7615,7 @@ h6.no-margin-top {
   margin-bottom: 25px;
   padding: 7px 10px 10px;
 }
+
+#admin_edit_student_form .alert-info {
+  display: none;
+}
