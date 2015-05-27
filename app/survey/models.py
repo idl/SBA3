@@ -80,6 +80,11 @@ class Student(models.Model):
       return False
     return True
 
+  def has_started_survey_for_current_year(self):
+    if self.get_result_set_for_year(tz.now().year) == None:
+      return False
+    return True
+
   def has_completed_survey_for_current_year(self):
     if self.get_result_set_for_current_year() == None:
       return False

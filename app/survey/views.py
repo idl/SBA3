@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from django.core.mail import send_mail
 from django.views.decorators.http import require_http_methods
+from django.utils import timezone as tz
 from .forms.begin_survey_form import SurveyBeginForm
 from .forms.continue_survey_form import SurveyContinueForm
 from .forms.questions_page_1 import QuestionsPage1Form
@@ -139,18 +140,28 @@ def next(request):
 def results(request, school_id, student_uid):
   context = {}
 
-  # student can only access the survey with their own credentials which are set
-  # in the session when they begin survey
-  if request.session.get('student_uid') != student_uid or request.session.get('school_id') != int(school_id):
-    messages.error(request, 'Could not process your request.')
-    return redirect('public_survey_begin')
+  if request.user.is_authenticated():
+    if not request.user.is_superuser:
+      # if
+      if int(school_id) != request.user.school.id:
+        print 'school doesnt match'
+        messages.error(request, 'Could not process your request.')
+        return redirect('admin_school_overview', school_id=request.user.school.id)
+  else:
+    # student can only access the survey with their own credentials which are set
+    # in the session when they begin survey
+    if request.session.get('student_uid') != student_uid or request.session.get('school_id') != int(school_id):
+      print 'sessions dont match'
+      messages.error(request, 'Could not process your request.')
+      return redirect('public_index')
 
   try:
     school = School.objects.get(id=school_id)
     Student.objects.get(school=school, uid=student_uid)
   except:
+    print 'school or student not found'
     messages.error(request, 'Could not process your request.')
-    return redirect('public_survey_begin')
+    return redirect('public_index')
 
   rs = Student.objects.get(school_id=school_id, uid=student_uid).get_result_set_for_current_year()
   for page_num in range(1, 11+1):
@@ -192,7 +203,7 @@ def public_begin(request):
     if student.has_completed_survey_for_current_year():
       messages.error(request, 'The student "'+student_uid+'" has already completed the survey.')
       return render(request, "survey/survey_begin.html", context)
-    if student.has_started_survey():
+    if student.has_started_survey_for_current_year():
       messages.error(request, 'The student "'+student_uid+'" has already started the survey. <a href="/survey/continue" style="color:white;text-decoration:underline;font-weight:700;">Click here to continue the survey</a>.')
       return render(request, "survey/survey_begin.html", context)
     request.session.flush()
@@ -255,7 +266,7 @@ def public_continue(request):
           messages.error(request,
             'The student "'+student_uid+'" has already completed the survey.')
           return render(request, "survey/survey_continue.html", context)
-        if not student.has_started_survey():
+        if not student.has_started_survey_for_current_year():
           messages.error(request,
             'The student "'+student_uid+'" has not started the survey. <a href="/survey/begin" style="color:white;text-decoration:underline;font-weight:700;">Click here to begin the survey</a>.')
           return render(request, "survey/survey_continue.html", context)
@@ -284,7 +295,7 @@ def public_continue(request):
         messages.error(request,
           'The student "'+student_uid+'" has already completed the survey.')
         return render(request, "survey/survey_continue.html", context)
-      if not student.has_started_survey():
+      if not student.has_started_survey_for_current_year():
         messages.error(request,
           'The student "'+student_uid+'" has not started the survey. <a href="/survey/begin" style="color:white;text-decoration:underline;font-weight:700;">Click here to begin the survey</a>.')
         return render(request, "survey/survey_continue.html", context)

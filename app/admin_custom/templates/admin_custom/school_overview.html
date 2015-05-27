@@ -14,7 +14,9 @@
   {% endif %}
   <div class="row">
     <div class="col-xs-12">
-      {% bootstrap_messages %}
+      {% if not update_student_error %}
+        {% bootstrap_messages %}
+      {% endif %}
       <h2 class="admin-main-title">{{ admin_main_title }}</h2>
       {% if select_survey_year_form %}
         <form action="{% url 'admin_select_survey_year' school_id %}" method="POST"
@@ -35,9 +37,10 @@
       {% endif %}
     </div>
   </div>
+  <hr>
   <div class="row">
     <div class="col-xs-12">
-      <h3>Add Students</h3>
+      <h3>Add Students <button class='btn btn-primary btn-xs' id='add_students_toggle'>[ <span class="add_students_toggle_text">SHOW</span> ]</button></h3>
       <div class="create-students-forms bg-gray">
         <div class="row">
           <div class="col-xs-6">
@@ -108,11 +111,20 @@
                 {% if student.completed %}YES{% else %}NO{% endif %}
               </td>
               <td style="min-width: 100px;">
-                <a href="{# url 'admin_delete_student' school_id student.id #}"
-                   class="btn btn-default btn-xs" data-toggle="tooltip"
-                   data-placement="top" title="View Student Results">
-                    {% bootstrap_icon 'eye-open' %}
-                </a>
+                {% if student.completed %}
+                  <a href="{% url 'survey_results' school_id student.uid %}"
+                     class="btn btn-default btn-xs" data-toggle="tooltip"
+                     data-placement="top" title="View Student Results">
+                      {% bootstrap_icon 'eye-open' %}
+                  </a>
+                {% else %}
+                  <a href="#" class="btn btn-default btn-xs" disabled
+                    data-toggle="tooltip" data-placement="top"
+                    title="View Student Results" style="opacity:0.5;">
+                      {% bootstrap_icon 'eye-open' %}
+                  </a>
+                {% endif %}
+
                 <span data-placement="top" title="Edit Student Info" data-toggle="tooltip">
                   <button class="btn btn-primary btn-xs edit-student-modal-btn"
                     data-toggle="modal" data-target="#edit-student-modal">
@@ -143,12 +155,28 @@
   $(document).ready(function() {
     $('[data-toggle="tooltip"]').tooltip();
 
+    $('#add_students_toggle').click(function(e) {
+      var $txt = $('.add_students_toggle_text'),
+        $tgt = $(e.currentTarget);
+
+      $('.create-students-forms').slideToggle('fast');
+      if($txt.text() == 'SHOW') {
+        $txt.text('HIDE');
+        $tgt.removeClass('btn-primary');
+        $tgt.addClass('btn-default');
+      } else {
+        $txt.text('SHOW');
+        $tgt.addClass('btn-primary');
+        $tgt.removeClass('btn-default');
+      }
+    });
+
     {% if update_student_error %}
       $('#edit-student-modal').modal('show');
       $('#id_uid_modal').val('{{update_student_error_uid}}');
       $('#id_email_modal').val('{{update_student_error_email}}');
       $('.modal-title-student-uid').text('{{update_student_error_uid}}')
-      $('#admin_edit_student_form').attr('action', '/admin/{{school_id}}/edit-admin/{{update_admin_error_admin_id}}');
+      $('#admin_edit_student_form').attr('action', '/admin/{{school_id}}/edit-student/{{update_student_error_student_id}}');
     {% endif %}
   });
 </script>
@@ -157,7 +185,7 @@
 {% block admin_modals_content %}
   <div class="modal fade" id="edit-student-modal" tabindex="-1" role="dialog"
     aria-labelledby="Edit Student Information" aria-hidden="true">
-    <div class="modal-dialog modal-md">
+    <div class="modal-dialog modal-sm">
       <div class="modal-content">
         <form action="{% url 'admin_edit_student' school_id 0 %}" method="post"
           id="admin_edit_student_form">

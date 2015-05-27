@@ -301,16 +301,6 @@ def admin_school_overview(request, school_id, survey_year=None):
   context['create_student_single_form'] = CreateEditStudentForm()
   context['admin_edit_student_form'] = CreateEditStudentForm(is_modal=True)
 
-  if request.session.get('update_student_error'):
-    context['update_student_error'] = True
-    context['update_student_error_uid'] = request.session['update_student_error_uid']
-    context['update_student_error_email'] = request.session['update_student_error_email']
-    context['update_student_error_student_id'] = request.session['update_student_error_student_id']
-    del request.session['update_student_error']
-    del request.session['update_student_error_uid']
-    del request.session['update_student_error_email']
-    del request.session['update_student_error_student_id']
-
   school_id = int(school_id)
   students = Student.objects.filter(school__id=school_id)
   students_list = []
@@ -379,6 +369,17 @@ def admin_school_overview(request, school_id, survey_year=None):
       return redirect('admin_school_overview', school_id=school.id, survey_year=year)
     messages.info(request, "No students have taken the survey for this school for any year in which the survey has been distributed. There will be no data to access until a student submits a survey for this school. You may upload a list of students that are registered with "+school.name+". After this is completed, you can send out an email to all students notifying them of the survey.")
     return render(request, "admin_custom/school_overview.html", context)
+
+  if request.session.get('update_student_error'):
+    print "ERROR"
+    context['update_student_error'] = True
+    context['update_student_error_uid'] = request.session['update_student_error_uid']
+    context['update_student_error_email'] = request.session['update_student_error_email']
+    context['update_student_error_student_id'] = request.session['update_student_error_student_id']
+    del request.session['update_student_error']
+    del request.session['update_student_error_uid']
+    del request.session['update_student_error_email']
+    del request.session['update_student_error_student_id']
 
   context['select_survey_year_form'] = SelectSurveyYearForm(
       initial_year=survey_year, available_years=school.get_survey_years())
@@ -558,4 +559,16 @@ def admin_edit_student(request, school_id, student_id):
     set_session_err(request)
     messages.error(request, 'Please enter a valid email when updating student.')
     return redirect('admin_school_overview', school_id=school_id)
+
+  student = None
+  try:
+    student = Student.objects.get(school__id=school_id, id=student_id)
+  except:
+    set_session_err(request)
+    messages.error(request, 'Please enter a valid email when updating student.')
+    return redirect('admin_school_overview', school_id=school_id)
+  student.uid = uid
+  student.email = email
+  student.save()
+  messages.success(request, "Successfully updated "+student.uid+".")
   return redirect('admin_school_overview', school_id=school_id)
