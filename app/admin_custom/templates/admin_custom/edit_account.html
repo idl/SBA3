@@ -52,14 +52,12 @@
       });
 
       {% if update_password_error %}
-
+        $('#id_change_password').prop('checked', true);
+        $pwd.removeAttr('disabled').attr('required', 'required');
+        $conf_pwd.removeAttr('disabled').attr('required', 'required');
+        $pwd.closest('.form-group').addClass('has-error');
+        $conf_pwd.closest('.form-group').addClass('has-error');
       {% endif %}
     });
   </script>
-{% endblock %}
-
-{% block admin_modals_content %}
-{% endblock %}
-
-{% block admin_modals_js %}
 {% endblock %}

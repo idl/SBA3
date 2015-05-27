@@ -604,6 +604,7 @@ def admin_edit_account(request):
     password_form = AdminEditAccountPasswordForm(request.POST)
     context['edit_account_email_form'] = email_form
     if email_form.is_valid():
+      old_email = request.user.email
       request.user.email = request.POST.get('email')
       request.user.save()
       messages.success(request, "Successfully updated your email address.")
@@ -611,6 +612,7 @@ def admin_edit_account(request):
       messages.error(request, "Please ensure email is in the correct format.")
 
     if request.POST.get('change_password'):
+      print "CHANGE PASS"
       pwd = request.POST.get('password').strip()
       confpwd = request.POST.get('confirm_password').strip()
       error = False
@@ -621,9 +623,12 @@ def admin_edit_account(request):
         error = True
         messages.error(request, "Passwords must match.")
       if error:
+        print "ERR CHANGING PASS"
         context['update_password_error'] = True
         return render(request, 'admin_custom/edit_account.html', context)
+      print "DID CHANGE PASS"
       messages.success(request, "Successfully updated your password.")
       request.user.set_password(pwd)
+      request.user.save()
 
   return render(request, 'admin_custom/edit_account.html', context)

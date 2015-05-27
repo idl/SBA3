@@ -21,6 +21,16 @@
 {% endblock %}
 
 {% block survey_main_content %}
+  {% if is_admin %}
+    <div class="row">
+      <div class="col-xs-12">
+        <a href="{% url 'admin_school_overview' school_id %}" class="btn btn-default btn-sm">
+          {% bootstrap_icon 'arrow-left' %}&emsp;BACK TO SCHOOL OVERVIEW
+        </a>
+      </div>
+    </div>
+    <hr>
+  {% endif %}
   <div class="row">
     <div class="col-xs-12">
       <div class="progress">
