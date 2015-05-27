@@ -232,19 +232,14 @@
         </div>
         <div class="modal-body">
           {% csrf_token %}
-          <p><strong>Are you sure you want to delete <span class="modal-title-student-uid"></span>?</strong> </p>
-          <div class="text-center">
-            <a href="{% url 'admin_delete_student' school_id 0 %}"
-              class="btn btn-danger" data-toggle="tooltip"
-              data-placement="top" title="Delete Student" id='admin-delete-student-button'>
-              {% bootstrap_icon 'remove' %}
-              Delete Student
-            </a>
-          </div>
-        </div>
-        <div class="modal-footer">
+          <p><strong>Are you sure you want to delete <span class="modal-title-student-uid"></span>?</strong> This deletes the associated result set and <strong>cannot be undone</strong>. Are you sure?</p>
           {% buttons %}
             <div class="text-center">
+              <a href="{% url 'admin_delete_student' school_id 0 %}"
+                class="btn btn-danger" id='admin-delete-student-button'>
+                {% bootstrap_icon 'remove' %}&ensp;
+                Yes, Delete Student and<br>Result Set
+              </a><br><br>
               <button type="button" class="btn btn-default" data-dismiss="modal">
                 Close
               </button>
@@ -278,8 +273,8 @@
       student_id = $row.attr('data-student-id');
       school_id = $row.attr('data-school-id');
       uid = $row.find('td')[1].innerText;
-      $('#admin_delete_student_form').attr('action', '/admin/'+school_id+'/delete-student/'+student_id);
-      $('.modal-title-student-uid').text(email);
+      $('#admin-delete-student-button').attr('href', '/admin/'+school_id+'/delete-student/'+student_id);
+      $('.modal-title-student-uid').text(uid);
     });
   </script>
 {% endblock %}

@@ -20,6 +20,7 @@ urlpatterns = [
   url(r'^(?P<school_id>[0-9]{1,3})/create-student-single$', AdminViews.admin_create_student_single, name='admin_create_student_single'),
   url(r'^(?P<school_id>[0-9]{1,3})/delete-student/(?P<student_id>[0-9]{1,4})$', AdminViews.admin_delete_student, name='admin_delete_student'),
   url(r'^(?P<school_id>[0-9]{1,3})/edit-student/(?P<student_id>[0-9]{1,4})$', AdminViews.admin_edit_student, name='admin_edit_student'),
+  url(r'^edit-account$', AdminViews.admin_edit_account, name='admin_edit_account'),
   # url(r'^/logout$', 'logout_view', name='logout_view'),
   # url(r'^/users$', 'users', name='users'),
   # url(r'^/registeradmin$', 'register_admin', name='register_admin'),

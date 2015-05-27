@@ -27,9 +27,13 @@
         </h1>
       </div>
       <div class="col-xs-6 text-right">
-        <span class="admin-email hidden-xs">
-          {{ admin_email }}
-        </span>
+        {% if not request.user.is_superuser %}
+          <a href="{% url 'admin_edit_account' %}"
+            class="admin-edit-account">
+            Edit Account Information
+          </a>
+        {% endif %}
+        <span class="admin-email hidden-xs">{{ admin_email }}</span>
         <span class="btn-log-out">
           <a class="btn btn-default btn-sm" href="{% url 'public_admin_logout' %}">
             LOG OUT&emsp;{% bootstrap_icon "log-out" %}

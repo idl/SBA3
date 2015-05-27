@@ -12,7 +12,7 @@ from django.core.validators import validate_email
 from django.utils import timezone as tz
 from .forms import (AdminLoginForm, SelectSurveyYearForm, SuperadminSelectSchoolForm,
   SuperadminCreateEditSchoolForm, CreateStudentsBulkForm, CreateEditStudentForm,
-  SuperadminCreateEditAdminForm)
+  SuperadminCreateEditAdminForm, AdminEditAccountForm)
 from survey.models import Student, School
 
 
@@ -589,3 +589,26 @@ def admin_edit_student(request, school_id, student_id):
   student.save()
   messages.success(request, "Successfully updated "+student.uid+".")
   return redirect('admin_school_overview', school_id=school_id)
+
+
+@login_required(redirect_field_name=None)
+def admin_edit_account(request):
+  context = {}
+
+  form = AdminEditAccountForm(instance=request.user)
+  context['edit_account_form'] = form
+
+  if request.method == 'POST':
+    form = AdminEditAccountForm(request.POST, instance=request.user)
+    if form.is_valid():
+      print 'valid'
+      request.user.email = request.POST.get('email')
+      request.user.set_password(request.POST.get('password'))
+      request.user.save()
+      context['edit_account_form'] = form
+      messages.success(request, "Successfully updated your account.")
+      return render(request, 'admin_custom/edit_account.html', context)
+    else:
+      print form.errors
+
+  return render(request, 'admin_custom/edit_account.html', context)

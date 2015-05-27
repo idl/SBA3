@@ -7620,3 +7620,13 @@ h6.no-margin-top {
 #admin_edit_student_form .alert-info {
   display: none;
 }
+
+.admin-edit-account {
+  margin-right: 25px;
+}
+
+.edit_admin_account_form {
+  max-width: 600px;
+  margin: 0 auto;
+  display: block;
+}

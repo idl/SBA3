@@ -59,8 +59,8 @@ class SuperadminCreateEditAdminForm(forms.ModelForm):
     }
     labels = { 'is_superuser': 'Is Superuser?'}
 
-  def __init__(self, is_modal=False):
-    super(forms.ModelForm, self).__init__()
+  def __init__(self, is_modal=False, **kwargs):
+    super(forms.ModelForm, self).__init__(**kwargs)
     fields = OrderedDict()
     if is_modal:
       for field in [ 'email', 'change_password', 'password', 'confirm_password', 'is_superuser', 'school' ]:
@@ -84,6 +84,30 @@ class SuperadminCreateEditAdminForm(forms.ModelForm):
     else:
       self.fields['email'].widget.attrs['id'] = 'id_create_admin_email'
 
+
+class AdminEditAccountForm(forms.ModelForm):
+  class Meta:
+    model = User
+    fields = [ 'email', 'password' ]
+    widgets = {
+      'email': forms.EmailInput(),
+      'password': forms.PasswordInput()
+    }
+
+  def __init__(self, **kwargs):
+    super(forms.ModelForm, self).__init__(**kwargs)
+    fields = OrderedDict()
+    self.fields['change_password'] = forms.BooleanField(label="Change Password?")
+    self.fields['confirm_password'] = forms.CharField(
+      label="Confirm Password",
+      widget=forms.PasswordInput(attrs=({'label': 'Confirm Password'}))
+    )
+    for field in [ 'email', 'change_password', 'password', 'confirm_password' ]:
+      if field == 'change_password' or field == 'confirm_password':
+        fields[field] = None
+      else:
+        fields[field] = self.fields[field]
+    self.fields = fields
 
 
 class SelectSurveyYearForm(forms.Form):
