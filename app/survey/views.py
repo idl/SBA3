@@ -155,22 +155,23 @@ def results(request, school_id, student_uid):
       print 'sessions dont match'
       messages.error(request, 'Could not process your request.')
       return redirect('public_index')
-
+  student = None
   try:
     school = School.objects.get(id=school_id)
-    Student.objects.get(school=school, uid=student_uid)
+    student = Student.objects.get(school=school, uid=student_uid)
   except:
     print 'school or student not found'
     messages.error(request, 'Could not process your request.')
     return redirect('public_index')
 
-  rs = Student.objects.get(school_id=school_id, uid=student_uid).get_result_set_for_current_year()
+  rs = student.get_result_set_for_current_year()
   for page_num in range(1, 11+1):
     pg_rs = json.loads(getattr(rs, 'p'+str(page_num)))
     context['form_page_'+str(page_num)] = forms[str(page_num)](post_data=pg_rs)
 
   context['student_uid'] = student_uid
   context['school_id'] = school_id
+  context['student_completed'] = rs.completed
   return render(request, "survey/survey_results.html", context)
 
 
