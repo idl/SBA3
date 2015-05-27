@@ -33,7 +33,7 @@
             Edit Account Information
           </a>
         {% endif %}
-        <span class="admin-email hidden-xs">{{ admin_email }}</span>
+        <span class="admin-email hidden-xs">{{ request.user.email }}</span>
         <span class="btn-log-out">
           <a class="btn btn-default btn-sm" href="{% url 'public_admin_logout' %}">
             LOG OUT&emsp;{% bootstrap_icon "log-out" %}

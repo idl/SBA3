@@ -85,29 +85,39 @@ class SuperadminCreateEditAdminForm(forms.ModelForm):
       self.fields['email'].widget.attrs['id'] = 'id_create_admin_email'
 
 
-class AdminEditAccountForm(forms.ModelForm):
+class AdminEditAccountEmailForm(forms.ModelForm):
   class Meta:
     model = User
-    fields = [ 'email', 'password' ]
+    fields = [ 'email' ]
     widgets = {
       'email': forms.EmailInput(),
-      'password': forms.PasswordInput()
     }
 
-  def __init__(self, **kwargs):
-    super(forms.ModelForm, self).__init__(**kwargs)
-    fields = OrderedDict()
+  def __init__(self, *args, **kwargs):
+    super(forms.ModelForm, self).__init__(*args, **kwargs)
+
+
+
+class AdminEditAccountPasswordForm(forms.ModelForm):
+  class Meta:
+    model = User
+    fields = [ 'password' ]
+
+  def __init__(self, *args, **kwargs):
+    super(forms.ModelForm, self).__init__(*args, **kwargs)
+    self.fields = OrderedDict()
     self.fields['change_password'] = forms.BooleanField(label="Change Password?")
+    self.fields['password'] = forms.CharField(
+      label="Password",
+      widget=forms.PasswordInput(attrs={ 'label': 'Password', 'disabled':''}),
+      required=False
+    )
     self.fields['confirm_password'] = forms.CharField(
       label="Confirm Password",
-      widget=forms.PasswordInput(attrs=({'label': 'Confirm Password'}))
+      widget=forms.PasswordInput(attrs={'label': 'Confirm Password', 'disabled':''}),
+      required=False
     )
-    for field in [ 'email', 'change_password', 'password', 'confirm_password' ]:
-      if field == 'change_password' or field == 'confirm_password':
-        fields[field] = None
-      else:
-        fields[field] = self.fields[field]
-    self.fields = fields
+
 
 
 class SelectSurveyYearForm(forms.Form):

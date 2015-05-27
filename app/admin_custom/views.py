@@ -12,7 +12,7 @@ from django.core.validators import validate_email
 from django.utils import timezone as tz
 from .forms import (AdminLoginForm, SelectSurveyYearForm, SuperadminSelectSchoolForm,
   SuperadminCreateEditSchoolForm, CreateStudentsBulkForm, CreateEditStudentForm,
-  SuperadminCreateEditAdminForm, AdminEditAccountForm)
+  SuperadminCreateEditAdminForm, AdminEditAccountEmailForm, AdminEditAccountPasswordForm)
 from survey.models import Student, School
 
 
@@ -595,20 +595,35 @@ def admin_edit_student(request, school_id, student_id):
 def admin_edit_account(request):
   context = {}
 
-  form = AdminEditAccountForm(instance=request.user)
-  context['edit_account_form'] = form
+  email_form = AdminEditAccountEmailForm(instance=request.user)
+  context['edit_account_email_form'] = email_form
+  context['edit_account_password_form'] = AdminEditAccountPasswordForm()
 
   if request.method == 'POST':
-    form = AdminEditAccountForm(request.POST, instance=request.user)
-    if form.is_valid():
-      print 'valid'
+    email_form = AdminEditAccountEmailForm(request.POST, instance=request.user)
+    password_form = AdminEditAccountPasswordForm(request.POST)
+    context['edit_account_email_form'] = email_form
+    if email_form.is_valid():
       request.user.email = request.POST.get('email')
-      request.user.set_password(request.POST.get('password'))
       request.user.save()
-      context['edit_account_form'] = form
-      messages.success(request, "Successfully updated your account.")
-      return render(request, 'admin_custom/edit_account.html', context)
+      messages.success(request, "Successfully updated your email address.")
     else:
-      print form.errors
+      messages.error(request, "Please ensure email is in the correct format.")
+
+    if request.POST.get('change_password'):
+      pwd = request.POST.get('password').strip()
+      confpwd = request.POST.get('confirm_password').strip()
+      error = False
+      if pwd == '' or confpwd == '':
+        error = True
+        messages.error(request, "Please fill out both fields to change password.")
+      if pwd != confpwd:
+        error = True
+        messages.error(request, "Passwords must match.")
+      if error:
+        context['update_password_error'] = True
+        return render(request, 'admin_custom/edit_account.html', context)
+      messages.success(request, "Successfully updated your password.")
+      request.user.set_password(pwd)
 
   return render(request, 'admin_custom/edit_account.html', context)
