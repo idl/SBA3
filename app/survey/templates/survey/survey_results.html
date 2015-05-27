@@ -31,6 +31,12 @@
         </div>
       </div>
       {% bootstrap_messages %}
+      {% if is_admin %}
+        <div class="alert alert-info" role="alert">
+          <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+          &emsp;Questions outlined in red have not yet been answered by the student.
+        </div>
+      {% endif %}
       <!--** blank action attr -> submit to current page **-->
       <form action="#" method="post" class="form" role="form" id="survey-form">
         {% csrf_token %}
@@ -91,14 +97,16 @@
         $(elem).attr('name', 'p'+page_num+name);
       });
       $('[checked]').prop('checked',true);
-      $('.form-group:not(:has(:checked)):not(:has(input[type="text"], input[type="number"]))')
-      .animate({'opacity': 0.25}, 500);
-      $('.form-group input:not([type="radio"])').each(function(i, elem) {
-        $elem = $(elem);
-        if($elem.val() == '') {
-          $elem.closest('.form-group').animate({'opacity': 0.25}, 500);
-        }
-      });
+      {% if not is_admin %}
+        $('.form-group:not(:has(:checked)):not(:has(input[type="text"], input[type="number"]))')
+        .animate({'opacity': 0.25}, 500);
+        $('.form-group input:not([type="radio"])').each(function(i, elem) {
+          $elem = $(elem);
+          if($elem.val() == '') {
+            $elem.closest('.form-group').animate({'opacity': 0.25}, 500);
+          }
+        });
+      {% endif %}
     });
   </script>
 {% endblock %}

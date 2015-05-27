@@ -6,7 +6,7 @@ from django.views.decorators.http import require_http_methods
 from django.core.mail import send_mail
 from django.template import RequestContext
 from django.contrib.auth import login, logout, authenticate, get_user_model
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.urlresolvers import reverse
 from django.core.validators import validate_email
 from django.utils import timezone as tz
@@ -17,7 +17,6 @@ from survey.models import Student, School
 
 
 User = get_user_model()
-
 
 def public_login(request):
   context = {}
@@ -42,7 +41,7 @@ def public_login(request):
   return render(request, "admin_custom/public_login.html", context)
 
 
-# @login_required()
+@login_required(redirect_field_name=None)
 def public_logout(request):
   logout(request)
   return redirect('public_admin_login')
@@ -52,7 +51,8 @@ def public_logout(request):
 #****** SuperAdmin Views ******#
 #******************************#
 
-
+@login_required(redirect_field_name=None)
+@user_passes_test(lambda u: u.is_superuser)
 @require_http_methods(['POST'])
 def superadmin_create_admin(request):
   form = SuperadminCreateEditAdminForm(request.POST)
@@ -82,7 +82,8 @@ def superadmin_create_admin(request):
   messages.success(request, 'Successfully created administrator '+email+'.')
   return redirect('superadmin_overview')
 
-
+@login_required(redirect_field_name=None)
+@user_passes_test(lambda u: u.is_superuser)
 def superadmin_delete_admin(request, admin_id):
   if request.user.id == int(admin_id):
     messages.error(request, 'You cannot delete your own account.')
@@ -98,6 +99,8 @@ def superadmin_delete_admin(request, admin_id):
   return redirect('superadmin_overview')
 
 
+@login_required(redirect_field_name=None)
+@user_passes_test(lambda u: u.is_superuser)
 @require_http_methods(['POST'])
 def superadmin_edit_admin(request, admin_id):
   email = request.POST.get('email')
@@ -167,6 +170,8 @@ def superadmin_edit_admin(request, admin_id):
   return redirect('superadmin_overview')
 
 
+@login_required(redirect_field_name=None)
+@user_passes_test(lambda u: u.is_superuser)
 @require_http_methods(['POST'])
 def superadmin_edit_school(request, school_id):
   name = request.POST.get('name')
@@ -210,6 +215,8 @@ def superadmin_edit_school(request, school_id):
   return redirect('superadmin_overview')
 
 
+@login_required(redirect_field_name=None)
+@user_passes_test(lambda u: u.is_superuser)
 def superadmin_delete_school(request, school_id):
   if not request.user.is_superuser:
     return redirect('superadmin_overview')
@@ -222,6 +229,8 @@ def superadmin_delete_school(request, school_id):
   return redirect('superadmin_overview')
 
 
+@login_required(redirect_field_name=None)
+@user_passes_test(lambda u: u.is_superuser)
 @require_http_methods(["POST"])
 def superadmin_create_school(request):
   form = SuperadminCreateEditSchoolForm(request.POST)
@@ -232,6 +241,8 @@ def superadmin_create_school(request):
   return redirect('superadmin_overview')
 
 
+@login_required(redirect_field_name=None)
+@user_passes_test(lambda u: u.is_superuser)
 def superadmin_overview(request):
   context = {}
   context['superadmin_select_school_form'] = SuperadminSelectSchoolForm()
@@ -293,6 +304,7 @@ def superadmin_overview(request):
 #****** School Admin Views ******#
 #********************************#
 
+@login_required(redirect_field_name=None)
 def admin_school_overview(request, school_id, survey_year=None):
   context = {}
   context['admin_email'] = request.user.email
@@ -386,6 +398,7 @@ def admin_school_overview(request, school_id, survey_year=None):
   return render(request, "admin_custom/school_overview.html", context)
 
 
+@login_required(redirect_field_name=None)
 def admin_select_survey_year(request, school_id):
   school_id = int(school_id)
   if request.method == 'POST':
@@ -393,6 +406,7 @@ def admin_select_survey_year(request, school_id):
   return redirect('admin_school_overview', school_id=int(school_id))
 
 
+@login_required(redirect_field_name=None)
 @require_http_methods(["POST"])
 def admin_create_students_bulk(request, school_id):
   school_id = int(school_id)
@@ -465,6 +479,7 @@ def admin_create_students_bulk(request, school_id):
   return redirect('admin_school_overview', school_id=school_id)
 
 
+@login_required(redirect_field_name=None)
 @require_http_methods(["POST"])
 def admin_create_student_single(request, school_id):
   school_id = int(school_id)
@@ -508,6 +523,7 @@ def admin_create_student_single(request, school_id):
   return redirect('admin_school_overview', school_id=school_id)
 
 
+@login_required(redirect_field_name=None)
 def admin_delete_student(request, school_id, student_id):
   school_id = int(school_id)
   if not request.user.is_superuser:
@@ -529,6 +545,7 @@ def admin_delete_student(request, school_id, student_id):
   return redirect('admin_school_overview', school_id=school_id)
 
 
+@login_required(redirect_field_name=None)
 @require_http_methods(["POST"])
 def admin_edit_student(request, school_id, student_id):
   school_id = int(school_id)

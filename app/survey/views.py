@@ -141,6 +141,7 @@ def results(request, school_id, student_uid):
   context = {}
 
   if request.user.is_authenticated():
+    context['is_admin'] = True
     if not request.user.is_superuser:
       # if
       if int(school_id) != request.user.school.id:
