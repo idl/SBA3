@@ -1,4 +1,5 @@
 import datetime
+from collections import OrderedDict
 from django.contrib import messages
 from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
@@ -14,7 +15,29 @@ from .forms import (AdminLoginForm, SelectSurveyYearForm, SuperadminSelectSchool
   SuperadminCreateEditSchoolForm, CreateStudentsBulkForm, CreateEditStudentForm,
   SuperadminCreateEditAdminForm, AdminEditAccountEmailForm, AdminEditAccountPasswordForm)
 from survey.models import Student, School
-
+from survey.constants import num_questions_on_page
+from survey.forms.questions import questions_1
+from survey.forms.questions import questions_2
+from survey.forms.questions import questions_3
+from survey.forms.questions import questions_4
+from survey.forms.questions import questions_5
+from survey.forms.questions import questions_6
+from survey.forms.questions import questions_7
+from survey.forms.questions import questions_8
+from survey.forms.questions import questions_9
+from survey.forms.questions import questions_10
+from survey.forms.questions import questions_11
+from survey.forms.choices import choices_1
+from survey.forms.choices import choices_2
+from survey.forms.choices import choices_3
+from survey.forms.choices import choices_4
+from survey.forms.choices import choices_5
+from survey.forms.choices import choices_6
+from survey.forms.choices import choices_7
+from survey.forms.choices import choices_8
+from survey.forms.choices import choices_9
+from survey.forms.choices import choices_10
+from survey.forms.choices import choices_11
 
 User = get_user_model()
 
@@ -632,3 +655,86 @@ def admin_edit_account(request):
       request.user.save()
 
   return render(request, 'admin_custom/edit_account.html', context)
+
+
+@login_required(redirect_field_name=None)
+def admin_results_aggregate(request, school_id, survey_year):
+  context = {}
+  context['school_id'] = school_id
+  context['survey_year'] = survey_year
+
+  questions_page = {
+    '1': questions_1,
+    '2': questions_2,
+    '3': questions_3,
+    '4': questions_4,
+    '5': questions_5,
+    '6': questions_6,
+    '7': questions_7,
+    '8': questions_8,
+    '9': questions_9,
+    '10': questions_10,
+    '11': questions_11
+  }
+
+  choices_page = {
+    '1': choices_1,
+    '2': choices_2,
+    '3': choices_3,
+    '4': choices_4,
+    '5': choices_5,
+    '6': choices_6,
+    '7': choices_7,
+    '8': choices_8,
+    '9': choices_9,
+    '10': choices_10,
+    '11': choices_11
+  }
+
+  if not request.user.is_superuser:
+    if int(school_id) != request.user.school.id:
+      return redirect('admin_results_aggregate', request.user.school.id, survey_year)
+
+  num_students_started_survey = 0
+  num_students_completed_survey = 0
+  num_students_at_school = Student.objects.filter(school__id=school_id).count()
+  for student in Student.objects.filter(school__id=school_id):
+    try:
+      rs = student.resultset_set.filter(year=survey_year, completed=True).get()
+      num_students_started_survey += 1
+      if rs.completed:
+        num_students_completed_survey += 1
+    except:
+      continue
+
+  context['num_students_at_school'] = num_students_at_school
+  context['num_students_started_survey'] = num_students_started_survey
+  context['num_students_completed_survey'] = num_students_completed_survey
+
+  aggregate_data = []
+
+  for page_num in range(1, 12):
+    for q_num in range(1, num_questions_on_page[str(page_num)]+1):
+      question = {}
+      question['page_num'] = page_num
+      question['q_num'] = q_num
+      question['question'] = questions_page[str(page_num)]['q'+str(q_num)]
+      question['choices'] = OrderedDict()
+
+      try:
+        for choice in choices_page[str(page_num)]['q'+str(q_num)]:
+          question['choices'][choice[0]] = 0
+      except:
+        question['choices'] = None
+
+      for student in Student.objects.filter(school__id=school_id):
+        try:
+          rs = student.resultset_set.filter(year=survey_year, completed=True).get()
+          q = type(json.loads(getattr(rs, 'p'+str(page_num))))
+          print q
+        except:
+          print ''
+
+
+
+  return render(request, 'admin_custom/results_aggregate.html', context)

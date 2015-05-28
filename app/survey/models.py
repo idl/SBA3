@@ -1,5 +1,5 @@
 import hashlib
-import collections
+from collections import OrderedDict
 import json
 from django.db import models
 from django.utils import timezone as tz
@@ -17,7 +17,7 @@ from survey.forms.choices import choices_10
 from survey.forms.choices import choices_11
 from .constants import num_questions_on_page, num_questions_so_far
 
-questions_page_choices = {
+choices_page = {
   '1': choices_1,
   '2': choices_2,
   '3': choices_3,
@@ -160,7 +160,7 @@ class Student(models.Model):
 
 
 class ResultSet(models.Model):
-  load_kwargs = {'object_pairs_hook': collections.OrderedDict}
+  load_kwargs = {'object_pairs_hook': OrderedDict}
   student = models.ForeignKey(Student, default=None)
   year = models.PositiveSmallIntegerField(default=tz.now().year)
   completed = models.BooleanField(default=False)
@@ -175,12 +175,6 @@ class ResultSet(models.Model):
   p9 = JSONField(load_kwargs=load_kwargs)
   p10 = JSONField(load_kwargs=load_kwargs)
   p11 = JSONField(load_kwargs=load_kwargs)
-
-  # returns the percentage of students that answered each choice for the question
-  # out of all other students in the school
-  def get_q_percentage(self, page_num, q_num):
-    choices = questions_page_choices[str(page_num)]['q'+str(q_num)]
-    print choices
 
   # returns Boolean - true if all answers on page are NOT None
   def all_questions_answered(self, page_num):

@@ -25,14 +25,21 @@
             {% csrf_token %}
             {% bootstrap_form select_survey_year_form %}
             {% buttons %}
-              <button class="btn btn-primary btn-block btn-xs" type="submit">
+              <button class="btn btn-default btn-block btn-xs" type="submit">
                 Change Survey Year
               </button>
             {% endbuttons %}
           </div>
         </form>
       {% endif %}
-      <a href="{# url '' %}" class="btn btn-primary pull-right"></a>
+      {% if survey_year %}
+        <span id='view-results-aggregate text-right'>
+          <a href="{% url 'admin_results_aggregate' school_id survey_year %}"
+            class="btn btn-primary pull-right">
+            View Results in Aggregate
+          </a>
+        </span>
+      {% endif %}
     </div>
   </div>
   <hr>
@@ -96,7 +103,6 @@
           </tr>
         </thead>
         <tbody>
-                YEAR: {{survey_year}}
           {% for student in students_list %}
             <tr data-student-id='{{student.id}}' data-school-id='{{school_id}}'>
               <td><small><em>{{student.index}}</em></small></td>
@@ -169,6 +175,12 @@
         $tgt.addClass('btn-primary');
         $tgt.removeClass('btn-default');
       }
+    });
+
+    $('#view-results-aggregate a').click(function(e) {
+      $(e.currentTarget).parent().fadeOut('400', function() {
+        $('#view-results-aggregate').html('<img src="/static/loader.svg" height=\'40px\'>').fadeIn();
+      });
     });
 
     {% if update_student_error %}

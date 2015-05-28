@@ -1,6 +1,6 @@
 import json
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.http import urlencode
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
@@ -165,6 +165,12 @@ def results(request, school_id, student_uid, survey_year):
     return redirect('public_index')
 
   rs = student.get_result_set_for_year(survey_year)
+  if not rs:
+    if request.user.is_authenticated():
+      return redirect('admin_school_overview', school_id=school_id, survey_year=survey_year)
+    else:
+      messages.error(request, 'Could not process your request.')
+      return redirect('public_index')
   for page_num in range(1, 11+1):
     pg_rs = json.loads(getattr(rs, 'p'+str(page_num)))
     context['form_page_'+str(page_num)] = forms[str(page_num)](post_data=pg_rs)
