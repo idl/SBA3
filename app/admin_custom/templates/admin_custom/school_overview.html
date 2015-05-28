@@ -32,9 +32,7 @@
           </div>
         </form>
       {% endif %}
-      {% if no_surveys_error %}
-        <p class="bg-warning pull-right">{{ no_surveys_error }}</p>
-      {% endif %}
+      <a href="{# url '' %}" class="btn btn-primary pull-right"></a>
     </div>
   </div>
   <hr>
@@ -98,6 +96,7 @@
           </tr>
         </thead>
         <tbody>
+                YEAR: {{survey_year}}
           {% for student in students_list %}
             <tr data-student-id='{{student.id}}' data-school-id='{{school_id}}'>
               <td><small><em>{{student.index}}</em></small></td>
@@ -112,7 +111,7 @@
               </td>
               <td style="min-width: 100px;">
                 {% if student.started %}
-                  <a href="{% url 'survey_results' school_id student.uid %}"
+                  <a href="{% url 'survey_results' school_id student.uid survey_year %}"
                      class="btn btn-default btn-xs" data-toggle="tooltip"
                      data-placement="top" title="View Student Results">
                       {% bootstrap_icon 'eye-open' %}

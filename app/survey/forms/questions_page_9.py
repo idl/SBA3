@@ -1,54 +1,14 @@
 # -*- coding: utf-8 -*-
 import re
 from django import forms
-from django.template.defaultfilters import safe
 from ..models import School
 from ..conditions import (if_not_organization_member, if_live_on_campus,
                          if_not_on_campus_class,
                          if_not_away_from_home_or_not_live_on_campus,
                          if_not_drink_alcohol, if_not_employed)
+from questions import questions_9 as questions
+from choices import choices_9 as choices
 
-questions = {
-  'q1': 'Do you belong to any student organizations?',
-  'q2': safe('How many hours per week do you spend doing student organization related services or activities?<br>(<code>-1</code> for Not Sure, <code>-2</code> for No Comment)'),
-  'q3': 'Do you live on or off campus?',
-  'q4': 'While attending college, do you live away from home?',
-  'q5': safe('How many times per semester do you go home?<br>(<code>-1</code> for Not Sure, <code>-2</code> for No Comment)'),
-  'q6': safe('On average, how many hours per week do you spend partying?<br>(<code>-1</code> for Not Sure, <code>-2</code> for No Comment)'),
-  'q7': 'Do you drink alcoholic beverages?',
-  'q8': safe('On days that you drink, about how many drinks do you consume?<br>(<code>-1</code> for Not Sure, <code>-2</code> for No Comment)'),
-  'q9': safe('On average, how many hours of sleep do you get on a weeknight?<br>(<code>-1</code> for Not Sure, <code>-2</code> for No Comment)'),
-  'q10': safe('How many days per week do you exercise for at least 15 minutes?<br>(<code>-1</code> for Not Sure, <code>-2</code> for No Comment)'),
-  'q11': safe('How many days during the week do you eat a nutritious (e.g., fruits, vegetable, nuts, lean meats etc) meal for breakfast?<br>(<code>-1</code> for Not Sure, <code>-2</code> for No Comment)'),
-  'q12': safe('How many days during the week do you eat a nutritious (e.g., fruits, vegetable, nuts, lean meats etc) meal for lunch?<br>(<code>-1</code> for Not Sure, <code>-2</code> for No Comment)'),
-  'q13': safe('How many days during the week do you eat a nutritious (e.g., fruits, vegetable, nuts, lean meats etc) meal for dinner?<br>(<code>-1</code> for Not Sure, <code>-2</code> for No Comment)'),
-}
-
-choices = {
-  'q1': (
-    ('yes', 'Yes'),
-    ('no', 'No'),
-    ('notsure', 'Not Sure'),
-    ('nocomment', 'No Comment'),
-  ),
-  'q3': (
-    ('oncampus', 'On Campus'),
-    ('offcampus', 'Off Campus'),
-    ('nocomment', 'No Comment'),
-  ),
-  'q4': (
-    ('yes', 'Yes'),
-    ('no', 'No'),
-    ('notsure', 'Not Sure'),
-    ('nocomment', 'No Comment'),
-  ),
-  'q7': (
-    ('yes', 'Yes'),
-    ('no', 'No'),
-    ('notsure', 'Not Sure'),
-    ('nocomment', 'No Comment'),
-  ),
-}
 
 skips = {
   if_not_organization_member: [ 'p9q2' ],

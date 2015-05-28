@@ -1,20 +1,10 @@
 # -*- coding: utf-8 -*-
 import re
 from django import forms
-from django.template.defaultfilters import safe
 from ..models import School
+from questions import questions_10 as questions
+from choices import choices_10 as choices
 
-questions = {
-  'q1': safe('<span style="font-size:24px;font-weight: 300;">For the next three items, please indicate, on average, how much time you spend per day engaged in the following activities:</span><br><br>Social Media (Facebook, Twitter, Instagram…)<br><br>Hours:'),
-  'q3': safe('Entertainment (TV, Games, Movies)<br><br>Hours:'),
-  'q5': safe('Personal Communication (Phone calls, Text messages, Emails)<br><br>Hours:'),
-  'q7': safe('<span style="font-size:24px;font-weight: 300;">In your opinion, what are the top three reasons students struggle in college?</span><br><br>Most Important Reason:'),
-  'q8': 'Second Most Important Reason:',
-  'q9': 'Third Most Important Reason:',
-  'q10': safe('<span style="font-size:24px;font-weight: 300;">In your opinion, what are the top three reasons students succeed in college?</span><br><br>Most Important Reason:'),
-  'q11': 'Second Most Important Reason:',
-  'q12': 'Third Most Important Reason:',
-}
 
 skips = {
 }

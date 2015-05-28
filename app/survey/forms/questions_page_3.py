@@ -1,81 +1,12 @@
 # -*- coding: utf-8 -*-
 import re
 from django import forms
-from django.template.defaultfilters import safe
 from ..models import School
 from ..conditions import if_grad, if_not_on_campus_class, if_not_tutoring, if_tutoring
+from questions import questions_3 as questions
+from choices import choices_3 as choices
 
-questions = {
-  'q1': 'Are you currently attending tutoring sessions?',
-  'q2': 'On average, how many hours do you spend in tutoring sessions per week?',
-  'q3': 'Would you attend tutoring sessions if they were freely available?',
-  'q4': 'Have you looked for tutoring help?',
-  'q5': 'Compared to high school, has the time you spend studying for classes...',
-  'q6': safe('<span style="font-size:24px;font-weight: 300;">How often do you do the following?</span><br><br>(1) Show up late for class'),
-  'q7': '(2) Turn assignments in late or incomplete',
-  'q8': '(3) Miss an exam or quiz',
-  'q9': '(4) Seek extra credit to improve a grade',
-}
 
-choices = {
-  'q1': (
-    ('yes', 'Yes'),
-    ('no', 'No'),
-    ('notsure', 'Not Sure'),
-    ('nocomment', 'No Comment'),
-  ),
-  'q3': (
-    ('yes', 'Yes'),
-    ('no', 'No'),
-    ('notsure', 'Not Sure'),
-    ('nocomment', 'No Comment'),
-  ),
-  'q4': (
-    ('yes', 'Yes'),
-    ('no', 'No'),
-    ('notsure', 'Not Sure'),
-    ('nocomment', 'No Comment'),
-  ),
-  'q5': (
-    ('decressed', 'Decreased '),
-    ('increased', 'Increased'),
-    ('same', 'Stayed the same'),
-    ('notsure', 'Not Sure'),
-    ('nocomment', 'No Comment'),
-  ),
-  'q6': (
-    ('never', 'Never'),
-    ('rarely', 'Rarely'),
-    ('some', 'Some'),
-    ('often', 'Often'),
-    ('notsure', 'Not Sure'),
-    ('nocomment', 'No Comment'),
-  ),
-  'q7': (
-    ('never', 'Never'),
-    ('rarely', 'Rarely'),
-    ('some', 'Some'),
-    ('often', 'Often'),
-    ('notsure', 'Not Sure'),
-    ('nocomment', 'No Comment'),
-  ),
-  'q8': (
-    ('never', 'Never'),
-    ('rarely', 'Rarely'),
-    ('some', 'Some'),
-    ('often', 'Often'),
-    ('notsure', 'Not Sure'),
-    ('nocomment', 'No Comment'),
-  ),
-  'q9': (
-    ('never', 'Never'),
-    ('rarely', 'Rarely'),
-    ('some', 'Some'),
-    ('often', 'Often'),
-    ('notsure', 'Not Sure'),
-    ('nocomment', 'No Comment'),
-  ),
-}
 
 skips = {
   if_not_tutoring: [ 'p3q2' ],

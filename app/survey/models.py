@@ -4,7 +4,32 @@ import json
 from django.db import models
 from django.utils import timezone as tz
 from jsonfield import JSONField
+from survey.forms.choices import choices_1
+from survey.forms.choices import choices_2
+from survey.forms.choices import choices_3
+from survey.forms.choices import choices_4
+from survey.forms.choices import choices_5
+from survey.forms.choices import choices_6
+from survey.forms.choices import choices_7
+from survey.forms.choices import choices_8
+from survey.forms.choices import choices_9
+from survey.forms.choices import choices_10
+from survey.forms.choices import choices_11
 from .constants import num_questions_on_page, num_questions_so_far
+
+questions_page_choices = {
+  '1': choices_1,
+  '2': choices_2,
+  '3': choices_3,
+  '4': choices_4,
+  '5': choices_5,
+  '6': choices_6,
+  '7': choices_7,
+  '8': choices_8,
+  '9': choices_9,
+  '10': choices_10,
+  '11': choices_11
+}
 
 
 class SchoolManager(models.Manager):
@@ -151,7 +176,11 @@ class ResultSet(models.Model):
   p10 = JSONField(load_kwargs=load_kwargs)
   p11 = JSONField(load_kwargs=load_kwargs)
 
-  # objects = ResultSetManager()
+  # returns the percentage of students that answered each choice for the question
+  # out of all other students in the school
+  def get_q_percentage(self, page_num, q_num):
+    choices = questions_page_choices[str(page_num)]['q'+str(q_num)]
+    print choices
 
   # returns Boolean - true if all answers on page are NOT None
   def all_questions_answered(self, page_num):

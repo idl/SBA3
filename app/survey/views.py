@@ -133,11 +133,11 @@ def next(request):
     rs.completed = True
     rs.save()
     student.save()
-    return redirect('survey_results', school_id, student_uid)
+    return redirect('survey_results', school_id, student_uid, tz.now().year)
   return redirect('survey_questions', school_id, student_uid, next_page_num)
 
 
-def results(request, school_id, student_uid):
+def results(request, school_id, student_uid, survey_year):
   context = {}
 
   if request.user.is_authenticated():
@@ -164,7 +164,7 @@ def results(request, school_id, student_uid):
     messages.error(request, 'Could not process your request.')
     return redirect('public_index')
 
-  rs = student.get_result_set_for_current_year()
+  rs = student.get_result_set_for_year(survey_year)
   for page_num in range(1, 11+1):
     pg_rs = json.loads(getattr(rs, 'p'+str(page_num)))
     context['form_page_'+str(page_num)] = forms[str(page_num)](post_data=pg_rs)

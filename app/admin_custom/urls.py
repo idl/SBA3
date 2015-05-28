@@ -15,6 +15,7 @@ urlpatterns = [
   url(r'^delete-school/(?P<school_id>[0-9]{1,3})$', AdminViews.superadmin_delete_school, name='superadmin_delete_school'),
 
   url(r'^(?P<school_id>[0-9]{1,3})/(?P<survey_year>[0-9]{4})$', AdminViews.admin_school_overview, name='admin_school_overview'),
+  url(r'^(?P<school_id>[0-9]{1,3})/(?P<survey_year>[0-9]{4})$', AdminViews.admin_school_overview, name='admin_school_overview'),
   url(r'^(?P<school_id>[0-9]{1,3})/change-year$', AdminViews.admin_select_survey_year, name='admin_select_survey_year'),
   url(r'^(?P<school_id>[0-9]{1,3})/create-students-bulk$', AdminViews.admin_create_students_bulk, name='admin_create_students_bulk'),
   url(r'^(?P<school_id>[0-9]{1,3})/create-student-single$', AdminViews.admin_create_student_single, name='admin_create_student_single'),
