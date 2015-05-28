@@ -30,7 +30,7 @@
         {% if not request.user.is_superuser %}
           <a href="{% url 'admin_edit_account' %}"
             class="admin-edit-account">
-            Edit Account Information
+            Edit Account
           </a>
         {% endif %}
         <span class="admin-email hidden-xs">{{ request.user.email }}</span>

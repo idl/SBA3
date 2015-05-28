@@ -10,7 +10,7 @@ num_questions_on_page = {
   '9': 11,
   '10': 12,
   '11': 14,
-  'total': 123
+  'total': 126
 }
 
 num_questions_so_far = {
@@ -23,6 +23,6 @@ num_questions_so_far = {
   '7': 68,
   '8': 77,
   '9': 89,
-  '10': 102,
-  '11': 114
+  '10': 100,
+  '11': 112
 }
