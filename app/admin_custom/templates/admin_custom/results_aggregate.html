@@ -24,6 +24,42 @@
     </div>
   </div>
   <hr>
+  <div class="row">
+    <div class="col-xs-12">
+      {% for question in aggregate_data %}
+        <h3 style='margin-bottom:0;padding-bottom:6px;border-bottom:1px solid #999999;display:inline-block;'>
+          <small>PAGE</small> <strong>{{question.page_num}}</strong>
+          <small>Q</small> <strong>{{question.q_num}}</strong>&emsp;
+        </h3>
+        <h3 class='h4'>
+          {% autoescape on %}{{question.question}}{% endautoescape %}
+        </h3>
+        <table class="table table-condensed">
+          <thead>
+            <tr>
+              <td></td>
+              <td><strong>Num Answered / Total Students</strong></td>
+              <td><strong>%</strong></td>
+            </tr>
+          </thead>
+          <tbody>
+            {% for choice in question.choices %}
+            choice: {{choice}}
+              <tr>
+                <td>{{choice.text}}</td>
+                <td>{{choice.num_answered}} / {{total_num_students}}</td>
+                <td>{{choice.percentage}}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <ul>
+        </ul>
+        <br>
+        <br>
+      {% endfor %}
+    </div>
+  </div>
 {% endblock %}
 
 

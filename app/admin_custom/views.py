@@ -1,4 +1,5 @@
 import datetime
+import json
 from collections import OrderedDict
 from django.contrib import messages
 from django.shortcuts import render, redirect, render_to_response
@@ -720,21 +721,48 @@ def admin_results_aggregate(request, school_id, survey_year):
       question['q_num'] = q_num
       question['question'] = questions_page[str(page_num)]['q'+str(q_num)]
       question['choices'] = OrderedDict()
+      question['total_num_students'] = num_students_at_school
+      question['num_answered'] = 0
 
+      choices_text = []
       try:
         for choice in choices_page[str(page_num)]['q'+str(q_num)]:
-          question['choices'][choice[0]] = 0
+          choices_text.append(choice)
       except:
-        question['choices'] = None
+        choices_text = None
 
-      for student in Student.objects.filter(school__id=school_id):
-        try:
-          rs = student.resultset_set.filter(year=survey_year, completed=True).get()
-          q = type(json.loads(getattr(rs, 'p'+str(page_num))))
-          print q
-        except:
-          print ''
+      choice_set_tmp = {}
+      for choice in choices_text:
+        choice_set_tmp['text'] = choice
+
+        num_answered = 0
+        for student in Student.objects.filter(resultset__year=survey_year, school__id=school_id, resultset__isnull=False, resultset__completed=True):
+          # try:
+          print "\n:::::::::::::::::::"
+          rs = student.resultset_set.filter(year=survey_year, completed=True)
+          q_ans = json.loads(str(getattr(rs.get(), 'p'+str(page_num))))['q'+str(q_num)]
+          print 'qans:', q_ans, '\n::::::::::::::::::\n'
+          if rs.count() == 1:
+            print 'HAS survey'
+            # print 'rs:',rs.get()
+          # print 'q:', question['question']
+
+        print ":::::::::::::\n"
+        # except:
+        #   print ''
+
+      # try:
+      #   for choice in choices_page[str(page_num)]['q'+str(q_num)]:
+      #     question['choices'].append({
+      #       'text': choice[0]
+      #     })
+      #   print 'choices:', question['choices']
+      # except:
+      #   question['choices'] = None
 
 
+      aggregate_data.append(question)
+
+  context['aggregate_data'] = aggregate_data
 
   return render(request, 'admin_custom/results_aggregate.html', context)
