@@ -18,7 +18,6 @@ choices_1 = {
     ('accounting', 'Accounting'),
     ('aerospaceengineering', 'Aerospace Engineering'),
     ('agribusiness', 'Agribusiness'),
-    ('art', 'Art'),
     ('agriengineering', 'Agricultural Engineering Technology and Business'),
     ('agriinformation', 'Agricultural Information Science'),
     ('agriculture', 'Agricultural Science'),

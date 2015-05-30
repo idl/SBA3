@@ -26,38 +26,50 @@
   <hr>
   <div class="row">
     <div class="col-xs-12">
-      {% for question in aggregate_data %}
-        <h3 style='margin-bottom:0;padding-bottom:6px;border-bottom:1px solid #999999;display:inline-block;'>
-          <small>PAGE</small> <strong>{{question.page_num}}</strong>
-          <small>Q</small> <strong>{{question.q_num}}</strong>&emsp;
-        </h3>
-        <h3 class='h4'>
-          {% autoescape on %}{{question.question}}{% endautoescape %}
-        </h3>
-        <table class="table table-condensed">
-          <thead>
-            <tr>
-              <td></td>
-              <td><strong>Num Answered / Total Students</strong></td>
-              <td><strong>%</strong></td>
-            </tr>
-          </thead>
-          <tbody>
-            {% for choice in question.choices %}
-            choice: {{choice}}
-              <tr>
-                <td>{{choice.text}}</td>
-                <td>{{choice.num_answered}} / {{total_num_students}}</td>
-                <td>{{choice.percentage}}</td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-        <ul>
-        </ul>
-        <br>
-        <br>
-      {% endfor %}
+      {% if none_completed_error %}
+        <h4>Not enough students have completed the survey. At least 2 students must have competed the survey in order to view aggregate results.</h4>
+      {% else %}
+        {% for question in aggregate_data %}
+          <h3 style='margin-bottom:0;padding-bottom:6px;border-bottom:1px solid #999999;display:inline-block;'>
+            <small>PAGE</small> <strong>{{question.page_num}}</strong>
+            <small>Q</small> <strong>{{question.q_num}}</strong>&emsp;
+          </h3>
+          <h3 class='h4'>
+            {% autoescape on %}{{question.question}}{% endautoescape %}
+          </h3>
+          <div class="row">
+            <div class="col-xs-12 col-sm-8">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <td><strong>Choice</strong></td>
+                    <td class='text-center'><strong># Answered / # Completed</strong></td>
+                    <td class='text-center'><strong>% Answered</strong></td>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for choice in question.choices %}
+                    <tr>
+                      <td>{{choice.text}}</td>
+                      <td class='text-center'>{{choice.num_answered}} / {{num_students_completed_survey}}</td>
+                      <td class='text-center'>{{choice.percentage}}%</td>
+                    </tr>
+                  {% endfor %}
+                  <tr>
+                    <td><strong>TOTAL:</strong></td>
+                    <td class='text-center'><strong>{{question.total_students_answered}} / {{num_students_completed_survey}}</strong></td>
+                    <td class='text-center'><strong>{{question.total_percentage}}%</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-xs-12 col-sm-4"></div>
+          </div>
+          <br>
+          <br>
+        {% endfor %}
+      {% endif %}
+
     </div>
   </div>
 {% endblock %}

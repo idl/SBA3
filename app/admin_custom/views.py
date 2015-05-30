@@ -1,5 +1,6 @@
 import datetime
 import json
+import pprint
 from collections import OrderedDict
 from django.contrib import messages
 from django.shortcuts import render, redirect, render_to_response
@@ -15,7 +16,7 @@ from django.utils import timezone as tz
 from .forms import (AdminLoginForm, SelectSurveyYearForm, SuperadminSelectSchoolForm,
   SuperadminCreateEditSchoolForm, CreateStudentsBulkForm, CreateEditStudentForm,
   SuperadminCreateEditAdminForm, AdminEditAccountEmailForm, AdminEditAccountPasswordForm)
-from survey.models import Student, School
+from survey.models import Student, School, ResultSet
 from survey.constants import num_questions_on_page
 from survey.forms.questions import questions_1
 from survey.forms.questions import questions_2
@@ -711,8 +712,23 @@ def admin_results_aggregate(request, school_id, survey_year):
   context['num_students_at_school'] = num_students_at_school
   context['num_students_started_survey'] = num_students_started_survey
   context['num_students_completed_survey'] = num_students_completed_survey
+  if num_students_completed_survey < 2:
+    context['none_completed_error'] = True
+    return render(request, 'admin_custom/results_aggregate.html', context)
 
   aggregate_data = []
+
+  student_result_sets = []
+
+  for rs in ResultSet.objects.filter(year=survey_year, completed=True,
+                                     student__school_id=school_id):
+    rs_tmp = {}
+    for page_num in range(1, 12):
+      rs_tmp['p'+str(page_num)] = json.loads(getattr(rs, 'p'+str(page_num)))
+    student_result_sets.append(rs_tmp)
+
+  pp = pprint.PrettyPrinter(indent=4)
+  pp.pprint(student_result_sets)
 
   for page_num in range(1, 12):
     for q_num in range(1, num_questions_on_page[str(page_num)]+1):
@@ -720,49 +736,35 @@ def admin_results_aggregate(request, school_id, survey_year):
       question['page_num'] = page_num
       question['q_num'] = q_num
       question['question'] = questions_page[str(page_num)]['q'+str(q_num)]
-      question['choices'] = OrderedDict()
-      question['total_num_students'] = num_students_at_school
-      question['num_answered'] = 0
+      question['choices'] = []
+      question['total_percentage'] = 0.0
+      question['total_students_answered'] = 0
 
       choices_text = []
       try:
         for choice in choices_page[str(page_num)]['q'+str(q_num)]:
-          choices_text.append(choice)
+          choices_text.append(choice[0])
       except:
         choices_text = None
-
-      choice_set_tmp = {}
-      for choice in choices_text:
-        choice_set_tmp['text'] = choice
-
-        num_answered = 0
-        for student in Student.objects.filter(resultset__year=survey_year, school__id=school_id, resultset__isnull=False, resultset__completed=True):
-          # try:
-          print "\n:::::::::::::::::::"
-          rs = student.resultset_set.filter(year=survey_year, completed=True)
-          q_ans = json.loads(str(getattr(rs.get(), 'p'+str(page_num))))['q'+str(q_num)]
-          print 'qans:', q_ans, '\n::::::::::::::::::\n'
-          if rs.count() == 1:
-            print 'HAS survey'
-            # print 'rs:',rs.get()
-          # print 'q:', question['question']
-
-        print ":::::::::::::\n"
-        # except:
-        #   print ''
-
-      # try:
-      #   for choice in choices_page[str(page_num)]['q'+str(q_num)]:
-      #     question['choices'].append({
-      #       'text': choice[0]
-      #     })
-      #   print 'choices:', question['choices']
-      # except:
-      #   question['choices'] = None
-
-
+      if choices_text:
+        for choice in choices_text:
+          if choice != '':
+            choice_set_tmp = {}
+            choice_set_tmp['text'] = choice
+            num_answered = 0
+            for rs in student_result_sets:
+              q_ans = rs['p'+str(page_num)]['q'+str(q_num)]
+              if choice == q_ans:
+                num_answered += 1
+            choice_set_tmp['num_answered'] = num_answered
+            choice_set_tmp['percentage'] = float('{:.2f}'.format(100*float(num_answered)/num_students_completed_survey))
+            question['total_percentage'] += choice_set_tmp['percentage']
+            question['total_students_answered'] += num_answered
+            question['choices'].append(choice_set_tmp)
+      else:
+        print ''
+        # print "\n::: is not choices field :::\n"
       aggregate_data.append(question)
 
   context['aggregate_data'] = aggregate_data
-
   return render(request, 'admin_custom/results_aggregate.html', context)
