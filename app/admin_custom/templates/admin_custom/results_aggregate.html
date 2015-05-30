@@ -39,29 +39,38 @@
           </h3>
           <div class="row">
             <div class="col-xs-12 col-sm-8">
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <td><strong>Choice</strong></td>
-                    <td class='text-center'><strong># Answered / # Completed</strong></td>
-                    <td class='text-center'><strong>% Answered</strong></td>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for choice in question.choices %}
+              {% if question.choices %}
+                <table class="table table-striped table-condensed">
+                  <thead>
                     <tr>
-                      <td>{{choice.text}}</td>
-                      <td class='text-center'>{{choice.num_answered}} / {{num_students_completed_survey}}</td>
-                      <td class='text-center'>{{choice.percentage}}%</td>
+                      <td><strong>Choice</strong></td>
+                      <td class='text-center'><strong># Answered / # Completed</strong></td>
+                      <td class='text-center'><strong>% Answered</strong></td>
                     </tr>
+                  </thead>
+                  <tbody>
+                    {% for choice in question.choices %}
+                      <tr>
+                        <td>{{choice.text}}</td>
+                        <td class='text-center'>{{choice.num_answered}} / {{num_students_completed_survey}}</td>
+                        <td class='text-center'>{{choice.percentage}}%</td>
+                      </tr>
+                    {% endfor %}
+                    <tr class='active' style='border-top: 2px solid #dfdfdf;'>
+                      <td><strong>TOTAL:</strong></td>
+                      <td class='text-center'><strong>{{question.total_students_answered}} / {{num_students_completed_survey}}</strong></td>
+                      <td class='text-center'><strong>{{question.total_percentage}}%</strong></td>
+                    </tr>
+                  </tbody>
+                </table>
+              {% else %}
+                Responses list:
+                <ul class="list-inline">
+                  {% for response in question.responses_list %}
+                    <li>{{response}}</li>
                   {% endfor %}
-                  <tr>
-                    <td><strong>TOTAL:</strong></td>
-                    <td class='text-center'><strong>{{question.total_students_answered}} / {{num_students_completed_survey}}</strong></td>
-                    <td class='text-center'><strong>{{question.total_percentage}}%</strong></td>
-                  </tr>
-                </tbody>
-              </table>
+                </ul>
+              {% endif %}
             </div>
             <div class="col-xs-12 col-sm-4"></div>
           </div>

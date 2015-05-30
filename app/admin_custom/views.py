@@ -737,17 +737,13 @@ def admin_results_aggregate(request, school_id, survey_year):
       question['q_num'] = q_num
       question['question'] = questions_page[str(page_num)]['q'+str(q_num)]
       question['choices'] = []
+      question['responses_list'] = []
       question['total_percentage'] = 0.0
       question['total_students_answered'] = 0
 
-      choices_text = []
       try:
         for choice in choices_page[str(page_num)]['q'+str(q_num)]:
-          choices_text.append(choice[0])
-      except:
-        choices_text = None
-      if choices_text:
-        for choice in choices_text:
+          choice = choice[0]
           if choice != '':
             choice_set_tmp = {}
             choice_set_tmp['text'] = choice
@@ -761,9 +757,14 @@ def admin_results_aggregate(request, school_id, survey_year):
             question['total_percentage'] += choice_set_tmp['percentage']
             question['total_students_answered'] += num_answered
             question['choices'].append(choice_set_tmp)
-      else:
-        print ''
+      except:
+        question['choices'] = None
+        for rs in student_result_sets:
+          q_ans = rs['p'+str(page_num)]['q'+str(q_num)]
+          if q_ans != None:
+            question['responses_list'].append(q_ans)
         # print "\n::: is not choices field :::\n"
+      question['responses_list'].sort()
       aggregate_data.append(question)
 
   context['aggregate_data'] = aggregate_data

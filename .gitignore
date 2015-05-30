@@ -4,7 +4,7 @@ db.sqlite3
 **/.sass-cache
 **/.sass-cache/*
 
-sba3/sba3/secret.py
+secret.py
 
 .DS_Store
 
