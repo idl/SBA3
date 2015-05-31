@@ -95,6 +95,7 @@ def questions(request, school_id, student_uid, page_num):
     context['questions_page_form'] = forms[page_num](post_data=res_set, session=request.session)
   else:
     context['questions_page_form'] = forms[page_num](session=request.session)
+  context['survey_title'] = school.survey_title or None
   context['student_uid'] = student_uid
   context['school_id'] = school_id
   context['school_name'] = student.school.name
