@@ -7630,3 +7630,16 @@ h6.no-margin-top {
   margin: 0 auto;
   display: block;
 }
+
+/**********************
+** Results Aggregate **
+**********************/
+.results-aggregate-responses-list li {
+  margin-right: 5px;
+  margin-bottom: 8px;
+  padding: 4px 6px;
+  background: #dddddd;
+  border-radius: 4px;
+  border-bottom: 1px solid #b7b7b7;
+  line-height: 1;
+}

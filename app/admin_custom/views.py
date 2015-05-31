@@ -13,6 +13,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.urlresolvers import reverse
 from django.core.validators import validate_email
 from django.utils import timezone as tz
+from django.template.defaultfilters import safe
 from .forms import (AdminLoginForm, SelectSurveyYearForm, SuperadminSelectSchoolForm,
   SuperadminCreateEditSchoolForm, CreateStudentsBulkForm, CreateEditStudentForm,
   SuperadminCreateEditAdminForm, AdminEditAccountEmailForm, AdminEditAccountPasswordForm)
@@ -735,11 +736,12 @@ def admin_results_aggregate(request, school_id, survey_year):
       question = {}
       question['page_num'] = page_num
       question['q_num'] = q_num
-      question['question'] = questions_page[str(page_num)]['q'+str(q_num)]
+      question['question'] = safe(questions_page[str(page_num)]['q'+str(q_num)])
       question['choices'] = []
       question['responses_list'] = []
       question['total_percentage'] = 0.0
       question['total_students_answered'] = 0
+      question['num_skips'] = 0
 
       try:
         for choice in choices_page[str(page_num)]['q'+str(q_num)]:
@@ -757,14 +759,28 @@ def admin_results_aggregate(request, school_id, survey_year):
             question['total_percentage'] += choice_set_tmp['percentage']
             question['total_students_answered'] += num_answered
             question['choices'].append(choice_set_tmp)
+        question['num_skips'] = num_students_completed_survey - question['total_students_answered']
       except:
         question['choices'] = None
+        num_answered = 0
         for rs in student_result_sets:
           q_ans = rs['p'+str(page_num)]['q'+str(q_num)]
-          if q_ans != None:
-            question['responses_list'].append(q_ans)
-        # print "\n::: is not choices field :::\n"
-      question['responses_list'].sort()
+          if q_ans == None:
+            question['num_skips'] += 1
+          else:
+            num_answered += 1
+            try:
+              question['responses_list'].append(int(q_ans))
+            except:
+              question['responses_list'].append(str(q_ans))
+        question['responses_list'].sort()
+        question['num_answered'] = num_answered
+        question['percentage'] = float('{:.2f}'.format(100*float(num_answered)/num_students_completed_survey))
+      if question['num_skips'] == 0:
+        question['num_skips'] = None
+      if question['total_percentage'] > 100.0:
+        question['total_percentage'] = "100"
+
       aggregate_data.append(question)
 
   context['aggregate_data'] = aggregate_data

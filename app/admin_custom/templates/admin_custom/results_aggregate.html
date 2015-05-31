@@ -35,7 +35,7 @@
             <small>Q</small> <strong>{{question.q_num}}</strong>&emsp;
           </h3>
           <h3 class='h4'>
-            {% autoescape on %}{{question.question}}{% endautoescape %}
+            {{question.question}}
           </h3>
           <div class="row">
             <div class="col-xs-12 col-sm-8">
@@ -58,18 +58,43 @@
                     {% endfor %}
                     <tr class='active' style='border-top: 2px solid #dfdfdf;'>
                       <td><strong>TOTAL:</strong></td>
-                      <td class='text-center'><strong>{{question.total_students_answered}} / {{num_students_completed_survey}}</strong></td>
+                      <td class='text-center'>
+                        <strong>{{question.total_students_answered}} / {{num_students_completed_survey}}</strong>
+                        {% if question.num_skips %}
+                          ({{question.num_skips}} skips)
+                        {% endif %}
+                      </td>
                       <td class='text-center'><strong>{{question.total_percentage}}%</strong></td>
                     </tr>
                   </tbody>
                 </table>
               {% else %}
-                Responses list:
-                <ul class="list-inline">
+                <ul class="list-inline results-aggregate-responses-list">
                   {% for response in question.responses_list %}
                     <li>{{response}}</li>
                   {% endfor %}
                 </ul>
+                <table class="table-striped table-condensed" style='width:100%;'>
+                  <thead>
+                    <tr>
+                      <td></td>
+                      <td class='text-center'><strong># Answered / # Completed</strong></td>
+                      <td class='text-center'><strong>% Answered</strong></td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>TOTAL:</strong></td>
+                      <td class='text-center'>
+                        {{question.num_answered}} / {{num_students_completed_survey}}
+                        {% if question.num_skips %}
+                          ({{question.num_skips}} skips)
+                        {% endif %}
+                      </td>
+                      <td class='text-center'>{{question.percentage}}</td>
+                    </tr>
+                  </tbody>
+                </table>
               {% endif %}
             </div>
             <div class="col-xs-12 col-sm-4"></div>
