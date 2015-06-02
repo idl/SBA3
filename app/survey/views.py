@@ -76,8 +76,6 @@ def questions(request, school_id, student_uid, page_num):
     return redirect('public_survey_begin')
 
   if request.method == 'POST':
-    if request.POST.get('survey-submit') != None:
-      print "SURVEY SUBMIT"
     form = forms[page_num](post_data=request.POST)
     request.session['next_page_num'] = int(page_num) + 1
 
