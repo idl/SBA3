@@ -170,9 +170,41 @@ def results(request, school_id, student_uid, survey_year):
     else:
       messages.error(request, 'Could not process your request.')
       return redirect('public_index')
+
+  full_rs = {}
+
   for page_num in range(1, 11+1):
     pg_rs = json.loads(getattr(rs, 'p'+str(page_num)))
+    full_rs['p'+str(page_num)] = pg_rs
     context['form_page_'+str(page_num)] = forms[str(page_num)](post_data=pg_rs)
+
+  def getans(page_num, q_num):
+    return full_rs['p'+str(page_num)]['q'+str(q_num)]
+
+  if rs.completed:
+    q_44 = {
+      'strongdisagree': 1,
+      'disagree': 2,
+      'neutral': 3,
+      'agree': 4,
+      'strongagree': 5
+    }
+    q_36 = {
+      'a': 4,
+      'b': 3,
+      'c': 2,
+      'd': 1,
+      'f': 0
+    }
+    q_26 = {
+      'never': 1,
+      'rarely': 2,
+      'some': 3,
+      'often': 4
+    }
+
+    mean_q = [getans(8,1),getans(8,2),getans(8,3),getans(8,4),getans(8,5),getans(8,6),getans(8,7)]
+    context['track_college_readiness'] = None
 
   context['student_uid'] = student_uid
   context['school_id'] = school_id

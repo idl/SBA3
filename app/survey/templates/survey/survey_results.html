@@ -42,6 +42,248 @@
           </div>
         </div>
       {%endif%}
+
+      {% if student_completed %}
+        <h2><strong>Response Feedback</strong></h2>
+        <table class="vis-results">
+          <tbody>
+            <tr>
+              <td>
+                <div class="vis-title-icon" data-toggle="popover" data-trigger="hover"  data-placement="bottom"
+                  data-content="Being academically prepared to read and write at a college level and do well in subjects such as math and science.">
+                  <img src="/static/viz_icons/sprint.svg" alt="Readiness for College">
+                  <span class="vis-title">College<br>Readiness</span>
+                </div>
+              </td>
+              <td>
+                <div class="vis-line-box-long">
+                  <div class="vis-row-line">&nbsp;</div>
+                </div>
+              <td>
+                <div class="vis-content-box">
+                  Average GPA of students who are prepared for college is <strong>3.53</strong>. The average GPA of students who feel they are unprepared for college is <strong>3.2</strong>.
+                </div>
+              <td>
+                <div class="vis-line-box">
+                  <div class="vis-row-line">&nbsp;</div>
+                </div>
+              <td>
+                <div class="vis-content-box">
+                  You did not answer enough questions to receive feedback.
+                </div>
+              <td>
+                <div class="vis-line-box">
+                  <div class="vis-row-line">&nbsp;</div>
+                </div>
+              <td>
+                <div class="vis-content-box">
+                  <h5><strong>Unprepared for College</strong></h5>
+                  Your score indicates that you feel you aren't as prepared as you should be to perform well in your college classes. Seek out help from others such as peer couselors and tutors as well as resources such as "The Math Domain," "The Writing Center," or "The Learning Center."
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="vis-title-icon" data-toggle="popover" data-trigger="hover" data-placement="bottom"
+                  data-content='"They think I can."'>
+                  <img src="/static/viz_icons/man204.svg" alt="Self-Concept">
+                  <span class="vis-title">Self-Concept</span>
+                </div>
+              <td>
+                <div class="vis-line-box-long">
+                  <div class="vis-row-line">&nbsp;</div>
+                </div>
+              </td>
+              <td>
+                <div class="vis-content-box">
+                  Average GPA of students who are expected to earn an A is <strong>3.5</strong>. The average GPA of students expected to earn a C or less is <strong>2.97</strong>.
+                </div>
+              </td>
+              <td>
+                <div class="vis-line-box">
+                  <div class="vis-row-line">&nbsp;</div>
+                </div>
+              </td>
+              <td>
+                <div class="vis-content-box">
+                  You did not answer enough questions to receive feedback.
+                </div>
+              </td>
+              <td>
+                <div class="vis-line-box">
+                  <div class="vis-row-line">&nbsp;</div>
+                </div>
+              </td>
+              <td>
+                <div class="vis-content-box">
+                  <h5><strong>Low Score</strong></h5>
+                  Academic self-concept can be incluenced by others. Your score indicates that family, friends, and/or teachers have low expectations about your ability to perform well in college. Remember that the level of success you achieve is not dependent on the perceptions of others. Instead of focusing on the perceptions of others, focus on things you can control such as evaluating and improving upon past performances.
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="vis-title-icon" data-toggle="popover" data-trigger="hover" data-placement="bottom"
+                  data-content='"I think I can"'>
+                  <img src="/static/viz_icons/like5.svg" alt="Self-Efficacy">
+                  <span class="vis-title">Self-Efficacy</span>
+                </div>
+              </td>
+              <td>
+                <div class="vis-line-box-long">
+                  <div class="vis-row-line">&nbsp;</div>
+                </div>
+              </td>
+              <td>
+                <div class="vis-content-box">
+                  Average GPA of students who expect to earn an A is <strong>3.54</strong>. The average GPA for those expecting to earn a C or below is <strong>2.69</strong>.
+                </div>
+              </td>
+              <td>
+                <div class="vis-line-box">
+                  <div class="vis-row-line">&nbsp;</div>
+                </div>
+              </td>
+              <td>
+                <div class="vis-content-box">
+                  HIDE IF COND FALSE
+                </div>
+              </td>
+              <td>
+                <div class="vis-line-box">
+                  <div class="vis-row-line">&nbsp;</div>
+                </div>
+              </td>
+              <td>
+                <div class="vis-content-box">
+                  <h5><strong>Grade C, D, or F</strong></h5>
+                  Self-efficacy refers to the belief we have in our ability to complete tasks and reach goals. The grade you expect to earn while in college indicates a low level of self-efficacy. Low self-efficacy can affect the types of tasks we tke on and the level of motivation and effort we expend to complete these tasks. If you feel discouraged, think about times when you successfully accomplished a challenging task and use that achievement to help you tackle future goals.
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="vis-title-icon" data-toggle="popover" data-trigger="hover" data-placement="bottom"
+                  data-content="Having access to materials necessary for school like a personal computer and books for class.">
+                  <img src="/static/viz_icons/pen22.svg" alt="Socioeconomic Status">
+                  <span class="vis-title">Socioeconomic Status</span>
+                </div>
+              </td>
+              <td>
+                <div class="vis-line-box-long">
+                  <div class="vis-row-line">&nbsp;</div>
+                </div>
+              </td>
+              <td>
+                <div class="vis-content-box">
+                  Average GPA of students who have both a personal computer and books for class is <strong>3.42</strong>. Those missing 1 or more items have an average GPA of <strong>3.3</strong>.
+                </div>
+              </td>
+              <td>
+                <div class="vis-line-box">
+                  <div class="vis-row-line">&nbsp;</div>
+                </div>
+              </td>
+              <td>
+                <div class="vis-content-box">
+                  THIS BOX DOESNT EXIST -- REMOVE
+                </div>
+              </td>
+              <td>
+                <div class="vis-line-box">
+                  <div class="vis-row-line">&nbsp;</div>
+                </div>
+              </td>
+              <td>
+                <div class="vis-content-box">
+                  <h5><strong>Necessary School Supplies</strong></h5>
+                  There are programs available to help students get books and materials for their classes. For more information contact the Dean of Students. There are also computer labs located at various locations across campus. If you experience difficulties accessing these labs because of their location or operating hours, consider making a suggestion to the administration.
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="vis-title-icon" data-toggle="popover" data-trigger="hover" data-placement="bottom"
+                  data-content="Class Attendance">
+                  <img src="/static/viz_icons/ask3.svg" alt="Academic Behaviors">
+                  <span class="vis-title">Academic Behaviors</span>
+                </div>
+              </td>
+              <td>
+                <div class="vis-line-box-long">
+                  <div class="vis-row-line">&nbsp;</div>
+                </div>
+              </td>
+              <td>
+                <div class="vis-content-box">
+                  Average GPA of students who miss <strong>0</strong> classes per semester is <strong>3.55</strong>. Those who <strong>miss 4 or more</strong> classes have an average GPA of <strong>3.13</strong>.
+                </div>
+              </td>
+              <td>
+                <div class="vis-line-box">
+                  <div class="vis-row-line">&nbsp;</div>
+                </div>
+              </td>
+              <td>
+                <div class="vis-content-box">
+                  HIDE
+                </div>
+              </td>
+              <td>
+                <div class="vis-line-box">
+                  <div class="vis-row-line">&nbsp;</div>
+                </div>
+              </td>
+              <td>
+                <div class="vis-content-box">
+                  Studies have shown a link between GPA an missed class sessions. Consider the reasons why you miss classes over the course of the semester so you can begin to think about changes that can be made.
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="vis-title-icon" data-toggle="popover" data-trigger="hover"  data-placement="bottom"
+                  data-content="Turning in assignments late, showingup late for class, and missing exams or quizzes.">
+                  <img src="/static/viz_icons/warning.svg" alt="Risky Behaviors">
+                  <span class="vis-title">Risky Behaviors</span>
+                </div>
+              </td>
+              <td>
+                <div class="vis-line-box-long">
+                  <div class="vis-row-line">&nbsp;</div>
+                </div>
+              </td>
+              <td>
+                <div class="vis-content-box">
+                  Average GPA of students who never engage in risky behavior is <strong>3.49</strong>. Those who often engage in risky behavior have an average GPA of <strong>3.12</strong>.
+                </div>
+              </td>
+              <td>
+                <div class="vis-line-box">
+                  <div class="vis-row-line">&nbsp;</div>
+                </div>
+              </td>
+              <td>
+                <div class="vis-content-box">
+                  HIDE
+                </div>
+              </td>
+              <td>
+                <div class="vis-line-box">
+                  <div class="vis-row-line">&nbsp;</div>
+                </div>
+              </td>
+              <td>
+                <div class="vis-content-box">
+                  <h5><strong>Missing Class</strong></h5>
+                  Research suggests that high levels of risky behavior is associated with poor academic performance. Consider the reasons why you are engaging in these risky behaviors so you can begin to htink about changes that can be made.
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      {% endif %}
+
       {% bootstrap_messages %}
       {% if is_admin %}
         <div class="alert alert-info" role="alert">
@@ -89,6 +331,7 @@
     $(document).ready(function() {
       // var session, fn_condition_false, fn_condition_true, add_change_event,
       //     check_conditions, page_num;
+      $('[data-toggle="popover"]').popover()
       $('.survey-container .radio-inline').css('display', 'inline-block');
       $('.survey-container .form-control').css('display', 'block');
       $('.survey-container input, .survey-container select')

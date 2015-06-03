@@ -7643,3 +7643,93 @@ h6.no-margin-top {
   border-bottom: 1px solid #b7b7b7;
   line-height: 1;
 }
+
+/****************
+** Results Viz **
+*****************/
+.vis-results {
+  margin-bottom: 15px;
+  background: #ebebeb;
+  border-radius: 8px;
+}
+
+.vis-results td {
+  padding: 20px 0;
+}
+
+.vis-results td:first-child {
+  padding-left: 25px;
+}
+
+.vis-results td:last-child {
+  padding-right: 15px;
+}
+
+.vis-row-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  border-top: 2px solid #000000;
+  z-index: 2;
+}
+
+.vis-title {
+  padding: 3px;
+  position: absolute;
+  bottom: 106%;
+  left: -20px;
+  right: -20px;
+  display: block;
+  text-align: center;
+  background: #000000;
+  border-radius: 4px;
+  color: #ffffff;
+  font-weight: 600;
+  text-overflow: ;
+}
+
+.vis-title-icon,
+.vis-content-box {
+  display: block;
+  background: #ffffff;
+  position: relative;
+  vertical-align: middle;
+  white-space: normal;
+}
+
+.vis-line-box {
+  width: 30px;
+  display: inline-block;
+  background: #ffffff;
+  position: relative;
+  vertical-align: middle;
+}
+
+.vis-line-box-long {
+  width: 40px;
+  display: inline-block;
+  background: #ffffff;
+  position: relative;
+  vertical-align: middle;
+}
+
+.vis-title-icon {
+  margin-right: -3px;
+  border-radius: 999px;
+  border: 4px solid #000000;
+  display: inline-block;
+}
+
+.vis-content-box {
+  margin: 0 -3px;
+  padding: 5px 12px;
+  border: 3px solid #000000;
+  border-radius: 20px;
+}
+
+.vis-title-icon img {
+  min-width: 60px;
+  max-width: 60px;
+  padding: 10px;
+}
