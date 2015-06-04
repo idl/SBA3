@@ -17,7 +17,7 @@
       {% if not update_student_error %}
         {% bootstrap_messages %}
       {% endif %}
-      <h2 class="admin-main-title">{{ admin_main_title }}</h2>
+      <h2 class="admin-main-title"><strong>{{ admin_main_title }}</strong></h2>
       {% if select_survey_year_form %}
         <form action="{% url 'admin_select_survey_year' school_id %}" method="POST"
           class="form-inline select-survey-year-form">
