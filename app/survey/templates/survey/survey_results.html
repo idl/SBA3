@@ -337,7 +337,8 @@
       $('.survey-container input, .survey-container select')
         .attr('disabled', 'disabled');
       $('[checked]').parent().css({
-        'background': '#bfbfbf',
+        'background': '#28B62C',
+        'color': '#ffffff',
         'font-weight': 700,
         'font-size': '1.25em'
       });
@@ -347,8 +348,9 @@
       $('input[type="radio"]').css({
         'cursor':'not-allowed'
       });
-      $('input[type="text"], input[type="number"], select').css({
-        'background': '#bfbfbf',
+      $('input[type="text"][value], input[type="number"][value], select').css({
+        'background': '#28B62C',
+        'color': '#ffffff',
         'font-weight': 700,
         'font-size': '1.125em',
         'cursor':'not-allowed'
