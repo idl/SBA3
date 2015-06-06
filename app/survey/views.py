@@ -205,8 +205,10 @@ def results(request, school_id, student_uid, survey_year):
 
     mean_q = [getans(8,1),getans(8,2),getans(8,3),getans(8,4),getans(8,5),getans(8,6),getans(8,7)]
     context['track_college_readiness'] = None
-    if None in mean_q:
-      print "has NONE"
+    if None not in mean_q:
+      mean = 0
+      for ans in mean_q:
+        print ans, ':: '
 
   context['student_uid'] = student_uid
   context['school_id'] = school_id
