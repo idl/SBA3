@@ -267,8 +267,19 @@ def results(request, school_id, student_uid, survey_year):
       q26_1 = getans(3,6)
       q26_2 = getans(3,7)
       q26_3 = getans(3,8)
-      print q26_1,q26_2,q26_3
-      return None
+      if q26_1 == None or q26_1 not in q_26:
+        return None
+      if q26_2 == None or q26_2 not in q_26:
+        return None
+      if q26_3 == None or q26_3 not in q_26:
+        return None
+
+      q26_1 = q_26[q26_1]
+      q26_2 = q_26[q26_2]
+      q26_3 = q_26[q26_3]
+
+      mean = (q26_1+q26_2+q26_3)/3.0
+      return mean
 
 
     context['track_college_readiness'] = calc_track_college_readiness()

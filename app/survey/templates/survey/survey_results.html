@@ -75,7 +75,7 @@
                   <td colspan=''>
                     <div class="vis-content-box bg-warning">
                       <h5><strong>Unprepared for College</strong></h5>
-                      Your score indicates that you feel you aren't as prepared as you should be to perform well in your college classes. Seek out help from others such as peer couselors and tutors as well as resources such as "The Math Domain," "The Writing Center," or "The Learning Center."
+                      Your score indicates that you feel you aren't as prepared as you should be to perform well in your college classes. Seek out help from others such as peer counselors and tutors as well as resources such as "The Math Domain," "The Writing Center," or "The Learning Center."
                     </div>
                   </td>
                 {% else %}
@@ -118,10 +118,10 @@
                       <div class="vis-row-line">&nbsp;</div>
                     </div>
                   </td>
-                  <td colspan=''>
+                  <td>
                     <div class="vis-content-box bg-warning">
-                      <h5><strong>Unprepared for College</strong></h5>
-                      Your score indicates that you feel you aren't as prepared as you should be to perform well in your college classes. Seek out help from others such as peer couselors and tutors as well as resources such as "The Math Domain," "The Writing Center," or "The Learning Center."
+                      <h5><strong>Low Self-Concept Score</strong></h5>
+                      Academic self-concept can be influenced by others. Your score indicates that family, friends, and/or teachers have low expectations about your ability to perform well in college. Remember that the level of success you achieve is not dependent on the perception of others. Instead of focusing on the perceptions of others, focus on things you can control such as evaluating and improving upon past performances.
                     </div>
                   </td>
                 {% else %}
@@ -267,32 +267,30 @@
                 </div>
               </td>
               {% if track_risky_behaviors %}
-                <td>
-                  <div class="vis-content-box">
-                    Average GPA of students who never engage in risky behavior is <strong>3.49</strong>. Those who often engage in risky behavior have an average GPA of <strong>3.12</strong>.
-                  </div>
-                </td>
-                <td>
-                  <div class="vis-line-box">
-                    <div class="vis-row-line">&nbsp;</div>
-                  </div>
-                </td>
-                <td>
-                  <div class="vis-content-box">
-                    HIDE
-                  </div>
-                </td>
-                <td>
-                  <div class="vis-line-box">
-                    <div class="vis-row-line">&nbsp;</div>
-                  </div>
-                </td>
-                <td>
-                  <div class="vis-content-box bg-warning">
-                    <h5><strong>Missing Class</strong></h5>
-                    Research suggests that high levels of risky behavior is associated with poor academic performance. Consider the reasons why you are engaging in these risky behaviors so you can begin to htink about changes that can be made.
-                  </div>
-                </td>
+                {% if track_risky_behaviors >= 1.5 %}
+                  <td>
+                    <div class="vis-content-box">
+                      Average GPA of students who never engage in risky behavior is <strong>3.49</strong>. Those who often engage in risky behavior have an average GPA of <strong>3.12</strong>.
+                    </div>
+                  </td>
+                  <td>
+                    <div class="vis-line-box">
+                      <div class="vis-row-line">&nbsp;</div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="vis-content-box bg-warning">
+                      <h5><strong>Missing Class</strong></h5>
+                      Research suggests that high levels of risky behavior is associated with poor academic performance. Consider the reasons why you are engaging in these risky behaviors so you can begin to think about changes that can be made.
+                    </div>
+                  </td>
+                {% else %}
+                  <td colspan='5'>
+                    <div class="vis-content-box">
+                      Average GPA of students who never engage in risky behavior is <strong>3.49</strong>. Those who often engage in risky behavior have an average GPA of <strong>3.12</strong>.
+                    </div>
+                  </td>
+                {% endif %}
               {% else %}
                 <td colspan='5'>
                   <div class="vis-content-box no-feedback">
