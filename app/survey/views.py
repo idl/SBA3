@@ -183,33 +183,89 @@ def results(request, school_id, student_uid, survey_year):
 
   if rs.completed:
     q_44 = {
-      'strongdisagree': 1,
-      'disagree': 2,
-      'neutral': 3,
-      'agree': 4,
-      'strongagree': 5
+      'strongdisagree': 1.0,
+      'disagree': 2.0,
+      'neutral': 3.0,
+      'agree': 4.0,
+      'strongagree': 5.0
     }
     q_36 = {
-      'a': 4,
-      'b': 3,
-      'c': 2,
-      'd': 1,
-      'f': 0
+      'a': 4.0,
+      'b': 3.0,
+      'c': 2.0,
+      'd': 1.0,
+      'f': 0.0
     }
     q_26 = {
-      'never': 1,
-      'rarely': 2,
-      'some': 3,
-      'often': 4
+      'never': 1.0,
+      'rarely': 2.0,
+      'some': 3.0,
+      'often': 4.0
     }
 
-    mean_q = [getans(8,1),getans(8,2),getans(8,3),getans(8,4),getans(8,5),getans(8,6),getans(8,7)]
-    context['track_college_readiness'] = None
-    if None not in mean_q:
-      mean = 0
-      for ans in mean_q:
-        print ans, ':: '
+    # calculate track_college_readiness
+    def calc_track_college_readiness():
+      mean_q = [getans(8,6),getans(8,7),getans(8,8),getans(8,9),getans(8,10),getans(8,11),getans(8,12)]
+      if None not in mean_q:
+        mean = 0.0
+        for ans in mean_q:
+          if ans not in q_44:
+            # did not answer enough questions to receive feedback
+            return None
+        for ans in mean_q:
+          mean += q_44[ans]
+        return mean/float(len(mean_q))
+      return None
 
+    # calculate track_self_concept
+    def calc_track_self_concept():
+      mean_q = [getans(7,2),getans(7,3),getans(7,4),getans(7,5)]
+      print mean_q
+      if None not in mean_q:
+        mean = 0.0
+        for ans in mean_q:
+          if ans not in q_36:
+            # did not answer enough questions to receive feedback
+            return None
+        for ans in mean_q:
+          mean += q_36[ans]
+        return mean/float(len(mean_q))
+      return None
+
+    # calculate track_self_efficacy
+    def calc_track_self_efficacy():
+      mean_q = [getans(7,1)]
+      print mean_q
+      if None not in mean_q:
+        mean = 0.0
+        for ans in mean_q:
+          if ans not in q_36:
+            # did not answer enough questions to receive feedback
+            return None
+        for ans in mean_q:
+          mean += q_36[ans]
+        return mean/float(len(mean_q))
+      return None
+
+    # calculate track_socioeconomic_status
+    def calc_track_socioeconomic_status():
+      return None
+
+    # calculate track_academic_behaviors
+    def calc_track_academic_behaviors():
+      return None
+
+    # calculate track_risky_behaviors
+    def calc_track_risky_behaviors():
+      return None
+
+
+    context['track_college_readiness'] = calc_track_college_readiness()
+    context['track_self_concept'] = calc_track_self_concept()
+    context['track_self_efficacy'] = calc_track_self_efficacy()
+    context['track_socioeconomic_status'] = calc_track_socioeconomic_status()
+    context['track_academic_behaviors'] = calc_track_academic_behaviors()
+    context['track_risky_behaviors'] = calc_track_risky_behaviors()
   context['student_uid'] = student_uid
   context['school_id'] = school_id
   context['student_completed'] = rs.completed

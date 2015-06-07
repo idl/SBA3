@@ -7654,7 +7654,7 @@ h6.no-margin-top {
 }
 
 .vis-results td {
-  padding: 20px 0;
+  padding: 60px 0 10px;
 }
 
 .vis-results td:first-child {
@@ -7726,6 +7726,9 @@ h6.no-margin-top {
   padding: 5px 12px;
   border: 3px solid #000000;
   border-radius: 20px;
+}
+.vis-content-box.no-feedback {
+  background: #d7d7d7;
 }
 
 .vis-title-icon img {
