@@ -220,7 +220,6 @@ def results(request, school_id, student_uid, survey_year):
     # calculate track_self_concept
     def calc_track_self_concept():
       mean_q = [getans(7,2),getans(7,3),getans(7,4),getans(7,5)]
-      print mean_q
       if None not in mean_q:
         mean = 0.0
         for ans in mean_q:
@@ -235,7 +234,6 @@ def results(request, school_id, student_uid, survey_year):
     # calculate track_self_efficacy
     def calc_track_self_efficacy():
       mean_q = [getans(7,1)]
-      print mean_q
       if None not in mean_q:
         mean = 0.0
         for ans in mean_q:
@@ -249,14 +247,27 @@ def results(request, school_id, student_uid, survey_year):
 
     # calculate track_socioeconomic_status
     def calc_track_socioeconomic_status():
+      q27_6 = getans(4,6)
+      q27_9 = getans(4,9)
+      if q27_6 == 'no' or q27_9 == 'no':
+        return True
       return None
 
     # calculate track_academic_behaviors
     def calc_track_academic_behaviors():
+      q20 = getans(2,11)
+      try:
+        return int(q20)
+      except:
+        return None
       return None
 
     # calculate track_risky_behaviors
     def calc_track_risky_behaviors():
+      q26_1 = getans(3,6)
+      q26_2 = getans(3,7)
+      q26_3 = getans(3,8)
+      print q26_1,q26_2,q26_3
       return None
 
 

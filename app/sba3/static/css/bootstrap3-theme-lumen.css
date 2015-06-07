@@ -7704,6 +7704,8 @@ h6.no-margin-top {
   background: #ffffff;
   position: relative;
   vertical-align: middle;
+  position: relative;
+  z-index: 1;
 }
 
 .vis-line-box-long {
@@ -7712,6 +7714,8 @@ h6.no-margin-top {
   background: #ffffff;
   position: relative;
   vertical-align: middle;
+  position: relative;
+  z-index: 1;
 }
 
 .vis-title-icon {
@@ -7722,13 +7726,26 @@ h6.no-margin-top {
 }
 
 .vis-content-box {
+  min-width: 200px;
   margin: 0 -3px;
-  padding: 5px 12px;
+  padding: 15px 12px 20px;
   border: 3px solid #000000;
   border-radius: 20px;
+  position: relative;
+  z-index: 2;
 }
 .vis-content-box.no-feedback {
   background: #d7d7d7;
+}
+.vis-content-box.bg-warning {
+  background: #FF851B;
+  border-color: #592d06;
+}
+.vis-content-box.bg-warning h5 {
+  margin-top: 0;
+  color: #592d06;
+  font-weight: 900;
+  font-size: 1.125em;
 }
 
 .vis-title-icon img {
