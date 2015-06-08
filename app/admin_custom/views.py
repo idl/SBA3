@@ -659,9 +659,15 @@ def admin_edit_account(request):
     context['edit_account_email_form'] = email_form
     if email_form.is_valid():
       old_email = request.user.email
-      request.user.email = request.POST.get('email')
-      request.user.save()
-      messages.success(request, "Successfully updated your email address.")
+      if old_email == request.POST.get('email'):
+        messages.error(request, "Please fill out both fields to change password.")
+        return render(request, 'admin_custom/edit_account.html', context)
+      # try:
+      #   User.objects.get(email=request.POST.get('email'))
+      #   request.user.email = request.POST.get('email')
+      #   request.user.save()
+      #   messages.success(request, "Successfully updated your email address.")
+      # except:
     else:
       messages.error(request, "Please ensure email is in the correct format.")
 
