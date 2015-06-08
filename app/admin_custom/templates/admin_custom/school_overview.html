@@ -89,7 +89,12 @@
   </div>
   <div class="row">
     <div class="col-xs-12">
-      <h3>Student Roster</h3>
+      <h3>
+        Student Roster
+        <a class="btn btn-info btn-sm pull-right" href="{% url 'admin_export_students' school_id %}">
+          Export Student Emails (.csv)
+        </a>
+      </h3>
       <table class="table table-striped table-hover table-condensed">
         <thead>
           <tr>

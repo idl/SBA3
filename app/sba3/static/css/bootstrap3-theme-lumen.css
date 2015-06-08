@@ -7651,18 +7651,23 @@ h6.no-margin-top {
   margin-bottom: 15px;
   background: #ebebeb;
   border-radius: 8px;
+  box-shadow: inset 0 3px 6px rgba(0,0,0,0.3);
+}
+
+.vis-results tr:first-child td {
+  padding-top: 70px;
 }
 
 .vis-results td {
-  padding: 30px 0 10px;
+  padding: 50px 0 20px;
 }
 
 .vis-results td:first-child {
-  padding-left: 25px;
+  padding-left: 35px;
 }
 
 .vis-results td:last-child {
-  padding-right: 15px;
+  padding-right: 25px;
 }
 
 .vis-row-line {

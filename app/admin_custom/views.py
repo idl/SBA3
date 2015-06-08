@@ -1,5 +1,6 @@
 import datetime
 import json
+import csv
 import pprint
 from collections import OrderedDict
 from django.contrib import messages
@@ -615,6 +616,33 @@ def admin_edit_student(request, school_id, student_id):
   student.save()
   messages.success(request, "Successfully updated "+student.uid+".")
   return redirect('admin_school_overview', school_id=school_id)
+
+
+@login_required(redirect_field_name=None)
+def admin_export_students(request, school_id):
+  school_id = int(school_id)
+  if not request.user.is_superuser:
+    if int(school_id) != request.session.get('school_id'):
+      print "wrong session"
+      if request.session.get('survey_year'):
+        return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
+      return redirect('admin_school_overview', school_id=school_id)
+
+  school = None
+  try:
+    school = School.objects.get(id=school_id)
+  except:
+    if request.session.get('survey_year'):
+      return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
+    return redirect('admin_school_overview', school_id=school_id)
+
+  response = HttpResponse(content_type='text/csv')
+  response['Content-Disposition'] = 'attachment; filename="' + \
+    school.name.replace(' ','')+'__student_emails.csv"'
+  writer = csv.writer(response)
+  for student in Student.objects.filter(school__id=school_id):
+    writer.writerow([student.email])
+  return response
 
 
 @login_required(redirect_field_name=None)
