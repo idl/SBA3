@@ -47,7 +47,6 @@ INSTALLED_APPS = (
   'admin_custom',
   'survey',
   'debug_toolbar',
-  # 'south',
 )
 
 MIDDLEWARE_CLASSES = (

@@ -12,8 +12,9 @@ choices_1 = {
   ),
   'q2': (
     ('', '--------'),
-    ('nocomment', 'No Comment'),
+    ('other', 'Something Else'),
     ('undecided', 'Undecided'),
+    ('nocomment', 'No Comment'),
     ('', '--------'),
     ('accounting', 'Accounting'),
     ('aerospaceengineering', 'Aerospace Engineering'),
@@ -86,7 +87,6 @@ choices_1 = {
     ('techteachereducation', 'Technology Teacher Education'),
     ('veterinarymedical', 'Veterinary Medical Technology'),
     ('wildlife', 'Wildlife, Fisheries and Aquaculture'),
-    ('other', 'Something Else'),
   ),
   'q3': (
     ('yes', 'Yes'),
@@ -109,7 +109,6 @@ choices_1 = {
   'q6': (
     ('yes', 'Yes'),
     ('no', 'No'),
-    ('notsure', 'Not Sure'),
     ('nocomment', 'No Comment'),
   ),
   'q7': (
@@ -178,11 +177,11 @@ choices_2 = {
     ('nocomment', 'No Comment'),
   ),
   'q4': (
-    ('poor', 'Poor'),
-    ('belowaverage', 'Below Average'),
-    ('average', 'Average'),
-    ('aboveaverage', 'Above Average'),
-    ('excellent', 'Excellent'),
+    ('poor', '1 (poor)'),
+    ('belowaverage', '2'),
+    ('average', '3'),
+    ('aboveaverage', '4'),
+    ('excellent', '5 (excellent)'),
   ),
   'q5': (
     ('yes', 'Yes'),
@@ -496,7 +495,6 @@ choices_6 = {
   'q7': (
     ('yes', 'Yes'),
     ('no', 'No'),
-    ('notavailable', 'None were avaliable'),
     ('notsure', 'Not Sure'),
     ('nocomment', 'No Comment'),
   ),
@@ -550,6 +548,7 @@ choices_7 = {
     ('f','F'),
     ('notsure','Not Sure'),
     ('nocomment','No Comment'),
+    ('notapplicable', 'N/A')
   ),
   'q2': (
     ('a','A'),
@@ -559,6 +558,7 @@ choices_7 = {
     ('f','F'),
     ('notsure','Not Sure'),
     ('nocomment','No Comment'),
+    ('notapplicable', 'N/A')
   ),
   'q3': (
     ('a','A'),
@@ -568,6 +568,7 @@ choices_7 = {
     ('f','F'),
     ('notsure','Not Sure'),
     ('nocomment','No Comment'),
+    ('notapplicable', 'N/A')
   ),
   'q4': (
     ('a','A'),
@@ -577,6 +578,7 @@ choices_7 = {
     ('f','F'),
     ('notsure','Not Sure'),
     ('nocomment','No Comment'),
+    ('notapplicable', 'N/A')
   ),
   'q5': (
     ('a','A'),
@@ -586,6 +588,7 @@ choices_7 = {
     ('f','F'),
     ('notsure','Not Sure'),
     ('nocomment','No Comment'),
+    ('notapplicable', 'N/A')
   ),
 }
 
@@ -722,19 +725,16 @@ choices_11 = {
   'q3': (
     ('yes', 'Yes'),
     ('no', 'No'),
-    ('notsure', 'Not Sure'),
     ('nocomment', 'No Comment'),
   ),
   'q4': (
-    ('yes', 'Yes'),
-    ('no', 'No'),
-    ('notsure', 'Not Sure'),
+    ('oncampus', 'On Campus'),
+    ('offcampus', 'Off Campus'),
     ('nocomment', 'No Comment'),
   ),
   'q6': (
     ('yes', 'Yes'),
     ('no', 'No'),
-    ('notsure', 'Not Sure'),
     ('nocomment', 'No Comment'),
   ),
   'q7': (

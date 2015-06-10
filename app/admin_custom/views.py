@@ -1,5 +1,6 @@
 import datetime
 import json
+import csv
 import pprint
 from collections import OrderedDict
 from django.contrib import messages
@@ -618,6 +619,33 @@ def admin_edit_student(request, school_id, student_id):
 
 
 @login_required(redirect_field_name=None)
+def admin_export_students(request, school_id):
+  school_id = int(school_id)
+  if not request.user.is_superuser:
+    if int(school_id) != request.session.get('school_id'):
+      print "wrong session"
+      if request.session.get('survey_year'):
+        return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
+      return redirect('admin_school_overview', school_id=school_id)
+
+  school = None
+  try:
+    school = School.objects.get(id=school_id)
+  except:
+    if request.session.get('survey_year'):
+      return redirect('admin_school_overview', school_id=school_id, survey_year=request.session.get('survey_year'))
+    return redirect('admin_school_overview', school_id=school_id)
+
+  response = HttpResponse(content_type='text/csv')
+  response['Content-Disposition'] = 'attachment; filename="' + \
+    school.name.replace(' ','')+'__student_emails.csv"'
+  writer = csv.writer(response)
+  for student in Student.objects.filter(school__id=school_id):
+    writer.writerow([student.email])
+  return response
+
+
+@login_required(redirect_field_name=None)
 def admin_edit_account(request):
   context = {}
 
@@ -631,9 +659,15 @@ def admin_edit_account(request):
     context['edit_account_email_form'] = email_form
     if email_form.is_valid():
       old_email = request.user.email
-      request.user.email = request.POST.get('email')
-      request.user.save()
-      messages.success(request, "Successfully updated your email address.")
+      if old_email == request.POST.get('email'):
+        messages.error(request, "Please fill out both fields to change password.")
+        return render(request, 'admin_custom/edit_account.html', context)
+      # try:
+      #   User.objects.get(email=request.POST.get('email'))
+      #   request.user.email = request.POST.get('email')
+      #   request.user.save()
+      #   messages.success(request, "Successfully updated your email address.")
+      # except:
     else:
       messages.error(request, "Please ensure email is in the correct format.")
 
