@@ -43,18 +43,21 @@ forms = {
 def questions(request, school_id, student_uid, page_num):
   context = {}
 
+  # if page_num out of bounds, redirect to page 11 to find the page the page
+  # the student left off on
   if int(page_num) > 11 or int(page_num) < 1:
     return redirect('survey_questions', school_id, student_uid, 11)
 
   # student can only access the survey with their own credentials which are set
   # in the session when they begin survey
   if request.session.get('student_uid') != student_uid or request.session.get('school_id') != int(school_id):
-    print "SESSION DOESNT MATCH STUDENT"
+    # print "SESSION DOESNT MATCH STUDENT"
     messages.error(request, 'Could not process your request.')
     return redirect('public_survey_begin')
 
   student = Student.objects.filter(school__id=school_id,uid=student_uid).get()
 
+  # redirect to survey begin if they have already completed the survey this year
   if student.has_completed_survey_for_current_year():
     messages.error(request, 'The student "'+student_uid+'" has already completed the survey.')
     return redirect('public_survey_begin')
@@ -68,6 +71,9 @@ def questions(request, school_id, student_uid, page_num):
     if not rs.all_questions_answered(int(page_num)-1):
       return redirect('survey_questions', school_id, student_uid, int(page_num)-1)
 
+  # try to get the school with the id in url param, as well as the student that
+  # is associated with the school. if either do not exist, redirect to
+  # survey begin
   try:
     school = School.objects.get(id=school_id)
     Student.objects.get(school=school, uid=student_uid)
@@ -75,7 +81,9 @@ def questions(request, school_id, student_uid, page_num):
     messages.error(request, 'Could not process your request.')
     return redirect('public_survey_begin')
 
+  # if student answered the questions on page and clicked next button
   if request.method == 'POST':
+    # create form, bind with POST data
     form = forms[page_num](post_data=request.POST)
     request.session['next_page_num'] = int(page_num) + 1
 
@@ -83,16 +91,22 @@ def questions(request, school_id, student_uid, page_num):
     # arent visible because they are skipped, show err msg
     for q_num in range(1, num_questions_on_page[page_num]+1):
       request.session['page_results_q'+str(q_num)] = request.POST.get('q'+str(q_num))
+
+    # if any question is null/blank that is NOT skippable
     if not form.is_valid():
       messages.error(request, 'You must answer all of the questions on the page before continuing.')
       for q_num in range(1, num_questions_on_page[page_num]+1):
         request.session['page_results_q'+str(q_num)] = None
     return redirect('survey_next')
+
+  # if questions on this page have already been answered, fill the form with
+  # the result set data for that page
   if rs.all_questions_answered(page_num):
     res_set = json.loads(getattr(rs, 'p'+str(page_num)))
     context['questions_page_form'] = forms[page_num](post_data=res_set, session=request.session)
   else:
     context['questions_page_form'] = forms[page_num](session=request.session)
+
   context['survey_title'] = school.survey_title or None
   context['student_uid'] = student_uid
   context['school_id'] = school_id
@@ -101,13 +115,17 @@ def questions(request, school_id, student_uid, page_num):
   context['page_num'] = int(page_num)
   context['previous_page_num'] = int(page_num)-1
   context['continue_pass'] = student.continue_pass
+
+  # show modal only when student initially begins survey
   if request.session.get('show_modal') and int(page_num) is 1:
     context['show_modal'] = True
     del request.session['show_modal']
+
   try:
     context['progress_percentage'] = "%0.0f" % (float(num_questions_so_far[page_num])/num_questions_on_page['total'] * 100)
   except:
     context['progress_percentage'] = 0
+
   return render(request, "survey/survey_questions.html", context)
 
 
