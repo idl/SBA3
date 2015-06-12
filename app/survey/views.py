@@ -334,7 +334,8 @@ def public_begin(request):
     context['school_id'] = school_id
     context['survey_begin_form'] = form
     student = None
-    try:student = Student.objects.get(uid=student_uid,school=School.objects.get(id=school_id))
+    try:
+      student = Student.objects.get(uid=student_uid,school=School.objects.get(id=school_id))
     except:
       messages.error(request,
         'The user ID "'+student_uid+'" is not registered with this school.')
