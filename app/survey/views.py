@@ -324,8 +324,10 @@ def clear(request):
 def public_begin(request):
   context = {}
   context['survey_begin_form'] = SurveyBeginForm()
+
   if request.method == 'POST':
     form = SurveyBeginForm(request.POST)
+
     if not form.is_valid():
       messages.error(request, 'You must pick a school and enter your student identifier to take the survey.')
       return render(request, "survey/survey_begin.html", context)
@@ -334,37 +336,46 @@ def public_begin(request):
     context['school_id'] = school_id
     context['survey_begin_form'] = form
     student = None
+
+    # check if student is registered with school. if not, throws exception
     try:
       student = Student.objects.get(uid=student_uid,school=School.objects.get(id=school_id))
     except:
       messages.error(request,
         'The user ID "'+student_uid+'" is not registered with this school.')
       return render(request, "survey/survey_begin.html", context)
+
     if student.has_completed_survey_for_current_year():
       messages.error(request, 'The student "'+student_uid+'" has already completed the survey.')
       return render(request, "survey/survey_begin.html", context)
+
     if student.has_started_survey_for_current_year():
       messages.error(request, 'The student "'+student_uid+'" has already started the survey. <a href="/survey/continue" style="color:white;text-decoration:underline;font-weight:700;">Click here to continue the survey</a>.')
       return render(request, "survey/survey_begin.html", context)
+
     request.session.flush()
     request.session['student_uid'] = student_uid
     request.session['school_id'] = school_id
     request.session['show_modal'] = True
     result_set = None
+
     if student.get_result_set_for_current_year() == None:
       result_set = ResultSet(student=student)
+
       for page_num in range(1, 12):
         res_set_outline = {}
+
         for q_num in range(1, num_questions_on_page[str(page_num)]+1):
           res_set_outline['q'+str(q_num)] = None
 
         # equivalent:
         # result_set.p+str(page_num) = json.dumps(res_set_outline)
         setattr(result_set, 'p'+str(page_num), json.dumps(res_set_outline))
+
       result_set.save()
       student.result_set = result_set
+
     student.save()
-    # try:
     url = "localhost:8000/survey/continue?continue_pass="+student.continue_pass+"&school="+str(student.school.id)+"&student_uid="+student.uid
     msg = str("You have begun the SBA<sup>3</sup>-1 Survey. Please click the following link to continue the survey where you left off:<br> "+
       "<a href='" + url + "'>" + url + "</a>" +
@@ -385,19 +396,23 @@ def public_continue(request):
   #   - more processing required to determine if the CREDENTIALS are valid
   context = {}
   context['survey_continue_form'] = SurveyContinueForm()
+
   if request.GET:
     continue_pass = request.GET.get('continue_pass')
     student_uid = request.GET.get('student_uid')
     school_id = int(request.GET.get('school'))
+
     if continue_pass and student_uid and school_id:
       form = SurveyContinueForm({
           'school': school_id,
           'continue_pass': continue_pass,
           'student_uid': student_uid
         })
+
       if form.is_valid():
         student = None
-        try:student = Student.objects.get(uid=student_uid,school=School.objects.get(id=school_id))
+        try:
+          student = Student.objects.get(uid=student_uid,school=School.objects.get(id=school_id))
         except:
           messages.error(request,
             'The user ID "'+student_uid+'" is not registered with this school.')
