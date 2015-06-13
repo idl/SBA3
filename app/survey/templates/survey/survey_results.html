@@ -348,8 +348,6 @@
     }).resize();
 
     $(document).ready(function() {
-      // var session, fn_condition_false, fn_condition_true, add_change_event,
-      //     check_conditions, page_num;
       $('[data-toggle="popover"]').popover()
       $('.survey-container .radio-inline').css('display', 'inline-block');
       $('.survey-container .form-control').css('display', 'block');
@@ -382,9 +380,9 @@
       $('[checked]').prop('checked',true);
       {% if student_completed %}
         $('.form-group:not(:has(:checked)):not(:has(input[type="text"], input[type="number"]))')
-        .animate({'opacity': 0.25}, 500);
+          .animate({'opacity': 0.25}, 500);
         $('.form-group input:not([type="radio"])').each(function(i, elem) {
-          $elem = $(elem);
+          var $elem = $(elem);
           if($elem.val() == '') {
             $elem.closest('.form-group').animate({'opacity': 0.25}, 500);
           }
@@ -398,6 +396,7 @@
 {% block begin_survey_modal_js %}
   {% if show_modal %}
     <script>
+      var $modal;
       $modal = $('#begin-survey-modal-message');
       $modal.modal('show');
       $('#begin-survey-modal-message-hide').click(function(e) {
