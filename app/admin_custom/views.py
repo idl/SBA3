@@ -89,10 +89,11 @@ def superadmin_create_admin(request):
   password = request.POST.get('password')
   is_superuser = request.POST.get('is_superuser')
   school = None
+
+  # if creating a school admin, a school is not selected (or the id is invalid),
+  # throw an error
   try:
-    print request.POST.get('school')
     school = School.objects.get(id=request.POST.get('school'))
-    print school
   except:
     if not is_superuser:
       messages.error(request, 'An error has occured. Please try creating the user again.')
@@ -108,6 +109,7 @@ def superadmin_create_admin(request):
     User.objects.create_user(email, password, school)
   messages.success(request, 'Successfully created administrator '+email+'.')
   return redirect('superadmin_overview')
+
 
 @login_required(redirect_field_name=None)
 @user_passes_test(lambda u: u.is_superuser)
