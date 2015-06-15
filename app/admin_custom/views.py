@@ -99,6 +99,7 @@ def superadmin_create_admin(request):
       messages.error(request, 'An error has occured. Please try creating the user again.')
       return redirect('superadmin_overview')
 
+  # if admin email is already in use
   if User.objects.filter(email=email).count() > 0:
     messages.error(request, 'That email address is already in use. Please use a different email.')
     return redirect('superadmin_overview')
