@@ -39,7 +39,7 @@ forms = {
   '11': QuestionsPage11Form,
 }
 
-
+# survey questions view
 def questions(request, school_id, student_uid, page_num):
   context = {}
 
@@ -129,7 +129,7 @@ def questions(request, school_id, student_uid, page_num):
   return render(request, "survey/survey_questions.html", context)
 
 
-
+# next survey page view
 def next(request):
   next_page_num = int(request.session.get('next_page_num'))
   school_id = request.session.get('school_id')
@@ -154,6 +154,7 @@ def next(request):
   return redirect('survey_questions', school_id, student_uid, next_page_num)
 
 
+# student results view
 def results(request, school_id, student_uid, survey_year):
   context = {}
 
