@@ -313,15 +313,17 @@ def results(request, school_id, student_uid, survey_year):
   return render(request, "survey/survey_results.html", context)
 
 
-def clear(request):
-  request.session.flush()
-  return HttpResponse("""
-    <html><head>
-    <meta http-equiv=\"refresh\" content=\"0.5;URL='/survey/begin'\" />
-    </head><body>session cleared</body></html>
-    """)
+
+# def clear(request):
+#   request.session.flush()
+#   return HttpResponse("""
+#     <html><head>
+#     <meta http-equiv=\"refresh\" content=\"0.5;URL='/survey/begin'\" />
+#     </head><body>session cleared</body></html>
+#     """)
 
 
+# begin survey view
 def public_begin(request):
   context = {}
   context['survey_begin_form'] = SurveyBeginForm()
@@ -392,6 +394,7 @@ def public_begin(request):
   return render(request, "survey/survey_begin.html", context)
 
 
+# continue survey view
 def public_continue(request):
   # form.is_valid() is false only when it contains a blank field
   #   - more processing required to determine if the CREDENTIALS are valid
