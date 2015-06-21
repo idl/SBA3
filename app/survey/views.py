@@ -314,15 +314,6 @@ def results(request, school_id, student_uid, survey_year):
 
 
 
-# def clear(request):
-#   request.session.flush()
-#   return HttpResponse("""
-#     <html><head>
-#     <meta http-equiv=\"refresh\" content=\"0.5;URL='/survey/begin'\" />
-#     </head><body>session cleared</body></html>
-#     """)
-
-
 # begin survey view
 def public_begin(request):
   context = {}
