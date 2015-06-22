@@ -173,6 +173,7 @@ def results(request, school_id, student_uid, survey_year):
       print 'sessions dont match'
       messages.error(request, 'Could not process your request.')
       return redirect('public_index')
+
   student = None
   try:
     school = School.objects.get(id=school_id)
@@ -201,6 +202,10 @@ def results(request, school_id, student_uid, survey_year):
     return full_rs['p'+str(page_num)]['q'+str(q_num)]
 
   if rs.completed:
+
+    ################
+    ## VIZ MODULE ##
+    ################
     q_44 = {
       'strongdisagree': 1.0,
       'disagree': 2.0,
