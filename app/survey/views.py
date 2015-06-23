@@ -161,7 +161,6 @@ def results(request, school_id, student_uid, survey_year):
   if request.user.is_authenticated():
     context['is_admin'] = True
     if not request.user.is_superuser:
-      # if
       if int(school_id) != request.user.school.id:
         print 'school doesnt match'
         messages.error(request, 'Could not process your request.')
