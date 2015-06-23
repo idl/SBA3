@@ -45,6 +45,7 @@ from survey.forms.choices import choices_11
 
 User = get_user_model()
 
+# public login view
 def public_login(request):
   context = {}
   context['admin_login_form'] = AdminLoginForm()
@@ -78,6 +79,7 @@ def public_logout(request):
 #****** SuperAdmin Views ******#
 #******************************#
 
+# create super/school admin view
 @login_required(redirect_field_name=None)
 @user_passes_test(lambda u: u.is_superuser)
 @require_http_methods(['POST'])
@@ -112,6 +114,7 @@ def superadmin_create_admin(request):
   return redirect('superadmin_overview')
 
 
+# delete super/school admin view
 @login_required(redirect_field_name=None)
 @user_passes_test(lambda u: u.is_superuser)
 def superadmin_delete_admin(request, admin_id):
