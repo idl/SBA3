@@ -132,6 +132,7 @@ def superadmin_delete_admin(request, admin_id):
   return redirect('superadmin_overview')
 
 
+# edit super/school admin view
 @login_required(redirect_field_name=None)
 @user_passes_test(lambda u: u.is_superuser)
 @require_http_methods(['POST'])
@@ -151,12 +152,14 @@ def superadmin_edit_admin(request, admin_id):
     request.session['update_admin_error_is_superuser'] = is_superuser
     request.session['update_admin_error_school'] = school
 
+  # ensure the POSTed user ID exists
   user = None
   try:
     user = User.objects.get(id=admin_id)
   except:
     return redirect('superadmin_overview')
 
+  # if POSTed email in correct format, update user object. Else throw error
   try:
     validate_email(email)
     user.email = email
@@ -203,6 +206,7 @@ def superadmin_edit_admin(request, admin_id):
   return redirect('superadmin_overview')
 
 
+# edit school info view
 @login_required(redirect_field_name=None)
 @user_passes_test(lambda u: u.is_superuser)
 @require_http_methods(['POST'])
