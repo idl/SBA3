@@ -655,6 +655,7 @@ def admin_export_students(request, school_id):
   return response
 
 
+# edit super/school admin view
 @login_required(redirect_field_name=None)
 def admin_edit_account(request):
   context = {}
@@ -704,6 +705,7 @@ def admin_edit_account(request):
   return render(request, 'admin_custom/edit_account.html', context)
 
 
+# show results in agreegate to admin user
 @login_required(redirect_field_name=None)
 def admin_results_aggregate(request, school_id, survey_year):
   context = {}
