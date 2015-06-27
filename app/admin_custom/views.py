@@ -252,6 +252,7 @@ def superadmin_edit_school(request, school_id):
   return redirect('superadmin_overview')
 
 
+# superadmin delete school view
 @login_required(redirect_field_name=None)
 @user_passes_test(lambda u: u.is_superuser)
 def superadmin_delete_school(request, school_id):
@@ -266,6 +267,7 @@ def superadmin_delete_school(request, school_id):
   return redirect('superadmin_overview')
 
 
+# superadmin create school view
 @login_required(redirect_field_name=None)
 @user_passes_test(lambda u: u.is_superuser)
 @require_http_methods(["POST"])
@@ -278,6 +280,7 @@ def superadmin_create_school(request):
   return redirect('superadmin_overview')
 
 
+# superadmin dashboard view - first page superuser sees when logs in
 @login_required(redirect_field_name=None)
 @user_passes_test(lambda u: u.is_superuser)
 def superadmin_overview(request):
