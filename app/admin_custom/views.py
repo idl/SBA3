@@ -628,6 +628,7 @@ def admin_edit_student(request, school_id, student_id):
   return redirect('admin_school_overview', school_id=school_id)
 
 
+# export students view
 @login_required(redirect_field_name=None)
 def admin_export_students(request, school_id):
   school_id = int(school_id)
