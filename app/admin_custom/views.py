@@ -267,7 +267,7 @@ def superadmin_delete_school(request, school_id):
   return redirect('superadmin_overview')
 
 
-# superadmin create school view
+# superadmin create school POST view
 @login_required(redirect_field_name=None)
 @user_passes_test(lambda u: u.is_superuser)
 @require_http_methods(["POST"])
@@ -446,6 +446,7 @@ def admin_select_survey_year(request, school_id):
   return redirect('admin_school_overview', school_id=int(school_id))
 
 
+# admin create sturdents bulk POST view
 @login_required(redirect_field_name=None)
 @require_http_methods(["POST"])
 def admin_create_students_bulk(request, school_id):
@@ -585,6 +586,7 @@ def admin_delete_student(request, school_id, student_id):
   return redirect('admin_school_overview', school_id=school_id)
 
 
+# admin edit student POST view
 @login_required(redirect_field_name=None)
 @require_http_methods(["POST"])
 def admin_edit_student(request, school_id, student_id):
