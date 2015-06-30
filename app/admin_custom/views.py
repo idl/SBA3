@@ -344,6 +344,7 @@ def superadmin_overview(request):
 #****** School Admin Views ******#
 #********************************#
 
+# super admin school overview view
 @login_required(redirect_field_name=None)
 def admin_school_overview(request, school_id, survey_year=None):
   context = {}
