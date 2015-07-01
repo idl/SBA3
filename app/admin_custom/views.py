@@ -439,12 +439,12 @@ def admin_school_overview(request, school_id, survey_year=None):
   return render(request, "admin_custom/school_overview.html", context)
 
 
+# school/super admin select school survey year POST view
 @login_required(redirect_field_name=None)
+@require_http_methods(["POST"])
 def admin_select_survey_year(request, school_id):
   school_id = int(school_id)
-  if request.method == 'POST':
-    return redirect('admin_school_overview', school_id=int(school_id), survey_year=int(request.POST.get('survey_year')))
-  return redirect('admin_school_overview', school_id=int(school_id))
+  return redirect('admin_school_overview', school_id=int(school_id), survey_year=int(request.POST.get('survey_year')))
 
 
 # admin create sturdents bulk POST view
