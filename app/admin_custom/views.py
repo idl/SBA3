@@ -312,6 +312,7 @@ def superadmin_overview(request):
         # admin_school_overview without the year url param
         return redirect('admin_school_overview', school_id=school.id)
 
+  # set errs in ctx if exist in session, and delete session vars
   if request.session.get('update_admin_error'):
     context['update_admin_error'] = True
     context['update_admin_error_email'] = request.session['update_admin_error_email']
@@ -323,7 +324,6 @@ def superadmin_overview(request):
     del request.session['update_admin_error_admin_id']
     del request.session['update_admin_error_school']
     del request.session['update_admin_error_is_superuser']
-
   if request.session.get('update_school_error'):
     context['update_school_error'] = True
     context['update_school_error_name'] = request.session['update_school_error_name']
@@ -567,6 +567,7 @@ def admin_create_student_single(request, school_id):
   return redirect('admin_school_overview', school_id=school_id)
 
 
+# school/super admin delete student view
 @login_required(redirect_field_name=None)
 def admin_delete_student(request, school_id, student_id):
   school_id = int(school_id)
