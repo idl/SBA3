@@ -217,6 +217,7 @@ def superadmin_edit_school(request, school_id):
   error = False
   school = None
 
+  # sets errors for fields as booleans
   def set_session_err(request):
     request.session['update_school_error'] = True
     request.session['update_school_error_name'] = name
@@ -256,6 +257,7 @@ def superadmin_edit_school(request, school_id):
 @login_required(redirect_field_name=None)
 @user_passes_test(lambda u: u.is_superuser)
 def superadmin_delete_school(request, school_id):
+  # redundant - remove & test
   if not request.user.is_superuser:
     return redirect('superadmin_overview')
   try:
