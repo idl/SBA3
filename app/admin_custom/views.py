@@ -46,7 +46,6 @@ from survey.forms.choices import choices_11
 User = get_user_model()
 
 # public login view
-
 def public_login(request):
   context = {}
   context['admin_login_form'] = AdminLoginForm()
@@ -524,6 +523,7 @@ def admin_create_students_bulk(request, school_id):
   return redirect('admin_school_overview', school_id=school_id)
 
 
+# super/school admin create student POST view
 @login_required(redirect_field_name=None)
 @require_http_methods(["POST"])
 def admin_create_student_single(request, school_id):
