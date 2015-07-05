@@ -46,6 +46,7 @@ from survey.forms.choices import choices_11
 User = get_user_model()
 
 # public login view
+
 def public_login(request):
   context = {}
   context['admin_login_form'] = AdminLoginForm()
