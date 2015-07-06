@@ -716,7 +716,7 @@ def admin_edit_account(request):
   return render(request, 'admin_custom/edit_account.html', context)
 
 
-# show results in agreegate to admin user
+# show results in aggregate to admin user
 @login_required(redirect_field_name=None)
 def admin_results_aggregate(request, school_id, survey_year):
   context = {}
@@ -751,6 +751,9 @@ def admin_results_aggregate(request, school_id, survey_year):
     '11': choices_11
   }
 
+  # if user is school admin and tries to access a results aggregate page
+  # not associated with their school, then redirect to results aggregate
+  # using their school id
   if not request.user.is_superuser:
     if int(school_id) != request.user.school.id:
       return redirect('admin_results_aggregate', request.user.school.id, survey_year)
@@ -758,6 +761,7 @@ def admin_results_aggregate(request, school_id, survey_year):
   num_students_started_survey = 0
   num_students_completed_survey = 0
   num_students_at_school = Student.objects.filter(school__id=school_id).count()
+  # sets values above if student meets variable's criteria
   for student in Student.objects.filter(school__id=school_id):
     try:
       rs = student.resultset_set.filter(year=survey_year, completed=True).get()
