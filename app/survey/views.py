@@ -357,6 +357,7 @@ def public_begin(request):
     request.session['show_modal'] = True
     result_set = None
 
+    # if student hasn't started survey for this year
     if student.get_result_set_for_current_year() == None:
       result_set = ResultSet(student=student)
 
@@ -366,8 +367,6 @@ def public_begin(request):
         for q_num in range(1, num_questions_on_page[str(page_num)]+1):
           res_set_outline['q'+str(q_num)] = None
 
-        # equivalent:
-        # result_set.p+str(page_num) = json.dumps(res_set_outline)
         setattr(result_set, 'p'+str(page_num), json.dumps(res_set_outline))
 
       result_set.save()
@@ -432,6 +431,8 @@ def public_continue(request):
         request.session['student_uid'] = student_uid
         request.session['school_id'] = school_id
         return redirect('survey_questions', school_id, student_uid, 11)
+
+  # if form submit
   if request.method == 'POST':
     continue_pass = request.POST.get('continue_pass')
     student_uid = request.POST.get('student_uid')
