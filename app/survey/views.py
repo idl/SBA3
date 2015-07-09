@@ -323,9 +323,11 @@ def public_begin(request):
   context = {}
   context['survey_begin_form'] = SurveyBeginForm()
 
+  # if clicked begin submit button
   if request.method == 'POST':
     form = SurveyBeginForm(request.POST)
 
+    # if school or student uid field not entered by user
     if not form.is_valid():
       messages.error(request, 'You must pick a school and enter your student identifier to take the survey.')
       return render(request, "survey/survey_begin.html", context)
@@ -343,14 +345,20 @@ def public_begin(request):
         'The user ID "'+student_uid+'" is not registered with this school.')
       return render(request, "survey/survey_begin.html", context)
 
+    # student cant begin survey if already completed for this survey year and
+    # has subseqently a fully completed result set for that survey
     if student.has_completed_survey_for_current_year():
       messages.error(request, 'The student "'+student_uid+'" has already completed the survey.')
       return render(request, "survey/survey_begin.html", context)
-
+    # student cant begin survey if they have already begun survey through this
+    # view/form. must go to continue survey page and input continue pass
     if student.has_started_survey_for_current_year():
       messages.error(request, 'The student "'+student_uid+'" has already started the survey. <a href="/survey/continue" style="color:white;text-decoration:underline;font-weight:700;">Click here to continue the survey</a>.')
       return render(request, "survey/survey_begin.html", context)
 
+    # if student can take survey for this survey year, flush session for dev
+    # purposes and set session vars for student info
+    # also sets the session variable that displays the modal with begin message
     request.session.flush()
     request.session['student_uid'] = student_uid
     request.session['school_id'] = school_id
